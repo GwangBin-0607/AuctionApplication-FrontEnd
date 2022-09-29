@@ -58,6 +58,7 @@
 		8870DCBD28E57020005328C0 /* front-endUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "front-endUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8870DCC128E57020005328C0 /* front_endUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITests.swift; sourceTree = "<group>"; };
 		8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		889532C828E5833F00C3293F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
 		C106EA739AEFD2580B4EFDAC /* Pods-front-endTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-front-endTests.release.xcconfig"; path = "Target Support Files/Pods-front-endTests/Pods-front-endTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,6 +128,7 @@
 		8870DC9F28E5701E005328C0 /* front-end */ = {
 			isa = PBXGroup;
 			children = (
+				889532C828E5833F00C3293F /* debug.xcconfig */,
 				8870DCAE28E57020005328C0 /* Info.plist */,
 				889532C728E57C7300C3293F /* Infrastructure */,
 				889532C628E57C3200C3293F /* Repository */,
@@ -610,7 +612,7 @@
 		};
 		8870DCC828E57020005328C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 11BCC343618621B1CB3F5407 /* Pods-front-end.debug.xcconfig */;
+			baseConfigurationReference = 889532C828E5833F00C3293F /* debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
