@@ -46,7 +46,7 @@
 		56E313DACEA5D18E890E0DDE /* Pods-front-endTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-front-endTests.debug.xcconfig"; path = "Target Support Files/Pods-front-endTests/Pods-front-endTests.debug.xcconfig"; sourceTree = "<group>"; };
 		829F5E3BBD8EC133D400B1C7 /* Pods-front-end-front-endUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-front-end-front-endUITests.debug.xcconfig"; path = "Target Support Files/Pods-front-end-front-endUITests/Pods-front-end-front-endUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		87AAE45A0A5EAE0B6E8BBD4E /* Pods_front_end.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_front_end.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8870DC9D28E5701E005328C0 /* front-end.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "front-end.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8870DC9D28E5701E005328C0 /* front-end-DEBUG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "front-end-DEBUG.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8870DCA028E5701E005328C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8870DCA228E5701E005328C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		8870DCA428E5701E005328C0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -58,7 +58,8 @@
 		8870DCBD28E57020005328C0 /* front-endUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "front-endUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8870DCC128E57020005328C0 /* front_endUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITests.swift; sourceTree = "<group>"; };
 		8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		889532C828E5833F00C3293F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
+		889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_Configuration.xcconfig; sourceTree = "<group>"; };
+		88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release_Configuration.xcconfig; sourceTree = "<group>"; };
 		C106EA739AEFD2580B4EFDAC /* Pods-front-endTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-front-endTests.release.xcconfig"; path = "Target Support Files/Pods-front-endTests/Pods-front-endTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,7 +119,7 @@
 		8870DC9E28E5701E005328C0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8870DC9D28E5701E005328C0 /* front-end.app */,
+				8870DC9D28E5701E005328C0 /* front-end-DEBUG.app */,
 				8870DCB328E57020005328C0 /* front-endTests.xctest */,
 				8870DCBD28E57020005328C0 /* front-endUITests.xctest */,
 			);
@@ -128,8 +129,6 @@
 		8870DC9F28E5701E005328C0 /* front-end */ = {
 			isa = PBXGroup;
 			children = (
-				889532C828E5833F00C3293F /* debug.xcconfig */,
-				8870DCAE28E57020005328C0 /* Info.plist */,
 				889532C728E57C7300C3293F /* Infrastructure */,
 				889532C628E57C3200C3293F /* Repository */,
 				889532C528E57C3000C3293F /* Presentation */,
@@ -159,6 +158,9 @@
 		889532C328E57C2B00C3293F /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */,
+				889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */,
+				8870DCAE28E57020005328C0 /* Info.plist */,
 				8870DCA028E5701E005328C0 /* AppDelegate.swift */,
 				8870DCA228E5701E005328C0 /* SceneDelegate.swift */,
 				8870DCA428E5701E005328C0 /* ViewController.swift */,
@@ -225,7 +227,7 @@
 			);
 			name = "front-end";
 			productName = "front-end";
-			productReference = 8870DC9D28E5701E005328C0 /* front-end.app */;
+			productReference = 8870DC9D28E5701E005328C0 /* front-end-DEBUG.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8870DCB228E57020005328C0 /* front-endTests */ = {
@@ -612,7 +614,7 @@
 		};
 		8870DCC828E57020005328C0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 889532C828E5833F00C3293F /* debug.xcconfig */;
+			baseConfigurationReference = 889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -620,7 +622,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U44Q63XXCC;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "front-end/Info.plist";
+				INFOPLIST_FILE = "front-end/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -630,8 +632,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.develoooper.front-end";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.develoooper.front-end.debug";
+				PRODUCT_NAME = "$(TARGET_NAME)-DEBUG";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -640,7 +642,7 @@
 		};
 		8870DCC928E57020005328C0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1236B03A35BCF4827FF17BB3 /* Pods-front-end.release.xcconfig */;
+			baseConfigurationReference = 88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -648,7 +650,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = U44Q63XXCC;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "front-end/Info.plist";
+				INFOPLIST_FILE = "front-end/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -658,8 +660,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.develoooper.front-end";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.develoooper.front-end.release";
+				PRODUCT_NAME = "$(TARGET_NAME)-RELEASE";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
