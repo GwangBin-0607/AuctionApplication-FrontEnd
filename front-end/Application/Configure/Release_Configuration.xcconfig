@@ -1,0 +1,2 @@
+#include "../../../Pods/Target Support Files/Pods-front-end/Pods-front-end.release.xcconfig"
+API_KEY = RELEASE1

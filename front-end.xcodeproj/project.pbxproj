@@ -104,6 +104,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		8828337D28FDAB64004DD57E /* Configure */ = {
+			isa = PBXGroup;
+			children = (
+				889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */,
+				88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */,
+			);
+			path = Configure;
+			sourceTree = "<group>";
+		};
 		8870DC9428E5701E005328C0 = {
 			isa = PBXGroup;
 			children = (
@@ -158,8 +167,7 @@
 		889532C328E57C2B00C3293F /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */,
-				889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */,
+				8828337D28FDAB64004DD57E /* Configure */,
 				8870DCAE28E57020005328C0 /* Info.plist */,
 				8870DCA028E5701E005328C0 /* AppDelegate.swift */,
 				8870DCA228E5701E005328C0 /* SceneDelegate.swift */,
