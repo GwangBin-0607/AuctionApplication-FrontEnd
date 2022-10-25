@@ -167,6 +167,7 @@
 		889532C328E57C2B00C3293F /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				889E7FC32906E86B00CABC25 /* DIContainer */,
 				8828337D28FDAB64004DD57E /* Configure */,
 				8870DCAE28E57020005328C0 /* Info.plist */,
 				8870DCA028E5701E005328C0 /* AppDelegate.swift */,
@@ -204,6 +205,13 @@
 			children = (
 			);
 			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		889E7FC32906E86B00CABC25 /* DIContainer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DIContainer;
 			sourceTree = "<group>";
 		};
 		CB07073260E2E57D23CBC4B2 /* Frameworks */ = {
