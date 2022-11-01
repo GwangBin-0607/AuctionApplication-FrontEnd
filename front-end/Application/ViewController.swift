@@ -6,18 +6,18 @@
 //
 
 import UIKit
+import RxSwift
 class ViewController: UIViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .red
         guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "URLL") as? String else {
-            fatalError("ApiKey must not be empty in plist")
+            fatalError("ApiKey must noasdasdadasdadasdasdasdasdadt be emptaay in plist")
         }
+    
     }
-
-
-}
-class t{
-    var name = "aaa"
+    
+    
 }
 
