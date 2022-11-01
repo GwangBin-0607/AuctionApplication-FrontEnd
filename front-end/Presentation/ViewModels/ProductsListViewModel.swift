@@ -6,7 +6,18 @@
 //
 
 import Foundation
+import RxSwift
 
-final class ProductsListViewModel{
-    
+final class ProductsListViewModel:BindingProductsListViewModel{
+    private let usecase:ShowProductsList
+    private let disposeBag=DisposeBag()
+    let products: Observable<[Product]>
+    let requestProductsList: AnyObserver<Int>
+    init(UseCase:ShowProductsList) {
+        self.usecase = UseCase
+        let requesting = PublishSubject<Int>()
+        requestProductsList = requesting.asObserver()
+        products = requesting.flatMap(usecase.request)
+       
+    }
 }

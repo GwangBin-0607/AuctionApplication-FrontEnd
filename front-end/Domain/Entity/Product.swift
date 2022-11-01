@@ -8,5 +8,5 @@
 import Foundation
 
 struct Product:Decodable{
-    
+    let id:Int
 }

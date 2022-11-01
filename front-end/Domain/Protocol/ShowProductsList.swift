@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import RxSwift
 
-protocol RequestingProductsList{
-    
+protocol ShowProductsList{
+    func request(lastNumber:Int)->Observable<[Product]>
 }

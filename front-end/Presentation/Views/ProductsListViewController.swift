@@ -6,24 +6,44 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class ProductsListViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+    let viewModel:BindingProductsListViewModel
+    let disposeBag = DisposeBag()
+    // MARK: - DI
+    
+    init(viewModel:BindingProductsListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: NetworkService())))
+        super.init(coder: coder)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
-    */
-
+    private func bindingViewModel(){
+    
+    }
+    
 }
+extension ProductsListViewController{
+    override func loadView() {
+        super.loadView()
+        self.view = setLayout()
+        bindingViewModel()
+    }
+    private func setLayout()->UIView{
+        let containerView = UIView()
+        containerView.backgroundColor = .white
+
+        return containerView
+    }
+}
+
