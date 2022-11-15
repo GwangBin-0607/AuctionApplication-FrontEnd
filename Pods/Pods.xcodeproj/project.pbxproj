@@ -575,7 +575,7 @@
 		9B3D2C328E8738DB3479D01A267AC949 /* RxTableViewDataSourceProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTableViewDataSourceProxy.swift; path = RxCocoa/iOS/Proxies/RxTableViewDataSourceProxy.swift; sourceTree = "<group>"; };
 		9CD275E0C603D2A004160A9DAB79280C /* Completable+AndThen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Completable+AndThen.swift"; path = "RxSwift/Traits/PrimitiveSequence/Completable+AndThen.swift"; sourceTree = "<group>"; };
 		9D2C0CBAA283F4EE28C2D4F6DD167E3F /* RecursiveLock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RecursiveLock.swift; path = Platform/RecursiveLock.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E36D197D4D8F188ACDB2D23565A30B8 /* GroupedObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GroupedObservable.swift; path = RxSwift/GroupedObservable.swift; sourceTree = "<group>"; };
 		9EBB2BD981696042D4D5CBF8D20753AF /* UITableView+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UITableView+Rx.swift"; path = "RxCocoa/iOS/UITableView+Rx.swift"; sourceTree = "<group>"; };
 		9F575C5C76C36C4F88E73A151AB0C259 /* ShareReplayScope.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShareReplayScope.swift; path = RxSwift/Observables/ShareReplayScope.swift; sourceTree = "<group>"; };
@@ -632,7 +632,7 @@
 		CF4436BFFDB9464EE5FC13A439A94C31 /* WithLatestFrom.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WithLatestFrom.swift; path = RxSwift/Observables/WithLatestFrom.swift; sourceTree = "<group>"; };
 		CF81324D82DC13C1368A83FDDAF7E48D /* UITextField+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UITextField+Rx.swift"; path = "RxCocoa/iOS/UITextField+Rx.swift"; sourceTree = "<group>"; };
 		CFF3A96BF82F375A851463BAFCEC6C71 /* RxTextStorageDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTextStorageDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxTextStorageDelegateProxy.swift; sourceTree = "<group>"; };
-		D004E684C720FB28628538E947F4F64C /* Pods_front_end.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_front_end.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D004E684C720FB28628538E947F4F64C /* Pods-front-end */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-front-end"; path = Pods_front_end.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D06516AEF5F9AF6F5171DD76A5572C61 /* Pods-front-end-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-front-end-frameworks.sh"; sourceTree = "<group>"; };
 		D0EF6B592D805A6F4B14DA2005BF7812 /* ScheduledItemType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ScheduledItemType.swift; path = RxSwift/Schedulers/Internal/ScheduledItemType.swift; sourceTree = "<group>"; };
 		D1F42834A942128604C591B55C2C2207 /* UIGestureRecognizer+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIGestureRecognizer+Rx.swift"; path = "RxCocoa/iOS/UIGestureRecognizer+Rx.swift"; sourceTree = "<group>"; };
@@ -875,6 +875,7 @@
 				37A2C4BFDA566DDA4A7D5A4A040FF33F /* WKWebView+Rx.swift */,
 				CDF012ACB30E8EB705FB76DDAE086695 /* Support Files */,
 			);
+			name = RxCocoa;
 			path = RxCocoa;
 			sourceTree = "<group>";
 		};
@@ -924,6 +925,7 @@
 				96EE65D122E42900910458C87CE30C44 /* Utils.swift */,
 				B629C14116EDFDFD07D6EE1CA76E4538 /* Support Files */,
 			);
+			name = RxRelay;
 			path = RxRelay;
 			sourceTree = "<group>";
 		};
@@ -1092,6 +1094,7 @@
 				2ECB56C7BFB932491E352016E33A67D5 /* Zip+Collection.swift */,
 				E5B6DEFED7FDF7E7A168CEB9127E298E /* Support Files */,
 			);
+			name = RxSwift;
 			path = RxSwift;
 			sourceTree = "<group>";
 		};
@@ -1106,7 +1109,7 @@
 		68210395A4F17C760504D710ED62EB17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D004E684C720FB28628538E947F4F64C /* Pods_front_end.framework */,
+				D004E684C720FB28628538E947F4F64C /* Pods-front-end */,
 				1681AF1919750AFB93A7CAA909E9F5D3 /* Pods-front-end-front-endUITests */,
 				257825485AAD1FE9B6B7BC5AD4722497 /* Pods-front-endTests */,
 				BC432FD48A5932251F1CAFBC4BF74894 /* RxCocoa */,
@@ -1332,7 +1335,7 @@
 			);
 			name = "Pods-front-end";
 			productName = Pods_front_end;
-			productReference = D004E684C720FB28628538E947F4F64C /* Pods_front_end.framework */;
+			productReference = D004E684C720FB28628538E947F4F64C /* Pods-front-end */;
 			productType = "com.apple.product-type.framework";
 		};
 		7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6 /* RxCocoa */ = {

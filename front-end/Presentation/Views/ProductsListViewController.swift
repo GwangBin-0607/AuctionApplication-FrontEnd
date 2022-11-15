@@ -11,25 +11,43 @@ import RxCocoa
 
 final class ProductsListViewController: UIViewController {
     
-    let viewModel:BindingProductsListViewModel
-    let disposeBag = DisposeBag()
-    // MARK: - DI
-    
-    init(viewModel:BindingProductsListViewModel) {
+    private let viewModel:BindingProductsListViewModel
+    private let disposeBag = DisposeBag()
+    private let collectionView:UICollectionView
+    private let categoryView:UIView
+    let testBtn = UIButton()
+    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView) {
         self.viewModel = viewModel
+        collectionView = CollectionView
+        categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder: NSCoder) {
-        viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: NetworkService())))
-        super.init(coder: coder)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        bindingViewModel()
         
     }
     private func bindingViewModel(){
+        testBtn.rx.tap.subscribe(onNext: {
+            [weak self] in
+            print("Tap")
+//            self?.viewModel.requestProductsList.onNext(1)
+        }).disposed(by: disposeBag)
+        
+        collectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
+            _,item, cell in
+            cell.bindingData.onNext(item)
+        }.disposed(by: disposeBag)
+  
+    }
     
+    required init?(coder: NSCoder) {
+        viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: ProductsListAPI(ServerURL: "http~~"))))
+        collectionView = ProductListCollectionView()
+        categoryView = UIView()
+        super.init(coder: coder)
     }
     
 }
@@ -37,13 +55,40 @@ extension ProductsListViewController{
     override func loadView() {
         super.loadView()
         self.view = setLayout()
-        bindingViewModel()
     }
     private func setLayout()->UIView{
         let containerView = UIView()
         containerView.backgroundColor = .white
-
+        containerView.addSubview(categoryView)
+        categoryView.translatesAutoresizingMaskIntoConstraints = false
+        categoryView.backgroundColor = .red
+        containerView.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .yellow
+        containerView.addSubview(testBtn)
+        testBtn.frame = CGRect(x: 250, y: 450, width:  150, height: 150)
+        testBtn.backgroundColor = .green
+        NSLayoutConstraint.activate([
+            categoryView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
+            categoryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            categoryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            NSLayoutConstraint(item: categoryView, attribute: .height, relatedBy: .equal, toItem: containerView, attribute: .height, multiplier: 0.08, constant: 0.0),
+            collectionView.topAnchor.constraint(equalTo: categoryView.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor)
+        ])
         return containerView
     }
 }
-
+extension ProductsListViewController:UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width/3-2, height: 150)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        1.0
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        2.0
+    }
+}

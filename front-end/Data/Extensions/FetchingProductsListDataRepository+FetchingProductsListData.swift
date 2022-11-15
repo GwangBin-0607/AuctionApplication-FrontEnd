@@ -23,7 +23,7 @@ extension FetchingProductsListDataRepository:FetchingProductsListData{
                 }
             }
             return Disposables.create()
-        }
+        }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
         
     }
 

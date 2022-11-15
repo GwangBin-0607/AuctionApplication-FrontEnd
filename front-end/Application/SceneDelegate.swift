@@ -16,9 +16,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 //        let second = ViewController()
-        
-        let second = ProductsListViewController(viewModel:ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: NetworkService()))))
-        
+        let viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: ProductsListAPI(ServerURL: "http~~"))))
+        let productCollectionView = ProductListCollectionView(collectionViewLayout: UICollectionViewFlowLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+//        let second = ProductsListViewController(viewModel:viewModel,CollectionView: productCollectionView)
+        let second = SomeClass()
         window.rootViewController = second
         self.window = window
         window.makeKeyAndVisible()
