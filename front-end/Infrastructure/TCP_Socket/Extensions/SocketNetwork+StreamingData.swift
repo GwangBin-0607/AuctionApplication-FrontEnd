@@ -23,7 +23,7 @@ final class SocketNetwork: NSObject,StreamingData  {
     private let hostName:String
     private let portNumber:Int
     private var shouldKeeping = true
-    private let disposeBag = DisposeBag()
+    private let disposeBag:DisposeBag
     
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
@@ -31,6 +31,7 @@ final class SocketNetwork: NSObject,StreamingData  {
         self.hostName = hostName
         self.portNumber = portNumber
         self.urlSession = URLSession(configuration: URLSessionConfiguration.default)
+        disposeBag = DisposeBag()
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
         let connected = PublishSubject<isConnecting>()

@@ -17,9 +17,6 @@ final class ProductsListAPI{
         urlRequest = URLRequest(url: url)
     }
 }
-protocol GetProductsList{
-    func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void)
-}
 extension ProductsListAPI:GetProductsList{
     func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void) {
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in

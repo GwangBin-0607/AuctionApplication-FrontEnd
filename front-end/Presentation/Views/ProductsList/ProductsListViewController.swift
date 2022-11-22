@@ -15,13 +15,15 @@ final class ProductsListViewController: UIViewController {
     private let disposeBag:DisposeBag
     private let collectionView:UICollectionView
     private let categoryView:UIView
-    let testBtn = UIButton()
-    let testUseCase = ProductPriceRepository()
+    let testBtn:UIButton
+    let testUseCase:ProductPriceRepository
     init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView) {
         self.viewModel = viewModel
         collectionView = CollectionView
         disposeBag = DisposeBag()
         categoryView = UIView()
+        testBtn = UIButton()
+        testUseCase = ProductPriceRepository()
         super.init(nibName: nil, bundle: nil)
     }
     override func viewDidLoad() {

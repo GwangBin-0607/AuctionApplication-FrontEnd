@@ -13,10 +13,10 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[Product]>
-    var isConnecting: Observable<isConnecting>
+    let isConnecting: Observable<isConnecting>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
-    var requestSteamConnect: AnyObserver<isConnecting>
+    let requestSteamConnect: AnyObserver<isConnecting>
     init(UseCase:ShowProductsList) {
         self.usecase = UseCase
         disposeBag = DisposeBag()

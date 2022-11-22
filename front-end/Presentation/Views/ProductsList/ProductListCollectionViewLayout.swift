@@ -14,14 +14,9 @@ class ProductListCollectionViewLayout:UICollectionViewLayout{
     override init() {
         disposeBag = DisposeBag()
         super.init()
-        bindingViewModel()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private func bindingViewModel(){
-    }
-    
-    
 }
 
