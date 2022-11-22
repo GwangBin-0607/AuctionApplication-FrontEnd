@@ -21,6 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let second = ProductsListViewController(viewModel:viewModel,CollectionView: productCollectionView)
         let second = SomeClass()
         window.rootViewController = second
+        let value=3
+//        assert(value>5,"Error")
+        precondition(value>5, "Errrrrrr")
         self.window = window
         window.makeKeyAndVisible()
     }
