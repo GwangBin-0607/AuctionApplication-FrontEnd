@@ -9,8 +9,8 @@ import Foundation
 import RxSwift
 
 final class ProductsListAPI{
-    let url:URL
-    let urlRequest:URLRequest
+    private let url:URL
+    private let urlRequest:URLRequest
     
     init(ServerURL serverURL:String) {
         url = URL(string:serverURL)!

@@ -9,8 +9,10 @@ import Foundation
 import RxSwift
 protocol ProductsListViewModelInPut{
     var requestProductsList:AnyObserver<Int> {get}
+    var requestSteamConnect:AnyObserver<isConnecting> {get}
 }
 protocol ProductsListViewModelOutPut{
+    var isConnecting:Observable<isConnecting>{get}
     var productsList:Observable<[Product]> {get}
 }
 typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut

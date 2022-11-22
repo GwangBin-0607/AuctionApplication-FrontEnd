@@ -26,10 +26,10 @@ class ProductListCollectionViewCell: UICollectionViewCell {
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
         super.init(frame: frame)
-        data.subscribe(onNext: {
-                [weak self] product in
-                self?.titleLabel.text = product.title
-                self?.priceLabel.text = String(product.price)
+        data.withUnretained(self).subscribe(onNext: {
+            owner, product in
+            owner.titleLabel.text = product.title
+            owner.priceLabel.text = String(product.price)
             })
             .disposed(by: disposeBag)
         layoutContentView()

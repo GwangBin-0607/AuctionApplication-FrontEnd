@@ -1,0 +1,42 @@
+//
+//  FetchProductListUseCase.swift
+//  front-end
+//
+//  Created by 안광빈 on 2022/10/26.
+//
+
+import Foundation
+import RxSwift
+
+typealias ShowProductsList = RequestingProductsList&StreamingProductPrice
+final class ShowProductsListUseCase{
+    private let fetchingRepository:FetchingProductsListData
+    private let productPriceRepository:TransferProductPriceDataInput&ObserverSocketState
+    init(FetchingProductsList:FetchingProductsListData) {
+        self.fetchingRepository = FetchingProductsList
+        self.productPriceRepository = ProductPriceRepository()
+    }
+}
+extension ShowProductsListUseCase:RequestingProductsList{
+    
+    func request(lastNumber:Int) -> Observable<Result<[Product],Error>> {
+        return fetchingRepository.returnData(lastNumber: lastNumber)
+            .map { Data in
+            guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
+                throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
+            }
+                return .success(response)
+            }.catch{.just(.failure($0))}
+    }
+}
+extension ShowProductsListUseCase:StreamingProductPrice{
+    func connectingNetwork(state:isConnecting) {
+        productPriceRepository.streamState(state: state)
+    }
+    func returningInputObservable() -> Observable<Result<[StreamPrice], Error>> {
+        productPriceRepository.transferDataToPrice()
+    }
+    func returningSocketState() -> Observable<isConnecting> {
+        productPriceRepository.observableSteamState()
+    }
+}

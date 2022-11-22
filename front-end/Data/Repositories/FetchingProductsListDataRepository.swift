@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class FetchingProductsListDataRepository{
+final class ProductsListRepository{
     let apiService:GetProductsList
     init(ApiService:GetProductsList) {
         apiService = MockProductsListAPI()

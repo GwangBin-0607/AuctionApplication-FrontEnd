@@ -13,13 +13,18 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[Product]>
+    var isConnecting: Observable<isConnecting>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
+    var requestSteamConnect: AnyObserver<isConnecting>
     init(UseCase:ShowProductsList) {
         self.usecase = UseCase
         disposeBag = DisposeBag()
         let requesting = PublishSubject<Int>()
         let products = BehaviorSubject<[Product]>(value: [])
+        let connecting = PublishSubject<isConnecting>()
+        requestSteamConnect = connecting.asObserver()
+        isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
         
         requesting.flatMap(usecase.request)
@@ -39,6 +44,19 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         
         
         productsList = products.asObservable()
+        
+        self.usecase.returningInputObservable().subscribe(onNext: {
+            results in
+            print(results)
+        }).disposed(by: disposeBag)
+
+        
+        connecting.withUnretained(self).subscribe(onNext: {
+            owner, isConnecting in
+            owner.usecase.connectingNetwork(state: isConnecting)
+        }).disposed(by: disposeBag)
+        requestSteamConnect.onNext(.connect)
+
                 
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 
-extension FetchingProductsListDataRepository:FetchingProductsListData{
+extension ProductsListRepository:FetchingProductsListData{
     
     func returnData(lastNumber:Int) -> Observable<Data> {
         return Observable.create { [weak self] observer in

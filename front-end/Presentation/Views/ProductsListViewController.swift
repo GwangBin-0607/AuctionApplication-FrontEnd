@@ -16,6 +16,7 @@ final class ProductsListViewController: UIViewController {
     private let collectionView:UICollectionView
     private let categoryView:UIView
     let testBtn = UIButton()
+    let testUseCase = ProductPriceRepository()
     init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView) {
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -26,12 +27,18 @@ final class ProductsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
-        
+        testUse()
     }
+    func testUse(){
+        testUseCase.streamState(state: .connect)
+    }
+
     private func bindingViewModel(){
         testBtn.rx.tap.subscribe(onNext: {
             [weak self] in
             print("Tap")
+            self?.testUseCase.transferPriceToData(output: StreamPrice(id: 1000, price: 1111000))
+
 //            self?.viewModel.requestProductsList.onNext(1)
         }).disposed(by: disposeBag)
         

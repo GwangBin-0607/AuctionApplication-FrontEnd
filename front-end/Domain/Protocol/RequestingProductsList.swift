@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 
-protocol ShowProductsList{
+protocol RequestingProductsList{
     func request(lastNumber:Int)->Observable<Result<[Product],Error>>
 }
