@@ -15,13 +15,14 @@ class ProductListCollectionViewCell: UICollectionViewCell {
     private let checkUpDown:UIImageView
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
-    private let disposeBag = DisposeBag()
+    private let disposeBag:DisposeBag
     override init(frame: CGRect) {
         print("INIT")
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
         checkUpDown = UIImageView()
+        disposeBag = DisposeBag()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
         super.init(frame: frame)

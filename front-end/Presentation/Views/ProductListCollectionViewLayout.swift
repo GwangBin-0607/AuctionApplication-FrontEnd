@@ -10,14 +10,14 @@ import UIKit
 import RxSwift
 
 class ProductListCollectionViewLayout:UICollectionViewLayout{
-    private let disposeBag=DisposeBag()
+    private let disposeBag:DisposeBag
     override init() {
+        disposeBag = DisposeBag()
         super.init()
         bindingViewModel()
     }
-    
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     private func bindingViewModel(){
     }

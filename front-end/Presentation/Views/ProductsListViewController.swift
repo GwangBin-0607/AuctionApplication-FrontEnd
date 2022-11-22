@@ -12,13 +12,14 @@ import RxCocoa
 final class ProductsListViewController: UIViewController {
     
     private let viewModel:BindingProductsListViewModel
-    private let disposeBag = DisposeBag()
+    private let disposeBag:DisposeBag
     private let collectionView:UICollectionView
     private let categoryView:UIView
     let testBtn = UIButton()
     init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView) {
         self.viewModel = viewModel
         collectionView = CollectionView
+        disposeBag = DisposeBag()
         categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,10 +45,7 @@ final class ProductsListViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(FetchingProductsList: FetchingProductsListDataRepository(ApiService: ProductsListAPI(ServerURL: "http~~"))))
-        collectionView = ProductListCollectionView()
-        categoryView = UIView()
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
 }

@@ -10,13 +10,14 @@ import RxSwift
 
 final class ProductsListViewModel:BindingProductsListViewModel{
     private let usecase:ShowProductsList
-    private let disposeBag=DisposeBag()
+    private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[Product]>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
     init(UseCase:ShowProductsList) {
         self.usecase = UseCase
+        disposeBag = DisposeBag()
         let requesting = PublishSubject<Int>()
         let products = BehaviorSubject<[Product]>(value: [])
         requestProductsList = requesting.asObserver()
