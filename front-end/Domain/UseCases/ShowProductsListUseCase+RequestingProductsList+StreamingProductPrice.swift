@@ -12,9 +12,9 @@ typealias ShowProductsList = RequestingProductsList&StreamingProductPrice
 final class ShowProductsListUseCase{
     private let fetchingRepository:FetchingProductsListData
     private let productPriceRepository:TransferProductPriceDataInput&ObserverSocketState
-    init(FetchingProductsList:FetchingProductsListData) {
+    init(FetchingProductsList:FetchingProductsListData,ProductPriceRepository:ProductPriceRepository) {
         self.fetchingRepository = FetchingProductsList
-        self.productPriceRepository = ProductPriceRepository()
+        self.productPriceRepository = ProductPriceRepository
     }
 }
 extension ShowProductsListUseCase:RequestingProductsList{
