@@ -26,6 +26,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
+        productsList = products.asObservable()
         
         requesting.flatMap(usecase.request)
             .subscribe(onNext: {
@@ -42,21 +43,18 @@ final class ProductsListViewModel:BindingProductsListViewModel{
                 }
             }).disposed(by: disposeBag)
         
-        
-        productsList = products.asObservable()
-        
         self.usecase.returningInputObservable().subscribe(onNext: {
             results in
             print(results)
         }).disposed(by: disposeBag)
-
+        
         
         connecting.withUnretained(self).subscribe(onNext: {
             owner, isConnecting in
             owner.usecase.connectingNetwork(state: isConnecting)
         }).disposed(by: disposeBag)
         requestSteamConnect.onNext(.connect)
-
-                
+        
+        
     }
 }

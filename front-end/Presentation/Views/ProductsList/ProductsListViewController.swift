@@ -39,9 +39,9 @@ final class ProductsListViewController: UIViewController {
         testBtn.rx.tap.subscribe(onNext: {
             [weak self] in
             print("Tap")
-            self?.testUseCase.transferPriceToData(output: StreamPrice(id: 1000, price: 1111000))
+//            self?.testUseCase.transferPriceToData(output: StreamPrice(id: 1000, price: 1111000))
 
-//            self?.viewModel.requestProductsList.onNext(1)
+            self?.viewModel.requestProductsList.onNext(1)
         }).disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)

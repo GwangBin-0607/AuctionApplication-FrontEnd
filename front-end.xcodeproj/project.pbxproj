@@ -260,7 +260,6 @@
 		8870DC9F28E5701E005328C0 /* front-end */ = {
 			isa = PBXGroup;
 			children = (
-				889CCD752913F57E008D1E2F /* Util */,
 				889532C728E57C7300C3293F /* Infrastructure */,
 				889532C628E57C3200C3293F /* Data */,
 				889532C528E57C3000C3293F /* Presentation */,
@@ -402,13 +401,6 @@
 				889EE5DB290A41760041CC88 /* ProductsListAPI+GetProductsList.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		889CCD752913F57E008D1E2F /* Util */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Util;
 			sourceTree = "<group>";
 		};
 		889E7FC32906E86B00CABC25 /* DIContainer */ = {
