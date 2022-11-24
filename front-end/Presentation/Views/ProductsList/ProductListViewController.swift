@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ProductsListViewController: UIViewController {
+final class ProductListViewController: UIViewController {
     
     private let viewModel:BindingProductsListViewModel
     private let disposeBag:DisposeBag
@@ -58,7 +58,7 @@ final class ProductsListViewController: UIViewController {
     }
     
 }
-extension ProductsListViewController{
+extension ProductListViewController{
     override func loadView() {
         super.loadView()
         self.view = setLayout()
@@ -88,7 +88,7 @@ extension ProductsListViewController{
         return containerView
     }
 }
-extension ProductsListViewController:UICollectionViewDelegateFlowLayout{
+extension ProductListViewController:UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/3-2, height: 150)
     }

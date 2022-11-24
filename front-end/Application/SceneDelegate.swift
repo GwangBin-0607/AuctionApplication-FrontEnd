@@ -18,9 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let second = ViewController()
         let viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(ProductsListRepository: ProductsListRepository(ApiService: ProductsListHTTP(ServerURL: "http~~")),ProductPriceRepository: ProductPriceRepository(StreamingService: SocketNetwork(hostName: "localhost", portNumber: 8100))))
         let productCollectionView = ProductListCollectionView(collectionViewLayout: UICollectionViewFlowLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
-        let second = ProductsListViewController(viewModel:viewModel,CollectionView: productCollectionView)
+        let second = ProductListViewController(viewModel:viewModel,CollectionView: productCollectionView)
         window.rootViewController = second
-        let value=3
 //        assert(value>5,"Error")
 //        precondition(value>5, "Errrrrrr")
         self.window = window
