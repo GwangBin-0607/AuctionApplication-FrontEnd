@@ -23,7 +23,7 @@ final class ProductsListViewController: UIViewController {
         disposeBag = DisposeBag()
         categoryView = UIView()
         testBtn = UIButton()
-        testUseCase = ProductPriceRepository()
+        testUseCase = ProductPriceRepository(StreamingService: SocketNetwork(hostName: "localhost", portNumber: 8100))
         super.init(nibName: nil, bundle: nil)
     }
     override func viewDidLoad() {

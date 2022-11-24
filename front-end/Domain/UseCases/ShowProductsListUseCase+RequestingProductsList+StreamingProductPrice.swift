@@ -12,8 +12,8 @@ typealias ShowProductsList = RequestingProductsList&StreamingProductPrice
 final class ShowProductsListUseCase{
     private let fetchingRepository:FetchingProductsListData
     private let productPriceRepository:TransferProductPriceDataInput&ObserverSocketState
-    init(FetchingProductsList:FetchingProductsListData,ProductPriceRepository:ProductPriceRepository) {
-        self.fetchingRepository = FetchingProductsList
+    init(ProductsListRepository:FetchingProductsListData,ProductPriceRepository:TransferProductPriceDataInput&ObserverSocketState) {
+        self.fetchingRepository = ProductsListRepository
         self.productPriceRepository = ProductPriceRepository
     }
 }

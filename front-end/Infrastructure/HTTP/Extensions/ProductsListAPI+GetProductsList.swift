@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class ProductsListAPI{
+final class ProductsListHTTP{
     private let url:URL
     private let urlRequest:URLRequest
     
@@ -17,7 +17,7 @@ final class ProductsListAPI{
         urlRequest = URLRequest(url: url)
     }
 }
-extension ProductsListAPI:GetProductsList{
+extension ProductsListHTTP:GetProductsList{
     func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void) {
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             

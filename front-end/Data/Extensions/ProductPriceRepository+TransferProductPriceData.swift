@@ -13,8 +13,9 @@ class ProductPriceRepository{
         case EncodeError
     }
     private let streamingProductPrice:StreamingData
-    init() {
-        streamingProductPrice = SocketNetwork(hostName: "localhost", portNumber: 8100)
+    init(StreamingService:StreamingData) {
+//        streamingProductPrice = SocketNetwork(hostName: "localhost", portNumber: 8100)
+        self.streamingProductPrice = StreamingService
     }
 }
 extension ProductPriceRepository:TransferProductPriceDataOutput,TransferProductPriceDataInput{
