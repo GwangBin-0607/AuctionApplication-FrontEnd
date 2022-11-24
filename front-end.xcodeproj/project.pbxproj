@@ -24,6 +24,7 @@
 		8870DCB828E57020005328C0 /* front_endTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCB728E57020005328C0 /* front_endTests.swift */; };
 		8870DCC228E57020005328C0 /* front_endUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCC128E57020005328C0 /* front_endUITests.swift */; };
 		8870DCC428E57020005328C0 /* front_endUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */; };
+		888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D27292F435F00784E46 /* DetailProductViewController.swift */; };
 		8897C45A292CC09300823980 /* StreamingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C459292CC09200823980 /* StreamingData.swift */; };
 		8897C45E292CC0CB00823980 /* SocketNetwork+StreamingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45D292CC0CB00823980 /* SocketNetwork+StreamingData.swift */; };
 		8897C460292CC1F500823980 /* StreamingProductsPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45F292CC1F500823980 /* StreamingProductsPrice.swift */; };
@@ -89,6 +90,7 @@
 		8870DCBD28E57020005328C0 /* front-endUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "front-endUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8870DCC128E57020005328C0 /* front_endUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITests.swift; sourceTree = "<group>"; };
 		8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		888B4D27292F435F00784E46 /* DetailProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewController.swift; sourceTree = "<group>"; };
 		889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_Configuration.xcconfig; sourceTree = "<group>"; };
 		8897C459292CC09200823980 /* StreamingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingData.swift; sourceTree = "<group>"; };
 		8897C45D292CC0CB00823980 /* SocketNetwork+StreamingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+StreamingData.swift"; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 		882CBE8129083DD000550A8E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				888B4D26292F434600784E46 /* DetailProducts */,
 				8897C468292CC7DA00823980 /* ProductsList */,
 			);
 			path = Views;
@@ -284,6 +287,14 @@
 				8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */,
 			);
 			path = "front-endUITests";
+			sourceTree = "<group>";
+		};
+		888B4D26292F434600784E46 /* DetailProducts */ = {
+			isa = PBXGroup;
+			children = (
+				888B4D27292F435F00784E46 /* DetailProductViewController.swift */,
+			);
+			path = DetailProducts;
 			sourceTree = "<group>";
 		};
 		889532C328E57C2B00C3293F /* Application */ = {
@@ -673,6 +684,7 @@
 				8897C464292CC27700823980 /* TransferProductsPriceData.swift in Sources */,
 				88B88D8E29094E0B001A4C1C /* FetchingProductsListData.swift in Sources */,
 				882CBE772908285C00550A8E /* Product.swift in Sources */,
+				888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */,
 				8897C45A292CC09300823980 /* StreamingData.swift in Sources */,
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
