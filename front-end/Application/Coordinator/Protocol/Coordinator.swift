@@ -11,6 +11,5 @@ protocol Coordinator:AnyObject{
     
     var childCoordinator:[Coordinator]{get set}
     var containerViewController:TransitioningViewController{get}
-    var sceneDIContainer:SceneDIContainer{get}
     func start()->Void
 }

@@ -11,8 +11,8 @@ import UIKit
 class AppCoordinator:Coordinator{
     let containerViewController: TransitioningViewController
     var childCoordinator: [Coordinator] = []
-    let sceneDIContainer:SceneDIContainer
-    init(ContainerViewController:TransitioningViewController,SceneDIContainer:SceneDIContainer) {
+    let sceneDIContainer:MainContainerViewSceneDIContainer
+    init(ContainerViewController:TransitioningViewController,SceneDIContainer:MainContainerViewSceneDIContainer) {
         self.containerViewController = ContainerViewController
         self.sceneDIContainer = SceneDIContainer
     }
