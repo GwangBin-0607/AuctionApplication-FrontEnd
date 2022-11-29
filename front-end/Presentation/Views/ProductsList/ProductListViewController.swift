@@ -8,16 +8,16 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
-final class ProductListViewController: UIViewController {
-    
+final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:BindingProductsListViewModel
     private let disposeBag:DisposeBag
     private let collectionView:UICollectionView
     private let categoryView:UIView
     let testBtn:UIButton
     let testUseCase:ProductPriceRepository
-    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView) {
+    let delegate:TransitionProductListViewController?
+    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView,transitioning:TransitionProductListViewController?=nil) {
+        self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
         disposeBag = DisposeBag()
@@ -39,9 +39,11 @@ final class ProductListViewController: UIViewController {
         testBtn.rx.tap.subscribe(onNext: {
             [weak self] in
             print("Tap")
+            print(self?.delegate)
+            self?.delegate?.presentToDetailProductView()
+//            self?.present(pre, animated: true, completion: nil)
 //            self?.testUseCase.transferPriceToData(output: StreamPrice(id: 1000, price: 1111000))
-
-            self?.viewModel.requestProductsList.onNext(1)
+//            self?.viewModel.requestProductsList.onNext(1)
         }).disposed(by: disposeBag)
         
         collectionView.rx.setDelegate(self).disposed(by: disposeBag)

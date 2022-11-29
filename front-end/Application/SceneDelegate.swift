@@ -15,15 +15,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-//        let second = ViewController()
-        let viewModel = ProductsListViewModel(UseCase: ShowProductsListUseCase(ProductsListRepository: ProductsListRepository(ApiService: ProductsListHTTP(ServerURL: "http~~")),ProductPriceRepository: ProductPriceRepository(StreamingService: SocketNetwork(hostName: "localhost", portNumber: 8100))))
-        let productCollectionView = ProductListCollectionView(collectionViewLayout: UICollectionViewFlowLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
-        let second = ProductListViewController(viewModel:viewModel,CollectionView: productCollectionView)
-        window.rootViewController = second
-//        assert(value>5,"Error")
-//        precondition(value>5, "Errrrrrr")
+        let root = MainContainerViewController()
         self.window = window
-        window.makeKeyAndVisible()
+        self.window?.rootViewController = root
+        let test = AppCoordinator(ContainerViewController: root, SceneDIContainer: SceneDIContainer())
+        test.start()
+        self.window?.makeKeyAndVisible()
+        //NavigationController push는 makeKeyAndVisible전에 가능 present는 안됨
+        //UIViewController present는 안댐
+        //push는 되는데 present는 안됨.
+        //Memory 차이도 있음 navigation push는 root viewcontroller가 없으면 푸시했을때 루트로 만든다
+        //.fullscreen으로 하니깐 메모리 작아짐!
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -7,7 +7,9 @@
 
 import Foundation
 
-protocol Coordinator{
+protocol Coordinator:AnyObject{
+    
     var childCoordinator:[Coordinator]{get set}
+    var containerViewController:TransitioningViewController{get}
     func start()->Void
 }

@@ -6,7 +6,22 @@
 //
 
 import Foundation
+import UIKit
 
-class AppCoordinator{
-    
+class AppCoordinator:Coordinator{
+    let containerViewController: TransitioningViewController
+    var childCoordinator: [Coordinator] = []
+    let sceneDIContainer:SceneDIContainer
+    init(ContainerViewController:TransitioningViewController,SceneDIContainer:SceneDIContainer) {
+        self.containerViewController = ContainerViewController
+        self.sceneDIContainer = SceneDIContainer
+    }
+    func start() {
+        showProductListViewController()
+    }
+    private func showProductListViewController(){
+        let coordinator = sceneDIContainer.returnProductListViewCoordinator(ContainerViewController: containerViewController)
+        coordinator.start()
+        childCoordinator.append(coordinator)
+    }
 }
