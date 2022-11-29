@@ -42,8 +42,6 @@ extension MainContainerViewController:TransitioningViewController{
         let last = children.last
         self.addChild(ViewController)
         if last == nil{
-            print("1")
-            print(containerView.frame)
             containerView.addSubview(ViewController.view)
             ViewController.view.translatesAutoresizingMaskIntoConstraints = false
             ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
@@ -52,24 +50,22 @@ extension MainContainerViewController:TransitioningViewController{
             ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
             ViewController.didMove(toParent: self)
         }else{
-            print("2")
-            print(last)
-            print(ViewController)
-            print(last?.view.superview)
             ViewController.view.frame = CGRect(x: containerView.frame.maxX, y: containerView.frame.minX, width: containerView.frame.width, height: containerView.frame.height)
-//            containerView.addSubview(ViewController.view)
-//            ViewController.view.translatesAutoresizingMaskIntoConstraints = false
-//            ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor,constant: 200).isActive = true
-//            ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-//            ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-//            ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            self.transition(from: last!, to: ViewController, duration: 1.0, options: .curveEaseIn ,animations: {
-                last?.view.alpha = 0.0
-                ViewController.view.frame = self.containerView.frame
+            ViewController.beginAppearanceTransition(true, animated: true)
+            containerView.addSubview(ViewController.view)
+            ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+            ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+            ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+            ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+            ViewController.view.alpha = 0.0
+            UIView.animate(withDuration: 1.0, delay: .zero, options: .curveLinear, animations: {
+                ViewController.view.alpha = 1.0
             }, completion: {
-                (finish) in
-                    ViewController.didMove(toParent: self)
+                finish in
+                ViewController.endAppearanceTransition()
             })
+
         }
     }
 }

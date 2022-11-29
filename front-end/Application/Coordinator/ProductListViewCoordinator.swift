@@ -11,7 +11,7 @@ import UIKit
 final class ProductListViewCoordinator:Coordinator{
     let containerViewController: TransitioningViewController
     var childCoordinator: [Coordinator] = []
-    private let sceneDIContainer:SceneDIContainer
+    let sceneDIContainer:SceneDIContainer
     init(ContainerViewController:TransitioningViewController,SceneDIContainer:SceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController

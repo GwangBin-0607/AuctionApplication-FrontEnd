@@ -11,7 +11,7 @@ import UIKit
 class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
     let containerViewController: TransitioningViewController
     var childCoordinator: [Coordinator] = []
-    private let sceneDIContainer:SceneDIContainer
+    let sceneDIContainer:SceneDIContainer
     let delegate: HasChildCoordinator
     init(ContainerViewController:TransitioningViewController,SceneDIContainer:SceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator) {
         self.delegate = DetailProductViewCoordinatorDelegate
