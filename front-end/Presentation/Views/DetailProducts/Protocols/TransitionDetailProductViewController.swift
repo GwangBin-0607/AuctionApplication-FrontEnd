@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
-protocol TransitionDismissViewController{
-    func dismissViewController()
+protocol TransitionDetailProductViewController{
+    func dismissToProductListViewController()
 }

@@ -26,8 +26,8 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
             print("DEINIT")
     }
 }
-extension DetailProductViewCoordinator:TransitionDismissViewController{
-    func dismissViewController() {
+extension DetailProductViewCoordinator:TransitionDetailProductViewController{
+    func dismissToProductListViewController() {
         delegate.removeChildCoordinator(Co: self)
         print("aaa")
         containerViewController.dismiss(animate: true)

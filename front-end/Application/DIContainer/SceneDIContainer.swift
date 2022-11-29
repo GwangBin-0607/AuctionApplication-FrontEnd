@@ -36,11 +36,11 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     }
 }
 protocol ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionPresentViewController?) -> UIViewController
+    func returnProductsListViewController(transitioning:TransitionProductListViewController?) -> UIViewController
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator
 }
 extension SceneDIContainer:ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionPresentViewController?=nil) -> UIViewController {
+    func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
         ProductListViewController(viewModel: returnBindingProductsListViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
     }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
@@ -48,10 +48,10 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
     }
 }
 protocol DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDismissViewController?) -> UIViewController
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?) -> UIViewController
 }
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDismissViewController?=nil) -> UIViewController {
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil) -> UIViewController {
         DetailProductViewController(transitioning: transitioning)
     }
 }

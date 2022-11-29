@@ -15,8 +15,8 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let categoryView:UIView
     let testBtn:UIButton
     let testUseCase:ProductPriceRepository
-    let delegate:TransitionPresentViewController?
-    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView,transitioning:TransitionPresentViewController?=nil) {
+    let delegate:TransitionProductListViewController?
+    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -40,7 +40,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
             [weak self] in
             print("Tap")
             print(self?.delegate)
-            self?.delegate?.presentViewController()
+            self?.delegate?.presentDetailViewController()
 //            self?.present(pre, animated: true, completion: nil)
 //            self?.testUseCase.transferPriceToData(output: StreamPrice(id: 1000, price: 1111000))
 //            self?.viewModel.requestProductsList.onNext(1)

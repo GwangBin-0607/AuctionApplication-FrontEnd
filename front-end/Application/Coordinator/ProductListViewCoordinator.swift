@@ -29,8 +29,9 @@ final class ProductListViewCoordinator:Coordinator{
         coor.start()
     }
 }
-extension ProductListViewCoordinator:TransitionPresentViewController{
-    func presentViewController() {
+extension ProductListViewCoordinator:TransitionProductListViewController{
+
+    func presentDetailViewController() {
         detailProductViewController()
     }
     
