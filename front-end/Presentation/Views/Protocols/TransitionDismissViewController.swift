@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol TransitionDetailProductViewController:AnyObject{
-    func dismissToProductListView()
+protocol TransitionDismissViewController{
+    func dismissViewController()
 }

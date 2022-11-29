@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol TransitionProductListViewController{
-    func presentToDetailProductView()
+protocol TransitionPresentViewController{
+    func presentViewController()
 }

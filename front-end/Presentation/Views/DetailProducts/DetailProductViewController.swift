@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 class DetailProductViewController:UIViewController,SetCoordinatorViewController{
-    let delegate:TransitionDetailProductViewController?
+    let delegate:TransitionDismissViewController?
     let backBtn = UIButton()
-    init(transitioning:TransitionDetailProductViewController?=nil) {
+    init(transitioning:TransitionDismissViewController?=nil) {
         self.delegate = transitioning
         super.init(nibName: nil, bundle: nil)
     }
@@ -30,7 +30,7 @@ class DetailProductViewController:UIViewController,SetCoordinatorViewController{
         self.view = view
     }
     @objc func action(){
-        delegate?.dismissToProductListView()
+        delegate?.dismissViewController()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
