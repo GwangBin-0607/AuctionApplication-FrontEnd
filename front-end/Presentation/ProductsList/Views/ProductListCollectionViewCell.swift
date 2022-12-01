@@ -1,6 +1,6 @@
 import UIKit
 import RxSwift
-class ProductListCollectionViewCell: UICollectionViewCell,NeedImageObject {
+class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel

@@ -1,5 +1,5 @@
 import UIKit
 import RxSwift
-protocol NeedImageObject{
+protocol UIViewNeedImage{
     var imageBinding:AnyObserver<UIImage>{get}
 }

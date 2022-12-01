@@ -1,4 +1,4 @@
 struct RequestImage{
-    let cell:NeedImageObject
+    let cell:UIViewNeedImage
     let imageURL:String
 }

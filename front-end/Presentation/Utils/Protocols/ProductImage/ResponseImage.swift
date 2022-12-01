@@ -1,5 +1,5 @@
 import UIKit
 struct ResponseImage{
-    let cell:NeedImageObject
+    let cell:UIViewNeedImage
     let image:UIImage?
 }
