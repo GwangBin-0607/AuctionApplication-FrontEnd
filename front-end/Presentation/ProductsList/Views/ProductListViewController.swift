@@ -4,10 +4,10 @@ import RxCocoa
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:BindingProductsListViewModel
     private let disposeBag:DisposeBag
-    private let collectionView:UICollectionView
+    private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     let delegate:TransitionProductListViewController?
-    init(viewModel:BindingProductsListViewModel,CollectionView:UICollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -21,13 +21,23 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         self.viewModel.requestProductsList.onNext(1)
     }
     private func bindingViewModel(){
+        collectionView.indexObservable.withUnretained(self).subscribe(onNext: {
+            owner,indexpath in
+                owner.viewModel.requestProductImageHeight.onNext(indexpath)
+            
+        }).disposed(by: disposeBag)
+        viewModel.responseProductImageHeight.withUnretained(self).subscribe(onNext: {
+            owner,requestImageHeight in
+            owner.collectionView.imageObserver.onNext(requestImageHeight)
+        }).disposed(by: disposeBag)
         viewModel.responseProductImage.subscribe(onNext: {
-            image in
-            image.cell.imageBinding.onNext(image.image!)
+            responseImage in
+            responseImage.cell.imageBinding.onNext(responseImage)
         }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
             [weak self] indexpath,item, cell in
-            let imageProperty = RequestImage(cell:cell, imageURL: item.imageURL!)
+            cell.tag = indexpath
+            let imageProperty = RequestImage(cell:cell, imageURL: item.imageURL!,tag: indexpath)
             cell.bindingData.onNext(item)
             self?.viewModel.requestProductImage.onNext(imageProperty)
         }.disposed(by: disposeBag)

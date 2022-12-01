@@ -22,5 +22,11 @@ protocol ProductImageViewModelInPut{
 protocol ProductImageViewModelOutPut{
     var responseProductImage:Observable<ResponseImage>{get}
 }
-typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageViewModelInPut&ProductImageViewModelOutPut
+protocol ProductImageHeightInLocationViewModelInput{
+    var requestProductImageHeight:AnyObserver<IndexPath>{get}
+}
+protocol ProductImageHeightInLocationViewModelOutPut{
+    var responseProductImageHeight:Observable<RequestImageHeight>{get}
+}
+typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageViewModelInPut&ProductImageViewModelOutPut&ProductImageHeightInLocationViewModelInput&ProductImageHeightInLocationViewModelOutPut
 

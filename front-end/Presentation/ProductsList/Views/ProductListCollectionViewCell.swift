@@ -9,7 +9,7 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
     private var disposeBag:DisposeBag
-    let imageBinding:AnyObserver<UIImage>
+    let imageBinding:AnyObserver<ResponseImage>
     override init(frame: CGRect) {
         print("INIT")
         titleLabel = UILabel()
@@ -19,7 +19,7 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
         disposeBag = DisposeBag()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
-        let requestingImage = PublishSubject<UIImage>()
+        let requestingImage = PublishSubject<ResponseImage>()
         imageBinding = requestingImage.asObserver()
         super.init(frame: frame)
         data.withUnretained(self).subscribe(onNext: {
@@ -29,8 +29,10 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
             })
             .disposed(by: disposeBag)
         requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-            owner,image in
-            owner.productImageView.image = image
+            owner,responseImage in
+            if owner.tag == responseImage.tag{
+                owner.productImageView.image = responseImage.image
+            }
         }).disposed(by: disposeBag)
         layoutContentView()
         

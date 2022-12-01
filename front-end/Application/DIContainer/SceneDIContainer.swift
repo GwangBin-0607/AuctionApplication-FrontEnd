@@ -19,7 +19,7 @@ class SceneDIContainer{
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
         ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
     }
-    private func returnProductListCollectionView()->UICollectionView{
+    private func returnProductListCollectionView()->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
     private func returnProductListCollectionViewLayout()->UICollectionViewLayoutNeedImageHeight{

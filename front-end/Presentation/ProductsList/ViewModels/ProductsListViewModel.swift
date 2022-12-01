@@ -16,10 +16,12 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     let productsList: Observable<[Product]>
     let isConnecting: Observable<isConnecting>
     let responseProductImage: Observable<ResponseImage>
+    let responseProductImageHeight: Observable<RequestImageHeight>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
     let requestSteamConnect: AnyObserver<isConnecting>
     let requestProductImage: AnyObserver<RequestImage>
+    let requestProductImageHeight: AnyObserver<IndexPath>
     init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImageLoad) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
@@ -28,12 +30,49 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         let products = BehaviorSubject<[Product]>(value: [])
         let connecting = PublishSubject<isConnecting>()
         let requestingImage = PublishSubject<RequestImage>()
+        let requestImageHeight = PublishSubject<IndexPath>()
+        let responseImageHeight = PublishSubject<RequestImageHeight>()
+        responseProductImageHeight = responseImageHeight.asObservable()
+        requestProductImageHeight = requestImageHeight.asObserver()
         requestProductImage = requestingImage.asObserver()
-        responseProductImage = requestingImage.asObservable().flatMap(imageUseCase.imageLoad)
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
         productsList = products.asObservable()
+        responseProductImage = requestingImage.asObservable().flatMap({ re in
+            return Observable<ResponseImage>.create { observer in
+                let image = ImageUseCase.imageLoad(imageURL: re.imageURL)
+                let responseImage = ResponseImage(cell: re.cell, image: image, tag: re.tag)
+                observer.onNext(responseImage)
+                return Disposables.create()
+            }
+  
+        }).do(onNext: {
+            reponseImage in
+            do{
+                print("do")
+                var products = try products.value()
+                products[reponseImage.tag].imageHeigh = reponseImage.image?.size.height
+                print(products[reponseImage.tag].imageHeigh)
+            }
+        })
+            
+        
+        let responseImageHeightObserver = responseImageHeight.asObserver()
+        requestImageHeight.asObservable().subscribe(onNext: {
+            indexPath in
+            do{
+                let products = try products.value()
+                if(products.count>indexPath.item){
+                    print(products[indexPath.item].imageHeigh)
+                    let requestImageHeight = RequestImageHeight(height: products[indexPath.item].imageHeigh ?? 150.0 , location: indexPath)
+                    responseImageHeightObserver.onNext(requestImageHeight)
+                }
+            }catch{
+                responseImageHeightObserver.onNext(RequestImageHeight(height: 150.0, location: indexPath))
+            }
+        }).disposed(by: disposeBag)
+        
         
         requesting.flatMap(usecase.request)
             .subscribe(onNext: {

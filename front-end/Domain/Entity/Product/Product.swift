@@ -6,11 +6,12 @@
 //
 
 import Foundation
-
+import UIKit
 struct Product:Decodable{
     let id:Int
     let price:Int
     let imageURL:String?
     let title:String?
     let checkUpDown:Bool?
+    var imageHeigh:CGFloat?
 }

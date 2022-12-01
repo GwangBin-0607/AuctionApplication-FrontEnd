@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 protocol UICollectionViewLayoutNeedImageHeight:UICollectionViewLayout{
     //MARK: INPUT
-    var imageHeightObserver:AnyObserver<(CGFloat,IndexPath)>{get}
+    var imageHeightObserver:AnyObserver<RequestImageHeight>{get}
     //MARK: OUTPUT
     var indexpathObservable:Observable<IndexPath>{get}
 }

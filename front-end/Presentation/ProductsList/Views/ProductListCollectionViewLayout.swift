@@ -1,7 +1,11 @@
 import Foundation
 import UIKit
 import RxSwift
-class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLayoutNeedImageHeight{
+struct RequestImageHeight{
+    let height:CGFloat
+    let location:IndexPath
+}
+final class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLayoutNeedImageHeight{
     private let numberOfColumns = 2
     private let cellPadding: CGFloat = 6
     
@@ -21,22 +25,22 @@ class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLay
         return CGSize(width: contentWidth, height: contentHeight)
     }
     let indexpathObservable: Observable<IndexPath>
-    let imageHeightObserver: AnyObserver<(CGFloat,IndexPath)>
+    let imageHeightObserver: AnyObserver<RequestImageHeight>
     private let indexPathObserver:AnyObserver<IndexPath>
-    private let imageHeightObservable:Observable<(CGFloat,IndexPath)>
+    private let imageHeightObservable:Observable<RequestImageHeight>
     private let disposeBag:DisposeBag
     override init() {
         disposeBag = DisposeBag()
         let indexPathPublishSubject = PublishSubject<IndexPath>()
-        let imageHeightPublishSubject = PublishSubject<(CGFloat,IndexPath)>()
+        let imageHeightPublishSubject = PublishSubject<RequestImageHeight>()
         indexpathObservable = indexPathPublishSubject.asObservable()
         imageHeightObserver = imageHeightPublishSubject.asObserver()
         indexPathObserver = indexPathPublishSubject.asObserver()
         imageHeightObservable = imageHeightPublishSubject.asObservable()
         super.init()
         imageHeightObservable.withUnretained(self).subscribe(onNext: {
-            owner,tuple in
-            let photoHeight = tuple.0
+            owner,requestImageHeight in
+            let photoHeight = requestImageHeight.height
             let height = owner.cellPadding * 2 + photoHeight
             let frame = CGRect(x: owner.xOffset[owner.column],
                                y: owner.yOffset[owner.column],
@@ -45,7 +49,7 @@ class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLay
             let insetFrame = frame.insetBy(dx: owner.cellPadding, dy: owner.cellPadding)
             
             
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: tuple.1)
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: requestImageHeight.location)
             attributes.frame = insetFrame
             owner.cache.append(attributes)
             
@@ -69,6 +73,7 @@ class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLay
     private var yOffset:[CGFloat]!
     
     override func prepare() {
+        print("prepare")
         guard
             cache.isEmpty == true,
             let collectionView = collectionView
