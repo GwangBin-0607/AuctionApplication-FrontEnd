@@ -19,10 +19,22 @@ class ViewController: UIViewController {
         btn.backgroundColor = .yellow
         btn.frame = CGRect(x: 40, y: 40, width: 120, height: 120)
         btn.addTarget(self, action: #selector(action), for: .touchUpInside)
-
+        testFunction()
     
     }
     @objc func action(){
+    }
+    func testFunction(){
+        
+        let obser = Observable<String>.create { observer in
+            observer.onNext("Hello")
+            observer.onCompleted()
+            return Disposables.create()
+        }
+        obser.subscribe(onNext: {
+            text in
+            print(text)
+        })
     }
     
     

@@ -17,13 +17,16 @@ class SceneDIContainer{
         SocketNetwork(hostName: "localhost", portNumber: 8100)
     }
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
-        ProductsListViewModel(UseCase: returnShowProductListUseCase())
+        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
     }
     private func returnProductListCollectionView()->UICollectionView{
-        ProductListCollectionView(frame: .zero, collectionViewLayout: returnProductListCollectionViewLayout())
+        ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout()->UICollectionViewLayout{
-        UICollectionViewFlowLayout()
+    private func returnProductListCollectionViewLayout()->ProductListCollectionViewLayout{
+        ProductListCollectionViewLayout()
+    }
+    private func returnShowProductImageUseCase()->RequestingProductImageLoad{
+        ShowProductImageUseCase()
     }
  
 }

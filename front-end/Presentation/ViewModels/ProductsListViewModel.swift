@@ -10,19 +10,26 @@ import RxSwift
 
 final class ProductsListViewModel:BindingProductsListViewModel{
     private let usecase:ShowProductsList
+    private let imageUseCase:RequestingProductImageLoad
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[Product]>
     let isConnecting: Observable<isConnecting>
+    let responseProductImage: Observable<ResponseImage>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
     let requestSteamConnect: AnyObserver<isConnecting>
-    init(UseCase:ShowProductsList) {
+    let requestProductImage: AnyObserver<RequestImage>
+    init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImageLoad) {
         self.usecase = UseCase
+        self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
         let requesting = PublishSubject<Int>()
         let products = BehaviorSubject<[Product]>(value: [])
         let connecting = PublishSubject<isConnecting>()
+        let requestingImage = PublishSubject<RequestImage>()
+        requestProductImage = requestingImage.asObserver()
+        responseProductImage = requestingImage.asObservable().flatMap(imageUseCase.imageLoad)
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
@@ -48,13 +55,14 @@ final class ProductsListViewModel:BindingProductsListViewModel{
             print(results)
         }).disposed(by: disposeBag)
         
-        
         connecting.withUnretained(self).subscribe(onNext: {
             owner, isConnecting in
             owner.usecase.connectingNetwork(state: isConnecting)
         }).disposed(by: disposeBag)
         requestSteamConnect.onNext(.connect)
         
-        
+    }
+    deinit {
+        print("Viewmodel DEINIT")
     }
 }

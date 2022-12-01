@@ -7,6 +7,5 @@
 
 import Foundation
 protocol HasParentCoordinator:AnyObject{
-    associatedtype CoordinatorDelegateType
-    var delegate:CoordinatorDelegateType{get}
+    var delegate:HasChildCoordinator{get}
 }

@@ -1,30 +1,29 @@
-//
-//  ProductListCollectionView.swift
-//  front-end
-//
-//  Created by 안광빈 on 2022/11/03.
-//
-
 import UIKit
+import RxSwift
 
 class ProductListCollectionView: UICollectionView {
-    init(collectionViewLayout layout:UICollectionViewLayout, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    private let disposeBag:DisposeBag
+    init(collectionViewLayout layout:ProductListCollectionViewLayout, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+        disposeBag = DisposeBag()
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
+        
+        layout.indexpathObservable.subscribe(onNext: {
+            index in
+            layout.imageHeightObserver.onNext((150.0,index))
+        }).disposed(by: disposeBag)
     }
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        disposeBag = DisposeBag()
         super.init(frame: frame, collectionViewLayout: layout)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    
+    deinit {
+        print("CollectionView DEINIT")
     }
-    */
 
 }

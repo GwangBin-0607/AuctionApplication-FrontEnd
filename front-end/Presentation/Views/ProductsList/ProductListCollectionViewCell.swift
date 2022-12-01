@@ -1,13 +1,6 @@
-//
-//  ProductListCollectionViewCell.swift
-//  front-end
-//
-//  Created by 안광빈 on 2022/11/03.
-//
-
 import UIKit
 import RxSwift
-class ProductListCollectionViewCell: UICollectionViewCell {
+class ProductListCollectionViewCell: UICollectionViewCell,NeedImageObject {
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
@@ -15,7 +8,8 @@ class ProductListCollectionViewCell: UICollectionViewCell {
     private let checkUpDown:UIImageView
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
-    private let disposeBag:DisposeBag
+    private var disposeBag:DisposeBag
+    let imageBinding:AnyObserver<UIImage>
     override init(frame: CGRect) {
         print("INIT")
         titleLabel = UILabel()
@@ -25,6 +19,8 @@ class ProductListCollectionViewCell: UICollectionViewCell {
         disposeBag = DisposeBag()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
+        let requestingImage = PublishSubject<UIImage>()
+        imageBinding = requestingImage.asObserver()
         super.init(frame: frame)
         data.withUnretained(self).subscribe(onNext: {
             owner, product in
@@ -32,7 +28,14 @@ class ProductListCollectionViewCell: UICollectionViewCell {
             owner.priceLabel.text = String(product.price)
             })
             .disposed(by: disposeBag)
+        requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+            owner,image in
+            owner.productImageView.image = image
+        }).disposed(by: disposeBag)
         layoutContentView()
+        
+        self.contentView.layer.masksToBounds = true
+        self.productImageView.contentMode = .scaleAspectFill
     }
     private func layoutContentView(){
         contentView.backgroundColor = .red
@@ -44,6 +47,8 @@ class ProductListCollectionViewCell: UICollectionViewCell {
         checkUpDown.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        titleLabel.textColor = .white
         let checkUpDownTrailing = checkUpDown.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -2.0)
         checkUpDownTrailing.priority = UILayoutPriority(150)
         NSLayoutConstraint.activate([
@@ -66,7 +71,7 @@ class ProductListCollectionViewCell: UICollectionViewCell {
         priceLabel.setContentCompressionResistancePriority(UILayoutPriority(50), for: .horizontal)
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
         productImageView.backgroundColor = .green
-        checkUpDown.backgroundColor = .red
+        checkUpDown.backgroundColor = .systemYellow
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
