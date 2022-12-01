@@ -1,14 +1,7 @@
 import Foundation
 import UIKit
 import RxSwift
-protocol GetImageHeight{
-    //MARK: INPUT
-    var imageHeightObserver:AnyObserver<(CGFloat,IndexPath)>{get}
-    //MARK: OUTPUT
-    var indexpathObservable:Observable<IndexPath>{get}
-}
-
-class ProductListCollectionViewLayout:UICollectionViewLayout,GetImageHeight{
+class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLayoutNeedImageHeight{
     private let numberOfColumns = 2
     private let cellPadding: CGFloat = 6
     

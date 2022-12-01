@@ -3,7 +3,7 @@ import RxSwift
 
 class ProductListCollectionView: UICollectionView {
     private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:ProductListCollectionViewLayout, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    init(collectionViewLayout layout:UICollectionViewLayoutNeedImageHeight, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
         disposeBag = DisposeBag()
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
