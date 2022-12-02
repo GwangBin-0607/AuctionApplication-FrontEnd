@@ -22,7 +22,7 @@ class SceneDIContainer{
     private func returnProductListCollectionView()->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout()->UICollectionViewLayoutNeedImageHeight{
+    private func returnProductListCollectionViewLayout()->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout()
     }
     private func returnShowProductImageUseCase()->RequestingProductImageLoad{

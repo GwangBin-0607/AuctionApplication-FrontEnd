@@ -22,11 +22,8 @@ protocol ProductImageViewModelInPut{
 protocol ProductImageViewModelOutPut{
     var responseProductImage:Observable<ResponseImage>{get}
 }
-protocol ProductImageHeightInLocationViewModelInput{
-    var requestProductImageHeight:AnyObserver<IndexPath>{get}
+protocol ProductImageHeightViewModel{
+    func returnHeight(index:IndexPath)->CGFloat
 }
-protocol ProductImageHeightInLocationViewModelOutPut{
-    var responseProductImageHeight:Observable<RequestImageHeight>{get}
-}
-typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageViewModelInPut&ProductImageViewModelOutPut&ProductImageHeightInLocationViewModelInput&ProductImageHeightInLocationViewModelOutPut
+typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageViewModelInPut&ProductImageViewModelOutPut&ProductImageHeightViewModel
 

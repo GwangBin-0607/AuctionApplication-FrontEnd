@@ -16,73 +16,53 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     let productsList: Observable<[Product]>
     let isConnecting: Observable<isConnecting>
     let responseProductImage: Observable<ResponseImage>
-    let responseProductImageHeight: Observable<RequestImageHeight>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
     let requestSteamConnect: AnyObserver<isConnecting>
     let requestProductImage: AnyObserver<RequestImage>
-    let requestProductImageHeight: AnyObserver<IndexPath>
+    private let products = BehaviorSubject<[Product]>(value: [])
+    private let imageThread = DispatchQueue(label: "imageThread", qos: .background, attributes: .concurrent)
     init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImageLoad) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
         let requesting = PublishSubject<Int>()
-        let products = BehaviorSubject<[Product]>(value: [])
         let connecting = PublishSubject<isConnecting>()
         let requestingImage = PublishSubject<RequestImage>()
-        let requestImageHeight = PublishSubject<IndexPath>()
-        let responseImageHeight = PublishSubject<RequestImageHeight>()
-        responseProductImageHeight = responseImageHeight.asObservable()
-        requestProductImageHeight = requestImageHeight.asObserver()
+        let image = PublishSubject<[Product]>()
+        let imageObservable = image.asObservable()
+        let imageObserver = image.asObserver()
         requestProductImage = requestingImage.asObserver()
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
         productsList = products.asObservable()
-        responseProductImage = requestingImage.asObservable().flatMap({ re in
+        responseProductImage = requestingImage.asObservable().observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).flatMap({ re in
             return Observable<ResponseImage>.create { observer in
-                let image = ImageUseCase.imageLoad(imageURL: re.imageURL)
+                let image = ImageUseCase.returnImage(productId: re.productsId)
                 let responseImage = ResponseImage(cell: re.cell, image: image, tag: re.tag)
                 observer.onNext(responseImage)
+                observer.onCompleted()
                 return Disposables.create()
             }
-  
-        }).do(onNext: {
-            reponseImage in
-            do{
-                print("do")
-                var products = try products.value()
-                products[reponseImage.tag].imageHeigh = reponseImage.image?.size.height
-                print(products[reponseImage.tag].imageHeigh)
-            }
         })
-            
-        
-        let responseImageHeightObserver = responseImageHeight.asObserver()
-        requestImageHeight.asObservable().subscribe(onNext: {
-            indexPath in
-            do{
-                let products = try products.value()
-                if(products.count>indexPath.item){
-                    print(products[indexPath.item].imageHeigh)
-                    let requestImageHeight = RequestImageHeight(height: products[indexPath.item].imageHeigh ?? 150.0 , location: indexPath)
-                    responseImageHeightObserver.onNext(requestImageHeight)
-                }
-            }catch{
-                responseImageHeightObserver.onNext(RequestImageHeight(height: 150.0, location: indexPath))
+        imageObservable.withUnretained(self).subscribe(onNext: {
+            owner,productsList in
+            var addHeightProductList = productsList
+            for i in 0..<addHeightProductList.count{
+                addHeightProductList[i].imageHeight = ImageUseCase.returnImageHeight(productId: addHeightProductList[i].id, imageURL: addHeightProductList[i].imageURL!)
             }
+            owner.products.onNext(addHeightProductList)
+            
         }).disposed(by: disposeBag)
         
-        
-        requesting.flatMap(usecase.request)
+        requesting.flatMap(usecase.request).withUnretained(self)
             .subscribe(onNext: {
-                fetchResult in
+                owner,fetchResult in
                 switch fetchResult{
                 case .success(let productList):
-                    if let value = try? products.value(){
-                        products.onNext(value+productList)
-                    }else{
-                        products.onNext(productList)
+                    if let value = try? owner.products.value(){
+                        imageObserver.onNext(productList+value)
                     }
                 case .failure(let error):
                     print(error)
@@ -100,6 +80,14 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         }).disposed(by: disposeBag)
         requestSteamConnect.onNext(.connect)
         
+    }
+    func returnHeight(index:IndexPath)->CGFloat{
+        do{
+            let product = try products.value()
+            return product[index.item].imageHeight ?? 150
+        }catch{
+            return 150
+        }
     }
     deinit {
         print("Viewmodel DEINIT")

@@ -14,6 +14,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         disposeBag = DisposeBag()
         categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
+        collectionView.delegateHeight = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,25 +22,16 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         self.viewModel.requestProductsList.onNext(1)
     }
     private func bindingViewModel(){
-        collectionView.indexObservable.withUnretained(self).subscribe(onNext: {
-            owner,indexpath in
-                owner.viewModel.requestProductImageHeight.onNext(indexpath)
-            
-        }).disposed(by: disposeBag)
-        viewModel.responseProductImageHeight.withUnretained(self).subscribe(onNext: {
-            owner,requestImageHeight in
-            owner.collectionView.imageObserver.onNext(requestImageHeight)
-        }).disposed(by: disposeBag)
         viewModel.responseProductImage.subscribe(onNext: {
             responseImage in
             responseImage.cell.imageBinding.onNext(responseImage)
         }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
-            [weak self] indexpath,item, cell in
-            cell.tag = indexpath
-            let imageProperty = RequestImage(cell:cell, imageURL: item.imageURL!,tag: indexpath)
+            [weak self] rowNum,item, cell in
+            cell.tag = rowNum
             cell.bindingData.onNext(item)
-            self?.viewModel.requestProductImage.onNext(imageProperty)
+            let requestImage = RequestImage(cell:cell,productsId: item.id,tag: rowNum)
+            self?.viewModel.requestProductImage.onNext(requestImage)
         }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
@@ -79,6 +71,11 @@ extension ProductListViewController{
             collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor)
         ])
         return containerView
+    }
+}
+extension ProductListViewController:ReturnImageHeightUICollectionViewDelegate{
+    func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
+        viewModel.returnHeight(index: index)
     }
 }
 

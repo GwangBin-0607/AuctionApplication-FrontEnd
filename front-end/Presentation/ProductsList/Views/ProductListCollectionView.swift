@@ -1,28 +1,11 @@
 import UIKit
-import RxSwift
-
 final class ProductListCollectionView: UICollectionView {
-    let imageObserver: AnyObserver<RequestImageHeight>
-    let indexObservable: Observable<IndexPath>
-    private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:UICollectionViewLayoutNeedImageHeight, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
-        let indexPublish = PublishSubject<IndexPath>()
-        let imagePublish = PublishSubject<RequestImageHeight>()
-        indexObservable = indexPublish.asObservable()
-        imageObserver = imagePublish.asObserver()
-        disposeBag = DisposeBag()
+    weak var delegateHeight:ReturnImageHeightUICollectionViewDelegate?
+    init(collectionViewLayout layout:ProductListCollectionViewLayout, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
-        let indexObserver = indexPublish.asObserver()
-        layout.indexpathObservable.subscribe(onNext: {
-            index in
-            indexObserver.onNext(index)
-        }).disposed(by: disposeBag)
-        let imageObservable = imagePublish.asObservable()
-        imageObservable.subscribe(onNext: {
-            requestImageHeight in
-            layout.imageHeightObserver.onNext(requestImageHeight)
-        }).disposed(by: disposeBag)
+        layout.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -31,6 +14,11 @@ final class ProductListCollectionView: UICollectionView {
     
     deinit {
         print("CollectionView DEINIT")
+    }
+}
+extension ProductListCollectionView:ReturnHeightUICollectionViewLayoutDelegate{
+    func returnImageHeightFromUICollectionView(index:IndexPath) -> CGFloat {
+        delegateHeight!.returnImageHeightFromViewModel(index: index)
     }
 
 }

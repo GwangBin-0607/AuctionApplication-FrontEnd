@@ -35,12 +35,11 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
             }
         }).disposed(by: disposeBag)
         layoutContentView()
-        
-        self.contentView.layer.masksToBounds = true
-        self.productImageView.contentMode = .scaleAspectFill
     }
     private func layoutContentView(){
         contentView.backgroundColor = .red
+        self.contentView.layer.masksToBounds = true
+        self.productImageView.contentMode = .scaleAspectFill
         contentView.addSubview(productImageView)
         contentView.addSubview(priceLabel)
         contentView.addSubview(checkUpDown)

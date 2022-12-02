@@ -13,5 +13,5 @@ struct Product:Decodable{
     let imageURL:String?
     let title:String?
     let checkUpDown:Bool?
-    var imageHeigh:CGFloat?
+    var imageHeight:CGFloat?
 }

@@ -1,4 +1,5 @@
 import RxSwift
 protocol RequestingProductImageLoad{
-    func imageLoad(imageURL:String)->UIImage
+    func returnImageHeight(productId:Int,imageURL: String)->CGFloat
+    func returnImage(productId:Int)->UIImage
 }

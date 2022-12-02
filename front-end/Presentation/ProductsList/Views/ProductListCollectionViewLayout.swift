@@ -1,11 +1,6 @@
 import Foundation
 import UIKit
-import RxSwift
-struct RequestImageHeight{
-    let height:CGFloat
-    let location:IndexPath
-}
-final class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionViewLayoutNeedImageHeight{
+final class ProductListCollectionViewLayout:UICollectionViewLayout{
     private let numberOfColumns = 2
     private let cellPadding: CGFloat = 6
     
@@ -20,44 +15,13 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionV
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
+    weak var delegate:ReturnHeightUICollectionViewLayoutDelegate?
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    let indexpathObservable: Observable<IndexPath>
-    let imageHeightObserver: AnyObserver<RequestImageHeight>
-    private let indexPathObserver:AnyObserver<IndexPath>
-    private let imageHeightObservable:Observable<RequestImageHeight>
-    private let disposeBag:DisposeBag
     override init() {
-        disposeBag = DisposeBag()
-        let indexPathPublishSubject = PublishSubject<IndexPath>()
-        let imageHeightPublishSubject = PublishSubject<RequestImageHeight>()
-        indexpathObservable = indexPathPublishSubject.asObservable()
-        imageHeightObserver = imageHeightPublishSubject.asObserver()
-        indexPathObserver = indexPathPublishSubject.asObserver()
-        imageHeightObservable = imageHeightPublishSubject.asObservable()
         super.init()
-        imageHeightObservable.withUnretained(self).subscribe(onNext: {
-            owner,requestImageHeight in
-            let photoHeight = requestImageHeight.height
-            let height = owner.cellPadding * 2 + photoHeight
-            let frame = CGRect(x: owner.xOffset[owner.column],
-                               y: owner.yOffset[owner.column],
-                               width: owner.columnWidth,
-                               height: height)
-            let insetFrame = frame.insetBy(dx: owner.cellPadding, dy: owner.cellPadding)
-            
-            
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: requestImageHeight.location)
-            attributes.frame = insetFrame
-            owner.cache.append(attributes)
-            
-            owner.contentHeight = max(owner.contentHeight, frame.maxY)
-            owner.yOffset[owner.column] = owner.yOffset[owner.column] + height
-            
-            owner.column = owner.column < (owner.numberOfColumns - 1) ? (owner.column + 1) : 0
-        }).disposed(by: disposeBag)
     }
     deinit {
         print("CollectionViewLayOut DEINIT")
@@ -67,29 +31,44 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout,UICollectionV
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private var columnWidth:CGFloat!
-    private var xOffset:[CGFloat]!
-    private var column:Int!
-    private var yOffset:[CGFloat]!
+
     
     override func prepare() {
         print("prepare")
         guard
-            cache.isEmpty == true,
-            let collectionView = collectionView
-        else {
+          cache.isEmpty == true,
+          let collectionView = collectionView
+          else {
             return
         }
-        columnWidth = contentWidth / CGFloat(numberOfColumns)
-        xOffset = []
+        let columnWidth = contentWidth / CGFloat(numberOfColumns)
+        var xOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {
-            xOffset.append(CGFloat(column) * columnWidth)
+          xOffset.append(CGFloat(column) * columnWidth)
         }
-        column = 0
-         yOffset = .init(repeating: 0, count: numberOfColumns)
+        var column = 0
+        var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
+          
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
-            let indexPath = IndexPath(item: item, section: 0)
-            indexPathObserver.onNext(indexPath)
+          let indexPath = IndexPath(item: item, section: 0)
+            
+            let photoHeight = delegate?.returnImageHeightFromUICollectionView(index: indexPath) ?? 180
+          let height = cellPadding * 2 + photoHeight
+          let frame = CGRect(x: xOffset[column],
+                             y: yOffset[column],
+                             width: columnWidth,
+                             height: height)
+          let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+          
+            
+          let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+          attributes.frame = insetFrame
+          cache.append(attributes)
+            
+          contentHeight = max(contentHeight, frame.maxY)
+          yOffset[column] = yOffset[column] + height
+            
+          column = column < (numberOfColumns - 1) ? (column + 1) : 0
         }
     }
     

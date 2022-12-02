@@ -2,7 +2,7 @@ import UIKit
 import RxSwift
 struct RequestImage{
     let cell:UIViewNeedImage
-    let imageURL:String
+    let productsId:Int
     let tag:Int
 }
 struct ResponseImage{
