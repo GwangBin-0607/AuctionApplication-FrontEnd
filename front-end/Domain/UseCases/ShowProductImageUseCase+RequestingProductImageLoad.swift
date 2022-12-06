@@ -3,7 +3,7 @@ import RxSwift
 class ShowProductImageUseCase:RequestingProductImageLoad{
     func returnImageHeight(productId: Int, imageURL: String) -> CGFloat {
         let image = imageLoad(imageURL: imageURL)
-        let downImage = downSample1(image: image)
+        let downImage = downImageSize(image: image)
         setCacheImage(productId: productId, image: downImage)
         return returnImageHeight(image: image)
     }
@@ -26,7 +26,7 @@ class ShowProductImageUseCase:RequestingProductImageLoad{
     private func setCacheImage(productId:Int,image:UIImage){
         cacheImage.setObject(image, forKey: NSNumber(integerLiteral: productId))
     }
-    private func downSample1(image:UIImage) -> UIImage {
+    private func downImageSize(image:UIImage) -> UIImage {
         let data = image.pngData()! as CFData
         let imageSource = CGImageSourceCreateWithData(data, nil)!
         let maxPixel = max(image.size.width, image.size.height)

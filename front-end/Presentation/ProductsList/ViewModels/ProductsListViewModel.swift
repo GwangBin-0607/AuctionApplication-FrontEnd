@@ -29,9 +29,9 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         let requesting = PublishSubject<Int>()
         let connecting = PublishSubject<isConnecting>()
         let requestingImage = PublishSubject<RequestImage>()
-        let image = PublishSubject<[Product]>()
-        let imageObservable = image.asObservable()
-        let imageObserver = image.asObserver()
+        let loadingImage = PublishSubject<[Product]>()
+        let loadingImageObservable = loadingImage.asObservable()
+        let loadingImageObserver = loadingImage.asObserver()
         requestProductImage = requestingImage.asObserver()
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
@@ -46,7 +46,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
                 return Disposables.create()
             }
         })
-        imageObservable.withUnretained(self).subscribe(onNext: {
+        loadingImageObservable.withUnretained(self).subscribe(onNext: {
             owner,productsList in
             var addHeightProductList = productsList
             for i in 0..<addHeightProductList.count{
@@ -62,12 +62,13 @@ final class ProductsListViewModel:BindingProductsListViewModel{
                 switch fetchResult{
                 case .success(let productList):
                     if let value = try? owner.products.value(){
-                        imageObserver.onNext(productList+value)
+                        loadingImageObserver.onNext(productList+value)
                     }
                 case .failure(let error):
                     print(error)
                 }
             }).disposed(by: disposeBag)
+        
         
         self.usecase.returningInputObservable().subscribe(onNext: {
             results in
@@ -78,9 +79,19 @@ final class ProductsListViewModel:BindingProductsListViewModel{
             owner, isConnecting in
             owner.usecase.connectingNetwork(state: isConnecting)
         }).disposed(by: disposeBag)
+        
         requestSteamConnect.onNext(.connect)
         
+        
     }
+    deinit {
+        print("Viewmodel DEINIT")
+    }
+    private func addProductList(list:inout [Product]){
+        
+    }
+}
+extension ProductsListViewModel{
     func returnHeight(index:IndexPath)->CGFloat{
         do{
             let product = try products.value()
@@ -88,8 +99,5 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         }catch{
             return 150
         }
-    }
-    deinit {
-        print("Viewmodel DEINIT")
     }
 }
