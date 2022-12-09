@@ -1,13 +1,14 @@
 import Foundation
 import RxSwift
-class ShowProductImageUseCase:RequestingProductImageLoad{
+class ShowProductImageUseCase:RequestingProductImageLoad,RequestingProductImageHeight{
     func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
-        print("returnImageHeight")
         guard let imageURL = imageURL else {
             return 150.0
         }
         guard let image = returnCacheImage(productId: productId) else{
             let nonCacheImage = imageLoad(imageURL: imageURL)
+            let downImage = downImageSize(image: nonCacheImage)
+            setCacheImage(productId: productId, image: downImage)
             return returnImageHeight(image: nonCacheImage)
         }
         return returnImageHeight(image: image)
@@ -18,18 +19,17 @@ class ShowProductImageUseCase:RequestingProductImageLoad{
             return UIImage()
         }
         guard let cacheImage = returnCacheImage(productId: productId) else{
-            print("nonCache")
             let nonCacheImage = imageLoad(imageURL: imageURL)
             let downImage = downImageSize(image: nonCacheImage)
             setCacheImage(productId: productId, image: downImage)
             return downImage
         }
-        print("Cache")
         return cacheImage
     }
     
     private let cacheImage:NSCache<NSNumber,UIImage>
     init() {
+        print("Init USECASE")
         cacheImage = NSCache<NSNumber,UIImage>()
     }
     private func imageLoad(imageURL: String) -> UIImage {

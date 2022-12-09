@@ -1,17 +1,16 @@
 import UIKit
 import RxSwift
-class ProductListCollectionViewCell: UICollectionViewCell,NeedImageCell {
+final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
     private var disposeBag:DisposeBag
+    private var viewModel:BindingProductsListCollectionCellViewModel!
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
-    let imageBinding:AnyObserver<ResponseImage>
     override init(frame: CGRect) {
-        print("INIT")
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
@@ -19,22 +18,29 @@ class ProductListCollectionViewCell: UICollectionViewCell,NeedImageCell {
         disposeBag = DisposeBag()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
-        let requestingImage = PublishSubject<ResponseImage>()
-        imageBinding = requestingImage.asObserver()
         super.init(frame: frame)
         data.withUnretained(self).subscribe(onNext: {
             owner, product in
+            owner.tag = product.product_id
             owner.titleLabel.text = product.product_name
             owner.priceLabel.text = String(product.product_price)
+            let requestImage = TestRequestImage(productId: product.product_id, imageURL: product.imageURL)
+            owner.viewModel.requestImage.onNext(requestImage)
             })
             .disposed(by: disposeBag)
-        requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+        layoutContentView()
+    }
+    func setViewModel(viewModel:BindingProductsListCollectionCellViewModel?){
+        self.viewModel = viewModel
+        bind()
+    }
+    private func bind(){
+        viewModel.responseImage.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,responseImage in
-            if owner.tag == responseImage.returnRowNum(){
-                owner.productImageView.image = responseImage.returnImage()
+            if owner.tag == responseImage.productId{
+                owner.productImageView.image = responseImage.image
             }
         }).disposed(by: disposeBag)
-        layoutContentView()
     }
     private func layoutContentView(){
         contentView.backgroundColor = .red

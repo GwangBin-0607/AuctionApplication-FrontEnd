@@ -3,11 +3,13 @@ import RxSwift
 import RxCocoa
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:BindingProductsListViewModel
+    private let cellViewModel:BindingProductsListCollectionCellViewModel
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     let delegate:TransitionProductListViewController?
-    init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:BindingProductsListViewModel,CellViewModel:BindingProductsListCollectionCellViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+        self.cellViewModel = CellViewModel
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -22,16 +24,11 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         self.viewModel.requestProductsList.onNext(1)
     }
     private func bindingViewModel(){
-        viewModel.responseProductImage.subscribe(onNext: {
-            responseImage in
-            responseImage.setImageToCell()
-        }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
-            [weak self] rowNum,item, cell in
-            cell.tag = rowNum
+            [weak self] rowNum,item,cell in
+            
+            cell.setViewModel(viewModel: self?.cellViewModel)
             cell.bindingData.onNext(item)
-            let requestImage = RequestImage(Cell:cell,ProductId: item.product_id,ImageURL: item.imageURL,RowNum: rowNum)
-            self?.viewModel.requestProductImage.onNext(requestImage)
         }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {

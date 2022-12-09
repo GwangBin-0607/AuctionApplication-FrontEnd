@@ -11,11 +11,9 @@ final class MockProductsListAPI:GetProductsList{
         guard let path = Bundle.main.path(forResource: "ImageTest", ofType: "json")
                 ,let jsonString = try? String(contentsOfFile: path)
                 ,let data = jsonString.data(using: .utf8)else{
-            print("not")
             return
         }
         onComplete(.success(data))
-        print(path)
     }
     
     

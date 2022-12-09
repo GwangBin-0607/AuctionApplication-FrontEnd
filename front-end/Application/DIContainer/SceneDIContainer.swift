@@ -17,7 +17,7 @@ class SceneDIContainer{
         SocketNetwork(hostName: "localhost", portNumber: 8100)
     }
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
-        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
+        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageHeightUseCase())
     }
     private func returnProductListCollectionView()->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
@@ -25,8 +25,14 @@ class SceneDIContainer{
     private func returnProductListCollectionViewLayout()->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout()
     }
+    private func returnShowProductImageHeightUseCase()->RequestingProductImageHeight{
+        ShowProductImageUseCase()
+    }
     private func returnShowProductImageUseCase()->RequestingProductImageLoad{
         ShowProductImageUseCase()
+    }
+    private func returnBindingProductsListCollectionCellViewModel()->BindingProductsListCollectionCellViewModel{
+        ProductsListCollectionCellViewModel(ImageUseCase: returnShowProductImageUseCase())
     }
  
 }
@@ -44,7 +50,7 @@ protocol ProductListViewSceneDIContainer{
 }
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        ProductListViewController(viewModel: returnBindingProductsListViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
+        ProductListViewController(viewModel: returnBindingProductsListViewModel(),CellViewModel: returnBindingProductsListCollectionCellViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
     }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)
