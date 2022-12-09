@@ -16,12 +16,6 @@ protocol ProductsListViewModelOutPut{
     var isConnecting:Observable<isConnecting>{get}
     var productsList:Observable<[Product]> {get}
 }
-//protocol ProductImageViewModelInPut{
-//    var requestProductImage:AnyObserver<RequestImage>{get}
-//}
-//protocol ProductImageViewModelOutPut{
-//    var responseProductImage:Observable<ResponseImage>{get}
-//}
 protocol ProductImageHeightViewModel{
     func returnHeight(index:IndexPath)->CGFloat
 }

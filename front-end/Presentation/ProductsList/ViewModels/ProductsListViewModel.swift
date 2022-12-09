@@ -66,6 +66,11 @@ final class ProductsListViewModel:BindingProductsListViewModel{
             owner.usecase.connectingNetwork(state: isConnecting)
         }).disposed(by: disposeBag)
         
+//        self.usecase.returningSocketState().subscribe(onNext: {
+//            isConnecting in
+//            print(isConnecting)
+//        }).disposed(by: disposeBag)
+        
         requestSteamConnect.onNext(.connect)
         
         
