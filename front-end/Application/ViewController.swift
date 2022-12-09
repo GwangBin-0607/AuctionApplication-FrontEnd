@@ -33,6 +33,9 @@ class Sub{
         print("Sub DEINIT")
     }
 }
+struct StructTest{
+    var num:Int?
+}
 class CacheTest{
     var cache:NSCache<NSString,NSNumber>?
 }
@@ -56,9 +59,33 @@ class ViewController: UIViewController {
         let two = CacheTest()
         two.cache?.setObject(NSNumber(integerLiteral: 5000), forKey: "key")
         print(one.cache?.object(forKey: "key"))
+        testMapFlatMap()
+        let firstStruct = StructTest(num: 500)
+        sendStruct(structReceive: firstStruct)
+        print(firstStruct.num)
+        print(structMain?.num)
     
     }
+    var structMain:StructTest?
+    func sendStruct(structReceive:StructTest){
+        structMain = structReceive
+        structMain?.num = 100
+    }
+    let request = PublishSubject<String>()
+    lazy var ob = self.request.asObserver()
+    func testMapFlatMap(){
+        request.asObservable().flatMap { text in
+            return Observable<String>.create { observer in
+                observer.onNext(text)
+                return Disposables.create()
+            }
+        }.subscribe(onNext: {
+            text in
+            print(text)
+        })
+    }
     @objc func action(){
+        ob.onNext("hello")
     }
     func testFunction(){
         

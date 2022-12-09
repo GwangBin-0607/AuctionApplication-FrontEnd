@@ -6,8 +6,8 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     private let priceLabel:UILabel
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
-    private var disposeBag:DisposeBag
-    private var viewModel:BindingProductsListCollectionCellViewModel!
+    private let disposeBag:DisposeBag
+    private let viewModel:BindingProductsListCollectionCellViewModel
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
     override init(frame: CGRect) {
@@ -16,6 +16,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         productImageView = UIImageView()
         checkUpDown = UIImageView()
         disposeBag = DisposeBag()
+        viewModel = ProductsListCollectionCellViewModel(ImageUseCase: ShowProductImageUseCase(productsImageRepository: ProductsImageDataRepository()))
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
         super.init(frame: frame)
@@ -25,13 +26,11 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             owner.titleLabel.text = product.product_name
             owner.priceLabel.text = String(product.product_price)
             let requestImage = TestRequestImage(productId: product.product_id, imageURL: product.imageURL)
+            print("2")
             owner.viewModel.requestImage.onNext(requestImage)
             })
             .disposed(by: disposeBag)
         layoutContentView()
-    }
-    func setViewModel(viewModel:BindingProductsListCollectionCellViewModel?){
-        self.viewModel = viewModel
         bind()
     }
     private func bind(){

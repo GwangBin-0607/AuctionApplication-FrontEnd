@@ -26,13 +26,16 @@ class SceneDIContainer{
         ProductListCollectionViewLayout()
     }
     private func returnShowProductImageHeightUseCase()->RequestingProductImageHeight{
-        ShowProductImageUseCase()
+        ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
     }
     private func returnShowProductImageUseCase()->RequestingProductImageLoad{
-        ShowProductImageUseCase()
+        ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
     }
     private func returnBindingProductsListCollectionCellViewModel()->BindingProductsListCollectionCellViewModel{
         ProductsListCollectionCellViewModel(ImageUseCase: returnShowProductImageUseCase())
+    }
+    private func returnProductsImageRepository()->TransferProductsImage{
+        ProductsImageDataRepository()
     }
  
 }
@@ -50,7 +53,7 @@ protocol ProductListViewSceneDIContainer{
 }
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        ProductListViewController(viewModel: returnBindingProductsListViewModel(),CellViewModel: returnBindingProductsListCollectionCellViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
+        ProductListViewController(viewModel: returnBindingProductsListViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
     }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)

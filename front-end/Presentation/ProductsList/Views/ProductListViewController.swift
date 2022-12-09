@@ -3,13 +3,11 @@ import RxSwift
 import RxCocoa
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:BindingProductsListViewModel
-    private let cellViewModel:BindingProductsListCollectionCellViewModel
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     let delegate:TransitionProductListViewController?
-    init(viewModel:BindingProductsListViewModel,CellViewModel:BindingProductsListCollectionCellViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
-        self.cellViewModel = CellViewModel
+    init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -25,9 +23,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     }
     private func bindingViewModel(){
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
-            [weak self] rowNum,item,cell in
-            
-            cell.setViewModel(viewModel: self?.cellViewModel)
+            rowNum,item,cell in
             cell.bindingData.onNext(item)
         }.disposed(by: disposeBag)
         
