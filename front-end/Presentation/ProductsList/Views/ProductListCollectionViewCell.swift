@@ -1,6 +1,6 @@
 import UIKit
 import RxSwift
-class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
+class ProductListCollectionViewCell: UICollectionViewCell,NeedImageCell {
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
@@ -30,8 +30,8 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
             .disposed(by: disposeBag)
         requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,responseImage in
-            if owner.tag == responseImage.imageTag{
-                owner.productImageView.image = responseImage.image
+            if owner.tag == responseImage.returnRowNum(){
+                owner.productImageView.image = responseImage.returnImage()
             }
         }).disposed(by: disposeBag)
         layoutContentView()

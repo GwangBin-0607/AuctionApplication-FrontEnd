@@ -24,14 +24,13 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private func bindingViewModel(){
         viewModel.responseProductImage.subscribe(onNext: {
             responseImage in
-            responseImage.setImage()
+            responseImage.setImageToCell()
         }).disposed(by: disposeBag)
-        
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
             [weak self] rowNum,item, cell in
             cell.tag = rowNum
             cell.bindingData.onNext(item)
-            let requestImage = RequestImage(cell:cell,productsId: item.product_id,imageURL: item.imageURL,imageTag: rowNum)
+            let requestImage = RequestImage(Cell:cell,ProductId: item.product_id,ImageURL: item.imageURL,RowNum: rowNum)
             self?.viewModel.requestProductImage.onNext(requestImage)
         }.disposed(by: disposeBag)
         

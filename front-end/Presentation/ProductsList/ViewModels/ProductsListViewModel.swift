@@ -39,8 +39,8 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         productsList = products.asObservable()
         responseProductImage = requestingImage.asObservable().observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).flatMap({ re in
             return Observable<ResponseImage>.create { observer in
-                let image = ImageUseCase.returnImage(productId: re.productsId,imageURL: re.imageURL)
-                let responseImage = ResponseImage(cell: re.cell, image: image, imageTag: re.imageTag)
+                let image = ImageUseCase.returnImage(productId: re.returnProductId(),imageURL: re.returnImageURL())
+                let responseImage = ResponseImage(Cell: re.returnCell(), Image: image, RowNum: re.returnRowNum())
                 observer.onNext(responseImage)
                 observer.onCompleted()
                 return Disposables.create()
