@@ -73,6 +73,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        print("Elements")
         var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
         
         for attributes in cache {
@@ -82,9 +83,6 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         }
         return visibleLayoutAttributes
     }
-    
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        return cache[indexPath.item]
-    }
+ 
 }
 

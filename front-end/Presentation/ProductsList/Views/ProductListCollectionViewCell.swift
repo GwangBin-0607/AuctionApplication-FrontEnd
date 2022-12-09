@@ -6,9 +6,9 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
     private let priceLabel:UILabel
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
+    private var disposeBag:DisposeBag
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
-    private var disposeBag:DisposeBag
     let imageBinding:AnyObserver<ResponseImage>
     override init(frame: CGRect) {
         print("INIT")
@@ -30,9 +30,8 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
             .disposed(by: disposeBag)
         requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,responseImage in
-            if owner.tag == responseImage.tag{
+            if owner.tag == responseImage.imageTag{
                 owner.productImageView.image = responseImage.image
-                print("CELLIMAGE = \(responseImage.image?.pngData())")
             }
         }).disposed(by: disposeBag)
         layoutContentView()
@@ -74,6 +73,9 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
         productImageView.backgroundColor = .green
         checkUpDown.backgroundColor = .systemYellow
+    }
+    override func prepareForReuse() {
+        self.productImageView.image = nil
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

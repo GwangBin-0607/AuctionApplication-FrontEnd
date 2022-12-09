@@ -1,23 +1,37 @@
 import Foundation
 import RxSwift
 class ShowProductImageUseCase:RequestingProductImageLoad{
-    func returnImageHeight(productId: Int, imageURL: String) -> CGFloat {
-        let image = imageLoad(imageURL: imageURL)
-        print("IMAGE = \(image.pngData())")
-        let downImage = downImageSize(image: image)
-        print("DownImage = \(downImage.pngData())")
-        setCacheImage(productId: productId, image: downImage)
+    func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
+        print("returnImageHeight")
+        guard let imageURL = imageURL else {
+            return 150.0
+        }
+        guard let image = returnCacheImage(productId: productId) else{
+            let nonCacheImage = imageLoad(imageURL: imageURL)
+            return returnImageHeight(image: nonCacheImage)
+        }
         return returnImageHeight(image: image)
     }
-    func returnImage(productId:Int)->UIImage{
-        cacheImage.object(forKey: NSNumber(integerLiteral: productId)) ?? UIImage()
+    func returnImage(productId:Int, imageURL: String?)->UIImage{
+        guard let imageURL = imageURL else {
+            //DEFAULT IMAGE
+            return UIImage()
+        }
+        guard let cacheImage = returnCacheImage(productId: productId) else{
+            print("nonCache")
+            let nonCacheImage = imageLoad(imageURL: imageURL)
+            let downImage = downImageSize(image: nonCacheImage)
+            setCacheImage(productId: productId, image: downImage)
+            return downImage
+        }
+        print("Cache")
+        return cacheImage
     }
     
     private let cacheImage:NSCache<NSNumber,UIImage>
     init() {
         cacheImage = NSCache<NSNumber,UIImage>()
     }
-    
     private func imageLoad(imageURL: String) -> UIImage {
         let image = UIImage(named: imageURL)!
         return image
@@ -27,6 +41,9 @@ class ShowProductImageUseCase:RequestingProductImageLoad{
     }
     private func setCacheImage(productId:Int,image:UIImage){
         cacheImage.setObject(image, forKey: NSNumber(integerLiteral: productId))
+    }
+    private func returnCacheImage(productId:Int)->UIImage?{
+        cacheImage.object(forKey: NSNumber(integerLiteral: productId))
     }
     private func downImageSize(image:UIImage) -> UIImage {
         let data = image.pngData()! as CFData
