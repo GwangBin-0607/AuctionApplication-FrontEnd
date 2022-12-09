@@ -53,17 +53,13 @@ class ViewController: UIViewController {
         btn.addTarget(self, action: #selector(action), for: .touchUpInside)
         testFunction()
         let subProperty = Sub()
-        let mainProperty = Main(Sub: subProperty)
         let one = CacheTest()
         one.cache?.setObject(NSNumber(integerLiteral: 500), forKey: "key")
         let two = CacheTest()
         two.cache?.setObject(NSNumber(integerLiteral: 5000), forKey: "key")
-        print(one.cache?.object(forKey: "key"))
         testMapFlatMap()
         let firstStruct = StructTest(num: 500)
         sendStruct(structReceive: firstStruct)
-        print(firstStruct.num)
-        print(structMain?.num)
     
     }
     var structMain:StructTest?
@@ -74,30 +70,16 @@ class ViewController: UIViewController {
     let request = PublishSubject<String>()
     lazy var ob = self.request.asObserver()
     func testMapFlatMap(){
-        request.asObservable().flatMap { text in
-            return Observable<String>.create { observer in
-                observer.onNext(text)
-                return Disposables.create()
-            }
-        }.subscribe(onNext: {
-            text in
-            print(text)
-        })
+      
     }
     @objc func action(){
-        ob.onNext("hello")
+        let diContainer = SceneDIContainer()
+        var productViewController = diContainer.returnProductsListViewController()
+        self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){
-        
-        let obser = Observable<String>.create { observer in
-            observer.onNext("Hello")
-            observer.onCompleted()
-            return Disposables.create()
-        }
-        obser.subscribe(onNext: {
-            text in
-            print(text)
-        })
+ 
+
     }
     
     

@@ -57,7 +57,6 @@ class front_endTests: XCTestCase {
         let promise = expectation(description: "Promise")
         mock.returningSocketState().subscribe(onNext: {
             connect in
-            print("2")
         })
         mock.connectingNetwork(state: isConnecting.connect)
         mock.returningInputObservable().subscribe(onNext: {

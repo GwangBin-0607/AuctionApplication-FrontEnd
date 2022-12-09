@@ -10,16 +10,18 @@ import RxSwift
 
 final class ProductsListViewModel:BindingProductsListViewModel{
     private let usecase:ShowProductsList
-    private let imageUseCase:RequestingProductImageHeight
+    private let imageUseCase:RequestingProductImage
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[Product]>
     let isConnecting: Observable<isConnecting>
+    let responseImage: Observable<ResponseImage>
     // MARK: VIEWCONTROLLER INPUT
     let requestProductsList: AnyObserver<Int>
     let requestSteamConnect: AnyObserver<isConnecting>
+    let requestImage: AnyObserver<RequestImage>
     private let products = BehaviorSubject<[Product]>(value: [])
-    init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImageHeight) {
+    init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImage) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
@@ -28,10 +30,25 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         let loadingImage = PublishSubject<[Product]>()
         let loadingImageObservable = loadingImage.asObservable()
         let loadingImageObserver = loadingImage.asObserver()
+        let requestProductImage = PublishSubject<RequestImage>()
+        let responseProductImage = PublishSubject<ResponseImage>()
+        let requestProductImageObservable = requestProductImage.asObservable()
+        let responseProductImageObserver = responseProductImage.asObserver()
+        requestImage = requestProductImage.asObserver()
+        responseImage = responseProductImage.asObservable()
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
         productsList = products.asObservable()
+        
+        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background)).withUnretained(self).subscribe(onNext: {
+            owner,request in
+            print(Thread.isMainThread)
+            let image = owner.imageUseCase.returnImage(productId: request.productId, imageURL: request.imageURL)
+            let responseImage = ResponseImage(cell:request.cell,image: image, productId: request.productId)
+            responseProductImageObserver.onNext(responseImage)
+        }).disposed(by: disposeBag)
+        
         loadingImageObservable.withUnretained(self).subscribe(onNext: {
             owner,productsList in
             var addHeightProductList = productsList

@@ -22,9 +22,15 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         self.viewModel.requestProductsList.onNext(1)
     }
     private func bindingViewModel(){
+        viewModel.responseImage.subscribe(onNext: {
+            response in
+            response.setImage()
+        }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
-            rowNum,item,cell in
+            [weak self] rowNum,item,cell in
             cell.bindingData.onNext(item)
+            let requestImage = RequestImage(cell:cell,productId: item.product_id, imageURL: item.imageURL)
+            self?.viewModel.requestImage.onNext(requestImage)
         }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {

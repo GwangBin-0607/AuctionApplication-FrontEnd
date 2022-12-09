@@ -1,45 +1,41 @@
 import UIKit
 import RxSwift
-final class ProductListCollectionViewCell: UICollectionViewCell{
+final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
     private let disposeBag:DisposeBag
-    private let viewModel:BindingProductsListCollectionCellViewModel
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
+    let setImageObserver: AnyObserver<ResponseImage>
     override init(frame: CGRect) {
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
         checkUpDown = UIImageView()
         disposeBag = DisposeBag()
-        viewModel = ProductsListCollectionCellViewModel(ImageUseCase: ShowProductImageUseCase(productsImageRepository: ProductsImageDataRepository()))
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
+        let setImageSubject = PublishSubject<ResponseImage>()
+        setImageObserver = setImageSubject.asObserver()
+        let setImageObservable = setImageSubject.asObservable()
         super.init(frame: frame)
+        setImageObservable.observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
+            owner,responseImage in
+            if(responseImage.productId == owner.tag){
+                owner.productImageView.image = responseImage.image
+            }
+        }).disposed(by: disposeBag)
         data.withUnretained(self).subscribe(onNext: {
             owner, product in
             owner.tag = product.product_id
             owner.titleLabel.text = product.product_name
             owner.priceLabel.text = String(product.product_price)
-            let requestImage = TestRequestImage(productId: product.product_id, imageURL: product.imageURL)
-            print("2")
-            owner.viewModel.requestImage.onNext(requestImage)
             })
             .disposed(by: disposeBag)
         layoutContentView()
-        bind()
-    }
-    private func bind(){
-        viewModel.responseImage.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-            owner,responseImage in
-            if owner.tag == responseImage.productId{
-                owner.productImageView.image = responseImage.image
-            }
-        }).disposed(by: disposeBag)
     }
     private func layoutContentView(){
         contentView.backgroundColor = .red
@@ -78,6 +74,9 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
         productImageView.backgroundColor = .green
         checkUpDown.backgroundColor = .systemYellow
+    }
+    deinit {
+        print("CELL DEINIT")
     }
     override func prepareForReuse() {
         self.productImageView.image = nil

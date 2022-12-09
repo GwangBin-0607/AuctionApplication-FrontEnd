@@ -28,6 +28,5 @@ class DetailProductViewController:UIViewController,SetCoordinatorViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         print("1111")
-        print(self.parent)
     }
 }

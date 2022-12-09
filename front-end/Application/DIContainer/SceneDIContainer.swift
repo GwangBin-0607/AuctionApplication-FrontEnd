@@ -17,7 +17,7 @@ class SceneDIContainer{
         SocketNetwork(hostName: "localhost", portNumber: 8100)
     }
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
-        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageHeightUseCase())
+        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
     }
     private func returnProductListCollectionView()->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
@@ -25,14 +25,8 @@ class SceneDIContainer{
     private func returnProductListCollectionViewLayout()->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout()
     }
-    private func returnShowProductImageHeightUseCase()->RequestingProductImageHeight{
+    private func returnShowProductImageUseCase()->RequestingProductImage{
         ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
-    }
-    private func returnShowProductImageUseCase()->RequestingProductImageLoad{
-        ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
-    }
-    private func returnBindingProductsListCollectionCellViewModel()->BindingProductsListCollectionCellViewModel{
-        ProductsListCollectionCellViewModel(ImageUseCase: returnShowProductImageUseCase())
     }
     private func returnProductsImageRepository()->TransferProductsImage{
         ProductsImageDataRepository()

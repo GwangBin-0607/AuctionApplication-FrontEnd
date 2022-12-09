@@ -19,5 +19,10 @@ protocol ProductsListViewModelOutPut{
 protocol ProductImageHeightViewModel{
     func returnHeight(index:IndexPath)->CGFloat
 }
-typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageHeightViewModel
+protocol ProductImageLoadViewModel{
+    var responseImage:Observable<ResponseImage>{get}
+    var requestImage:AnyObserver<RequestImage>{get}
+    
+}
+typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageHeightViewModel&ProductImageLoadViewModel
 
