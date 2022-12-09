@@ -24,14 +24,15 @@ class ProductListCollectionViewCell: UICollectionViewCell,UIViewNeedImage {
         super.init(frame: frame)
         data.withUnretained(self).subscribe(onNext: {
             owner, product in
-            owner.titleLabel.text = product.title
-            owner.priceLabel.text = String(product.price)
+            owner.titleLabel.text = product.product_name
+            owner.priceLabel.text = String(product.product_price)
             })
             .disposed(by: disposeBag)
         requestingImage.asObservable().withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,responseImage in
             if owner.tag == responseImage.tag{
                 owner.productImageView.image = responseImage.image
+                print("CELLIMAGE = \(responseImage.image?.pngData())")
             }
         }).disposed(by: disposeBag)
         layoutContentView()

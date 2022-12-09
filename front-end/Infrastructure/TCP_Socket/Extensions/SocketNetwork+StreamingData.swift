@@ -131,7 +131,7 @@ extension SocketNetwork:StreamDelegate{
 }
 extension SocketNetwork:URLSessionStreamDelegate{
     func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream) {
-        print("SESSION")
+        print(Thread.current)
         self.inputStream = inputStream
         self.outputStream = outputStream
         self.inputStream?.delegate = self

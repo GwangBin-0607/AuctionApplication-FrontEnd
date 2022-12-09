@@ -30,7 +30,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
             [weak self] rowNum,item, cell in
             cell.tag = rowNum
             cell.bindingData.onNext(item)
-            let requestImage = RequestImage(cell:cell,productsId: item.id,tag: rowNum)
+            let requestImage = RequestImage(cell:cell,productsId: item.product_id,tag: rowNum)
             self?.viewModel.requestProductImage.onNext(requestImage)
         }.disposed(by: disposeBag)
         

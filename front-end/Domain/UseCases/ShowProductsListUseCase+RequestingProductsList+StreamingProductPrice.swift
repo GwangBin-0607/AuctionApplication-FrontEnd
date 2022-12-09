@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-typealias ShowProductsList = RequestingProductsList&StreamingProductPrice
+typealias ShowProductsList = RequestingProductsList&StreamingProductPriceInput
 final class ShowProductsListUseCase{
     private let fetchingRepository:FetchingProductsListData
     private let productPriceRepository:TransferProductPriceDataInput&ObserverSocketState
@@ -29,7 +29,8 @@ extension ShowProductsListUseCase:RequestingProductsList{
             }.catch{.just(.failure($0))}
     }
 }
-extension ShowProductsListUseCase:StreamingProductPrice{
+extension ShowProductsListUseCase:StreamingProductPriceInput{
+    
     func connectingNetwork(state:isConnecting) {
         productPriceRepository.streamState(state: state)
     }

@@ -14,7 +14,6 @@ class ProductPriceRepository{
     }
     private let streamingProductPrice:StreamingData
     init(StreamingService:StreamingData) {
-//        streamingProductPrice = SocketNetwork(hostName: "localhost", portNumber: 8100)
         self.streamingProductPrice = StreamingService
     }
 }

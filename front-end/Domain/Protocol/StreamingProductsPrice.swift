@@ -8,8 +8,11 @@
 import Foundation
 import RxSwift
 
-protocol StreamingProductPrice{
+protocol StreamingProductPriceInput{
     func connectingNetwork(state:isConnecting)
     func returningInputObservable()->Observable<Result<[StreamPrice],Error>>
     func returningSocketState()->Observable<isConnecting>
+}
+protocol StreamingProductPriceOutput{
+    func sendProductPrice(ProductPrice:StreamPrice)
 }

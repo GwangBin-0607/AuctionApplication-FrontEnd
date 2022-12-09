@@ -50,7 +50,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
             owner,productsList in
             var addHeightProductList = productsList
             for i in 0..<addHeightProductList.count{
-                addHeightProductList[i].imageHeight = ImageUseCase.returnImageHeight(productId: addHeightProductList[i].id, imageURL: addHeightProductList[i].imageURL!)
+                addHeightProductList[i].imageHeight = owner.imageUseCase.returnImageHeight(productId: addHeightProductList[i].product_id, imageURL: addHeightProductList[i].imageURL!)
             }
             owner.products.onNext(addHeightProductList)
             
@@ -70,8 +70,8 @@ final class ProductsListViewModel:BindingProductsListViewModel{
             }).disposed(by: disposeBag)
         
         
-        self.usecase.returningInputObservable().subscribe(onNext: {
-            results in
+        self.usecase.returningInputObservable().withUnretained(self).subscribe(onNext: {
+            owner, results in
             print(results)
         }).disposed(by: disposeBag)
         
@@ -86,9 +86,6 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     }
     deinit {
         print("Viewmodel DEINIT")
-    }
-    private func addProductList(list:inout [Product]){
-        
     }
 }
 extension ProductsListViewModel{
