@@ -34,12 +34,15 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
 
     
     override func prepare() {
+        print("Prepare")
         guard
           cache.isEmpty == true,
           let collectionView = collectionView
           else {
-            return
+              print("return")
+              return
         }
+        print("Not Return")
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {

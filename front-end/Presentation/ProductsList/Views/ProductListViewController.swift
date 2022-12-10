@@ -7,6 +7,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     let delegate:TransitionProductListViewController?
+    let testButton=UIButton()
     init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
@@ -20,6 +21,17 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         super.viewDidLoad()
         bindingViewModel()
         self.viewModel.requestProductsList.onNext(1)
+        testButtonSet()
+    }
+    func testButtonSet(){
+        self.view.addSubview(testButton)
+        testButton.backgroundColor = .yellow
+        testButton.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
+        testButton.addTarget(self, action: #selector(testAction), for: .touchUpInside)
+    }
+    @objc func testAction(){
+        //Test Action
+        self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
     }
     private func bindingViewModel(){
         viewModel.responseImage.subscribe(onNext: {

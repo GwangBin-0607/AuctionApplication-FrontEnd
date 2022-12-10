@@ -9,7 +9,6 @@ class ShowProductImageUseCase:RequestingProductImageLoad,RequestingProductImageH
     }
     
     private let productsImageRepository:TransferProductsImage
-    // singleton 필요!
     init(productsImageRepository:TransferProductsImage) {
         print("Init USECASE")
         self.productsImageRepository = productsImageRepository

@@ -1,35 +1,11 @@
 import Foundation
 import UIKit
-class ProductsImageDataRepository:TransferProductsImage{
-    func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
-        guard let imageURL = imageURL else {
-            return 150.0
-        }
-        guard let image = returnCacheImage(productId: productId) else{
-            let nonCacheImage = imageLoad(imageURL: imageURL)
-            let downImage = downImageSize(image: nonCacheImage)
-            setCacheImage(productId: productId, image: downImage)
-            return returnImageHeight(image: nonCacheImage)
-        }
-        return returnImageHeight(image: image)
-    }
-    func returnImage(productId:Int, imageURL: String?)->UIImage{
-        guard let imageURL = imageURL else {
-            //DEFAULT IMAGE
-            return UIImage()
-        }
-        guard let cacheImage = returnCacheImage(productId: productId) else{
-            let nonCacheImage = imageLoad(imageURL: imageURL)
-            let downImage = downImageSize(image: nonCacheImage)
-            setCacheImage(productId: productId, image: downImage)
-            return downImage
-        }
-        return cacheImage
-    }
+class ProductsImageDataRepository{
     private let cacheImage:NSCache<NSNumber,UIImage>
+    private let imageServer:GetProductImage
     init() {
+        imageServer = ProductImageAPI()
         cacheImage = NSCache<NSNumber,UIImage>()
-
     }
     private func imageLoad(imageURL: String) -> UIImage {
         let image = UIImage(named: imageURL)!
@@ -60,5 +36,31 @@ class ProductsImageDataRepository:TransferProductsImage{
 
         let newImage = UIImage(cgImage: downSampledImage)
         return newImage
+    }
+}
+extension ProductsImageDataRepository:TransferProductsImage{
+    func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
+        guard let imageURL = imageURL else {
+            return 150.0
+        }
+        guard let image = returnCacheImage(productId: productId) else{
+            let nonCacheImage = imageLoad(imageURL: imageURL)
+            let downImage = downImageSize(image: nonCacheImage)
+            setCacheImage(productId: productId, image: downImage)
+            return returnImageHeight(image: nonCacheImage)
+        }
+        return returnImageHeight(image: image)
+    }
+    func returnImage(productId:Int, imageURL: String?)->UIImage{
+        guard let imageURL = imageURL else {
+            return UIImage()
+        }
+        guard let cacheImage = returnCacheImage(productId: productId) else{
+            let nonCacheImage = imageLoad(imageURL: imageURL)
+            let downImage = downImageSize(image: nonCacheImage)
+            setCacheImage(productId: productId, image: downImage)
+            return downImage
+        }
+        return cacheImage
     }
 }

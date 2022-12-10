@@ -21,6 +21,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     let requestSteamConnect: AnyObserver<isConnecting>
     let requestImage: AnyObserver<RequestImage>
     private let products = BehaviorSubject<[Product]>(value: [])
+    private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
     init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImage) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
@@ -41,7 +42,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         requestProductsList = requesting.asObserver()
         productsList = products.asObservable()
         
-        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background)).withUnretained(self).subscribe(onNext: {
+        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).withUnretained(self).subscribe(onNext: {
             owner,request in
             print(Thread.isMainThread)
             let image = owner.imageUseCase.returnImage(productId: request.productId, imageURL: request.imageURL)
