@@ -44,7 +44,6 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         
         requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).withUnretained(self).subscribe(onNext: {
             owner,request in
-            print(Thread.isMainThread)
             let image = owner.imageUseCase.returnImage(productId: request.productId, imageURL: request.imageURL)
             let responseImage = ResponseImage(cell:request.cell,image: image, productId: request.productId)
             responseProductImageObserver.onNext(responseImage)

@@ -31,7 +31,15 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     }
     @objc func testAction(){
         //Test Action
-        self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
+//        self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
+//        self.viewModel.requestProductsList.onNext(1)
+        //prepare 실행됨.
+        //bind실행됨. 보이는 셀이 아니면 실행안되고 보이는 셀이면 실행됨.
+        
+        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ProductListCollectionViewCell
+        cell?.bindingData.onNext(Product(product_id: 1, product_price: 200, imageURL: nil, product_name: "Change", checkUpDown: nil))
+        //prepare 실행안됨.
+        //bind 실행안됨.
     }
     private func bindingViewModel(){
         viewModel.responseImage.subscribe(onNext: {
@@ -40,6 +48,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
             [weak self] rowNum,item,cell in
+            print("Bind!")
             cell.bindingData.onNext(item)
             let requestImage = RequestImage(cell:cell,productId: item.product_id, imageURL: item.imageURL)
             self?.viewModel.requestImage.onNext(requestImage)

@@ -97,7 +97,7 @@ class RxCollectionViewReactiveArrayDataSource<Element>
     
     func collectionView(_ collectionView: UICollectionView, observedElements: [Element]) {
         self.itemModels = observedElements
-        
+        print("Reload Data")
         collectionView.reloadData()
 
         // workaround for http://stackoverflow.com/questions/39867325/ios-10-bug-uicollectionview-received-layout-attributes-for-a-cell-with-an-index
