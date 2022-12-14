@@ -22,8 +22,8 @@ class ProductsImageDataRepository{
     }
     private func downImageSize(image:UIImage) -> UIImage {
         let data = image.pngData()! as CFData
-        let imageSourceOptions = [kCGImageSourceShouldCache:false] as CFDictionary
-        let imageSource = CGImageSourceCreateWithData(data, imageSourceOptions)!
+//        let imageSourceOptions = [kCGImageSourceShouldCache:false] as CFDictionary
+        let imageSource = CGImageSourceCreateWithData(data, nil)!
         let maxPixel = max(image.size.width, image.size.height)
         let downSampleOptions = [
             kCGImageSourceCreateThumbnailFromImageAlways: true,
@@ -40,6 +40,7 @@ class ProductsImageDataRepository{
 }
 extension ProductsImageDataRepository:TransferProductsImage{
     func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
+
         guard let imageURL = imageURL else {
             return 150.0
         }

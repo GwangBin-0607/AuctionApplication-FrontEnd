@@ -23,6 +23,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     private let products = BehaviorSubject<[Product]>(value: [])
     private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
     init(UseCase:ShowProductsList,ImageUseCase:RequestingProductImage) {
+        print("INIT")
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
@@ -104,5 +105,10 @@ extension ProductsListViewModel{
         }catch{
             return 150
         }
+    }
+}
+extension ProductsListViewModel{
+    func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
+        returnHeight(index: index)
     }
 }

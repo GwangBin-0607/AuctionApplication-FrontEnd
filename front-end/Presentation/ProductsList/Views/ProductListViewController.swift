@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:BindingProductsListViewModel
     private let disposeBag:DisposeBag
@@ -15,13 +16,29 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         disposeBag = DisposeBag()
         categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
-        collectionView.delegateHeight = self
+        collectionView.delegateHeight = viewModel
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
         self.viewModel.requestProductsList.onNext(1)
         testButtonSet()
+        setCADisplay()
+    }
+    func setCADisplay(){
+        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
+        display.add(to: .current, forMode: .tracking)
+    }
+    var previoutTime = 0.0
+    @objc func displayCheck(displaylink:CADisplayLink){
+        print("========================")
+        print(previoutTime)
+        var tum = displaylink.targetTimestamp - previoutTime
+
+        previoutTime = displaylink.targetTimestamp
+        print(displaylink.targetTimestamp)
+        print(tum)
+        print("======================")
     }
     func testButtonSet(){
         self.view.addSubview(testButton)
@@ -48,7 +65,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         }).disposed(by: disposeBag)
         viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
             [weak self] rowNum,item,cell in
-            print("Bind!")
             cell.bindingData.onNext(item)
             let requestImage = RequestImage(cell:cell,productId: item.product_id, imageURL: item.imageURL)
             self?.viewModel.requestImage.onNext(requestImage)
@@ -93,9 +109,36 @@ extension ProductListViewController{
         return containerView
     }
 }
-extension ProductListViewController:ReturnImageHeightUICollectionViewDelegate{
-    func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
-        viewModel.returnHeight(index: index)
+struct ProductSection{
+    var sectionHeader:String
+    var products:[Product]
+}
+extension ProductSection:AnimatableSectionModelType{
+    var items: [Product] {
+        products
     }
+    
+    init(original: ProductSection, items: [Product]) {
+        self.products = items
+        self = original
+    }
+    
+    var identity: String {
+        sectionHeader
+    }
+    
+    
+    
+}
+extension Product:IdentifiableType,Equatable{
+    var identity: Int {
+        product_id
+    }
+    static func == (lhs: Product, rhs: Product) -> Bool {
+        lhs.product_id == rhs.product_id
+    }
+    
+    
+    
 }
 

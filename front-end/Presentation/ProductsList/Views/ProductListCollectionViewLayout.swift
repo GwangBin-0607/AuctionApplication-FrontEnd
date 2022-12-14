@@ -39,10 +39,8 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
           cache.isEmpty == true,
           let collectionView = collectionView
           else {
-              print("return")
               return
         }
-        print("Not Return")
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {

@@ -19,7 +19,7 @@ final class ProductListViewCoordinator:Coordinator{
     func start() {
         let productListViewController = sceneDIContainer.returnProductsListViewController(transitioning: self)
         containerViewController.present(ViewController: productListViewController, animate: true)
-        print("start")
+        print("start Coordinator")
         
     }
     private func detailProductViewController(){
