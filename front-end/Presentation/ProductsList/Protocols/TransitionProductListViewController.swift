@@ -1,4 +1,4 @@
 import Foundation
-protocol TransitionProductListViewController{
+protocol TransitionProductListViewController:AnyObject{
     func presentDetailViewController()
 }

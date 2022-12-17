@@ -1,4 +1,5 @@
 import Foundation
-protocol TransitionDetailProductViewController{
+protocol TransitionDetailProductViewController:AnyObject{
     func dismissToProductListViewController()
 }
+

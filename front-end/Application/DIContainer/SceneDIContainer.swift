@@ -19,11 +19,11 @@ class SceneDIContainer{
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
         ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
     }
-    private func returnProductListCollectionView()->ProductListCollectionView{
-        ProductListCollectionView(collectionViewLayout: returnProductListCollectionViewLayout(), collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+    private func returnProductListCollectionView(layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+        ProductListCollectionView(collectionViewLayout: layout, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout()->ProductListCollectionViewLayout{
-        ProductListCollectionViewLayout()
+    private func returnProductListCollectionViewLayout(returnImageHeightDelegate:ReturnImageHeightDelegate)->ProductListCollectionViewLayout{
+        ProductListCollectionViewLayout(delegate: returnImageHeightDelegate)
     }
     private func returnShowProductImageUseCase()->RequestingProductImage{
         ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
@@ -47,7 +47,11 @@ protocol ProductListViewSceneDIContainer{
 }
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        ProductListViewController(viewModel: returnBindingProductsListViewModel(), CollectionView: returnProductListCollectionView(),transitioning: transitioning)
+        let viewModel = returnBindingProductsListViewModel()
+        let collectionViewLayout = returnProductListCollectionViewLayout(returnImageHeightDelegate: viewModel)
+        let collectionView = returnProductListCollectionView(layout: collectionViewLayout)
+        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
+        return productListViewController
     }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)

@@ -24,5 +24,5 @@ protocol ProductImageLoadViewModel{
     var requestImage:AnyObserver<RequestImage>{get}
     
 }
-typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageHeightViewModel&ProductImageLoadViewModel&ReturnImageHeightUICollectionViewDelegate
+typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageHeightViewModel&ProductImageLoadViewModel&ReturnImageHeightDelegate
 

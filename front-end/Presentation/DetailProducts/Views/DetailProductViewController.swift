@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class DetailProductViewController:UIViewController,SetCoordinatorViewController{
-    let delegate:TransitionDetailProductViewController?
+    weak var delegate:TransitionDetailProductViewController?
     let backBtn = UIButton()
     init(transitioning:TransitionDetailProductViewController?=nil) {
         self.delegate = transitioning

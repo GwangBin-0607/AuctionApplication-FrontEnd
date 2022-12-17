@@ -7,7 +7,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
-    let delegate:TransitionProductListViewController?
+    weak var delegate:TransitionProductListViewController?
     let testButton=UIButton()
     init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
@@ -16,30 +16,29 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         disposeBag = DisposeBag()
         categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
-        collectionView.delegateHeight = viewModel
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
         self.viewModel.requestProductsList.onNext(1)
         testButtonSet()
-        setCADisplay()
+//        setCADisplay()
     }
-    func setCADisplay(){
-        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
-        display.add(to: .current, forMode: .tracking)
-    }
-    var previoutTime = 0.0
-    @objc func displayCheck(displaylink:CADisplayLink){
-        print("========================")
-        print(previoutTime)
-        var tum = displaylink.targetTimestamp - previoutTime
-
-        previoutTime = displaylink.targetTimestamp
-        print(displaylink.targetTimestamp)
-        print(tum)
-        print("======================")
-    }
+//    func setCADisplay(){
+//        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
+//        display.add(to: .current, forMode: .tracking)
+//    }
+//    var previoutTime = 0.0
+//    @objc func displayCheck(displaylink:CADisplayLink){
+//        print("========================")
+//        print(previoutTime)
+//        var tum = displaylink.targetTimestamp - previoutTime
+//
+//        previoutTime = displaylink.targetTimestamp
+//        print(displaylink.targetTimestamp)
+//        print(tum)
+//        print("======================")
+//    }
     func testButtonSet(){
         self.view.addSubview(testButton)
         testButton.backgroundColor = .yellow
