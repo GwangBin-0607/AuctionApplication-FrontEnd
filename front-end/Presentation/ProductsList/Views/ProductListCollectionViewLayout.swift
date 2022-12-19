@@ -32,10 +32,10 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     
     override func prepare() {
         print("Prepare")
+        cache.removeAll()
         guard
           cache.isEmpty == true,
           let collectionView = collectionView

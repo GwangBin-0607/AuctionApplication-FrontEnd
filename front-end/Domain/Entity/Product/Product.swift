@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 struct Product:Decodable{
-    let product_id:Int
-    let product_price:Int
+    var product_id:Int
+    var product_price:Int
     let imageURL:String?
-    let product_name:String?
+    var product_name:String?
     let checkUpDown:Bool?
     var imageHeight:CGFloat?
 }

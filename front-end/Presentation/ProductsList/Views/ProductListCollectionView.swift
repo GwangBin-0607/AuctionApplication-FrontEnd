@@ -13,4 +13,14 @@ final class ProductListCollectionView: UICollectionView {
     deinit {
         print("CollectionView DEINIT")
     }
+    override func reloadItems(at indexPaths: [IndexPath]) {
+        UIView.animate(withDuration: 6.0, delay: 0.0, options: .allowUserInteraction, animations: {
+            self.performBatchUpdates(nil, completion: nil)
+        }, completion: nil)
+        for i in 0..<indexPaths.count{
+        }
+    }
+}
+protocol animationCell{
+    var borderView:UIView{get}
 }

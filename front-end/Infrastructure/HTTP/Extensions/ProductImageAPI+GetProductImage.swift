@@ -6,11 +6,7 @@ protocol GetProductImage{
 }
 class ProductImageAPI:GetProductImage{
     init() {
-        returnImage(imageURL: nil, onComplete: {
-            result in
-            
-        })
-        returnJson()
+ 
     }
     func returnImage(imageURL:String?,onComplete: @escaping (Result<Data, Error>) -> Void) {
         var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/productimage")!)

@@ -3,7 +3,7 @@ import RxSwift
 final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
-    private let priceLabel:UILabel
+    let priceLabel:UILabel
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
     private let disposeBag:DisposeBag

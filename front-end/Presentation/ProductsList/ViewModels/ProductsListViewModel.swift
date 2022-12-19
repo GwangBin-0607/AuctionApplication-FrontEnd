@@ -111,4 +111,15 @@ extension ProductsListViewModel{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         returnHeight(index: index)
     }
+    func testFunction() {
+        do{
+            var product = try products.value()
+            product[0].product_id = 40
+            product[0].product_price = 111111111111
+            self.products.onNext(product)
+            
+        }catch{
+            print(error)
+        }
+    }
 }

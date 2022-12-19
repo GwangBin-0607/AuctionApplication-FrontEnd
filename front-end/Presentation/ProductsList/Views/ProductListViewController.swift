@@ -46,28 +46,38 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         testButton.addTarget(self, action: #selector(testAction), for: .touchUpInside)
     }
     @objc func testAction(){
+        print("tap")
+        
+        viewModel.testFunction()
         //Test Action
-//        self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
+//        self.collectionView.reloadItems(at: [IndexPath(item: 0, section: 0),IndexPath(item: 2, section: 0)])
 //        self.viewModel.requestProductsList.onNext(1)
         //prepare 실행됨.
         //bind실행됨. 보이는 셀이 아니면 실행안되고 보이는 셀이면 실행됨.
         
-        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ProductListCollectionViewCell
-        cell?.bindingData.onNext(Product(product_id: 1, product_price: 200, imageURL: nil, product_name: "Change", checkUpDown: nil))
+//        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? ProductListCollectionViewCell
+//        cell?.bindingData.onNext(Product(product_id: 1, product_price: 200, imageURL: nil, product_name: "Change", checkUpDown: nil))
         //prepare 실행안됨.
         //bind 실행안됨.
+        
     }
     private func bindingViewModel(){
         viewModel.responseImage.subscribe(onNext: {
             response in
             response.setImage()
         }).disposed(by: disposeBag)
-        viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
-            [weak self] rowNum,item,cell in
-            cell.bindingData.onNext(item)
-            let requestImage = RequestImage(cell:cell,productId: item.product_id, imageURL: item.imageURL)
-            self?.viewModel.requestImage.onNext(requestImage)
-        }.disposed(by: disposeBag)
+        viewModel.productsList.map({
+            products in
+            let productTest = [ProductSection(sectionHeader: "header", products: products)]
+            print(productTest)
+            return productTest
+        }).bind(to: collectionView.rx.items(dataSource: returnDatasource())).disposed(by: disposeBag)
+//        viewModel.productsList.bind(to: collectionView.rx.items(cellIdentifier: ProductListCollectionViewCell.Identifier, cellType: ProductListCollectionViewCell.self)){
+//            [weak self] rowNum,item,cell in
+//            cell.bindingData.onNext(item)
+//            let requestImage = RequestImage(cell:cell,productId: item.product_id, imageURL: item.imageURL)
+//            self?.viewModel.requestImage.onNext(requestImage)
+//        }.disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
             owner, indexpath in
@@ -108,6 +118,22 @@ extension ProductListViewController{
         return containerView
     }
 }
+extension ProductListViewController{
+    func returnDatasource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
+        return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .fade, deleteAnimation: .fade), decideViewTransition: {
+            _,_,change in
+            print(change)
+            return .animated
+        }, configureCell: { [weak self] dataSource, colview, indexpath, item in
+            print(item.product_price)
+            let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
+            cell.bindingData.onNext(item)
+            let requestImage = RequestImage(cell: cell, productId: item.product_id, imageURL: item.imageURL)
+            self?.viewModel.requestImage.onNext(requestImage)
+            return cell
+        })
+    }
+}
 struct ProductSection{
     var sectionHeader:String
     var products:[Product]
@@ -136,8 +162,5 @@ extension Product:IdentifiableType,Equatable{
     static func == (lhs: Product, rhs: Product) -> Bool {
         lhs.product_id == rhs.product_id
     }
-    
-    
-    
 }
 
