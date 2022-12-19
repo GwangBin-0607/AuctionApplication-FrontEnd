@@ -104,6 +104,30 @@ class Test_ProductListUsecase:Test_ProductListRule{
         repo.streaming()
     }
 }
+protocol Test_ProductListViewModelProtocol{
+    var listObservable:Observable<[Product]>{get}
+    var requestObserver:AnyObserver<Int>{get}
+}
+class Test_ProductListViewModel:Test_ProductListViewModelProtocol{
+    let usecase:Test_ProductListUsecase
+    let listObservable: Observable<[Product]>
+    let requestObserver: AnyObserver<Int>
+    init(Usecase:Test_ProductListUsecase) {
+        self.usecase = Usecase
+        let listSubject = PublishSubject<[Product]>()
+        let requestSubject = PublishSubject<Int>()
+        requestObserver = requestSubject.asObserver()
+        listObservable = listSubject.asObservable()
+        self.usecase.streamingProductList()?.subscribe(onNext: { result in
+            switch result{
+            case .success(let lists):
+                listSubject.asObserver().onNext(lists)
+            case .failure(let error):
+                print(error)
+            }
+        })
+    }
+}
 protocol Test_ReturnProductPriceRule{
     func rule_returnProductPrice(index:IndexPath)->Int
 }
