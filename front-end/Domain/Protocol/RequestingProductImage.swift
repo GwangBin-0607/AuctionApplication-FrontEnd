@@ -1,4 +1,4 @@
-import RxSwift
+import UIKit
 protocol RequestingProductImageLoad{
     func returnImage(productId:Int, imageURL: String?)->UIImage
 }
