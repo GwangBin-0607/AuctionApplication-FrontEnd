@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 
-protocol FetchingProductsListData{
-    func returnData(lastNumber:Int)->Observable<Data>
+protocol TransferProductsListData{
+    func transferDataToProductList(lastNumber:Int) -> Observable<Result<[Product],Error>>
 }

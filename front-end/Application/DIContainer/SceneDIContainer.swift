@@ -4,7 +4,7 @@ class SceneDIContainer{
     private func returnShowProductListUseCase()->ShowProductsList{
         ShowProductsListUseCase(ProductsListRepository: returnProductsListRepository(), ProductPriceRepository: returnProductPriceRepository())
     }
-    private func returnProductsListRepository()->FetchingProductsListData{
+    private func returnProductsListRepository()->TransferProductsListData{
         ProductsListRepository(ApiService: returnHTTPService())
     }
     private func returnHTTPService()->GetProductsList{

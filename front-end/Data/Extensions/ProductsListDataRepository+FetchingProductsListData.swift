@@ -9,9 +9,8 @@ import Foundation
 import RxSwift
 
 
-extension ProductsListRepository:FetchingProductsListData{
-    
-    func returnData(lastNumber:Int) -> Observable<Data> {
+extension ProductsListRepository:TransferProductsListData{
+    private func returnData(lastNumber:Int) -> Observable<Data> {
         return Observable.create { [weak self] observer in
             self?.apiService.getProductData(lastNumber:lastNumber) { result in
                 switch result {
@@ -25,6 +24,14 @@ extension ProductsListRepository:FetchingProductsListData{
             return Disposables.create()
         }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
         
+    }
+    func transferDataToProductList(lastNumber: Int) -> Observable<Result<[Product],Error>>{
+        returnData(lastNumber: 1).map { Data in
+            guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
+                throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
+            }
+                return .success(response)
+            }.catch{.just(.failure($0))}
     }
 
     
