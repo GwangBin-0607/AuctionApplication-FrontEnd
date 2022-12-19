@@ -1,27 +1,39 @@
 import UIKit
 import RxSwift
-final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell{
+final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell,AnimationCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
-    let priceLabel:UILabel
+    private let priceLabel:UILabel
+    private let borderView:UIView
     private let productImageView:UIImageView
     private let checkUpDown:UIImageView
     private let disposeBag:DisposeBag
+    private let borderAnimator:UIViewPropertyAnimator
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
     let setImageObserver: AnyObserver<ResponseImage>
+    let animationObserver: AnyObserver<Int>
     override init(frame: CGRect) {
+        print("CELL INIT")
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
         checkUpDown = UIImageView()
         disposeBag = DisposeBag()
+        borderView = UIView()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
         let setImageSubject = PublishSubject<ResponseImage>()
         setImageObserver = setImageSubject.asObserver()
         let setImageObservable = setImageSubject.asObservable()
+        let animationSubject = PublishSubject<Int>()
+        animationObserver = animationSubject.asObserver()
+        borderAnimator = UIViewPropertyAnimator()
         super.init(frame: frame)
+        animationSubject.asObservable().observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
+            owner,price in
+            owner.priceLabel.text = String(price)
+        }).disposed(by: disposeBag)
         setImageObservable.observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
             owner,responseImage in
             if(responseImage.productId == owner.tag){
@@ -51,6 +63,8 @@ final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
         titleLabel.textColor = .white
+        priceLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        priceLabel.textColor = .systemBlue
         let checkUpDownTrailing = checkUpDown.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -2.0)
         checkUpDownTrailing.priority = UILayoutPriority(150)
         NSLayoutConstraint.activate([
@@ -84,4 +98,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+protocol AnimationCell{
+    var animationObserver:AnyObserver<Int>{get}
 }

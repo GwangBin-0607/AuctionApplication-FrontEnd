@@ -13,7 +13,7 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     private let imageUseCase:RequestingProductImage
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
-    let productsList: Observable<[Product]>
+    let productsList: Observable<[ProductSection]>
     let isConnecting: Observable<isConnecting>
     let responseImage: Observable<ResponseImage>
     // MARK: VIEWCONTROLLER INPUT
@@ -41,7 +41,9 @@ final class ProductsListViewModel:BindingProductsListViewModel{
         requestSteamConnect = connecting.asObserver()
         isConnecting = self.usecase.returningSocketState()
         requestProductsList = requesting.asObserver()
-        productsList = products.asObservable()
+        productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
+            return ProductSection(original: prevValue, items: newValue)
+        }.map({[$0]})
         
         requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).withUnretained(self).subscribe(onNext: {
             owner,request in
@@ -96,9 +98,10 @@ final class ProductsListViewModel:BindingProductsListViewModel{
     deinit {
         print("Viewmodel DEINIT")
     }
+    var number = 100
 }
 extension ProductsListViewModel{
-    func returnHeight(index:IndexPath)->CGFloat{
+    func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()
             return product[index.item].imageHeight ?? 150
@@ -108,18 +111,26 @@ extension ProductsListViewModel{
     }
 }
 extension ProductsListViewModel{
-    func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
-        returnHeight(index: index)
-    }
     func testFunction() {
         do{
+            number += 1
             var product = try products.value()
-            product[0].product_id = 40
-            product[0].product_price = 111111111111
+            product[0].product_price = number
+            product[10].product_price = number
+            product[16].product_price = number
             self.products.onNext(product)
             
         }catch{
             print(error)
+        }
+    }
+    func returnPrice(index: IndexPath) -> Int {
+        do{
+            let product = try products.value()
+           return product[index.item].product_price
+            
+        }catch{
+           return 0
         }
     }
 }

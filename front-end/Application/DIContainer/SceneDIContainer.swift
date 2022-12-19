@@ -19,8 +19,8 @@ class SceneDIContainer{
     private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
         ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
     }
-    private func returnProductListCollectionView(layout:ProductListCollectionViewLayout)->ProductListCollectionView{
-        ProductListCollectionView(collectionViewLayout: layout, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+    private func returnProductListCollectionView(viewModel:ProductPriceViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
     private func returnProductListCollectionViewLayout(returnImageHeightDelegate:ReturnImageHeightDelegate)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(delegate: returnImageHeightDelegate)
@@ -49,7 +49,7 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
         let viewModel = returnBindingProductsListViewModel()
         let collectionViewLayout = returnProductListCollectionViewLayout(returnImageHeightDelegate: viewModel)
-        let collectionView = returnProductListCollectionView(layout: collectionViewLayout)
+        let collectionView = returnProductListCollectionView(viewModel:viewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
         return productListViewController
     }

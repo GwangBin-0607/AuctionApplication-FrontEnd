@@ -16,6 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let root = MainContainerViewController()
+//        let root = ViewController()
         self.window = window
         self.window?.rootViewController = root
         appCoordinator = AppCoordinator(ContainerViewController: root, SceneDIContainer: SceneDIContainer())

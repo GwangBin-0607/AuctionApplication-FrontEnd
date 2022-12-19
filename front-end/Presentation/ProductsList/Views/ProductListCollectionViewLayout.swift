@@ -15,7 +15,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
-    weak var delegate:ReturnImageHeightDelegate?
+    private let delegate:ReturnImageHeightDelegate
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
@@ -23,6 +23,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     init(delegate:ReturnImageHeightDelegate) {
         self.delegate = delegate
         super.init()
+        print("Layout INIT")
     }
     deinit {
         print("CollectionViewLayOut DEINIT")
@@ -53,7 +54,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
           let indexPath = IndexPath(item: item, section: 0)
             
-            let photoHeight = delegate?.returnImageHeightFromViewModel(index: indexPath) ?? 180
+            let photoHeight = delegate.returnImageHeightFromViewModel(index: indexPath) ?? 180
           let height = cellPadding * 2 + photoHeight
           let frame = CGRect(x: xOffset[column],
                              y: yOffset[column],

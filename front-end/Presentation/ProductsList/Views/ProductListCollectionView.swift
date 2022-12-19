@@ -1,7 +1,9 @@
 import UIKit
+import RxSwift
 final class ProductListCollectionView: UICollectionView {
-    init(collectionViewLayout layout:ProductListCollectionViewLayout, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
-
+    private let priceDelegate:ProductPriceViewModel
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:ProductPriceViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+        priceDelegate = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
     }
@@ -14,13 +16,10 @@ final class ProductListCollectionView: UICollectionView {
         print("CollectionView DEINIT")
     }
     override func reloadItems(at indexPaths: [IndexPath]) {
-        UIView.animate(withDuration: 6.0, delay: 0.0, options: .allowUserInteraction, animations: {
-            self.performBatchUpdates(nil, completion: nil)
-        }, completion: nil)
         for i in 0..<indexPaths.count{
+                let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell
+                let price = self.priceDelegate.returnPrice(index: indexPaths[i])
+                cell?.animationObserver.onNext(price)
         }
     }
-}
-protocol animationCell{
-    var borderView:UIView{get}
 }

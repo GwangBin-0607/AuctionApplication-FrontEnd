@@ -75,6 +75,7 @@ class ViewController: UIViewController {
     @objc func action(){
         let diContainer = SceneDIContainer()
         var productViewController = diContainer.returnProductsListViewController()
+        productViewController.modalPresentationStyle = .fullScreen
         self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){

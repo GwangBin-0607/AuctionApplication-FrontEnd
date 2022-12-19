@@ -1,4 +1,4 @@
 import UIKit
-protocol ReturnImageHeightDelegate:AnyObject{
+protocol ReturnImageHeightDelegate{
     func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
 }

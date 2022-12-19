@@ -14,18 +14,16 @@ protocol ProductsListViewModelInPut{
 }
 protocol ProductsListViewModelOutPut{
     var isConnecting:Observable<isConnecting>{get}
-    var productsList:Observable<[Product]> {get}
-}
-protocol ProductImageHeightViewModel{
-    func returnHeight(index:IndexPath)->CGFloat
+    var productsList:Observable<[ProductSection]> {get}
 }
 protocol ProductImageLoadViewModel{
     var responseImage:Observable<ResponseImage>{get}
     var requestImage:AnyObserver<RequestImage>{get}
     
 }
-protocol testViewModel{
+protocol ProductPriceViewModel{
     func testFunction()
+    func returnPrice(index:IndexPath)->Int
 }
-typealias BindingProductsListViewModel = testViewModel&ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageHeightViewModel&ProductImageLoadViewModel&ReturnImageHeightDelegate
+typealias BindingProductsListViewModel = ProductPriceViewModel&ProductsListViewModelInPut&ProductsListViewModelOutPut&ProductImageLoadViewModel&ReturnImageHeightDelegate
 
