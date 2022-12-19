@@ -50,7 +50,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     }
     @objc func testAction(){
         print("tap")
-        viewModel.testFunction()
+//        viewModel.testFunction()
     }
     private func bindingViewModel(){
         viewModel.responseImage.subscribe(onNext: {
