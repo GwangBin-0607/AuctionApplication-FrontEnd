@@ -3,13 +3,13 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
-    private let viewModel:BindingProductsListViewModel
+    private let viewModel:ProductsListViewModelInterface
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
     let testButton=UIButton()
-    init(viewModel:BindingProductsListViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:ProductsListViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView

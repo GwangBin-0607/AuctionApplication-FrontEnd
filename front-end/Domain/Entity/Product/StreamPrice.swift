@@ -8,6 +8,6 @@
 import Foundation
 
 struct StreamPrice:Codable{
-    let id:Int
-    let price:Int
+    let product_id:Int
+    var product_price:Int
 }

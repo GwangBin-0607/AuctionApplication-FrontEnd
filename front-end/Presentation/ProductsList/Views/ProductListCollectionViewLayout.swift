@@ -15,12 +15,12 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
-    private let delegate:ReturnImageHeightDelegate
+    private let delegate:ProductsListViewModelInterface
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    init(delegate:ReturnImageHeightDelegate) {
+    init(delegate:ProductsListViewModelInterface) {
         self.delegate = delegate
         super.init()
         print("Layout INIT")

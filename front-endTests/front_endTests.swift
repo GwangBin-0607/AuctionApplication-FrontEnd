@@ -61,12 +61,35 @@ class front_endTests: XCTestCase {
         mock.connectingNetwork(state: isConnecting.connect)
         mock.returningInputObservable().subscribe(onNext: {
             result in
+            print(Thread.isMainThread)
             print("=======")
             print(result)
             promise.fulfill()
         })
-        mock.sendProductPrice(ProductPrice: StreamPrice(id: 140, price: 1100))
+        mock.sendProductPrice(ProductPrice: StreamPrice(product_id: 140, product_price: 500))
         wait(for: [promise], timeout: 15)
+        
+    }
+    func testRepository(){
+        print("1111")
+        let promise = expectation(description: "Promise")
+        wait(for: [promise], timeout: 15)
+        let httpService = MockProductsListAPI()
+        let tcpService = Mock_TCP()
+        let repo = Test_ProductListRepository(ApiService: httpService, StreamingService: tcpService)
+        repo.requestObserver.onNext(1)
+        repo.productListObservable.subscribe(onNext: {
+            result in
+            
+            switch result {
+            case .success(let list):
+                print(list)
+            case .failure(let error):
+                print(error)
+            case .none:
+                break;
+            }
+        })
         
     }
     

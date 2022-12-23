@@ -1,30 +1,36 @@
 import Foundation
 import UIKit
 class SceneDIContainer{
-    private func returnShowProductListUseCase()->ShowProductsList{
-        ShowProductsListUseCase(ProductsListRepository: returnProductsListRepository(), ProductPriceRepository: returnProductPriceRepository())
-    }
-    private func returnProductsListRepository()->TransferProductsListData{
-        ProductsListRepository(ApiService: returnHTTPService())
-    }
+//    private func returnShowProductListUseCase()->ShowProductsList{
+//        ShowProductsListUseCase(ProductsListRepository: returnProductsListRepository(), ProductPriceRepository: returnProductPriceRepository())
+//    }
+//    private func returnProductsListRepository()->TransferProductsListData{
+//        ProductsListRepository(ApiService: returnHTTPService())
+//    }
     private func returnHTTPService()->GetProductsList{
         ProductsListHTTP(ServerURL: "11111")
     }
-    private func returnProductPriceRepository()->TransferProductPriceDataInput&ObserverSocketState{
-        ProductPriceRepository(StreamingService: returnStreamingService())
-    }
+//    private func returnProductPriceRepository()->TransferProductPriceDataInput&ObserverSocketState{
+//        ProductPriceRepository(StreamingService: returnStreamingService())
+//    }
     private func returnStreamingService()->StreamingData{
         SocketNetwork(hostName: "localhost", portNumber: 8100)
     }
-    private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
-        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
-    }
-    private func returnProductListCollectionView(viewModel:ProductPriceViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+//    private func returnBindingProductsListViewModel()->BindingProductsListViewModel{
+//        ProductsListViewModel(UseCase: returnShowProductListUseCase(),ImageUseCase: returnShowProductImageUseCase())
+//    }
+    private func returnProductListCollectionView(viewModel:ProductsListViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout(returnImageHeightDelegate:ReturnImageHeightDelegate)->ProductListCollectionViewLayout{
+    private func returnProductListCollectionViewLayout(returnImageHeightDelegate:ProductsListViewModelInterface)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(delegate: returnImageHeightDelegate)
     }
+//    private func returnProductListCollectionView(viewModel:ProductPriceViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+//        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+//    }
+//    private func returnProductListCollectionViewLayout(returnImageHeightDelegate:ReturnImageHeightDelegate)->ProductListCollectionViewLayout{
+//        ProductListCollectionViewLayout(delegate: returnImageHeightDelegate)
+//    }
     private func returnShowProductImageUseCase()->RequestingProductImage{
         ShowProductImageUseCase(productsImageRepository: returnProductsImageRepository())
     }
@@ -32,6 +38,19 @@ class SceneDIContainer{
         ProductsImageDataRepository()
     }
  
+}
+//TEST
+extension SceneDIContainer{
+    private func returnProductListViewModelInterface()->ProductsListViewModelInterface{
+        T_ProductsListViewModel(UseCase: returnProductListUsecaseInterface(), ImageUseCase: returnShowProductImageUseCase())
+    }
+    private func returnProductListUsecaseInterface()->ProductListUsecaseInterface{
+        ProductListUsecase(repo: returnProductListRepositoryInterface())
+    }
+    private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
+        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: Mock_TCP())
+    }
+    
 }
 protocol MainContainerViewSceneDIContainer{
     func returnProductListViewCoordinator(ContainerViewController:TransitioningViewController)->Coordinator
@@ -47,12 +66,19 @@ protocol ProductListViewSceneDIContainer{
 }
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        let viewModel = returnBindingProductsListViewModel()
+        let viewModel = returnProductListViewModelInterface()
         let collectionViewLayout = returnProductListCollectionViewLayout(returnImageHeightDelegate: viewModel)
         let collectionView = returnProductListCollectionView(viewModel:viewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
         return productListViewController
     }
+//    func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
+//        let viewModel = returnBindingProductsListViewModel()
+//        let collectionViewLayout = returnProductListCollectionViewLayout(returnImageHeightDelegate: viewModel)
+//        let collectionView = returnProductListCollectionView(viewModel:viewModel, layout: collectionViewLayout)
+//        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
+//        return productListViewController
+//    }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)
     }

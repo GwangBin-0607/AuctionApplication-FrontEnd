@@ -1,8 +1,8 @@
 import UIKit
 import RxSwift
 final class ProductListCollectionView: UICollectionView {
-    private let priceDelegate:ProductPriceViewModel
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:ProductPriceViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    private let priceDelegate:ProductsListViewModelInterface
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:ProductsListViewModelInterface, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
         priceDelegate = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)

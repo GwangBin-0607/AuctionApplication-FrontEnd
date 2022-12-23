@@ -69,17 +69,23 @@ class ViewController: UIViewController {
     }
     let request = PublishSubject<String>()
     lazy var ob = self.request.asObserver()
+    let httpService = MockProductsListAPI()
+    let tcpService = Mock_TCP()
     func testMapFlatMap(){
-      
+    }
+    func testThird(){
+    
+        
     }
     @objc func action(){
+//        repo.requestObserver.onNext(2)
         let diContainer = SceneDIContainer()
         var productViewController = diContainer.returnProductsListViewController()
         productViewController.modalPresentationStyle = .fullScreen
         self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){
- 
+        
 
     }
     

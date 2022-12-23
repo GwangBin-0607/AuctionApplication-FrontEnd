@@ -1,13 +1,13 @@
+////
+////  FetchProductList.swift
+////  front-end
+////
+////  Created by 안광빈 on 2022/10/25.
+////
 //
-//  FetchProductList.swift
-//  front-end
+//import Foundation
+//import RxSwift
 //
-//  Created by 안광빈 on 2022/10/25.
-//
-
-import Foundation
-import RxSwift
-
-protocol RequestingProductsList{
-    func request(lastNumber:Int)->Observable<Result<[Product],Error>>
-}
+//protocol RequestingProductsList{
+//    func request(lastNumber:Int)->Observable<Result<[Product],Error>>
+//}
