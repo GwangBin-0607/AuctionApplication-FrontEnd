@@ -63,7 +63,6 @@
 		889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889EE5DB290A41760041CC88 /* ProductsListAPI+GetProductsList.swift */; };
 		88ACD4C02950D38100DE817F /* Test_.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ACD4BF2950D38100DE817F /* Test_.swift */; };
 		88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */; };
-		88B88D8E29094E0B001A4C1C /* TransferProductsListData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B88D8D29094E0B001A4C1C /* TransferProductsListData.swift */; };
 		88BF04C129557CDB001F7725 /* ProductsListUsecaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C029557CDB001F7725 /* ProductsListUsecaseInterface.swift */; };
 		88BF04C329557D9E001F7725 /* Mock_TCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C229557D9E001F7725 /* Mock_TCP.swift */; };
 		88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712AD2912C16000E54378 /* ProductListCollectionView.swift */; };
@@ -159,7 +158,6 @@
 		88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release_Configuration.xcconfig; sourceTree = "<group>"; };
 		88ACD4BF2950D38100DE817F /* Test_.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_.swift; sourceTree = "<group>"; };
 		88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
-		88B88D8D29094E0B001A4C1C /* TransferProductsListData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferProductsListData.swift; sourceTree = "<group>"; };
 		88BF04C029557CDB001F7725 /* ProductsListUsecaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListUsecaseInterface.swift; sourceTree = "<group>"; };
 		88BF04C229557D9E001F7725 /* Mock_TCP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock_TCP.swift; sourceTree = "<group>"; };
 		88E712AD2912C16000E54378 /* ProductListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionView.swift; sourceTree = "<group>"; };
@@ -276,7 +274,6 @@
 		882CBE8829083E9900550A8E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				88B88D8D29094E0B001A4C1C /* TransferProductsListData.swift */,
 				8897C463292CC27700823980 /* TransferProductsPriceData.swift */,
 				8878025829434BF0009F4F9A /* TransferProductsImage.swift */,
 			);
@@ -865,7 +862,6 @@
 				882CBE7B290828D000550A8E /* RequestingProductsList.swift in Sources */,
 				882CBE8E2908470900550A8E /* ProductsListDataRepository.swift in Sources */,
 				8897C464292CC27700823980 /* TransferProductsPriceData.swift in Sources */,
-				88B88D8E29094E0B001A4C1C /* TransferProductsListData.swift in Sources */,
 				887D54A12953046400DA2F15 /* ProductListViewModelInterface.swift in Sources */,
 				8887D1602936227B005DA3C6 /* TransitionProductListViewController.swift in Sources */,
 				8887D14E2935A621005DA3C6 /* HasChildCoordinator.swift in Sources */,
