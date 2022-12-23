@@ -1,6 +1,6 @@
 import Foundation
 import RxSwift
-class ShowProductImageUseCase:RequestingProductImageLoad,RequestingProductImageHeight{
+class ProductImageUseCase:ProductImageUsecaseInterface{
     func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
         productsImageRepository.returnImageHeight(productId: productId, imageURL: imageURL)
     }
@@ -8,8 +8,8 @@ class ShowProductImageUseCase:RequestingProductImageLoad,RequestingProductImageH
         productsImageRepository.returnImage(productId: productId, imageURL: imageURL)
     }
     
-    private let productsImageRepository:TransferProductsImage
-    init(productsImageRepository:TransferProductsImage) {
+    private let productsImageRepository:ProductImageRepositoryInterface
+    init(productsImageRepository:ProductImageRepositoryInterface) {
         print("Init USECASE")
         self.productsImageRepository = productsImageRepository
     }

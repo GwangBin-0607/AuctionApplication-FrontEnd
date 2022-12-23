@@ -8,9 +8,9 @@
 import Foundation
 import RxSwift
 
-final class T_ProductsListViewModel:ProductsListViewModelInterface{
+final class ProductListViewModel:ProductsListViewModelInterface{
     private let usecase:ProductListUsecaseInterface
-    private let imageUseCase:RequestingProductImage
+    private let imageUseCase:ProductImageUsecaseInterface
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
@@ -19,7 +19,7 @@ final class T_ProductsListViewModel:ProductsListViewModelInterface{
     let responseImage: Observable<ResponseImage>
     private let products = BehaviorSubject<[Product]>(value: [])
     private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
-    init(UseCase:ProductListUsecaseInterface,ImageUseCase:RequestingProductImage) {
+    init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageUsecaseInterface) {
         print("INIT")
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
@@ -70,7 +70,7 @@ final class T_ProductsListViewModel:ProductsListViewModelInterface{
         print("TT Viewmodel DEINIT")
     }
 }
-extension T_ProductsListViewModel{
+extension ProductListViewModel{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()
@@ -80,7 +80,7 @@ extension T_ProductsListViewModel{
         }
     }
 }
-extension T_ProductsListViewModel{
+extension ProductListViewModel{
     func returnPrice(index: IndexPath) -> Int {
         do{
             let product = try products.value()

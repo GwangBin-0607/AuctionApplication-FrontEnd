@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-class ProductsImageDataRepository{
+class ProductImageRepository{
     private let cacheImage:NSCache<NSNumber,UIImage>
     private let imageServer:GetProductImage
     init() {
@@ -38,7 +38,7 @@ class ProductsImageDataRepository{
         return newImage
     }
 }
-extension ProductsImageDataRepository:TransferProductsImage{
+extension ProductImageRepository:ProductImageRepositoryInterface{
     func returnImageHeight(productId: Int, imageURL: String?) -> CGFloat {
 
         guard let imageURL = imageURL else {

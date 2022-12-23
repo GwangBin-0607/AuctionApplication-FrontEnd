@@ -7,10 +7,6 @@
 
 import Foundation
 import RxSwift
-protocol ProductListRepositoryInterface:ObserverSocketState{
-    var productListObservable:Observable<Result<[Product],Error>>{get}
-    var requestObserver:AnyObserver<Int>{get}
-}
 extension ProductListRepository{
     func streamState(state: isConnecting) {
         streamingProductPrice.controlSocketConnect.onNext(state)
