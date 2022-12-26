@@ -29,7 +29,7 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: Mock_TCP())
+        ProductListRepository(ApiService: returnHTTPService(), StreamingService: returnStreamingService())
     }
     
 }
@@ -53,13 +53,6 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
         return productListViewController
     }
-//    func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-//        let viewModel = returnBindingProductsListViewModel()
-//        let collectionViewLayout = returnProductListCollectionViewLayout(returnImageHeightDelegate: viewModel)
-//        let collectionView = returnProductListCollectionView(viewModel:viewModel, layout: collectionViewLayout)
-//        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
-//        return productListViewController
-//    }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)
     }

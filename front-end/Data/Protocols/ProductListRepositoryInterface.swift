@@ -4,4 +4,5 @@ protocol ProductListRepositoryInterface{
     var requestObserver:AnyObserver<Int>{get}
     func streamState(state: isConnecting)
     func observableSteamState() -> Observable<isConnecting>
+    func buyProduct(Product:Product)
 }

@@ -11,9 +11,10 @@ import RxSwift
 
 class front_endTests: XCTestCase {
     
-    var mock:MockUsecase!
+    var mock:ProductListRepository!
     override func setUpWithError() throws {
-        mock = MockUsecase()
+        
+        mock = ProductListRepository(ApiService: ProductsListHTTP(ServerURL: "localhost:3100"), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
         try super.setUpWithError()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -28,25 +29,6 @@ class front_endTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-    class MockUsecase:StreamingProductPriceOutput,StreamingProductPriceInput{
-        func connectingNetwork(state: isConnecting) {
-            productPriceRepo.streamState(state: state)
-        }
-        
-        func returningInputObservable() -> Observable<Result<[StreamPrice], Error>> {
-            productPriceRepo.transferDataToPrice()
-        }
-        
-        func returningSocketState() -> Observable<isConnecting> {
-            productPriceRepo.observableSteamState()
-        }
-        
-        
-        let productPriceRepo = ProductPriceRepository(StreamingService: SocketNetwork(hostName: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", portNumber: 8100))
-        func sendProductPrice(ProductPrice: StreamPrice) {
-            productPriceRepo.transferPriceToData(output:ProductPrice)
-        }
-    }
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         self.measure {
@@ -55,18 +37,22 @@ class front_endTests: XCTestCase {
     }
     func testSocket(){
         let promise = expectation(description: "Promise")
-        mock.returningSocketState().subscribe(onNext: {
-            connect in
-        })
-        mock.connectingNetwork(state: isConnecting.connect)
-        mock.returningInputObservable().subscribe(onNext: {
+        mock.productListObservable.subscribe(onNext: {
             result in
-            print(Thread.isMainThread)
-            print("=======")
-            print(result)
-            promise.fulfill()
+            switch result{
+            case .success(let list):
+                print(list)
+            case .failure(let error):
+                print(error)
+            }
         })
-        mock.sendProductPrice(ProductPrice: StreamPrice(product_id: 140, product_price: 500))
+        mock.observableSteamState().subscribe(onNext: {
+            isConnecting in
+            
+            print(isConnecting)
+        })
+        mock.requestObserver.onNext(1)
+        
         wait(for: [promise], timeout: 15)
         
     }

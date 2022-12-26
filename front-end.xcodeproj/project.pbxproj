@@ -27,7 +27,7 @@
 		8878025729434399009F4F9A /* ProductImageRepository+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878025629434399009F4F9A /* ProductImageRepository+Interface.swift */; };
 		8878025929434BF0009F4F9A /* ProductImageRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878025829434BF0009F4F9A /* ProductImageRepositoryInterface.swift */; };
 		8878025D29439B66009F4F9A /* ProductImageAPI+GetProductImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8878025C29439B66009F4F9A /* ProductImageAPI+GetProductImage.swift */; };
-		887D549B295301D200DA2F15 /* ProductsListRepository+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887D549A295301D200DA2F15 /* ProductsListRepository+Interface.swift */; };
+		887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */; };
 		887D549D295303DA00DA2F15 /* ProductListUsecase+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887D549C295303DA00DA2F15 /* ProductListUsecase+Interface.swift */; };
 		887D549F2953044000DA2F15 /* ProductListViewModel+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887D549E2953044000DA2F15 /* ProductListViewModel+Interface.swift */; };
 		887D54A12953046400DA2F15 /* ProductListViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887D54A02953046400DA2F15 /* ProductListViewModelInterface.swift */; };
@@ -110,7 +110,7 @@
 		8878025629434399009F4F9A /* ProductImageRepository+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductImageRepository+Interface.swift"; sourceTree = "<group>"; };
 		8878025829434BF0009F4F9A /* ProductImageRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageRepositoryInterface.swift; sourceTree = "<group>"; };
 		8878025C29439B66009F4F9A /* ProductImageAPI+GetProductImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductImageAPI+GetProductImage.swift"; sourceTree = "<group>"; };
-		887D549A295301D200DA2F15 /* ProductsListRepository+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductsListRepository+Interface.swift"; sourceTree = "<group>"; };
+		887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListRepository+Interface.swift"; sourceTree = "<group>"; };
 		887D549C295303DA00DA2F15 /* ProductListUsecase+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListUsecase+Interface.swift"; sourceTree = "<group>"; };
 		887D549E2953044000DA2F15 /* ProductListViewModel+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewModel+Interface.swift"; sourceTree = "<group>"; };
 		887D54A02953046400DA2F15 /* ProductListViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModelInterface.swift; sourceTree = "<group>"; };
@@ -259,7 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				8878025629434399009F4F9A /* ProductImageRepository+Interface.swift */,
-				887D549A295301D200DA2F15 /* ProductsListRepository+Interface.swift */,
+				887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -842,7 +842,7 @@
 				888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */,
 				8874F4CA2937394D003981C3 /* ProductImageUsecaseInterface.swift in Sources */,
 				888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */,
-				887D549B295301D200DA2F15 /* ProductsListRepository+Interface.swift in Sources */,
+				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */,
 				8897C45A292CC09300823980 /* StreamingData.swift in Sources */,
 				8878025929434BF0009F4F9A /* ProductImageRepositoryInterface.swift in Sources */,

@@ -28,7 +28,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let apiService:GetProductsList
     private let streamingProductPrice:StreamingData
     private let disposeBag:DisposeBag
-    var check = true
     init(ApiService:GetProductsList,StreamingService:StreamingData) {
         print("Repo Init")
         disposeBag = DisposeBag()
@@ -50,8 +49,8 @@ final class ProductListRepository:ProductListRepositoryInterface{
             })
             .withUnretained(self)
             .scan(Result<[Product],Error>.success([]), accumulator: {
-               aaa,arg1 in
-               let (owner,b) = arg1
+                aaa,arg1 in
+                let (owner,b) = arg1
                 let re = owner.addResult(before: aaa, after: b)
                 return re
             })
@@ -61,10 +60,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 switch result {
                 case .success(_):
                     resultProductObserver.onNext(result)
-                    if Owner.check{
-                        Owner.streamingProductPrice.controlSocketConnect.onNext(isConnecting.connect)
-                        Owner.check = false
-                    }
+                    Owner.streamingProductPrice.controlSocketConnect.onNext(isConnecting.connect)
                 case .failure(_):
                     resultProductObserver.onNext(result)
                 }
@@ -174,4 +170,9 @@ extension ProductListRepository{
         }.catch{.just(.failure($0))}
     }
     
+}
+extension ProductListRepository{
+    func buyProduct(Product: Product) {
+        
+    }
 }
