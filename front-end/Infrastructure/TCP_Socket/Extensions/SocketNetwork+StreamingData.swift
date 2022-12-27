@@ -122,7 +122,6 @@ extension SocketNetwork:StreamDelegate{
             print("\(aStream.streamError?.localizedDescription ?? "")")
         case .endEncountered:
             isSocketConnected.onNext(isConnecting.disconnect)
-            disconnect()
             removeFromThread()
         default:
             print("Unknown event")
