@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import front_end_DEBUG
 
 class front_endUITests: XCTestCase {
 

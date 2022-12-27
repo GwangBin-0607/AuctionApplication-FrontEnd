@@ -1,0 +1,19 @@
+[{
+    "product_id" : 1,
+    "product_price" : 3000
+},{
+    "product_id" : 2,
+    "product_price" : 5000
+},{
+    "product_id" : 3,
+    "product_price" : 5000
+},{
+    "product_id" : 4,
+    "product_price" : 5000
+},{
+    "product_id" : 5,
+    "product_price" : 5000
+},{
+    "product_id" : 6,
+    "product_price" : 5000
+}]
