@@ -11,7 +11,7 @@ protocol ProductsListViewModelInPut{
     var requestProductsList:AnyObserver<Int> {get}
 }
 protocol ProductsListViewModelOutPut{
-    var products:Observable<[Product]> {get}
+    var productsList:Observable<[Product]> {get}
 }
 typealias BindingProductsListViewModel = ProductsListViewModelInPut&ProductsListViewModelOutPut
 

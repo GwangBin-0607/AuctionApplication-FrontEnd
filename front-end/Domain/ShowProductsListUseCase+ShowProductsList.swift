@@ -10,12 +10,13 @@ import RxSwift
 
 extension ShowProductsListUseCase:ShowProductsList{
     
-    func request(lastNumber:Int) -> Observable<[Product]> {
-        return fetchingRepository.returnData(lastNumber: 1).map { Data in
+    func request(lastNumber:Int) -> Observable<Result<[Product],Error>> {
+        return fetchingRepository.returnData(lastNumber: 1)
+            .map { Data in
             guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
                 throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
             }
-            return response
-        }
+                return .success(response)
+            }.catch{.just(.failure($0))}
     }
 }

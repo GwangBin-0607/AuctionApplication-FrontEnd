@@ -8,16 +8,21 @@
 import Foundation
 import RxSwift
 
-class NetworkService{
+final class ProductsListAPI{
+    let url:URL
+    let urlRequest:URLRequest
     
+    init(ServerURL serverURL:String) {
+        url = URL(string:serverURL)!
+        urlRequest = URLRequest(url: url)
+    }
 }
-protocol APIService{
+protocol GetProductsList{
     func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void)
 }
-extension NetworkService:APIService{
+extension ProductsListAPI:GetProductsList{
     func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void) {
-        let request = URLRequest(url: URL(string:"http~~~~")!)
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             
             if let error = error {
                 onComplete(.failure(error))

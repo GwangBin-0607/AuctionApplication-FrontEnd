@@ -9,4 +9,8 @@ import Foundation
 
 struct Product:Decodable{
     let id:Int
+    let price:Int
+    let imageURL:String?
+    let title:String?
+    let checkUpDown:Bool?
 }

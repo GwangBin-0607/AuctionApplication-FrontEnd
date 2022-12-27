@@ -8,8 +8,8 @@
 import Foundation
 
 final class FetchingProductsListDataRepository{
-    let apiService:APIService
-    init(ApiService:APIService) {
-        apiService = ApiService
+    let apiService:GetProductsList
+    init(ApiService:GetProductsList) {
+        apiService = MockProductsListAPI()
     }
 }
