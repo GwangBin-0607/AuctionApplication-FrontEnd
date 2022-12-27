@@ -1,5 +1,5 @@
 import RxSwift
-class Mock_TCP:StreamingData{
+class Mock_TCP:SocketNetworkInterface{
     let controlSocketConnect: AnyObserver<isConnecting>
     
     let outputDataObserver: AnyObserver<Data?>

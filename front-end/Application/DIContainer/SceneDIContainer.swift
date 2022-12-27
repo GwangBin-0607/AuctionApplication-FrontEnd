@@ -4,7 +4,7 @@ class SceneDIContainer{
     private func returnHTTPService()->GetProductsList{
         ProductsListHTTP(ServerURL: "11111")
     }
-    private func returnStreamingService()->StreamingData{
+    private func returnStreamingService()->SocketNetworkInterface{
         SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
     private func returnProductListCollectionView(viewModel:ProductsListViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{

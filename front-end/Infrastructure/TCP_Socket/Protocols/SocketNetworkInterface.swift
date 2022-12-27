@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-protocol StreamingData{
+protocol SocketNetworkInterface{
     // MARK: INPUT
     var controlSocketConnect:AnyObserver<isConnecting>{get}
     var outputDataObserver:AnyObserver<Data?>{get}

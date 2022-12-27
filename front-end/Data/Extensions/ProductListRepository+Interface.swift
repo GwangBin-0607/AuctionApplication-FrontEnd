@@ -29,11 +29,11 @@ final class ProductListRepository:ProductListRepositoryInterface{
     let productListObservable:Observable<Result<[Product],Error>>
     let requestObserver:AnyObserver<Void>
     private let apiService:GetProductsList
-    private let streamingProductPrice:StreamingData
+    private let streamingProductPrice:SocketNetworkInterface
     private let disposeBag:DisposeBag
     private let productListState:ProductListState
     var startTime:CFAbsoluteTime!
-    init(ApiService:GetProductsList,StreamingService:StreamingData) {
+    init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface) {
         print("Repo Init")
         productListState = ProductListState()
         disposeBag = DisposeBag()

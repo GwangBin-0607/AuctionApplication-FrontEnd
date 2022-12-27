@@ -5,7 +5,7 @@ enum isConnecting {
     case connect
     case disconnect
 }
-class SocketNetwork: NSObject,StreamingData  {
+class SocketNetwork: NSObject,SocketNetworkInterface  {
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     let outputDataObserver: AnyObserver<Data?>

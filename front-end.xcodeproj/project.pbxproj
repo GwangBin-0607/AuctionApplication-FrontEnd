@@ -43,14 +43,15 @@
 		888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D2D292F44E100784E46 /* Coordinator.swift */; };
 		888B4D30292F453B00784E46 /* ProductListViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */; };
 		888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */; };
-		8897C45A292CC09300823980 /* StreamingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C459292CC09200823980 /* StreamingData.swift */; };
-		8897C45E292CC0CB00823980 /* SocketNetwork+StreamingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45D292CC0CB00823980 /* SocketNetwork+StreamingData.swift */; };
+		8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C459292CC09200823980 /* SocketNetworkInterface.swift */; };
+		8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */; };
 		8897C462292CC22100823980 /* StreamPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C461292CC22100823980 /* StreamPrice.swift */; };
 		8897C46D292CC8D300823980 /* GetProductsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C46C292CC8D300823980 /* GetProductsList.swift */; };
 		889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889CCD6F29139100008D1E2F /* ProductListCollectionViewCell.swift */; };
 		889CCD7229139B65008D1E2F /* FetchingProductsListTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 889CCD7129139B65008D1E2F /* FetchingProductsListTestData.json */; };
 		889CCD7429139BC3008D1E2F /* MockProductsListAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889CCD7329139BC3008D1E2F /* MockProductsListAPI.swift */; };
 		889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889EE5DB290A41760041CC88 /* ProductsListAPI+GetProductsList.swift */; };
+		88A7FF49295B163200F2E9CD /* NameSpaceSocketInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A7FF48295B163200F2E9CD /* NameSpaceSocketInterface.swift */; };
 		88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */; };
 		88BF04C129557CDB001F7725 /* ProductListUsecaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C029557CDB001F7725 /* ProductListUsecaseInterface.swift */; };
 		88BF04C329557D9E001F7725 /* Mock_TCP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C229557D9E001F7725 /* Mock_TCP.swift */; };
@@ -127,8 +128,8 @@
 		888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewCoordinator.swift; sourceTree = "<group>"; };
 		888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewCoordinator.swift; sourceTree = "<group>"; };
 		889532C828E5833F00C3293F /* DEBUG_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_Configuration.xcconfig; sourceTree = "<group>"; };
-		8897C459292CC09200823980 /* StreamingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingData.swift; sourceTree = "<group>"; };
-		8897C45D292CC0CB00823980 /* SocketNetwork+StreamingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+StreamingData.swift"; sourceTree = "<group>"; };
+		8897C459292CC09200823980 /* SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketNetworkInterface.swift; sourceTree = "<group>"; };
+		8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		8897C461292CC22100823980 /* StreamPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPrice.swift; sourceTree = "<group>"; };
 		8897C46C292CC8D300823980 /* GetProductsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProductsList.swift; sourceTree = "<group>"; };
 		889CCD6F29139100008D1E2F /* ProductListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -136,6 +137,7 @@
 		889CCD7329139BC3008D1E2F /* MockProductsListAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProductsListAPI.swift; sourceTree = "<group>"; };
 		889EE5DB290A41760041CC88 /* ProductsListAPI+GetProductsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductsListAPI+GetProductsList.swift"; sourceTree = "<group>"; };
 		88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release_Configuration.xcconfig; sourceTree = "<group>"; };
+		88A7FF48295B163200F2E9CD /* NameSpaceSocketInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameSpaceSocketInterface.swift; sourceTree = "<group>"; };
 		88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
 		88BF04C029557CDB001F7725 /* ProductListUsecaseInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListUsecaseInterface.swift; sourceTree = "<group>"; };
 		88BF04C229557D9E001F7725 /* Mock_TCP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock_TCP.swift; sourceTree = "<group>"; };
@@ -491,7 +493,8 @@
 		8897C458292CC07F00823980 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				8897C459292CC09200823980 /* StreamingData.swift */,
+				8897C459292CC09200823980 /* SocketNetworkInterface.swift */,
+				88A7FF48295B163200F2E9CD /* NameSpaceSocketInterface.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -499,7 +502,7 @@
 		8897C45C292CC0B500823980 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8897C45D292CC0CB00823980 /* SocketNetwork+StreamingData.swift */,
+				8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -836,6 +839,7 @@
 				8887D1542935A6E5005DA3C6 /* TransitioningViewController.swift in Sources */,
 				8870DCA528E5701E005328C0 /* ViewController.swift in Sources */,
 				8897C46D292CC8D300823980 /* GetProductsList.swift in Sources */,
+				88A7FF49295B163200F2E9CD /* NameSpaceSocketInterface.swift in Sources */,
 				887D549D295303DA00DA2F15 /* ProductListUsecase+Interface.swift in Sources */,
 				8874F4CC29373CD7003981C3 /* RequestImageCell.swift in Sources */,
 				88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */,
@@ -852,12 +856,12 @@
 				888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */,
 				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */,
-				8897C45A292CC09300823980 /* StreamingData.swift in Sources */,
+				8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */,
 				8878025929434BF0009F4F9A /* ProductImageRepositoryInterface.swift in Sources */,
 				8887D1512935A65C005DA3C6 /* MainContainerViewController.swift in Sources */,
 				8878025729434399009F4F9A /* ProductImageRepository+Interface.swift in Sources */,
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
-				8897C45E292CC0CB00823980 /* SocketNetwork+StreamingData.swift in Sources */,
+				8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */,
 				888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */,
 				8870DCA128E5701E005328C0 /* AppDelegate.swift in Sources */,
 				8887D15D2936223F005DA3C6 /* TransitionDetailProductViewController.swift in Sources */,
