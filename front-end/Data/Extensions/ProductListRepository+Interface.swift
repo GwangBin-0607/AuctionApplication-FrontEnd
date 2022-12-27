@@ -16,6 +16,9 @@ extension ProductListRepository{
         return streamingProductPrice.isSocketConnect
     }
 }
+class ProductListState{
+    var num = 1
+}
 
 final class ProductListRepository:ProductListRepositoryInterface{
     private enum TransferError:Error{
@@ -24,27 +27,29 @@ final class ProductListRepository:ProductListRepositoryInterface{
     }
     //MARK: OUTPUT
     let productListObservable:Observable<Result<[Product],Error>>
-    let requestObserver:AnyObserver<Int>
+    let requestObserver:AnyObserver<Void>
     private let apiService:GetProductsList
     private let streamingProductPrice:StreamingData
     private let disposeBag:DisposeBag
+    private let productListState:ProductListState
+    var startTime:CFAbsoluteTime!
     init(ApiService:GetProductsList,StreamingService:StreamingData) {
         print("Repo Init")
+        productListState = ProductListState()
         disposeBag = DisposeBag()
         apiService = ApiService
         streamingProductPrice = StreamingService
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
         let resultProductObserver = resultProductSubject.asObserver()
         productListObservable = resultProductSubject.asObservable()
-        let requestSubject = PublishSubject<Int>()
+        let requestSubject = PublishSubject<Void>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
-        
         requestObservable
             .withUnretained(self)
             .flatMap({
-                owner,num in
-                owner.transferDataToProductList(lastNumber: num)
+                owner,_ in
+                owner.transferDataToProductList()
                 
             })
             .withUnretained(self)
@@ -60,7 +65,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 switch result {
                 case .success(_):
                     resultProductObserver.onNext(result)
-                    Owner.streamingProductPrice.controlSocketConnect.onNext(isConnecting.connect)
                 case .failure(_):
                     resultProductObserver.onNext(result)
                 }
@@ -110,7 +114,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
         return .success(response)
     }
     func test_Add(){
-        requestObserver.onNext(2)
+        requestObserver.onNext(())
     }
     private func changeProductPrice(before:inout [Product],after:[StreamPrice]){
         
@@ -124,28 +128,16 @@ final class ProductListRepository:ProductListRepositoryInterface{
             
         }
     }
-    private func test_changeProductPrice(before:inout [Product],after:inout [StreamPrice]){
-        for num in 0..<after.count{
-            let random = Int.random(in: 0..<50000)
-            after[num].product_price = random
-        }
-        for i in 0..<after.count{
-            for j in 0..<before.count{
-                
-                if(after[i].product_id == before[j].product_id && after[i].product_price != before[j].product_price){
-                    before[j].product_price = after[i].product_price
-                }
-            }
-            
-        }
-    }
 }
 extension ProductListRepository{
-    private func returnData(lastNumber:Int) -> Observable<Data> {
+    private func returnData() -> Observable<Data> {
         return Observable.create { [weak self] observer in
+            let lastNumber = self?.productListState.num
+            
             self?.apiService.getProductData(lastNumber:lastNumber) { result in
                 switch result {
                 case let .success(data):
+                    self?.productListState.num += 1
                     observer.onNext(data)
                     observer.onCompleted()
                 case let .failure(error):
@@ -161,8 +153,8 @@ extension ProductListRepository{
         array.append(contentsOf:addArray)
     }
     
-    private func transferDataToProductList(lastNumber: Int) -> Observable<Result<[Product],Error>>{
-        returnData(lastNumber: lastNumber).map { Data in
+    private func transferDataToProductList() -> Observable<Result<[Product],Error>>{
+        returnData().map { Data in
             guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
                 throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
             }

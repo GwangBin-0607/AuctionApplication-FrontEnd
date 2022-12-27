@@ -10,16 +10,15 @@ import RxSwift
 
 final class ProductsListHTTP{
     private let url:URL
-    private let urlRequest:URLRequest
     
     init(ServerURL serverURL:String) {
         url = URL(string:serverURL)!
-        urlRequest = URLRequest(url: url)
     }
 }
 extension ProductsListHTTP:GetProductsList{
-    func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(lastNumber:Int?,onComplete: @escaping (Result<Data, Error>) -> Void) {
         print("====//")
+        let urlRequest = URLRequest(url: url)
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 onComplete(.failure(error))

@@ -5,7 +5,7 @@ enum isConnecting {
     case connect
     case disconnect
 }
-final class SocketNetwork: NSObject,StreamingData  {
+class SocketNetwork: NSObject,StreamingData  {
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     let outputDataObserver: AnyObserver<Data?>
@@ -24,6 +24,7 @@ final class SocketNetwork: NSObject,StreamingData  {
     private let portNumber:Int
     private var shouldKeeping = true
     private let disposeBag:DisposeBag
+    private var currentRunloop:RunLoop?
     
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
@@ -69,6 +70,8 @@ final class SocketNetwork: NSObject,StreamingData  {
                 owner.outputStream?.write(buffer, maxLength: data.count)
             }
         }).disposed(by: disposeBag)
+        
+        connect()
     }
     
     private func connect() {
@@ -80,14 +83,18 @@ final class SocketNetwork: NSObject,StreamingData  {
     private func disconnect(){
         shouldKeeping = false
         closeStream()
+        removeFromThread()
     }
     private func reconnect(){
         shouldKeeping = true
         connect()
     }
     private func removeFromThread(){
-        self.inputStream?.remove(from:.current, forMode: .default)
-        self.outputStream?.remove(from: .current, forMode: .default)
+        guard let currentRunloop = currentRunloop else{
+            return
+        }
+        self.inputStream?.remove(from:currentRunloop, forMode: .default)
+        self.outputStream?.remove(from:currentRunloop, forMode: .default)
     }
     private func closeStream(){
         self.inputStream?.close()
@@ -105,6 +112,7 @@ extension SocketNetwork:StreamDelegate{
             isSocketConnected.onNext(isConnecting.connect)
             print("Stream opened")
         case .hasBytesAvailable:
+            print("hasBytesAvailable")
             if aStream == inputStream {
                 var dataBuffer = Array<UInt8>(repeating: 0, count: 1024)
                 var len: Int
@@ -117,12 +125,11 @@ extension SocketNetwork:StreamDelegate{
         case .hasSpaceAvailable:
             print("Stream has space available now")
         case .errorOccurred:
-            print("---------------")
-            isSocketConnected.onNext(isConnecting.disconnect)
             print("\(aStream.streamError?.localizedDescription ?? "")")
         case .endEncountered:
+            print("End counter")
             isSocketConnected.onNext(isConnecting.disconnect)
-            removeFromThread()
+            disconnect()
         default:
             print("Unknown event")
         }
@@ -130,7 +137,7 @@ extension SocketNetwork:StreamDelegate{
 }
 extension SocketNetwork:URLSessionStreamDelegate{
     func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream) {
-        print(Thread.current)
+        self.currentRunloop = RunLoop.current
         self.inputStream = inputStream
         self.outputStream = outputStream
         self.inputStream?.delegate = self

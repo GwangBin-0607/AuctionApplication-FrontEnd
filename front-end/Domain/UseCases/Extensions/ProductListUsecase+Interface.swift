@@ -7,7 +7,7 @@ class ProductListUsecase:ProductListUsecaseInterface{
     func returnProductList() -> Observable<Result<[Product], Error>> {
         repo.productListObservable
     }
-    func returnRequestObserver() -> AnyObserver<Int> {
+    func returnRequestObserver() -> AnyObserver<Void> {
         repo.requestObserver
     }
     func returnObservableStreamState() -> Observable<isConnecting> {

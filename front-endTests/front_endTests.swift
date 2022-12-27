@@ -14,7 +14,7 @@ class front_endTests: XCTestCase {
     var mock:ProductListRepository!
     override func setUpWithError() throws {
         
-        mock = ProductListRepository(ApiService: ProductsListHTTP(ServerURL: "localhost:3100"), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
+        mock = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
         try super.setUpWithError()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -40,19 +40,20 @@ class front_endTests: XCTestCase {
         mock.productListObservable.subscribe(onNext: {
             result in
             print("======")
-            promise.fulfill()
             switch result{
-            case .success(let list):
+            case .success(_):
                 break;
-            case .failure(let error):
+            case .failure(_):
                 break;
             }
         })
         mock.observableSteamState().subscribe(onNext: {
             isConnecting in
-            
+            self.mock.buyProduct(output: StreamPrice(product_id: 100, product_price: 1000))
             print(isConnecting)
+            promise.fulfill()
         })
+//        mock.buyProduct(output: StreamPrice(product_id: 100, product_price: 1000))
         mock.requestObserver.onNext(1)
         
         wait(for: [promise], timeout: 15)

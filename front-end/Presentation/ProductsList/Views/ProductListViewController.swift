@@ -8,7 +8,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
-    let testButton=UIButton()
     init(viewModel:ProductsListViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
@@ -23,8 +22,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
-        self.viewModel.requestProductsList.onNext(1)
-        testButtonSet()
+        self.viewModel.requestProductsList.onNext(())
         //        setCADisplay()
     }
     //    func setCADisplay(){
@@ -42,21 +40,12 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     //        print(tum)
     //        print("======================")
     //    }
-    func testButtonSet(){
-        self.view.addSubview(testButton)
-        testButton.backgroundColor = .yellow
-        testButton.frame = CGRect(x: 50, y: 50, width: 200, height: 200)
-        testButton.addTarget(self, action: #selector(testAction), for: .touchUpInside)
-    }
-    @objc func testAction(){
-        print("tap")
-//        viewModel.testFunction()
-    }
     private func bindingViewModel(){
         viewModel.responseImage.subscribe(onNext: {
             response in
             response.setImage()
         }).disposed(by: disposeBag)
+        
         viewModel.productsList.bind(to: collectionView.rx.items(dataSource: returnDatasource())).disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {

@@ -1,7 +1,7 @@
 import RxSwift
 protocol ProductListRepositoryInterface{
     var productListObservable:Observable<Result<[Product],Error>>{get}
-    var requestObserver:AnyObserver<Int>{get}
+    var requestObserver:AnyObserver<Void>{get}
     func streamState(state: isConnecting)
     func observableSteamState() -> Observable<isConnecting>
     func buyProduct(output productPrice:StreamPrice)

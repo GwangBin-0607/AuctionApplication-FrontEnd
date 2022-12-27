@@ -14,13 +14,13 @@ final class ProductListViewModel:ProductsListViewModelInterface{
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
-    let requestProductsList: AnyObserver<Int>
+    let requestProductsList: AnyObserver<Void>
     let requestImage: AnyObserver<RequestImage>
     let responseImage: Observable<ResponseImage>
+    let socketState: Observable<isConnecting>
     private let products = BehaviorSubject<[Product]>(value: [])
     private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
     init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageUsecaseInterface) {
-        print("INIT")
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
@@ -37,6 +37,7 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
+        socketState = usecase.returnObservableStreamState()
         
         requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).withUnretained(self).subscribe(onNext: {
             owner,request in
@@ -66,9 +67,7 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         }).disposed(by: disposeBag)
         
     }
-    deinit {
-        print("TT Viewmodel DEINIT")
-    }
+
 }
 extension ProductListViewModel{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
