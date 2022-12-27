@@ -19,8 +19,8 @@ final class ProductsListHTTP{
 }
 extension ProductsListHTTP:GetProductsList{
     func getProductData(lastNumber:Int,onComplete: @escaping (Result<Data, Error>) -> Void) {
+        print("====//")
         URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            
             if let error = error {
                 onComplete(.failure(error))
                 return
@@ -34,7 +34,7 @@ extension ProductsListHTTP:GetProductsList{
             onComplete(.success(data))
             
             
-        }
+        }.resume()
    }
     
     

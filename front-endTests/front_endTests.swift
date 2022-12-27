@@ -39,11 +39,13 @@ class front_endTests: XCTestCase {
         let promise = expectation(description: "Promise")
         mock.productListObservable.subscribe(onNext: {
             result in
+            print("======")
+            promise.fulfill()
             switch result{
             case .success(let list):
-                print(list)
+                break;
             case .failure(let error):
-                print(error)
+                break;
             }
         })
         mock.observableSteamState().subscribe(onNext: {
@@ -58,24 +60,6 @@ class front_endTests: XCTestCase {
     }
     func testRepository(){
         print("1111")
-        let promise = expectation(description: "Promise")
-        wait(for: [promise], timeout: 15)
-        let httpService = MockProductsListAPI()
-        let tcpService = Mock_TCP()
-        let repo = Test_ProductListRepository(ApiService: httpService, StreamingService: tcpService)
-        repo.requestObserver.onNext(1)
-        repo.productListObservable.subscribe(onNext: {
-            result in
-            
-            switch result {
-            case .success(let list):
-                print(list)
-            case .failure(let error):
-                print(error)
-            case .none:
-                break;
-            }
-        })
         
     }
     

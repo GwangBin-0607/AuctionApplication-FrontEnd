@@ -5,7 +5,7 @@ class SceneDIContainer{
         ProductsListHTTP(ServerURL: "11111")
     }
     private func returnStreamingService()->StreamingData{
-        SocketNetwork(hostName: "localhost", portNumber: 8100)
+        SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
     private func returnProductListCollectionView(viewModel:ProductsListViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
@@ -29,7 +29,7 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        ProductListRepository(ApiService: returnHTTPService(), StreamingService: returnStreamingService())
+        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService())
     }
     
 }

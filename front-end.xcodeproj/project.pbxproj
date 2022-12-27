@@ -471,10 +471,7 @@
 		889532C728E57C7300C3293F /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */,
-				881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */,
-				889CCD7129139B65008D1E2F /* FetchingProductsListTestData.json */,
-				88769C2C2939074100FDA06A /* ImageTest.json */,
+				88A7FF47295ABE3C00F2E9CD /* MockData */,
 				8897C467292CC3F300823980 /* HTTP */,
 				8897C457292CC07200823980 /* TCP_Socket */,
 			);
@@ -550,6 +547,17 @@
 				88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */,
 			);
 			path = DIContainer;
+			sourceTree = "<group>";
+		};
+		88A7FF47295ABE3C00F2E9CD /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */,
+				881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */,
+				889CCD7129139B65008D1E2F /* FetchingProductsListTestData.json */,
+				88769C2C2939074100FDA06A /* ImageTest.json */,
+			);
+			path = MockData;
 			sourceTree = "<group>";
 		};
 		88BF04C6295581F5001F7725 /* Extensions */ = {

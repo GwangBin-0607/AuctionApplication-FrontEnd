@@ -28,6 +28,8 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let apiService:GetProductsList
     private let streamingProductPrice:StreamingData
     private let disposeBag:DisposeBag
+    //Time Check
+    var startTime:CFAbsoluteTime!
     init(ApiService:GetProductsList,StreamingService:StreamingData) {
         print("Repo Init")
         disposeBag = DisposeBag()
@@ -39,6 +41,18 @@ final class ProductListRepository:ProductListRepositoryInterface{
         let requestSubject = PublishSubject<Int>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
+        streamingProductPrice.isSocketConnect.subscribe(onNext: {
+            state in
+            switch state{
+            case .connect:
+                print("=================Start Time================")
+                self.startTime = CFAbsoluteTimeGetCurrent()
+            case .disconnect:
+                let endTime = CFAbsoluteTimeGetCurrent()
+                print("=================Finish Time================")
+                print(endTime-self.startTime)
+            }
+        })
         
         requestObservable
             .withUnretained(self)
@@ -172,7 +186,14 @@ extension ProductListRepository{
     
 }
 extension ProductListRepository{
-    func buyProduct(Product: Product) {
-        
+    func buyProduct(output productPrice:StreamPrice) {
+        let jsonEncoder = JSONEncoder()
+        do{
+            let data = try jsonEncoder.encode(productPrice)
+            streamingProductPrice.outputDataObserver.onNext(data)
+        }catch{
+            print(error)
+            streamingProductPrice.outputDataObserver.onNext(nil)
+        }
     }
 }
