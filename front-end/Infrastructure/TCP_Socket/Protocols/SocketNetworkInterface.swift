@@ -13,7 +13,7 @@ protocol SocketNetworkInterface{
     var controlSocketConnect:AnyObserver<isConnecting>{get}
     // MARK: OUTPUT
     var inputDataObservable:Observable<Result<Data,Error>>{get}
-    var isSocketConnect: Observable<isConnecting>{get}
+    var isSocketConnect: Observable<SocketState>{get}
     func sendData(data:Data,completion:@escaping (Error?) -> Void)
     
 }

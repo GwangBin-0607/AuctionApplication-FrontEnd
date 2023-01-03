@@ -12,7 +12,7 @@ extension ProductListRepository{
         streamingProductPrice.controlSocketConnect.onNext(state)
     }
     
-    func observableSteamState() -> Observable<isConnecting> {
+    func observableSteamState() -> Observable<SocketState> {
         return streamingProductPrice.isSocketConnect
     }
 }
@@ -71,7 +71,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
         
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
-            print("======")
+            print("===a===")
             let (owner, data) = arg1
             switch data {
             case .success(let data):

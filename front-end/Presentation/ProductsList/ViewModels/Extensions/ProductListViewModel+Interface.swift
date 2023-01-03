@@ -17,7 +17,7 @@ final class ProductListViewModel:ProductsListViewModelInterface{
     let requestProductsList: AnyObserver<Void>
     let requestImage: AnyObserver<RequestImage>
     let responseImage: Observable<ResponseImage>
-    let socketState: Observable<isConnecting>
+    let socketState: Observable<SocketState>
     private let products = BehaviorSubject<[Product]>(value: [])
     private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
     init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageUsecaseInterface) {

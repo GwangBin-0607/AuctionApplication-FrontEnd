@@ -15,7 +15,7 @@ protocol ProductsListViewModelInterface{
     func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
     var responseImage:Observable<ResponseImage>{get}
     var requestImage:AnyObserver<RequestImage>{get}
-    var socketState:Observable<isConnecting>{get}
+    var socketState:Observable<SocketState>{get}
     func controlSocketState(state:isConnecting)
 }
 

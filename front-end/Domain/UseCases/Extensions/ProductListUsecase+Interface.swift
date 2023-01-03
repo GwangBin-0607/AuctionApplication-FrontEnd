@@ -10,7 +10,7 @@ class ProductListUsecase:ProductListUsecaseInterface{
     func returnRequestObserver() -> AnyObserver<Void> {
         repo.requestObserver
     }
-    func returnObservableStreamState() -> Observable<isConnecting> {
+    func returnObservableStreamState() -> Observable<SocketState> {
         repo.observableSteamState()
     }
     func returnControlStreamState(state: isConnecting) {

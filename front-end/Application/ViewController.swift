@@ -73,7 +73,7 @@ class ViewController: UIViewController {
         structMain = structReceive
         structMain?.num = 100
     }
-    let repo = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
+//    let repo = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
     let request = PublishSubject<String>()
     lazy var ob = self.request.asObserver()
     let httpService = MockProductsListAPI()
@@ -98,27 +98,28 @@ class ViewController: UIViewController {
 //        self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){
+//        let d = SocketNWConnection(Host: "localhost", Port: 3200)
 //        repo.streamState(state: .connect)
-        let subject = PublishSubject<Void>()
-        let observable = subject.asObservable()
-        let observer = subject.asObserver()
-        let ob = Observable<Int>.create { observer in
-            observer.onError(NSError(domain: "22", code: -1))
-            return Disposables.create()
-        }.catch{_ in .just(1)}
-        let obb = PublishSubject<Int>()
-        obb.flatMap { num in
-            return ob
-        }.subscribe { number in
-            print("Next \(number)")
-        } onError: { err in
-            print("ERROR \(err)")
-        } onCompleted: {
-            print("Complete")
-        } onDisposed: {
-            print("Disposed")
-        }
-        obb.onNext(123)
+//        let subject = PublishSubject<Void>()
+//        let observable = subject.asObservable()
+//        let observer = subject.asObserver()
+//        let ob = Observable<Int>.create { observer in
+//            observer.onError(NSError(domain: "22", code: -1))
+//            return Disposables.create()
+//        }.catch{_ in .just(1)}
+//        let obb = PublishSubject<Int>()
+//        obb.flatMap { num in
+//            return ob
+//        }.subscribe { number in
+//            print("Next \(number)")
+//        } onError: { err in
+//            print("ERROR \(err)")
+//        } onCompleted: {
+//            print("Complete")
+//        } onDisposed: {
+//            print("Disposed")
+//        }
+//        obb.onNext(123)
 
     }
     

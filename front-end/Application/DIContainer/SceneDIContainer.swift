@@ -4,6 +4,9 @@ class SceneDIContainer{
     private func returnHTTPService()->GetProductsList{
         ProductsListHTTP(ServerURL: "11111")
     }
+    private func returnSocketNWConnection()->SocketNetworkInterface{
+        SocketNWConnection(Host: "localhost", Port: 3200)
+    }
     private func returnStreamingService()->SocketNetworkInterface{
         SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
@@ -29,7 +32,7 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService())
+        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnSocketNWConnection())
     }
     
 }
