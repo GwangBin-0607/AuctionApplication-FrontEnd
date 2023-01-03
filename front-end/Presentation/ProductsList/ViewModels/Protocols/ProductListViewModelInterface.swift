@@ -16,6 +16,7 @@ protocol ProductsListViewModelInterface{
     var responseImage:Observable<ResponseImage>{get}
     var requestImage:AnyObserver<RequestImage>{get}
     var socketState:Observable<isConnecting>{get}
+    func controlSocketState(state:isConnecting)
 }
 
 

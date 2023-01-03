@@ -11,8 +11,9 @@ import RxSwift
 protocol SocketNetworkInterface{
     // MARK: INPUT
     var controlSocketConnect:AnyObserver<isConnecting>{get}
-    var outputDataObserver:AnyObserver<Data?>{get}
     // MARK: OUTPUT
-    var inputDataObservable:Observable<Data>{get}
+    var inputDataObservable:Observable<Result<Data,Error>>{get}
     var isSocketConnect: Observable<isConnecting>{get}
+    func sendData(data:Data,completion:@escaping (Error?) -> Void)
+    
 }

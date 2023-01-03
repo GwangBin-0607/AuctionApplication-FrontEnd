@@ -32,7 +32,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let streamingProductPrice:SocketNetworkInterface
     private let disposeBag:DisposeBag
     private let productListState:ProductListState
-    var startTime:CFAbsoluteTime!
     init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface) {
         print("Repo Init")
         productListState = ProductListState()
@@ -74,9 +73,15 @@ final class ProductListRepository:ProductListRepositoryInterface{
             (arg1,list) in
             print("======")
             let (owner, data) = arg1
-            let streamProductPrice = owner.decodeProductPriceData(data: data)
-            let result = owner.sumResult(before: list, after: streamProductPrice)
-            return result
+            switch data {
+            case .success(let data):
+                let streamProductPrice = owner.decodeProductPriceData(data: data)
+                let result = owner.sumResult(before: list, after: streamProductPrice)
+                return result
+            case .failure(let error):
+                return .failure(error)
+            }
+
         }).subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
     }
@@ -112,9 +117,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
             return .failure(ProductListRepository.TransferError.DecodeError)
         }
         return .success(response)
-    }
-    func test_Add(){
-        requestObserver.onNext(())
     }
     private func changeProductPrice(before:inout [Product],after:[StreamPrice]){
         
@@ -164,14 +166,27 @@ extension ProductListRepository{
     
 }
 extension ProductListRepository{
-    func buyProduct(output productPrice:StreamPrice) {
-        let jsonEncoder = JSONEncoder()
-        do{
-            let data = try jsonEncoder.encode(productPrice)
-            streamingProductPrice.outputDataObserver.onNext(data)
-        }catch{
-            print(error)
-            streamingProductPrice.outputDataObserver.onNext(nil)
+    func buyProduct(output productPrice:StreamPrice)->Observable<Error?>{
+        Observable<Error?>.create { observer in
+            let jsonEncoder = JSONEncoder()
+            do{
+                let data = try jsonEncoder.encode(productPrice)
+                self.streamingProductPrice.sendData(data: data, completion: {
+                    err in
+                    if let err = err{
+                        observer.onNext(err)
+                        observer.onCompleted()
+                    }else{
+                        observer.onNext(nil)
+                        observer.onCompleted()
+                    }
+                })
+            }catch{
+                print(error)
+                observer.onNext(error)
+                observer.onCompleted()
+            }
+            return Disposables.create()
         }
     }
 }

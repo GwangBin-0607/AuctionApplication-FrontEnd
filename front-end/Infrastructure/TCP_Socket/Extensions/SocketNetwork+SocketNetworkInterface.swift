@@ -7,16 +7,17 @@ enum isConnecting {
 }
 class SocketNetwork: NSObject,SocketNetworkInterface  {
     // MARK: INPUT
+    private enum SocketOutputError:Error{
+        case OutputError
+    }
     let controlSocketConnect: AnyObserver<isConnecting>
-    let outputDataObserver: AnyObserver<Data?>
     // MARK: OUTPUT
     let isSocketConnect: Observable<isConnecting>
-    let inputDataObservable: Observable<Data>
+    let inputDataObservable: Observable<Result<Data,Error>>
     
     
     private let isSocketConnected:AnyObserver<isConnecting>
-    private let outputDataObservable:Observable<Data?>
-    private let inputDataObserver:AnyObserver<Data>
+    private let inputDataObserver:AnyObserver<Result<Data,Error>>
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
     private let urlSession:URLSession
@@ -29,6 +30,7 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
     init(hostName: String, portNumber: Int) {
+        print("Socket Init")
         self.hostName = hostName
         self.portNumber = portNumber
         self.urlSession = URLSession(configuration: URLSessionConfiguration.default)
@@ -36,15 +38,12 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
         let connected = PublishSubject<isConnecting>()
-        let inputPricing = PublishSubject<Data>()
-        let outputPricing = PublishSubject<Data?>()
+        let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
         isSocketConnected = connected.asObserver()
         inputDataObservable = inputPricing.asObservable()
-        outputDataObservable = outputPricing.asObservable()
         inputDataObserver = inputPricing.asObserver()
-        outputDataObserver = outputPricing.asObserver()
         super.init()
         
         // MARK: Connect Or Disconnect Server
@@ -59,49 +58,68 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
             }
         }).disposed(by: disposeBag)
         
-        // MARK: Write Output Stream
-        outputDataObservable.observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background)).withUnretained(self).subscribe(onNext: {
-            owner,data in
-            guard let data = data else{
-                return
-            }
-            let _ = data.withUnsafeBytes { pointer in
-                let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-                owner.outputStream?.write(buffer, maxLength: data.count)
-            }
-        }).disposed(by: disposeBag)
         
-        connect()
+//        connect()
     }
-    
     private func connect() {
         let streamTask = urlSession.streamTask(withHostName: self.hostName, port: self.portNumber)
         streamTask.delegate = self
         streamTask.captureStreams()
         streamTask.resume()
+        switch  streamTask.state {
+        case .running:
+            print("runnig")
+        case .completed:
+            print("complete")
+        default:
+            print("default")
+        }
     }
     private func disconnect(){
         shouldKeeping = false
         closeStream()
         removeFromThread()
     }
-    private func reconnect(){
-        shouldKeeping = true
-        connect()
+    var timer:DispatchSourceTimer!
+    func reconnect(){
+        print("reconnect")
+        timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
+        timer.setEventHandler(handler: {
+            [weak self] in
+            if self?.inputStream?.streamStatus == .open,self?.outputStream?.streamStatus == .open,self?.shouldKeeping == true{
+                self?.timer.cancel()
+            }else{
+                self?.shouldKeeping = true
+                self?.connect()
+            }
+        })
+        timer.schedule(wallDeadline: .now()+1.0, repeating: 1.0)
+        timer.resume()
     }
     private func removeFromThread(){
         guard let currentRunloop = currentRunloop else{
             return
         }
-        self.inputStream?.remove(from:currentRunloop, forMode: .default)
-        self.outputStream?.remove(from:currentRunloop, forMode: .default)
+        inputStream?.remove(from:currentRunloop, forMode: .default)
+        outputStream?.remove(from:currentRunloop, forMode: .default)
     }
     private func closeStream(){
-        self.inputStream?.close()
-        self.outputStream?.close()
+        inputStream?.close()
+        outputStream?.close()
     }
     deinit {
         print("SOCKET DEINIT")
+    }
+    func sendData(data: Data, completion: @escaping (Error?) -> Void) {
+        data.withUnsafeBytes { pointer in
+            let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+            let result = outputStream?.write(buffer, maxLength: data.count)
+            if result == -1{
+                completion(SocketOutputError.OutputError)
+            }else{
+                completion(nil)
+            }
+        }
     }
     
 }
@@ -119,17 +137,22 @@ extension SocketNetwork:StreamDelegate{
                 len = (inputStream?.read(&dataBuffer, maxLength: 1024))!
                 if len > 0 {
                     let data = Data(bytes: &dataBuffer, count: len)
-                    inputDataObserver.onNext(data)
+                    inputDataObserver.onNext(.success(data))
                 }
             }
         case .hasSpaceAvailable:
             print("Stream has space available now")
         case .errorOccurred:
+            guard let error = aStream.streamError else{
+                return
+            }
+            inputDataObserver.onNext(.failure(error))
             print("\(aStream.streamError?.localizedDescription ?? "")")
         case .endEncountered:
             print("End counter")
             isSocketConnected.onNext(isConnecting.disconnect)
             disconnect()
+            reconnect()
         default:
             print("Unknown event")
         }
@@ -137,7 +160,7 @@ extension SocketNetwork:StreamDelegate{
 }
 extension SocketNetwork:URLSessionStreamDelegate{
     func urlSession(_ session: URLSession, streamTask: URLSessionStreamTask, didBecome inputStream: InputStream, outputStream: OutputStream) {
-        self.currentRunloop = RunLoop.current
+        currentRunloop = RunLoop.current
         self.inputStream = inputStream
         self.outputStream = outputStream
         self.inputStream?.delegate = self

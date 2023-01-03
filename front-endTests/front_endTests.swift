@@ -49,12 +49,13 @@ class front_endTests: XCTestCase {
         })
         mock.observableSteamState().subscribe(onNext: {
             isConnecting in
+            print("0000000")
             self.mock.buyProduct(output: StreamPrice(product_id: 100, product_price: 1000))
             print(isConnecting)
             promise.fulfill()
         })
 //        mock.buyProduct(output: StreamPrice(product_id: 100, product_price: 1000))
-        mock.requestObserver.onNext(1)
+        mock.requestObserver.onNext(())
         
         wait(for: [promise], timeout: 15)
         

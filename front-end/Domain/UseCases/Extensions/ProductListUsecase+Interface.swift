@@ -16,4 +16,7 @@ class ProductListUsecase:ProductListUsecaseInterface{
     func returnControlStreamState(state: isConnecting) {
         repo.streamState(state: state)
     }
+    deinit {
+        print("USECASE DEINIT")
+    }
 }

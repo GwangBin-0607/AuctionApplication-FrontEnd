@@ -67,6 +67,9 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         }).disposed(by: disposeBag)
         
     }
+    deinit {
+        print("VIEWMODEL DEINIT")
+    }
 
 }
 extension ProductListViewModel{
@@ -88,5 +91,10 @@ extension ProductListViewModel{
         }catch{
            return 0
         }
+    }
+}
+extension ProductListViewModel{
+    func controlSocketState(state: isConnecting) {
+        usecase.returnControlStreamState(state: state)
     }
 }

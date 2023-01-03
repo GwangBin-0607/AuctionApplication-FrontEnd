@@ -50,7 +50,9 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
             owner, indexpath in
-            owner.delegate?.presentDetailViewController()
+            owner.viewModel.controlSocketState(state: .disconnect)
+            owner.dismiss(animated: true)
+//            owner.delegate?.presentDetailViewController()
         }).disposed(by: disposeBag)
         
     }
