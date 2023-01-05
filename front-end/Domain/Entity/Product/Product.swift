@@ -12,10 +12,25 @@ struct Product:Decodable{
     static let productHeader:Int = 0
     let product_id:Int
     var product_price:Int
-    let imageURL:String?
-    let product_name:String?
-    let checkUpDown:Bool?
+    let imageURL:[Product_Images]
+    var mainImageURL:String?{
+        get{
+            if imageURL.isEmpty{
+                return nil
+            }else{
+                return imageURL[0].url
+            }
+        }
+    }
+    let product_name:String
+    var checkUpDown:Bool?
     var imageHeight:CGFloat?
+    enum CodingKeys:String,CodingKey{
+        case product_id
+        case product_price
+        case product_name
+        case imageURL = "Product_Images"
+    }
 }
 extension Product:IdentifiableType,Equatable{
     var identity: Int {

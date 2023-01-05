@@ -63,7 +63,6 @@ class ViewController: UIViewController {
         testNetwork()
     
     }
-    var pro:TestRepository!
     func testNetwork(){
 //        pro = TestRepository()
 //        pro.con.start()
@@ -73,19 +72,56 @@ class ViewController: UIViewController {
         structMain = structReceive
         structMain?.num = 100
     }
-//    let repo = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
+    let repo = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200, ProductListServiceState: ProductListServiceState()))
     let request = PublishSubject<String>()
     lazy var ob = self.request.asObserver()
     let httpService = MockProductsListAPI()
-    let t = TestRepository()
     func testMapFlatMap(){
     }
     func testThird(){
     
         
     }
+//    class TestRepository{
+//        let con = SocketNWConnection(Host: "localhost", Port: 3200)
+//        init() {
+//            con.inputDataObservable.subscribe(onNext: {
+//                result in
+//                switch result{
+//                case .success(let data):
+//                    let jsonDecode = JSONDecoder()
+//                    do{
+//                        let de = try jsonDecode.decode([StreamPrice].self, from: data)
+//                        print(de)
+//                    }catch{
+//                        print(error)
+//                    }
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            })
+//        }
+//        func sendData(ProductPrice:StreamPrice){
+//            let encode = JSONEncoder()
+//            do{
+//                let data = try encode.encode(ProductPrice)
+//                con.sendData(data: data, completion: {
+//                    error in
+//                    print(error)
+//                })
+//            }catch{
+//                print(error)
+//            }
+//        }
+//    }
+    
     @objc func action(){
-        t.sendData(ProductPrice: StreamPrice(product_id: 150, product_price: 200))
+        repo.buyProduct(output: StreamPrice(product_id: 150, product_price: 150)).subscribe(onNext: {
+            error in
+            print(error)
+        })
+
+//        t.sendData(ProductPrice: StreamPrice(product_id: 150, product_price: 200))
 //        repo.buyProduct(output: StreamPrice(product_id: 1500, product_price: 123123)).subscribe(onNext: {
 //            err in
 //            print(err)
@@ -98,7 +134,7 @@ class ViewController: UIViewController {
 //        self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){
-//        let d = SocketNWConnection(Host: "localhost", Port: 3200)
+
 //        repo.streamState(state: .connect)
 //        let subject = PublishSubject<Void>()
 //        let observable = subject.asObservable()

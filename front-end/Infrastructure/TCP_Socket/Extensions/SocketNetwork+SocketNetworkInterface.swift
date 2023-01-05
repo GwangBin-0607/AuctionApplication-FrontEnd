@@ -1,7 +1,6 @@
 import Foundation
 import RxSwift
-
-class SocketNetwork: NSObject,SocketNetworkInterface  {
+final class SocketNetwork: NSObject,SocketNetworkInterface  {
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     // MARK: OUTPUT
@@ -19,11 +18,13 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var shouldKeeping:Bool = false
     private let disposeBag:DisposeBag
     private var currentRunloop:RunLoop?
+    private let productListServiceState:StreamProductListServiceInterface
     
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
-    init(hostName: String, portNumber: Int) {
+    init(hostName: String, portNumber: Int,ProductListServiceState:StreamProductListServiceInterface) {
         print("Socket Init")
+        self.productListServiceState = ProductListServiceState
         self.hostName = hostName
         self.portNumber = portNumber
         self.urlSession = URLSession(configuration: URLSessionConfiguration.default)
@@ -48,7 +49,7 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
                 owner.connect()
             case .disconnect:
                 owner.disconnect{
-                    owner.isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: nil))
+                    owner.isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
                 }
             }
         }).disposed(by: disposeBag)
@@ -70,6 +71,7 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
         completion()
     }
     private var timer:DispatchSourceTimer!
+    private var repeatTime = 5.0
     private func start(){
         print("reconnect")
         timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
@@ -81,7 +83,7 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
                 self?.connect()
             }
         })
-        timer.schedule(wallDeadline: .now(), repeating: 5.0)
+        timer.schedule(wallDeadline: .now(), repeating: repeatTime)
         timer.resume()
     }
     private func removeFromThread(){
@@ -105,15 +107,25 @@ class SocketNetwork: NSObject,SocketNetworkInterface  {
     func sendData(data: Data, completion: @escaping (Error?) -> Void) {
         data.withUnsafeBytes { pointer in
             let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-            let result = outputStream?.write(buffer, maxLength: data.count)
-            if result == -1{
-                completion(SocketOutputError.OutputError)
-            }else{
+            if let result = outputStream?.write(buffer, maxLength: data.count),result != -1{
                 completion(nil)
+            }else{
+                completion(SocketOutputError.OutputError)
             }
         }
     }
-    
+    func updateStreamServiceState(){
+        if productListServiceState.isUpdated(){
+            let json:Dictionary<String,Int8> = ["pageNum":productListServiceState.getServiceState()]
+            let data = try! JSONSerialization.data(withJSONObject: json, options: [])
+            data.withUnsafeBytes { pointer in
+                let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                if let result = outputStream?.write(buffer, maxLength: data.count),result != -1{
+                    productListServiceState.updateStreamState()
+                }
+            }
+        }
+    }
 }
 extension SocketNetwork:StreamDelegate{
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
@@ -122,6 +134,7 @@ extension SocketNetwork:StreamDelegate{
             print("Open")
             isSocketConnected.onNext(SocketState(socketConnect: .connect, error: nil))
         case .hasBytesAvailable:
+            print("Has")
             if aStream == inputStream {
                 var dataBuffer = Array<UInt8>(repeating: 0, count: 1024)
                 var len: Int
@@ -139,7 +152,7 @@ extension SocketNetwork:StreamDelegate{
             }
             inputDataObserver.onNext(.failure(error))
         case .endEncountered:
-            isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.Encounter))
+            isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
             disconnect()
             start()
         default:

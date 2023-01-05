@@ -16,10 +16,6 @@ extension ProductListRepository{
         return streamingProductPrice.isSocketConnect
     }
 }
-class ProductListState{
-    var num = 1
-}
-
 final class ProductListRepository:ProductListRepositoryInterface{
     private enum TransferError:Error{
         case DecodeError
@@ -31,16 +27,15 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let apiService:GetProductsList
     private let streamingProductPrice:SocketNetworkInterface
     private let disposeBag:DisposeBag
-    private let productListState:ProductListState
     init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface) {
         print("Repo Init")
-        productListState = ProductListState()
         disposeBag = DisposeBag()
         apiService = ApiService
         streamingProductPrice = StreamingService
+        let queue = DispatchQueue(label: "testQueue")
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
         let resultProductObserver = resultProductSubject.asObserver()
-        productListObservable = resultProductSubject.asObservable()
+        productListObservable = resultProductSubject.asObservable().observe(on: SerialDispatchQueueScheduler(queue: queue, internalSerialQueueName: "a"))
         let requestSubject = PublishSubject<Void>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
@@ -53,25 +48,15 @@ final class ProductListRepository:ProductListRepositoryInterface{
             })
             .withUnretained(self)
             .scan(Result<[Product],Error>.success([]), accumulator: {
-                aaa,arg1 in
-                let (owner,b) = arg1
-                let re = owner.addResult(before: aaa, after: b)
+                seed,arg1 in
+                let (owner,newValue) = arg1
+                let re = owner.addResult(before: seed, after: newValue)
                 return re
             })
-            .withUnretained(self)
-            .subscribe(onNext: {
-                Owner,result in
-                switch result {
-                case .success(_):
-                    resultProductObserver.onNext(result)
-                case .failure(_):
-                    resultProductObserver.onNext(result)
-                }
-            }).disposed(by: disposeBag)
+            .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
         
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
-            print("===a===")
             let (owner, data) = arg1
             switch data {
             case .success(let data):
@@ -81,7 +66,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
             case .failure(let error):
                 return .failure(error)
             }
-
+            
         }).subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
     }
@@ -93,7 +78,9 @@ final class ProductListRepository:ProductListRepositoryInterface{
         case (.success(var beforeArray),.success(let afterArray)):
             addArray(array: &beforeArray, addArray: afterArray)
             return .success(beforeArray)
-        case (.failure(let err), _):
+        case (.failure(_),.success(let array)):
+            return .success(array)
+        case (.failure(let err),.failure(_)):
             return .failure(err)
         case (_, .failure(let err)):
             return .failure(err)
@@ -134,12 +121,10 @@ final class ProductListRepository:ProductListRepositoryInterface{
 extension ProductListRepository{
     private func returnData() -> Observable<Data> {
         return Observable.create { [weak self] observer in
-            let lastNumber = self?.productListState.num
             
-            self?.apiService.getProductData(lastNumber:lastNumber) { result in
+            self?.apiService.getProductData() { result in
                 switch result {
                 case let .success(data):
-                    self?.productListState.num += 1
                     observer.onNext(data)
                     observer.onCompleted()
                 case let .failure(error):
@@ -163,7 +148,6 @@ extension ProductListRepository{
             return .success(response)
         }.catch{.just(.failure($0))}
     }
-    
 }
 extension ProductListRepository{
     func buyProduct(output productPrice:StreamPrice)->Observable<Error?>{
@@ -187,6 +171,6 @@ extension ProductListRepository{
                 observer.onCompleted()
             }
             return Disposables.create()
-        }
+        }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
 }

@@ -15,5 +15,6 @@ protocol SocketNetworkInterface{
     var inputDataObservable:Observable<Result<Data,Error>>{get}
     var isSocketConnect: Observable<SocketState>{get}
     func sendData(data:Data,completion:@escaping (Error?) -> Void)
+    func updateStreamServiceState()
     
 }

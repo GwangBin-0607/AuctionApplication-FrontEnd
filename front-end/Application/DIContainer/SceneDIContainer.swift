@@ -1,14 +1,20 @@
 import Foundation
 import UIKit
 class SceneDIContainer{
-    private func returnHTTPService()->GetProductsList{
-        ProductsListHTTP(ServerURL: "11111")
+    private func returnProductListServiceState()->ProductListServiceState{
+        ProductListServiceState()
     }
-    private func returnSocketNWConnection()->SocketNetworkInterface{
-        SocketNWConnection(Host: "localhost", Port: 3200)
+    private func returnHTTPImageService()->GetProductImage{
+        ProductImageAPI()
     }
-    private func returnStreamingService()->SocketNetworkInterface{
-        SocketNetwork(hostName: "localhost", portNumber: 3200)
+    private func returnHTTPService(serviceState:ProductListServiceState)->GetProductsList{
+        ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist",ProductListServiceState: serviceState)
+    }
+    private func returnSocketNWConnection(serviceState:ProductListServiceState)->SocketNetworkInterface{
+        SocketNWConnection(Host: "localhost", Port: 3200,ProductListServiceState: serviceState)
+    }
+    private func returnStreamingService(serviceState:ProductListServiceState)->SocketNetworkInterface{
+        SocketNetwork(hostName: "localhost", portNumber: 3200,ProductListServiceState: serviceState)
     }
     private func returnProductListCollectionView(viewModel:ProductsListViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
@@ -20,7 +26,7 @@ class SceneDIContainer{
         ProductImageUseCase(productsImageRepository: returnProductsImageRepository())
     }
     private func returnProductsImageRepository()->ProductImageRepositoryInterface{
-        ProductImageRepository()
+        ProductImageRepository(ImageServer: returnHTTPImageService())
     }
  
 }
@@ -32,7 +38,8 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnSocketNWConnection())
+        let serviceState = returnProductListServiceState()
+        return ProductListRepository(ApiService: returnHTTPService(serviceState: serviceState), StreamingService: returnStreamingService(serviceState: serviceState))
     }
     
 }

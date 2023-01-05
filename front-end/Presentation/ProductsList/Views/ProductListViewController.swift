@@ -51,7 +51,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
             owner, indexpath in
             owner.viewModel.controlSocketState(state: .disconnect)
-            owner.dismiss(animated: true)
+//            owner.dismiss(animated: true)
 //            owner.delegate?.presentDetailViewController()
         }).disposed(by: disposeBag)
         
@@ -100,7 +100,7 @@ extension ProductListViewController{
             print("===============")
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
             cell.bindingData.onNext(item)
-            let requestImage = RequestImage(cell: cell, productId: item.product_id, imageURL: item.imageURL)
+            let requestImage = RequestImage(cell: cell, productId: item.product_id, imageURL: item.mainImageURL)
             self?.viewModel.requestImage.onNext(requestImage)
             return cell
         })

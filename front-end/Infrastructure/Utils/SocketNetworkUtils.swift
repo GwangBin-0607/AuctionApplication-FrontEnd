@@ -15,7 +15,8 @@ enum SocketOutputError:Error{
     case OutputError
 }
 enum SocketStateError:Error{
-    case Encounter
+    case ServerEncounter
+    case ClientEncounter
 }
 struct SocketState {
     let socketConnect:isConnecting

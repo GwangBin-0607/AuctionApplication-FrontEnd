@@ -38,11 +38,18 @@ final class ProductListViewModel:ProductsListViewModelInterface{
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
         socketState = usecase.returnObservableStreamState()
-        
-        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler.init(queue: imageThread)).withUnretained(self).subscribe(onNext: {
+        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler(queue: imageThread)).withUnretained(self).flatMap {
             owner,request in
-            let image = owner.imageUseCase.returnImage(productId: request.productId, imageURL: request.imageURL)
-            let responseImage = ResponseImage(cell:request.cell,image: image, productId: request.productId)
+            return owner.imageUseCase.T_returnImage(productId: request.productId, imageURL: request.imageURL).map { image in
+                switch image{
+                case .success(let image):
+                    return ResponseImage(cell: request.cell, image: image, productId: request.productId)
+                case .failure(_):
+                    return ResponseImage(cell: request.cell, image: UIImage(), productId: request.productId)
+                }
+            }
+        }.subscribe(onNext: {
+            responseImage in
             responseProductImageObserver.onNext(responseImage)
         }).disposed(by: disposeBag)
         
@@ -50,12 +57,28 @@ final class ProductListViewModel:ProductsListViewModelInterface{
             owner,productsList in
             var addHeightProductList = productsList
             for i in 0..<addHeightProductList.count{
-                addHeightProductList[i].imageHeight = owner.imageUseCase.returnImageHeight(productId: addHeightProductList[i].product_id, imageURL: addHeightProductList[i].imageURL!)
+                addHeightProductList[i].imageHeight = owner.imageUseCase.returnImageHeight(productId: addHeightProductList[i].product_id, imageURL: addHeightProductList[i].mainImageURL)
             }
             owner.products.onNext(addHeightProductList)
             
         }).disposed(by: disposeBag)
         
+        
+//        let a = loadingImageObservable.withUnretained(self).flatMap {
+//            owner,list in
+//            var addedArray:[Observable<CGFloat>] = []
+//            for i in 0 ..< list.count{
+//                addedArray.append(owner.imageUseCase.T_returnImageHeight(productId: list[i].product_id, imageURL: list[i].mainImageURL))
+//            }
+//            return Observable.from(addedArray)
+//        }
+//        a.subscribe(onNext: {
+//            observable in
+//            observable.subscribe(onNext: {
+//                height in
+//                print(height)
+//            })
+//        })
         usecase.returnProductList().subscribe(onNext: {
             result in
             switch result {
@@ -64,6 +87,10 @@ final class ProductListViewModel:ProductsListViewModelInterface{
             case .failure(let error):
                 print(error)
             }
+        }).disposed(by: disposeBag)
+        usecase.returnObservableStreamState().subscribe(onNext: {
+            state in
+            print("\(state.socketConnect) ||||\(state.error)")
         }).disposed(by: disposeBag)
         
     }
