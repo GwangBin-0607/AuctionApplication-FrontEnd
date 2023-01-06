@@ -1,20 +1,17 @@
 import Foundation
 import UIKit
 class SceneDIContainer{
-    private func returnProductListServiceState()->ProductListServiceState{
-        ProductListServiceState()
-    }
     private func returnHTTPImageService()->GetProductImage{
         ProductImageAPI()
     }
-    private func returnHTTPService(serviceState:ProductListServiceState)->GetProductsList{
-        ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist",ProductListServiceState: serviceState)
+    private func returnHTTPService()->GetProductsList{
+        ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist")
     }
-    private func returnSocketNWConnection(serviceState:ProductListServiceState)->SocketNetworkInterface{
-        SocketNWConnection(Host: "localhost", Port: 3200,ProductListServiceState: serviceState)
+    private func returnSocketNWConnection()->SocketNetworkInterface{
+        SocketNWConnection(Host: "localhost", Port: 3200)
     }
-    private func returnStreamingService(serviceState:ProductListServiceState)->SocketNetworkInterface{
-        SocketNetwork(hostName: "localhost", portNumber: 3200,ProductListServiceState: serviceState)
+    private func returnStreamingService()->SocketNetworkInterface{
+        SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
     private func returnProductListCollectionView(viewModel:ProductsListViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
@@ -38,8 +35,7 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        let serviceState = returnProductListServiceState()
-        return ProductListRepository(ApiService: returnHTTPService(serviceState: serviceState), StreamingService: returnStreamingService(serviceState: serviceState))
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService())
     }
     
 }

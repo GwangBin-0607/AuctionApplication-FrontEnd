@@ -72,7 +72,6 @@ class ViewController: UIViewController {
         structMain = structReceive
         structMain?.num = 100
     }
-    let repo = ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200, ProductListServiceState: ProductListServiceState()))
     let request = PublishSubject<String>()
     lazy var ob = self.request.asObserver()
     let httpService = MockProductsListAPI()
@@ -116,10 +115,10 @@ class ViewController: UIViewController {
 //    }
     
     @objc func action(){
-        repo.buyProduct(output: StreamPrice(product_id: 150, product_price: 150)).subscribe(onNext: {
-            error in
-            print(error)
-        })
+//        repo.buyProduct(output: StreamPrice(product_id: 150, product_price: 150)).subscribe(onNext: {
+//            error in
+//            print(error)
+//        })
 
 //        t.sendData(ProductPrice: StreamPrice(product_id: 150, product_price: 200))
 //        repo.buyProduct(output: StreamPrice(product_id: 1500, product_price: 123123)).subscribe(onNext: {
@@ -128,10 +127,10 @@ class ViewController: UIViewController {
 //        })
 //        pro.sendData(ProductPrice: StreamPrice(product_id: 5000, product_price: 5000))
 //        repo.requestObserver.onNext(2)
-//        let diContainer = SceneDIContainer()
-//        var productViewController = diContainer.returnProductsListViewController()
+        let diContainer = SceneDIContainer()
+        var productViewController = diContainer.returnProductsListViewController()
 //        productViewController.modalPresentationStyle = .fullScreen
-//        self.present(productViewController, animated: true, completion: nil)
+        self.present(productViewController, animated: true, completion: nil)
     }
     func testFunction(){
 

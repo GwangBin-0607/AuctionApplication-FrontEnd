@@ -1,15 +1,30 @@
 import Foundation
 import RxSwift
+enum isConnecting {
+    case connect
+    case disconnect
+}
+enum SocketOutputError:Error{
+    case OutputError
+}
+enum SocketStateError:Error{
+    case ServerEncounter
+    case ClientEncounter
+}
+struct SocketConnectState {
+    let socketConnect:isConnecting
+    let error:SocketStateError?
+}
 final class SocketNetwork: NSObject,SocketNetworkInterface  {
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     // MARK: OUTPUT
-    let isSocketConnect: Observable<SocketState>
-    let inputDataObservable: Observable<Result<Data,Error>>
+    let isSocketConnect: Observable<SocketConnectState>
+    let inputDataObservable: Observable<Result<Decodable,Error>>
     
     
-    private let isSocketConnected:AnyObserver<SocketState>
-    private let inputDataObserver:AnyObserver<Result<Data,Error>>
+    private let isSocketConnected:AnyObserver<SocketConnectState>
+    private let inputDataObserver:AnyObserver<Result<Decodable,Error>>
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
     private let urlSession:URLSession
@@ -18,28 +33,29 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var shouldKeeping:Bool = false
     private let disposeBag:DisposeBag
     private var currentRunloop:RunLoop?
-    private let productListServiceState:StreamProductListServiceInterface
-    
+    private let socketCompletionHandler:OutputStreamCompletionHandlerInterface
+    private let inputStreamDataTransfer:InputStreamDataTransferInterface
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
-    init(hostName: String, portNumber: Int,ProductListServiceState:StreamProductListServiceInterface) {
+    init(hostName: String, portNumber: Int) {
         print("Socket Init")
-        self.productListServiceState = ProductListServiceState
+        socketCompletionHandler = OutputStreamCompletionHandler()
+        inputStreamDataTransfer = InputStreamDataTransfer()
         self.hostName = hostName
         self.portNumber = portNumber
         self.urlSession = URLSession(configuration: URLSessionConfiguration.default)
         disposeBag = DisposeBag()
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let connected = PublishSubject<SocketState>()
-        let inputPricing = PublishSubject<Result<Data,Error>>()
+        let connected = PublishSubject<SocketConnectState>()
+        let inputPricing = PublishSubject<Result<Decodable,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
         isSocketConnected = connected.asObserver()
         inputDataObservable = inputPricing.asObservable()
         inputDataObserver = inputPricing.asObserver()
         super.init()
-        
+        T_Encode()
         // MARK: Connect Or Disconnect Server
         let connectingObservable = controlSocketNetwork.asObservable()
         connectingObservable.withUnretained(self).observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background)).subscribe(onNext: {
@@ -49,7 +65,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
                 owner.connect()
             case .disconnect:
                 owner.disconnect{
-                    owner.isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
+                    owner.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
                 }
             }
         }).disposed(by: disposeBag)
@@ -73,7 +89,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var timer:DispatchSourceTimer!
     private var repeatTime = 5.0
     private func start(){
-        print("reconnect")
         timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
         timer.setEventHandler(handler: {
             [weak self] in
@@ -114,17 +129,18 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
             }
         }
     }
-    func updateStreamServiceState(){
-        if productListServiceState.isUpdated(){
-            let json:Dictionary<String,Int8> = ["pageNum":productListServiceState.getServiceState()]
-            let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-            data.withUnsafeBytes { pointer in
-                let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-                if let result = outputStream?.write(buffer, maxLength: data.count),result != -1{
-                    productListServiceState.updateStreamState()
-                }
-            }
+    func T_Encode(){
+        let t = OutputStreamData(dataType: .OutputStreamReaded, data: StreamPrice(product_id: 150, product_price: 150))
+        do{
+            let data = try JSONEncoder().encode(t)
+            print(data)
+        }catch{
+            print(error)
         }
+        
+    }
+    func sendData(data:Encodable,outputStreamCompletion:@escaping(Error?)->Void,inputStreamCompletion:@escaping ()->Void){
+        let data = OutputStreamData(dataType: .OutputStreamReaded, data: data)
     }
 }
 extension SocketNetwork:StreamDelegate{
@@ -132,16 +148,32 @@ extension SocketNetwork:StreamDelegate{
         switch eventCode {
         case .openCompleted:
             print("Open")
-            isSocketConnected.onNext(SocketState(socketConnect: .connect, error: nil))
+            isSocketConnected.onNext(SocketConnectState(socketConnect: .connect, error: nil))
         case .hasBytesAvailable:
             print("Has")
             if aStream == inputStream {
                 var dataBuffer = Array<UInt8>(repeating: 0, count: 1024)
                 var len: Int
                 len = (inputStream?.read(&dataBuffer, maxLength: 1024))!
+                print(len)
                 if len > 0 {
                     let data = Data(bytes: &dataBuffer, count: len)
-                    inputDataObserver.onNext(.success(data))
+                    do{
+                        let dataType = try inputStreamDataTransfer.decodeInputStreamDataType(data: data)
+                        switch dataType.dataType {
+                        case .InputStreamProductPrice:
+                            inputDataObserver.onNext(.success(dataType.data))
+                        case .OutputStreamReaded:
+                            guard let resultOutputStreamReaded = dataType.data as? ResultOutputStreamReaded,resultOutputStreamReaded.result else{
+                                return
+                            }
+                            socketCompletionHandler.executeCompletion(completionId: resultOutputStreamReaded.completionId)
+                        }
+                    }catch InputStreamDataDecodeError.ProductPriceDecodeError{
+                        inputDataObserver.onNext(.failure(InputStreamDataDecodeError.ProductPriceDecodeError))
+                    }catch {
+                        print(error)
+                    }
                 }
             }
         case .hasSpaceAvailable:
@@ -152,7 +184,7 @@ extension SocketNetwork:StreamDelegate{
             }
             inputDataObserver.onNext(.failure(error))
         case .endEncountered:
-            isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
+            isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
             disconnect()
             start()
         default:

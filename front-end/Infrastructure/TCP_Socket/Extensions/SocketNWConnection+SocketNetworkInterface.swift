@@ -10,24 +10,22 @@ import RxSwift
 import Network
 
 final class SocketNWConnection:SocketNetworkInterface {
-    let isSocketConnect: Observable<SocketState>
+    let isSocketConnect: Observable<SocketConnectState>
     let controlSocketConnect: AnyObserver<isConnecting>
-    let inputDataObservable: Observable<Result<Data,Error>>
+    let inputDataObservable: Observable<Result<Decodable,Error>>
     
     private var connection:NWConnection?
     private let host:NWEndpoint.Host
     private let port:NWEndpoint.Port
     private let thread = DispatchQueue(label: "quee",qos: .background)
     private let disposeBag:DisposeBag
-    private let isSocketConnected:AnyObserver<SocketState>
-    private let inputDataObserver:AnyObserver<Result<Data,Error>>
-    private let productListServiceState:StreamProductListServiceInterface
-    init(Host:NWEndpoint.Host,Port:NWEndpoint.Port,ProductListServiceState:StreamProductListServiceInterface) {
+    private let isSocketConnected:AnyObserver<SocketConnectState>
+    private let inputDataObserver:AnyObserver<Result<Decodable,Error>>
+    init(Host:NWEndpoint.Host,Port:NWEndpoint.Port) {
         disposeBag = DisposeBag()
-        productListServiceState = ProductListServiceState
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let connected = PublishSubject<SocketState>()
-        let inputPricing = PublishSubject<Result<Data,Error>>()
+        let connected = PublishSubject<SocketConnectState>()
+        let inputPricing = PublishSubject<Result<Decodable,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
         isSocketConnected = connected.asObserver()
@@ -51,13 +49,13 @@ final class SocketNWConnection:SocketNetworkInterface {
             case .failed(_),.waiting(_),.cancelled:
                 self?.timeInterval = .now()+5.0
                 if (self?.clientEncounter == false){
-                    self?.isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
+                    self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
                 }else if self?.clientEncounter == true{
-                    self?.isSocketConnected.onNext(SocketState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
+                    self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
                 }
                 self?.startConnection()
             case .ready:
-                self?.isSocketConnected.onNext(SocketState(socketConnect: .connect, error: nil))
+                self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .connect, error: nil))
                 self?.connect = true
             default:
                 break;
@@ -115,18 +113,6 @@ final class SocketNWConnection:SocketNetworkInterface {
             error in
             completion(error)
         }))
-    }
-    func updateStreamServiceState(){
-        if productListServiceState.isUpdated(){
-            let json:Dictionary<String,Int8> = ["pageNum":productListServiceState.getServiceState()]
-            let data = try! JSONSerialization.data(withJSONObject: json, options: [])
-            connection?.send(content: data, contentContext: .defaultMessage, isComplete: true, completion: .contentProcessed({
-                [weak self] error in
-                if (error != nil){
-                    self?.productListServiceState.updateStreamState()
-                }
-            }))
-        }
     }
     deinit {
         print("NWConnection DEINIT")

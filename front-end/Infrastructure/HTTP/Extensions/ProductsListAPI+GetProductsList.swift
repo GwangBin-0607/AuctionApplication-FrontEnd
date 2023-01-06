@@ -9,17 +9,15 @@ import Foundation
 import RxSwift
 final class ProductsListHTTP{
     private let url:URL
-    let productListServiceState:HTTPProductListServiceInterface
-    init(ServerURL serverURL:String,ProductListServiceState:HTTPProductListServiceInterface) {
+    init(ServerURL serverURL:String) {
         url = URL(string:serverURL)!
-        productListServiceState = ProductListServiceState
     }
 }
 extension ProductsListHTTP:GetProductsList{
     func getProductData(onComplete: @escaping (Result<Data, Error>) -> Void) {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
-        let json:Dictionary<String,Int8> = ["pageNum":productListServiceState.getServiceState()]
+        let json:Dictionary<String,Int8> = ["pageNum":0]
         let data = try! JSONSerialization.data(withJSONObject: json, options: [])
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = data
@@ -35,7 +33,6 @@ extension ProductsListHTTP:GetProductsList{
                 onComplete(.failure(responseError))
                 return
             }
-            self?.productListServiceState.updateHttpState()
             onComplete(.success(data))
             
             

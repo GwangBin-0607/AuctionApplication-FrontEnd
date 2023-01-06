@@ -12,7 +12,7 @@ extension ProductListRepository{
         streamingProductPrice.controlSocketConnect.onNext(state)
     }
     
-    func observableSteamState() -> Observable<SocketState> {
+    func observableSteamState() -> Observable<SocketConnectState> {
         return streamingProductPrice.isSocketConnect
     }
 }
@@ -56,17 +56,19 @@ final class ProductListRepository:ProductListRepositoryInterface{
             .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
         
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
-            (arg1,list) in
-            let (owner, data) = arg1
-            switch data {
-            case .success(let data):
-                let streamProductPrice = owner.decodeProductPriceData(data: data)
-                let result = owner.sumResult(before: list, after: streamProductPrice)
-                return result
-            case .failure(let error):
-                return .failure(error)
+            (arg1,list)->Result<[Product],Error> in
+            let (owner,data) = arg1
+            switch data{
+            case .success(let decodable):
+                if let streamProductPrice = decodable as? [StreamPrice]{
+                    let result = owner.sumResult(before: list, after: .success(streamProductPrice))
+                    return result
+                }else{
+                    return .failure(TransferError.DecodeError)
+                }
+            case .failure(let err):
+                return .failure(err)
             }
-            
         }).subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
     }
