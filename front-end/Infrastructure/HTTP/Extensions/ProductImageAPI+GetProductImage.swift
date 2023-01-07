@@ -6,6 +6,7 @@ protocol GetProductImage{
 }
 class ProductImageAPI:GetProductImage{
     func returnImage(imageURL:String,onComplete: @escaping (Result<Data, Error>) -> Void) {
+        print("$$$$$$$$$$$$$$$$$$$$$")
         var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/productimage")!)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,String> = ["imageURL":imageURL]
@@ -14,7 +15,7 @@ class ProductImageAPI:GetProductImage{
         urlRequest.httpBody = data
         URLSession.shared.dataTask(with: urlRequest, completionHandler: {
             imageData,response,error in
-            print(imageData,response,error)
+            print("=====\(error)=====")
         }).resume()
     }
     func returnJson(){

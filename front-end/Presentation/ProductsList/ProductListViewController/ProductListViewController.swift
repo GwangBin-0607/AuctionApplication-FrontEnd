@@ -3,12 +3,12 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
-    private let viewModel:ProductsListViewModelInterface
+    private let viewModel:ProductListViewControllerViewModelInterface
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
-    init(viewModel:ProductsListViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -23,7 +23,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         super.viewDidLoad()
         bindingViewModel()
         self.viewModel.requestProductsList.onNext(())
-        //        setCADisplay()
     }
     //    func setCADisplay(){
     //        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
@@ -41,11 +40,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     //        print("======================")
     //    }
     private func bindingViewModel(){
-        viewModel.responseImage.subscribe(onNext: {
-            response in
-            response.setImage()
-        }).disposed(by: disposeBag)
-        
         viewModel.productsList.bind(to: collectionView.rx.items(dataSource: returnDatasource())).disposed(by: disposeBag)
         
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
@@ -95,16 +89,13 @@ extension ProductListViewController{
 }
 extension ProductListViewController{
     private func returnDatasource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
-        print("3")
         return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
             print(change)
             return .animated
-        }, configureCell: { [weak self] _ , colview, indexpath, item in
+        }, configureCell: { _ , colview, indexpath, item in
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
             cell.bindingData.onNext(item)
-            let requestImage = RequestImage(cell: cell, productId: item.product_id, imageURL: item.mainImageURL)
-            self?.viewModel.requestImage.onNext(requestImage)
             return cell
         })
     }

@@ -146,24 +146,21 @@ class ViewController: UIViewController {
         basicArray[num] = basicArray[num]+100
     }
     func testFunction(){
-        for i in 0..<7{
-            DispatchQueue.global(qos: .utility).async {
-                print(Thread.current)
-        //        changeArrayLock(num: i)
-                self.changeArrayLock(num: i)
-                print(self.basicArray)
-            }
-        }
-        let observable = Observable<Int>.create { observer in
-            observer.onNext(123)
-            observer.onCompleted()
-            return Disposables.create()
-        }.subscribe(onNext: {
+        let subject = PublishSubject<Int>()
+        subject.do(onNext:{
             num in
             print(num)
-        },onDisposed: {
-            print("Disposed")
+        }).flatMap { result in
+            return Observable<Int>.create { observer in
+                sleep(5)
+                observer.onNext(100000)
+                return Disposables.create()
+            }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+        }.subscribe(onNext: {
+            result in
+            print(result)
         })
+        subject.onNext(5555)
 //        repo.streamState(state: .connect)
 //        let subject = PublishSubject<Void>()
 //        let observable = subject.asObservable()

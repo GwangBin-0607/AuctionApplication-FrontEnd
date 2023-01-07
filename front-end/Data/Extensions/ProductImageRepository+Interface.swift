@@ -2,11 +2,10 @@ import Foundation
 import UIKit
 import RxSwift
 class ProductImageRepository{
-    private let cacheImage:NSCache<NSNumber,UIImage>
     private let imageServer:GetProductImage
+    private let cacheRepository:ProductImageCacheRepositoryInterface = ProductImageCacheRepository.shared
     init(ImageServer:GetProductImage) {
         imageServer = ImageServer
-        cacheImage = NSCache<NSNumber,UIImage>()
         testFrom()
     }
     private func imageLoad(imageURL: String?) -> UIImage {
@@ -19,10 +18,10 @@ class ProductImageRepository{
         image.size.height
     }
     private func setCacheImage(productId:Int,image:UIImage){
-        cacheImage.setObject(image, forKey: NSNumber(integerLiteral: productId))
+        cacheRepository.setImage(key: productId, value: image)
     }
     private func returnCacheImage(productId:Int)->UIImage?{
-        cacheImage.object(forKey: NSNumber(integerLiteral: productId))
+        return cacheRepository.getImage(key: productId)
     }
     private func downImageSize(image:UIImage) -> UIImage {
         let data = image.pngData()! as CFData
@@ -43,25 +42,25 @@ class ProductImageRepository{
     }
 }
 extension ProductImageRepository{
-    func T_returnImage(productId:Int,imageURL:String?)->Observable<Result<UIImage,Error>>{
+    func T_returnImage(productId:Int,imageURL:String?)->Observable<CellImageTag>{
         guard let cacheImage = returnCacheImage(productId: productId) else{
-            return imageLoadObservable(imageURL: imageURL)
+            return imageLoadObservable(productId:productId,imageURL: imageURL)
                 .withUnretained(self)
                 .map {
-                    owner,image in
-                    switch image {
+                    owner,cellImageTag in
+                    switch cellImageTag.result {
                     case .success(let image):
                         let downImage = owner.returnImageObservable(productId: productId, image: image)
-                        return .success(downImage)
+                        return CellImageTag(result: .success(downImage), tag: productId)
                     case .failure(let error):
                         print(error)
-                        return .failure(error)
+                        return CellImageTag(result: .failure(error), tag: productId)
                         
                     }
                 }
         }
-        return Observable<Result<UIImage,Error>>.create { observer in
-            observer.onNext(.success(cacheImage))
+        return Observable<CellImageTag>.create { observer in
+            observer.onNext(CellImageTag(result: .success(cacheImage), tag: productId))
             observer.onCompleted()
             return Disposables.create()
         }
@@ -71,12 +70,12 @@ extension ProductImageRepository{
         setCacheImage(productId: productId, image: image)
         return downImage
     }
-    func imageLoadObservable(imageURL:String?)->Observable<Result<UIImage,Error>>{
-        return Observable<Result<UIImage,Error>>.create {
+    func imageLoadObservable(productId:Int,imageURL:String?)->Observable<CellImageTag>{
+        return Observable<CellImageTag>.create {
             [weak self] observer in
             guard let self = self,let imageURL = imageURL else{
                 let err = NSError(domain: "No ImageURL", code: -1)
-                observer.onNext(.failure(err))
+                observer.onNext(CellImageTag(result: .failure(err), tag: productId))
                 return Disposables.create()
             }
             self.imageServer.returnImage(imageURL: imageURL, onComplete: {
@@ -84,10 +83,10 @@ extension ProductImageRepository{
                 switch result{
                 case .success(let imageData):
                     let image = self.decodeImage(imageData: imageData)
-                    observer.onNext(.success(image))
+                    observer.onNext(CellImageTag(result: .success(image), tag: productId))
                     observer.onCompleted()
                 case .failure(let error):
-                    observer.onNext(.failure(error))
+                    observer.onNext(CellImageTag(result: .failure(error), tag: productId))
                 }
                 
             })
@@ -100,8 +99,8 @@ extension ProductImageRepository{
     func T_returnImageHeight(productId:Int,imageURL:String?)->Observable<CGFloat>{
         guard let image = self.returnCacheImage(productId: productId)
         else{
-            return T_returnImage(productId: productId, imageURL: imageURL).withUnretained(self).map { owner,result in
-                switch result{
+            return T_returnImage(productId: productId, imageURL: imageURL).withUnretained(self).map { owner,cellImageTag in
+                switch cellImageTag.result{
                 case .success(let image):
                     return owner.returnImageHeight(image: image)
                 case .failure(_):

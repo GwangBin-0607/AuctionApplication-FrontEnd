@@ -8,20 +8,17 @@
 import Foundation
 import RxSwift
 
-final class ProductListViewModel:ProductsListViewModelInterface{
+final class ProductListViewModel:ProductListViewControllerViewModelInterface{
     private let usecase:ProductListUsecaseInterface
-    private let imageUseCase:ProductImageUsecaseInterface
+    private let imageUseCase:ProductImageHeightUsecaseInterface
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
     let requestProductsList: AnyObserver<Void>
-    let requestImage: AnyObserver<RequestImage>
-    let responseImage: Observable<ResponseImage>
     let socketState: Observable<SocketConnectState>
     let scrollScrollView: AnyObserver<[Int]>
     private let products = BehaviorSubject<[Product]>(value: [])
-    private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
-    init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageUsecaseInterface) {
+    init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageHeightUsecaseInterface) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
@@ -29,33 +26,12 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         let loadingImage = PublishSubject<[Product]>()
         let loadingImageObservable = loadingImage.asObservable()
         let loadingImageObserver = loadingImage.asObserver()
-        let requestProductImage = PublishSubject<RequestImage>()
-        let responseProductImage = PublishSubject<ResponseImage>()
-        let requestProductImageObservable = requestProductImage.asObservable()
-        let responseProductImageObserver = responseProductImage.asObserver()
         scrollScrollView = scrollSubject.asObserver()
-        requestImage = requestProductImage.asObserver()
-        responseImage = responseProductImage.asObservable()
         requestProductsList = usecase.returnRequestObserver()
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
         socketState = usecase.returnObservableStreamState()
-        requestProductImageObservable.observe(on: ConcurrentDispatchQueueScheduler(queue: imageThread)).withUnretained(self).flatMap {
-            owner,request in
-            return owner.imageUseCase.T_returnImage(productId: request.productId, imageURL: request.imageURL).map { image in
-                switch image{
-                case .success(let image):
-                    return ResponseImage(cell: request.cell, image: image, productId: request.productId)
-                case .failure(_):
-                    return ResponseImage(cell: request.cell, image: UIImage(), productId: request.productId)
-                }
-            }
-        }.subscribe(onNext: {
-            responseImage in
-            responseProductImageObserver.onNext(responseImage)
-        }).disposed(by: disposeBag)
-        
         scrollSubject.withUnretained(self).flatMap { owner,visibleCells in
             if let observale = owner.usecase.updateStreamProduct(visibleCell: visibleCells){
                 return observale
@@ -117,9 +93,11 @@ final class ProductListViewModel:ProductsListViewModelInterface{
     deinit {
         print("VIEWMODEL DEINIT")
     }
-
+    func controlSocketState(state: isConnecting) {
+        usecase.returnControlStreamState(state: state)
+    }
 }
-extension ProductListViewModel{
+extension ProductListViewModel:ProductListCollectionViewLayoutViewModelInterface{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()
@@ -129,7 +107,7 @@ extension ProductListViewModel{
         }
     }
 }
-extension ProductListViewModel{
+extension ProductListViewModel:ProductListCollectionViewModelInterface{
     func returnPrice(index: IndexPath) -> Int {
         do{
             let product = try products.value()
@@ -138,10 +116,5 @@ extension ProductListViewModel{
         }catch{
            return 0
         }
-    }
-}
-extension ProductListViewModel{
-    func controlSocketState(state: isConnecting) {
-        usecase.returnControlStreamState(state: state)
     }
 }

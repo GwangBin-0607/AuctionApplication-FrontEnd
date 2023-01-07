@@ -8,16 +8,10 @@
 import Foundation
 import RxSwift
 
-protocol ProductsListViewModelInterface{
+protocol ProductListViewControllerViewModelInterface{
     var requestProductsList:AnyObserver<Void> {get}
     var productsList:Observable<[ProductSection]> {get}
-    func returnPrice(index:IndexPath)->Int
-    func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
-    var responseImage:Observable<ResponseImage>{get}
-    var requestImage:AnyObserver<RequestImage>{get}
     var socketState:Observable<SocketConnectState>{get}
     func controlSocketState(state:isConnecting)
     var scrollScrollView:AnyObserver<[Int]> {get}
 }
-
-

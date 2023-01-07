@@ -1,6 +1,6 @@
 import UIKit
 import RxSwift
-final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell,AnimationCell{
+final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
@@ -11,10 +11,11 @@ final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell
     private let borderAnimator:UIViewPropertyAnimator
     // MARK: OUTPUT
     let bindingData:AnyObserver<Product>
-    let setImageObserver: AnyObserver<ResponseImage>
     let animationObserver: AnyObserver<Int>
+    private let viewModel:ProductListCollectionViewCellViewModelInterface!
     override init(frame: CGRect) {
         print("CELL INIT")
+        viewModel = ProductListCollectionViewCellViewModel(ImageUsecase: ProductImageLoadUseCase(productsImageRepository: ProductImageRepository(ImageServer: ProductImageAPI())))
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
@@ -23,9 +24,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell
         borderView = UIView()
         let data = PublishSubject<Product>()
         bindingData = data.asObserver()
-        let setImageSubject = PublishSubject<ResponseImage>()
-        setImageObserver = setImageSubject.asObserver()
-        let setImageObservable = setImageSubject.asObservable()
         let animationSubject = PublishSubject<Int>()
         animationObserver = animationSubject.asObserver()
         borderAnimator = UIViewPropertyAnimator()
@@ -34,19 +32,23 @@ final class ProductListCollectionViewCell: UICollectionViewCell,RequestImageCell
             owner,price in
             owner.priceLabel.text = String(price)
         }).disposed(by: disposeBag)
-        setImageObservable.observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
-            owner,responseImage in
-            if(responseImage.productId == owner.tag){
-                owner.productImageView.image = responseImage.image
+        data.withUnretained(self).do { owner,item in
+            owner.tag = item.product_id
+            owner.titleLabel.text = item.product_name
+            owner.priceLabel.text = String(item.product_price)
+        }.flatMap { owner,item in
+            owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL)
+        }.withUnretained(self).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                switch cellImageTag.result {
+                case .success(let image):
+                    owner.productImageView.image = image
+                case .failure(_):
+                    owner.productImageView.image = UIImage()
+                }
             }
         }).disposed(by: disposeBag)
-        data.withUnretained(self).subscribe(onNext: {
-            owner, product in
-            owner.tag = product.product_id
-            owner.titleLabel.text = product.product_name
-            owner.priceLabel.text = String(product.product_price)
-            })
-            .disposed(by: disposeBag)
         layoutContentView()
     }
     private func layoutContentView(){
