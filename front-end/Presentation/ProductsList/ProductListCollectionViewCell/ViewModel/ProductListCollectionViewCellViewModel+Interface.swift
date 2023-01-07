@@ -16,6 +16,6 @@ class ProductListCollectionViewCellViewModel{
 }
 extension ProductListCollectionViewCellViewModel:ProductListCollectionViewCellViewModelInterface{
     func returnImage(productId: Int, imageURL: String?) -> Observable<CellImageTag>{
-        return imageUsecase.T_returnImage(productId: productId, imageURL: imageURL)
+        return imageUsecase.returnImage(productId: productId, imageURL: imageURL)
     }
 }

@@ -16,6 +16,9 @@ class ProductImageAPI:GetProductImage{
         URLSession.shared.dataTask(with: urlRequest, completionHandler: {
             imageData,response,error in
             print("=====\(error)=====")
+            if let error = error{
+                onComplete(.failure(error))
+            }
         }).resume()
     }
     func returnJson(){

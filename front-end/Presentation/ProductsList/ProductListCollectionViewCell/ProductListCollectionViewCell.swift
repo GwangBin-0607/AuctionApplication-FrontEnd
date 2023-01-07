@@ -38,7 +38,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
             owner.priceLabel.text = String(item.product_price)
         }.flatMap { owner,item in
             owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL)
-        }.withUnretained(self).subscribe(onNext: {
+        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,cellImageTag in
             if(cellImageTag.tag == owner.tag){
                 switch cellImageTag.result {
