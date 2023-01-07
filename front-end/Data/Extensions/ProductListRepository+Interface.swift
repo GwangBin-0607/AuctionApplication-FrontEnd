@@ -152,26 +152,15 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func buyProduct(output productPrice:StreamPrice)->Observable<Error?>{
-        Observable<Error?>.create { observer in
-            let jsonEncoder = JSONEncoder()
-            do{
-                let data = try jsonEncoder.encode(productPrice)
-                self.streamingProductPrice.sendData(data: data, completion: {
-                    err in
-                    if let err = err{
-                        observer.onNext(err)
-                        observer.onCompleted()
-                    }else{
-                        observer.onNext(nil)
-                        observer.onCompleted()
-                    }
-                })
-            }catch{
-                print(error)
-                observer.onNext(error)
+    func sendData(output data:Encodable)->Observable<Error?>?{
+        return Observable<Error?>.create {
+            [weak self]observer in
+            self?.streamingProductPrice.sendData(data: data, completion:{
+                err in
+                print("Execute")
+                observer.onNext(err)
                 observer.onCompleted()
-            }
+            })
             return Disposables.create()
         }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }

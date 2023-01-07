@@ -18,12 +18,14 @@ final class ProductListViewModel:ProductsListViewModelInterface{
     let requestImage: AnyObserver<RequestImage>
     let responseImage: Observable<ResponseImage>
     let socketState: Observable<SocketConnectState>
+    let scrollScrollView: AnyObserver<[Int]>
     private let products = BehaviorSubject<[Product]>(value: [])
     private let imageThread = DispatchQueue(label: "imageThread",qos: .background)
     init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageUsecaseInterface) {
         self.usecase = UseCase
         self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
+        let scrollSubject = PublishSubject<[Int]>()
         let loadingImage = PublishSubject<[Product]>()
         let loadingImageObservable = loadingImage.asObservable()
         let loadingImageObserver = loadingImage.asObserver()
@@ -31,6 +33,7 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         let responseProductImage = PublishSubject<ResponseImage>()
         let requestProductImageObservable = requestProductImage.asObservable()
         let responseProductImageObserver = responseProductImage.asObserver()
+        scrollScrollView = scrollSubject.asObserver()
         requestImage = requestProductImage.asObserver()
         responseImage = responseProductImage.asObservable()
         requestProductsList = usecase.returnRequestObserver()
@@ -51,6 +54,23 @@ final class ProductListViewModel:ProductsListViewModelInterface{
         }.subscribe(onNext: {
             responseImage in
             responseProductImageObserver.onNext(responseImage)
+        }).disposed(by: disposeBag)
+        
+        scrollSubject.withUnretained(self).flatMap { owner,visibleCells in
+            if let observale = owner.usecase.updateStreamProduct(visibleCell: visibleCells){
+                return observale
+            }else{
+                return Observable<Error?>.create { observer in
+                    observer.onNext(nil)
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+            }
+        }.subscribe(onNext: {
+            error in
+//            print("Error Result  \(error)")
+        },onDisposed: {
+            print("Disposed")
         }).disposed(by: disposeBag)
         
         loadingImageObservable.withUnretained(self).subscribe(onNext: {

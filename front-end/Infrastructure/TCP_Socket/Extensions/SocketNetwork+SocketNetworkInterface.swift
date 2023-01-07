@@ -6,6 +6,7 @@ enum isConnecting {
 }
 enum SocketOutputError:Error{
     case OutputError
+    case DecodeError
 }
 enum SocketStateError:Error{
     case ServerEncounter
@@ -16,6 +17,7 @@ struct SocketConnectState {
     let error:SocketStateError?
 }
 final class SocketNetwork: NSObject,SocketNetworkInterface  {
+    
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     // MARK: OUTPUT
@@ -35,10 +37,12 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var currentRunloop:RunLoop?
     private let socketCompletionHandler:OutputStreamCompletionHandlerInterface
     private let inputStreamDataTransfer:InputStreamDataTransferInterface
+    private let outputStreamDataTransfer:OutputStreamDataTransferInterface
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
     init(hostName: String, portNumber: Int) {
         print("Socket Init")
+        outputStreamDataTransfer = OutputStreamDataTransfer()
         socketCompletionHandler = OutputStreamCompletionHandler()
         inputStreamDataTransfer = InputStreamDataTransfer()
         self.hostName = hostName
@@ -55,7 +59,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         inputDataObservable = inputPricing.asObservable()
         inputDataObserver = inputPricing.asObserver()
         super.init()
-        T_Encode()
         // MARK: Connect Or Disconnect Server
         let connectingObservable = controlSocketNetwork.asObservable()
         connectingObservable.withUnretained(self).observe(on: ConcurrentDispatchQueueScheduler.init(qos: .background)).subscribe(onNext: {
@@ -119,60 +122,59 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     deinit {
         print("SOCKET DEINIT")
     }
-    func sendData(data: Data, completion: @escaping (Error?) -> Void) {
-        data.withUnsafeBytes { pointer in
-            let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
-            if let result = outputStream?.write(buffer, maxLength: data.count),result != -1{
-                completion(nil)
-            }else{
-                completion(SocketOutputError.OutputError)
-            }
+    let lock:NSLock = NSLock()
+    func sendData(data:Encodable,completion:@escaping(Error?)->Void){
+        lock.lock()
+        defer{
+            lock.unlock()
         }
-    }
-    func T_Encode(){
-        let t = OutputStreamData(dataType: .OutputStreamReaded, data: StreamPrice(product_id: 150, product_price: 150))
         do{
-            let data = try JSONEncoder().encode(t)
-            print(data)
+            let completionId = socketCompletionHandler.returnCurrentCompletionId()
+            let outputStreamData = OutputStreamData(dataType: .OutputStreamReaded,completionId: completionId, data: data)
+            let splitter = "/".data(using: .utf8)
+            let encodeData = try outputStreamDataTransfer.encodeOutputStream(output: outputStreamData)+splitter!
+            encodeData.withUnsafeBytes { pointer in
+                let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
+                if let result = outputStream?.write(buffer, maxLength: encodeData.count),result != -1{
+                    socketCompletionHandler.registerCompletion(completion: completion)
+                }else{
+                    completion(SocketOutputError.OutputError)
+                }
+            }
         }catch{
-            print(error)
+            completion(SocketOutputError.DecodeError)
         }
-        
-    }
-    func sendData(data:Encodable,outputStreamCompletion:@escaping(Error?)->Void,inputStreamCompletion:@escaping ()->Void){
-        let data = OutputStreamData(dataType: .OutputStreamReaded, data: data)
     }
 }
 extension SocketNetwork:StreamDelegate{
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
         case .openCompleted:
-            print("Open")
+            print("connect")
             isSocketConnected.onNext(SocketConnectState(socketConnect: .connect, error: nil))
         case .hasBytesAvailable:
-            print("Has")
             if aStream == inputStream {
-                var dataBuffer = Array<UInt8>(repeating: 0, count: 1024)
+                var dataBuffer = Array<UInt8>(repeating: 0, count: 4096)
                 var len: Int
-                len = (inputStream?.read(&dataBuffer, maxLength: 1024))!
-                print(len)
+                len = (inputStream?.read(&dataBuffer, maxLength: 4096))!
                 if len > 0 {
                     let data = Data(bytes: &dataBuffer, count: len)
                     do{
                         let dataType = try inputStreamDataTransfer.decodeInputStreamDataType(data: data)
-                        switch dataType.dataType {
-                        case .InputStreamProductPrice:
-                            inputDataObserver.onNext(.success(dataType.data))
-                        case .OutputStreamReaded:
-                            guard let resultOutputStreamReaded = dataType.data as? ResultOutputStreamReaded,resultOutputStreamReaded.result else{
-                                return
+                        dataType.forEach { eachInputStream in
+                            switch eachInputStream.dataType {
+                            case .InputStreamProductPrice:
+                                inputDataObserver.onNext(.success(eachInputStream.data))
+                            case .OutputStreamReaded:
+                                guard let resultOutputStreamReaded = eachInputStream.data as? ResultOutputStreamReaded,resultOutputStreamReaded.result else{
+                                    return
+                                }
+                                socketCompletionHandler.executeCompletion(completionId: resultOutputStreamReaded.completionId)
                             }
-                            socketCompletionHandler.executeCompletion(completionId: resultOutputStreamReaded.completionId)
                         }
-                    }catch InputStreamDataDecodeError.ProductPriceDecodeError{
-                        inputDataObserver.onNext(.failure(InputStreamDataDecodeError.ProductPriceDecodeError))
-                    }catch {
+                    }catch{
                         print(error)
+                        
                     }
                 }
             }

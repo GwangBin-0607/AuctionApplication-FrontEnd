@@ -54,6 +54,10 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
 //            owner.dismiss(animated: true)
 //            owner.delegate?.presentDetailViewController()
         }).disposed(by: disposeBag)
+        collectionView.rx.didScroll.withUnretained(self).subscribe(onNext: {
+            owner,_ in
+            owner.viewModel.scrollScrollView.onNext(owner.collectionView.indexPathsForVisibleItems.map({$0.item}))
+        }).disposed(by: disposeBag)
         
     }
     
@@ -90,14 +94,13 @@ extension ProductListViewController{
     }
 }
 extension ProductListViewController{
-    func returnDatasource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
+    private func returnDatasource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
         print("3")
         return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
             print(change)
             return .animated
         }, configureCell: { [weak self] _ , colview, indexpath, item in
-            print("===============")
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
             cell.bindingData.onNext(item)
             let requestImage = RequestImage(cell: cell, productId: item.product_id, imageURL: item.mainImageURL)

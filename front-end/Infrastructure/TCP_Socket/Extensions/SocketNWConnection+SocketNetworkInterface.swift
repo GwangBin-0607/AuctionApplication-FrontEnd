@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import Network
 
-final class SocketNWConnection:SocketNetworkInterface {
+final class SocketNWConnection:SocketNetworkInterface{
     let isSocketConnect: Observable<SocketConnectState>
     let controlSocketConnect: AnyObserver<isConnecting>
     let inputDataObservable: Observable<Result<Decodable,Error>>
@@ -113,6 +113,9 @@ final class SocketNWConnection:SocketNetworkInterface {
             error in
             completion(error)
         }))
+    }
+    func sendData(data: Encodable, completion: @escaping (Error?) -> Void) {
+
     }
     deinit {
         print("NWConnection DEINIT")

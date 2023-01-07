@@ -22,7 +22,7 @@ extension ProductsListHTTP:GetProductsList{
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = data
         URLSession.shared.dataTask(with: urlRequest) {
-            [weak self] data, response, error in
+            data, response, error in
             if let error = error {
                 onComplete(.failure(error))
                 return

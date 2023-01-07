@@ -14,5 +14,5 @@ protocol SocketNetworkInterface{
     // MARK: OUTPUT
     var inputDataObservable:Observable<Result<Decodable,Error>>{get}
     var isSocketConnect: Observable<SocketConnectState>{get}
-    func sendData(data:Data,completion:@escaping (Error?) -> Void)
+    func sendData(data:Encodable,completion:@escaping (Error?) -> Void)
 }

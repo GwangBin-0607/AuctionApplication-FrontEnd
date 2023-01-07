@@ -17,6 +17,7 @@ protocol ProductsListViewModelInterface{
     var requestImage:AnyObserver<RequestImage>{get}
     var socketState:Observable<SocketConnectState>{get}
     func controlSocketState(state:isConnecting)
+    var scrollScrollView:AnyObserver<[Int]> {get}
 }
 
 

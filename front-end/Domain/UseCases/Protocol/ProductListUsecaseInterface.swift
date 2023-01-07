@@ -5,4 +5,5 @@ protocol ProductListUsecaseInterface{
     func returnRequestObserver()->AnyObserver<Void>
     func returnControlStreamState(state:isConnecting)
     func returnObservableStreamState()->Observable<SocketConnectState>
+    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>?
 }
