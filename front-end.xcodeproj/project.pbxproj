@@ -60,7 +60,7 @@
 		88CE016329697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */; };
 		88CE016D29697646003169B5 /* ProductListCollectionViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */; };
 		88CE016F29697660003169B5 /* ProductListCollectionViewLayoutViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016E29697660003169B5 /* ProductListCollectionViewLayoutViewModelInterface.swift */; };
-		88CE0171296983F0003169B5 /* ProductImageCacheRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE0170296983F0003169B5 /* ProductImageCacheRepository.swift */; };
+		88CE0171296983F0003169B5 /* ProductImageCacheRepository+interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE0170296983F0003169B5 /* ProductImageCacheRepository+interface.swift */; };
 		88CE01732969840A003169B5 /* ProductImageCacheRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE01722969840A003169B5 /* ProductImageCacheRepositoryInterface.swift */; };
 		88CE01752969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE01742969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift */; };
 		88CE01772969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE01762969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift */; };
@@ -155,7 +155,7 @@
 		88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewCellViewModelInterface.swift; sourceTree = "<group>"; };
 		88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewModelInterface.swift; sourceTree = "<group>"; };
 		88CE016E29697660003169B5 /* ProductListCollectionViewLayoutViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewLayoutViewModelInterface.swift; sourceTree = "<group>"; };
-		88CE0170296983F0003169B5 /* ProductImageCacheRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageCacheRepository.swift; sourceTree = "<group>"; };
+		88CE0170296983F0003169B5 /* ProductImageCacheRepository+interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductImageCacheRepository+interface.swift"; sourceTree = "<group>"; };
 		88CE01722969840A003169B5 /* ProductImageCacheRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageCacheRepositoryInterface.swift; sourceTree = "<group>"; };
 		88CE01742969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewModel+CollectionViewModelInterface.swift"; sourceTree = "<group>"; };
 		88CE01762969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewModel+CollectionViewLayoutViewModelInterface.swift"; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 			children = (
 				8878025629434399009F4F9A /* ProductImageRepository+Interface.swift */,
 				887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */,
-				88CE0170296983F0003169B5 /* ProductImageCacheRepository.swift */,
+				88CE0170296983F0003169B5 /* ProductImageCacheRepository+interface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -925,7 +925,7 @@
 				888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */,
 				8874F4CA2937394D003981C3 /* ProductImageUsecaseInterface.swift in Sources */,
 				888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */,
-				88CE0171296983F0003169B5 /* ProductImageCacheRepository.swift in Sources */,
+				88CE0171296983F0003169B5 /* ProductImageCacheRepository+interface.swift in Sources */,
 				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductsListAPI+GetProductsList.swift in Sources */,
 				8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */,
