@@ -122,7 +122,12 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     deinit {
         print("SOCKET DEINIT")
     }
+    let lock = NSLock()
     func sendData(data:Encodable,completion:@escaping(Error?)->Void){
+        lock.lock()
+        defer{
+            lock.unlock()
+        }
         do{
             let completionId = socketCompletionHandler.returnCurrentCompletionId()
             let outputStreamData = OutputStreamData(dataType: .OutputStreamReaded,completionId: completionId, data: data)
