@@ -9,11 +9,11 @@ import Foundation
 import RxSwift
 extension ProductListRepository{
     func streamState(state: isConnecting) {
-        streamingProductPrice.controlSocketConnect.onNext(state)
+        streamingProductPrice.controlSocketState.onNext(state)
     }
     
     func observableSteamState() -> Observable<SocketConnectState> {
-        return streamingProductPrice.isSocketConnect
+        return streamingProductPrice.isSocketState
     }
 }
 final class ProductListRepository:ProductListRepositoryInterface{
@@ -25,9 +25,9 @@ final class ProductListRepository:ProductListRepositoryInterface{
     let productListObservable:Observable<Result<[Product],Error>>
     let requestObserver:AnyObserver<Void>
     private let apiService:GetProductsList
-    private let streamingProductPrice:SocketNetworkInterface
+    private let streamingProductPrice:SocketAdd<StreamPrice>
     private let disposeBag:DisposeBag
-    init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface) {
+    init(ApiService:GetProductsList,StreamingService:SocketAdd<StreamPrice>) {
         print("Repo Init")
         disposeBag = DisposeBag()
         apiService = ApiService
@@ -54,18 +54,11 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 return re
             })
             .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
-        
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
-            (arg1,list)->Result<[Product],Error> in
+            (arg1,list) in
             let (owner,result) = arg1
-            switch result{
-            case .success(let data):
-                let streamProductPrice = owner.decodeProductPriceData(data: data)
-                let result = owner.sumResult(before: list, after: streamProductPrice)
-                return result
-            case .failure(let err):
-                return .failure(err)
-            }
+            let sumResult = owner.sumResult(before: list, after: result)
+            return sumResult
         }).subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
     }
@@ -149,17 +142,7 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable)->Observable<Error?>?{
-        return Observable<Error?>.create {
-            [weak self]observer in
-            let encodeData = try! JSONEncoder().encode(data)
-            self?.streamingProductPrice.sendData(data: encodeData, completion:{
-                err in
-                print("Execute")
-                observer.onNext(err)
-                observer.onCompleted()
-            })
-            return Disposables.create()
-        }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>?{
+        return streamingProductPrice.sendData(data: data, completion: completion)
     }
 }

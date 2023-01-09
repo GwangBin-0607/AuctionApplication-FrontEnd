@@ -35,7 +35,7 @@ extension SceneDIContainer{
         ProductListUsecase(repo: returnProductListRepositoryInterface())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService())
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketAdd<StreamPrice>(socketNetwork: returnStreamingService(), socketInput: InputStreamDataTransfer(), socketOutput: OutputStreamDataTransfer(), socketCompletionHandler: OutputStreamCompletionHandler()))
     }
     
 }

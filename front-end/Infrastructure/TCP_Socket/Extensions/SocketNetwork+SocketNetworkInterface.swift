@@ -128,6 +128,8 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
             if result == nil || result == -1{
                 completion(SocketOutputError.OutputError)
                 
+            }else{
+                completion(nil)
             }
         }
     }

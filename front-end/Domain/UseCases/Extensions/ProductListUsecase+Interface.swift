@@ -21,6 +21,8 @@ class ProductListUsecase:ProductListUsecaseInterface{
     }
     func updateStreamProduct(visibleCell:[Int])->Observable<Error?>?{
         let set = Set(visibleCell)
-        return repo.sendData(output: set)
+        return repo.sendData(output: set) { err in
+            print(err)
+        }
     }
 }

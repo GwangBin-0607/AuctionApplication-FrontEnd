@@ -30,7 +30,8 @@ protocol OutputStreamDataTransferInterface{
 class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
     func encodeOutputStream(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data{
         let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
-        let data = try JSONEncoder().encode(original)
+        let splitter = "/".data(using: .utf8)
+        let data = try JSONEncoder().encode(original)+splitter!
         return data
     }
 }

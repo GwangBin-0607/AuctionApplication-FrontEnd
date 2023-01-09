@@ -113,13 +113,13 @@ class ViewController: UIViewController {
 //            }
 //        }
 //    }
-    let repo = ProductListRepository(ApiService: ProductsListHTTP(ServerURL: "localhost"), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
+//    let repo = ProductListRepository(ApiService: ProductsListHTTP(ServerURL: "localhost"), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
     @objc func action(){
-        repo.sendData(output: [1,2,3])?.subscribe(onNext: {
-            error in
-            print("=====")
-            print(error)
-        })
+//        repo.sendData(output: [1,2,3])?.subscribe(onNext: {
+//            error in
+//            print("=====")
+//            print(error)
+//        })
 
 //        t.sendData(ProductPrice: StreamPrice(product_id: 150, product_price: 200))
 //        repo.buyProduct(output: StreamPrice(product_id: 1500, product_price: 123123)).subscribe(onNext: {

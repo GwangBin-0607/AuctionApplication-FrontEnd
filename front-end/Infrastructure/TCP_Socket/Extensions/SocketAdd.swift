@@ -7,22 +7,12 @@
 
 import Foundation
 import RxSwift
-protocol SocketAddInterface{
-    associatedtype DataType
-    var inputDataObservable:Observable<Result<[DataType],Error>>!{get set}
-    var controlSocketState:AnyObserver<isConnecting>{get}
-    var isSocketState:Observable<SocketConnectState>{get}
-    func sendData(data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>
-}
-
-class SocketAdd<DecodeDataType:Decodable>:SocketAddInterface{
-    var inputDataObservable: Observable<Result<[DataType], Error>>!
+class SocketAdd<DecodeDataType:Decodable>{
+    var inputDataObservable: Observable<Result<[DecodeDataType], Error>>!
     
     let controlSocketState: AnyObserver<isConnecting>
     
     let isSocketState: Observable<SocketConnectState>
-    
-    typealias DataType = DecodeDataType
     
     let socketNetwork:SocketNetworkInterface
     let socketInput:InputStreamDataTransferInterface
@@ -38,15 +28,15 @@ class SocketAdd<DecodeDataType:Decodable>:SocketAddInterface{
         inputDataObservable = socketNetwork.inputDataObservable.map(decode(result:))
     }
     
-    private func decode(result:Result<Data,Error>)->Result<[DataType],Error>{
+    private func decode(result:Result<Data,Error>)->Result<[DecodeDataType],Error>{
         switch result{
         case .success(let data):
-            var returnArray:[DataType]=[]
+            var returnArray:[DecodeDataType]=[]
             let inputData = try? socketInput.decodeInputStreamDataType(data: data)
             inputData?.forEach { inputStreamData in
                 switch inputStreamData.dataType{
                 case .InputStreamProductPrice:
-                    if let inputStream = inputStreamData.data as? DataType{
+                    if let inputStream = inputStreamData.data as? DecodeDataType{
                         returnArray.append(inputStream)
                     }
                 case .OutputStreamReaded:
@@ -81,7 +71,7 @@ class SocketAdd<DecodeDataType:Decodable>:SocketAddInterface{
                 return Disposables.create()
             }
 
-        }
+        }.observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
     func sendData(data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
         encode(dataType: .OutputStreamReaded, data: data, completion: completion)
