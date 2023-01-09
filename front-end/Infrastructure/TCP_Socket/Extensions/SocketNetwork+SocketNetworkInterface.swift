@@ -115,16 +115,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     deinit {
         print("SOCKET DEINIT")
     }
-    let lock = NSLock()
     func sendData(data:Data,completion:@escaping(Error?)->Void){
-        if Thread.current == Thread.main{
-            
-        }
-        print(Thread.current)
-        lock.lock()
-        defer{
-            lock.unlock()
-        }
         data.withUnsafeBytes { pointer in
             let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
             let result = outputStream?.write(buffer, maxLength: data.count)
@@ -150,7 +141,7 @@ extension SocketNetwork:StreamDelegate{
                 len = (inputStream?.read(&dataBuffer, maxLength: 4096))!
                 if len > 0 {
                     let data = Data(bytes: &dataBuffer, count: len)
-                    inputDataObserver.onNext(.success(data))
+//                    inputDataObserver.onNext(.success(data))
                 }
             }
         case .hasSpaceAvailable:

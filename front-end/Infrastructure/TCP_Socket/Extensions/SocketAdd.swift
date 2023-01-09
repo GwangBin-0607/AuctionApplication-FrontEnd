@@ -51,6 +51,7 @@ class SocketAdd<DecodeDataType:Decodable>{
             
         }
     }
+    let th = DispatchQueue(label: "level")
     private func encode(dataType:StreamDataType,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
         return Observable<Error?>.create { [weak self] observer in
             if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
@@ -71,7 +72,7 @@ class SocketAdd<DecodeDataType:Decodable>{
                 return Disposables.create()
             }
 
-        }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+        }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: th))
     }
     func sendData(data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
         encode(dataType: .OutputStreamReaded, data: data, completion: completion)
