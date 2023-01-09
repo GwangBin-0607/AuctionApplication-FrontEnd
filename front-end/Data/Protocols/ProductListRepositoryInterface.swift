@@ -4,5 +4,5 @@ protocol ProductListRepositoryInterface{
     var requestObserver:AnyObserver<Void>{get}
     func streamState(state: isConnecting)
     func observableSteamState() -> Observable<SocketConnectState>
-    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>?
+    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>
 }

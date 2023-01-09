@@ -142,7 +142,7 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>?{
+    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
         return streamingProductPrice.sendData(data: data, completion: completion)
     }
 }

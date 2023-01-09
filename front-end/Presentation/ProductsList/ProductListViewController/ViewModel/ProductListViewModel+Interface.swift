@@ -32,17 +32,9 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
         socketState = usecase.returnObservableStreamState()
-        scrollSubject.withUnretained(self).flatMap { owner,visibleCells in
-            if let observale = owner.usecase.updateStreamProduct(visibleCell: visibleCells){
-                return observale
-            }else{
-                return Observable<Error?>.create { observer in
-                    observer.onNext(nil)
-                    observer.onCompleted()
-                    return Disposables.create()
-                }
-            }
-        }.subscribe(onNext: {
+        scrollSubject.withUnretained(self).flatMap( { owner,visibleCells in
+            owner.usecase.updateStreamProduct(visibleCell: visibleCells)
+        }).subscribe(onNext: {
             error in
 //            print("Error Result  \(error)")
         },onDisposed: {

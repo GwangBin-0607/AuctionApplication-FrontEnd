@@ -71,7 +71,7 @@ class SocketAdd<DecodeDataType:Decodable>{
                 return Disposables.create()
             }
 
-        }.observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+        }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
     func sendData(data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
         encode(dataType: .OutputStreamReaded, data: data, completion: completion)

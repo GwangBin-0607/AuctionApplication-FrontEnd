@@ -117,6 +117,9 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     }
     let lock = NSLock()
     func sendData(data:Data,completion:@escaping(Error?)->Void){
+        if Thread.current == Thread.main{
+            
+        }
         print(Thread.current)
         lock.lock()
         defer{

@@ -19,7 +19,7 @@ class ProductListUsecase:ProductListUsecaseInterface{
     deinit {
         print("USECASE DEINIT")
     }
-    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>?{
+    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>{
         let set = Set(visibleCell)
         return repo.sendData(output: set) { err in
             print(err)
