@@ -57,15 +57,12 @@ final class ProductListRepository:ProductListRepositoryInterface{
         
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list)->Result<[Product],Error> in
-            let (owner,data) = arg1
-            switch data{
-            case .success(let decodable):
-                if let streamProductPrice = decodable as? [StreamPrice]{
-                    let result = owner.sumResult(before: list, after: .success(streamProductPrice))
-                    return result
-                }else{
-                    return .failure(TransferError.DecodeError)
-                }
+            let (owner,result) = arg1
+            switch result{
+            case .success(let data):
+                let streamProductPrice = owner.decodeProductPriceData(data: data)
+                let result = owner.sumResult(before: list, after: streamProductPrice)
+                return result
             case .failure(let err):
                 return .failure(err)
             }
@@ -155,7 +152,8 @@ extension ProductListRepository{
     func sendData(output data:Encodable)->Observable<Error?>?{
         return Observable<Error?>.create {
             [weak self]observer in
-            self?.streamingProductPrice.sendData(data: data, completion:{
+            let encodeData = try! JSONEncoder().encode(data)
+            self?.streamingProductPrice.sendData(data: encodeData, completion:{
                 err in
                 print("Execute")
                 observer.onNext(err)

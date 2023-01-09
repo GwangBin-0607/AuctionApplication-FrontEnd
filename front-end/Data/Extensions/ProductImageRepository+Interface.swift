@@ -69,6 +69,7 @@ extension ProductImageRepository{
             guard let self = self,let imageURL = imageURL else{
                 let err = NSError(domain: "No ImageURL", code: -1)
                 observer.onNext(CellImageTag(result: .failure(err), tag: productId))
+                observer.onCompleted()
                 return Disposables.create()
             }
             self.imageServer.returnImage(imageURL: imageURL, onComplete: {
@@ -80,6 +81,7 @@ extension ProductImageRepository{
                     observer.onCompleted()
                 case .failure(let error):
                     observer.onNext(CellImageTag(result: .failure(error), tag: productId))
+                    observer.onCompleted()
                 }
                 
             })

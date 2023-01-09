@@ -10,9 +10,10 @@ import RxSwift
 import Network
 
 final class SocketNWConnection:SocketNetworkInterface{
+    
     let isSocketConnect: Observable<SocketConnectState>
     let controlSocketConnect: AnyObserver<isConnecting>
-    let inputDataObservable: Observable<Result<Decodable,Error>>
+    let inputDataObservable: Observable<Result<Data,Error>>
     
     private var connection:NWConnection?
     private let host:NWEndpoint.Host
@@ -20,12 +21,12 @@ final class SocketNWConnection:SocketNetworkInterface{
     private let thread = DispatchQueue(label: "quee",qos: .background)
     private let disposeBag:DisposeBag
     private let isSocketConnected:AnyObserver<SocketConnectState>
-    private let inputDataObserver:AnyObserver<Result<Decodable,Error>>
+    private let inputDataObserver:AnyObserver<Result<Data,Error>>
     init(Host:NWEndpoint.Host,Port:NWEndpoint.Port) {
         disposeBag = DisposeBag()
         let controlSocketNetwork = PublishSubject<isConnecting>()
         let connected = PublishSubject<SocketConnectState>()
-        let inputPricing = PublishSubject<Result<Decodable,Error>>()
+        let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
         isSocketConnected = connected.asObserver()

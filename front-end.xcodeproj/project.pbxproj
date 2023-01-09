@@ -56,6 +56,7 @@
 		88BF04C529557F01001F7725 /* ProductListRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */; };
 		88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6A0A62967D10C0027BDD3 /* InputStreamDataTransfer.swift */; };
 		88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6A0A92967D2780027BDD3 /* OutputStreamDataTransfer.swift */; };
+		88C89F85296C2D1A0008796A /* SocketAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C89F84296C2D1A0008796A /* SocketAdd.swift */; };
 		88CE016129697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016029697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift */; };
 		88CE016329697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */; };
 		88CE016D29697646003169B5 /* ProductListCollectionViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */; };
@@ -151,6 +152,7 @@
 		88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepositoryInterface.swift; sourceTree = "<group>"; };
 		88C6A0A62967D10C0027BDD3 /* InputStreamDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStreamDataTransfer.swift; sourceTree = "<group>"; };
 		88C6A0A92967D2780027BDD3 /* OutputStreamDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStreamDataTransfer.swift; sourceTree = "<group>"; };
+		88C89F84296C2D1A0008796A /* SocketAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketAdd.swift; sourceTree = "<group>"; };
 		88CE016029697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListCollectionViewCellViewModel+Interface.swift"; sourceTree = "<group>"; };
 		88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewCellViewModelInterface.swift; sourceTree = "<group>"; };
 		88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewModelInterface.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 		8897C45C292CC0B500823980 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				88C89F84296C2D1A0008796A /* SocketAdd.swift */,
 				8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */,
 				88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */,
 			);
@@ -919,6 +922,7 @@
 				887D54A12953046400DA2F15 /* ProductListViewModelInterface.swift in Sources */,
 				8887D1602936227B005DA3C6 /* TransitionProductListViewController.swift in Sources */,
 				8887D14E2935A621005DA3C6 /* HasChildCoordinator.swift in Sources */,
+				88C89F85296C2D1A0008796A /* SocketAdd.swift in Sources */,
 				8874F4CE29373D55003981C3 /* ProductImageUseCase+Interface.swift in Sources */,
 				882CBE772908285C00550A8E /* Product.swift in Sources */,
 				88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */,

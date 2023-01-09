@@ -10,6 +10,7 @@ protocol OutputStreamCompletionHandlerInterface{
     func registerCompletion(completion:@escaping(Error?)->Void)
     func executeCompletion(completionId:Int16)
     func removeAllWhenEncounter()
+    func removeCompleted(completionId:Int16)
     func returnCurrentCompletionId()->Int16
 }
 class OutputStreamCompletionHandler{
@@ -44,7 +45,7 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
         print(completionId)
         removeCompleted(completionId: completionId)
     }
-    private func removeCompleted(completionId:Int16){
+    func removeCompleted(completionId:Int16){
         completionHandler.removeValue(forKey: completionId)
         print(completionHandler.sorted(by: {$0.key<$1.key}))
     }

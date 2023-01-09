@@ -24,12 +24,13 @@ struct OutputStreamData:Encodable{
     }
 }
 protocol OutputStreamDataTransferInterface{
-    func encodeOutputStream(output:Encodable)throws->Data
+    func encodeOutputStream(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data
 }
 
 class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
-    func encodeOutputStream(output:Encodable)throws->Data{
-        let data = try JSONEncoder().encode(output)
+    func encodeOutputStream(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data{
+        let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
+        let data = try JSONEncoder().encode(original)
         return data
     }
 }
