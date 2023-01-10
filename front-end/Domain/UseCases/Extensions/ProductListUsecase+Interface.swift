@@ -1,28 +1,53 @@
 import RxSwift
-class ProductListUsecase:ProductListUsecaseInterface{
-    let repo:ProductListRepositoryInterface
-    init(repo: ProductListRepositoryInterface) {
-        self.repo = repo
+protocol ProductListWithImageHeightUsecaseInterface{
+    func returnProductList() -> Observable<Result<[Product], Error>>
+    func returnRequestObserver() -> AnyObserver<Void>
+    func returnObservableStreamState() -> Observable<SocketConnectState>
+    func returnControlStreamState(state: isConnecting)
+    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>
+}
+class ProductListWithImageHeightUsecase{
+    private let listRepo:ProductListRepositoryInterface
+    private let imageHeightRepo:ProductImageRepositoryInterface
+    init(ListRepo:ProductListRepositoryInterface,ImageHeightRepo:ProductImageRepositoryInterface) {
+        listRepo = ListRepo
+        imageHeightRepo = ImageHeightRepo
     }
+}
+extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInterface{
     func returnProductList() -> Observable<Result<[Product], Error>> {
-        repo.productListObservable
+        listRepo.productListObservable.flatMap { result in
+            switch result{
+            case .success(let list):
+                return self.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
+                    return Observable<Result<[Product],Error>>.create { ob in
+                        ob.onNext(.success(list))
+                        ob.onCompleted()
+                        return Disposables.create()
+                    }
+                }
+            case .failure(let error):
+                return Observable<Result<[Product],Error>>.create { observer in
+                    observer.onNext(.failure(error))
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+            }
+        }
     }
     func returnRequestObserver() -> AnyObserver<Void> {
-        repo.requestObserver
+        listRepo.requestObserver
     }
     func returnObservableStreamState() -> Observable<SocketConnectState> {
-        repo.observableSteamState()
+        listRepo.observableSteamState()
     }
     func returnControlStreamState(state: isConnecting) {
-        repo.streamState(state: state)
-    }
-    deinit {
-        print("USECASE DEINIT")
+        listRepo.streamState(state: state)
     }
     func updateStreamProduct(visibleCell:[Int])->Observable<Error?>{
         let set = Set(visibleCell)
-        return repo.sendData(output: set) { err in
-            print(err)
+        return listRepo.sendData(output: set) { err in
+            
         }
     }
 }

@@ -46,7 +46,6 @@ extension ProductImageRepository{
                         let downImage = owner.returnImageObservable(productId: productId, image: image)
                         return CellImageTag(result: .success(downImage), tag: productId)
                     case .failure(let error):
-                        print(error)
                         return CellImageTag(result: .failure(error), tag: productId)
                         
                     }

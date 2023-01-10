@@ -1,14 +1,14 @@
 //
-//  SocketAdd.swift
+//  ProductListRepo.swift
 //  front-end
 //
-//  Created by 안광빈 on 2023/01/09.
+//  Created by 안광빈 on 2023/01/10.
 //
 
 import Foundation
 import RxSwift
-class SocketAdd<DecodeDataType:Decodable>{
-    var inputDataObservable: Observable<Result<[DecodeDataType], Error>>!
+class ProductListRepositoryTransfer:ProductListRepositoryTransferInterface{
+    var inputDataObservable: Observable<Result<[StreamPrice], Error>>
     
     let controlSocketState: AnyObserver<isConnecting>
     
@@ -18,25 +18,37 @@ class SocketAdd<DecodeDataType:Decodable>{
     let socketInput:InputStreamDataTransferInterface
     let socketOutput:OutputStreamDataTransferInterface
     let socketCompletionHandler:OutputStreamCompletionHandlerInterface
-    init(socketNetwork: SocketNetworkInterface, socketInput: InputStreamDataTransferInterface, socketOutput: OutputStreamDataTransferInterface, socketCompletionHandler: OutputStreamCompletionHandlerInterface) {
+    private let disposeBag:DisposeBag
+    init(socketNetwork: SocketNetworkInterface) {
+        let subject = PublishSubject<Result<[StreamPrice],Error>>()
+        disposeBag = DisposeBag()
         self.socketNetwork = socketNetwork
-        self.socketInput = socketInput
-        self.socketOutput = socketOutput
-        self.socketCompletionHandler = socketCompletionHandler
+        self.socketInput = InputStreamDataTransfer()
+        self.socketOutput = OutputStreamDataTransfer()
+        self.socketCompletionHandler = OutputStreamCompletionHandler()
         isSocketState = socketNetwork.isSocketConnect
         controlSocketState = socketNetwork.controlSocketConnect
-        inputDataObservable = socketNetwork.inputDataObservable.map(decode(result:))
+        inputDataObservable = subject.asObservable()
+        socketNetwork.inputDataObservable.map(decode(result:)).subscribe(onNext: {
+            result in
+            switch result {
+            case .success(let list):
+                subject.asObserver().onNext(.success(list))
+            case .failure(let error):
+                subject.asObserver().onNext(.failure(error))
+            }
+        }).disposed(by: disposeBag)
     }
     
-    private func decode(result:Result<Data,Error>)->Result<[DecodeDataType],Error>{
+    private func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>{
         switch result{
         case .success(let data):
-            var returnArray:[DecodeDataType]=[]
+            var returnArray:[StreamPrice]=[]
             let inputData = try? socketInput.decodeInputStreamDataType(data: data)
             inputData?.forEach { inputStreamData in
                 switch inputStreamData.dataType{
                 case .InputStreamProductPrice:
-                    if let inputStream = inputStreamData.data as? DecodeDataType{
+                    if let inputStream = inputStreamData.data as? StreamPrice{
                         returnArray.append(inputStream)
                     }
                 case .OutputStreamReaded:

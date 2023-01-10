@@ -81,7 +81,6 @@ class InputStreamDataTransfer:InputStreamDataTransferInterface{
     
     func decodeInputStreamDataType(data:Data) throws -> [InputStreamData]{
         let test = String(data: data, encoding: .utf8)
-        print(test)
         let splitString = test?.split(separator: "/")
         var resultInputStreamData:[InputStreamData]=[]
         try splitString?.forEach({ sub in

@@ -29,13 +29,16 @@ class SceneDIContainer{
 }
 extension SceneDIContainer{
     private func returnProductListViewModelInterface()->ProductListViewModel{
-        ProductListViewModel(UseCase: returnProductListUsecaseInterface(), ImageUseCase: returnShowProductImageHeightUseCase())
+        ProductListViewModel(UseCase: returnProductListUsecaseInterface())
     }
-    private func returnProductListUsecaseInterface()->ProductListUsecaseInterface{
-        ProductListUsecase(repo: returnProductListRepositoryInterface())
+    private func returnProductListUsecaseInterface()->ProductListWithImageHeightUsecaseInterface{
+        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: returnProductsImageRepository())
+    }
+    private func returnProductListRepositoryTransferInterface()->ProductListRepositoryTransferInterface{
+        ProductListRepositoryTransfer(socketNetwork: returnStreamingService())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: SocketAdd<StreamPrice>(socketNetwork: returnStreamingService(), socketInput: InputStreamDataTransfer(), socketOutput: OutputStreamDataTransfer(), socketCompletionHandler: OutputStreamCompletionHandler()))
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingServiceTransfer: returnProductListRepositoryTransferInterface())
     }
     
 }

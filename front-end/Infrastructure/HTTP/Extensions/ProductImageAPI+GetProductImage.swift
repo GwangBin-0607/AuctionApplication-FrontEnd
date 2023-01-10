@@ -6,20 +6,20 @@ protocol GetProductImage{
 }
 class ProductImageAPI:GetProductImage{
     func returnImage(imageURL:String,onComplete: @escaping (Result<Data, Error>) -> Void) {
-        print("$$$$$$$$$$$$$$$$$$$$$")
         var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/productimage")!)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,String> = ["imageURL":imageURL]
         let data = try! JSONSerialization.data(withJSONObject: json, options: [])
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = data
-        URLSession.shared.dataTask(with: urlRequest, completionHandler: {
-            imageData,response,error in
-            print("=====\(error)=====")
-            if let error = error{
-                onComplete(.failure(error))
-            }
-        }).resume()
+        onComplete(.failure(NSError(domain: "Handling", code: -1)))
+//        URLSession.shared.dataTask(with: urlRequest, completionHandler: {
+//            imageData,response,error in
+//            print("=====\(error)=====")
+//            if let error = error{
+//                onComplete(.failure(error))
+//            }
+//        })
     }
     func returnJson(){
         var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/alllist")!)

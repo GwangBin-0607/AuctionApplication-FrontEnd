@@ -141,7 +141,7 @@ extension SocketNetwork:StreamDelegate{
                 len = (inputStream?.read(&dataBuffer, maxLength: 4096))!
                 if len > 0 {
                     let data = Data(bytes: &dataBuffer, count: len)
-//                    inputDataObserver.onNext(.success(data))
+                    inputDataObserver.onNext(.success(data))
                 }
             }
         case .hasSpaceAvailable:

@@ -9,8 +9,7 @@ import Foundation
 import RxSwift
 
 final class ProductListViewModel:ProductListViewControllerViewModelInterface{
-    private let usecase:ProductListUsecaseInterface
-    private let imageUseCase:ProductImageHeightUsecaseInterface
+    private let usecase:ProductListWithImageHeightUsecaseInterface
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
@@ -18,14 +17,10 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
     let socketState: Observable<SocketConnectState>
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
-    init(UseCase:ProductListUsecaseInterface,ImageUseCase:ProductImageHeightUsecaseInterface) {
+    init(UseCase:ProductListWithImageHeightUsecaseInterface) {
         self.usecase = UseCase
-        self.imageUseCase = ImageUseCase
         disposeBag = DisposeBag()
         let scrollSubject = PublishSubject<[Int]>()
-        let loadingImage = PublishSubject<[Product]>()
-        let loadingImageObservable = loadingImage.asObservable()
-        let loadingImageObserver = loadingImage.asObserver()
         scrollScrollView = scrollSubject.asObserver()
         requestProductsList = usecase.returnRequestObserver()
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
@@ -41,15 +36,11 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
             print("Disposed")
         }).disposed(by: disposeBag)
         
-        loadingImageObservable.withUnretained(self).flatMap { owner,products in
-            owner.imageUseCase.returnProductsWithImageHeight(products: products)
-        }.subscribe(onNext: products.onNext(_:)).disposed(by: disposeBag)
-        
-        usecase.returnProductList().subscribe(onNext: {
-            result in
+        usecase.returnProductList().withUnretained(self).subscribe(onNext: {
+            owner,result in
             switch result {
             case .success(let list):
-                loadingImageObserver.onNext(list)
+                owner.products.onNext(list)
             case .failure(let error):
                 print(error)
             }

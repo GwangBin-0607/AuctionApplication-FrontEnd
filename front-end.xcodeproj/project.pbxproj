@@ -56,7 +56,7 @@
 		88BF04C529557F01001F7725 /* ProductListRepositoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */; };
 		88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6A0A62967D10C0027BDD3 /* InputStreamDataTransfer.swift */; };
 		88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C6A0A92967D2780027BDD3 /* OutputStreamDataTransfer.swift */; };
-		88C89F85296C2D1A0008796A /* SocketAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C89F84296C2D1A0008796A /* SocketAdd.swift */; };
+		88C89F85296C2D1A0008796A /* ProductListRepositoryTransferInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C89F84296C2D1A0008796A /* ProductListRepositoryTransferInterface.swift */; };
 		88CE016129697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016029697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift */; };
 		88CE016329697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */; };
 		88CE016D29697646003169B5 /* ProductListCollectionViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */; };
@@ -66,6 +66,7 @@
 		88CE01752969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE01742969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift */; };
 		88CE01772969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CE01762969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift */; };
 		88D2178A296456DC00715D2F /* OutputStreamCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */; };
+		88D9FB8C296D2AED005D1752 /* ProductListRepositoryTransfer+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9FB8B296D2AED005D1752 /* ProductListRepositoryTransfer+Interface.swift */; };
 		88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712AD2912C16000E54378 /* ProductListCollectionView.swift */; };
 		88E712B22912C28B00E54378 /* ProductListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712B12912C28B00E54378 /* ProductListCollectionViewLayout.swift */; };
 		B43726FBB31028C580A834AE /* Pods_front_endTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C01433575DCFF3D0B52FBE6 /* Pods_front_endTests.framework */; };
@@ -152,7 +153,7 @@
 		88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepositoryInterface.swift; sourceTree = "<group>"; };
 		88C6A0A62967D10C0027BDD3 /* InputStreamDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputStreamDataTransfer.swift; sourceTree = "<group>"; };
 		88C6A0A92967D2780027BDD3 /* OutputStreamDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStreamDataTransfer.swift; sourceTree = "<group>"; };
-		88C89F84296C2D1A0008796A /* SocketAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketAdd.swift; sourceTree = "<group>"; };
+		88C89F84296C2D1A0008796A /* ProductListRepositoryTransferInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListRepositoryTransferInterface.swift; sourceTree = "<group>"; };
 		88CE016029697043003169B5 /* ProductListCollectionViewCellViewModel+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListCollectionViewCellViewModel+Interface.swift"; sourceTree = "<group>"; };
 		88CE016229697057003169B5 /* ProductListCollectionViewCellViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewCellViewModelInterface.swift; sourceTree = "<group>"; };
 		88CE016C29697646003169B5 /* ProductListCollectionViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewModelInterface.swift; sourceTree = "<group>"; };
@@ -162,6 +163,7 @@
 		88CE01742969B6F8003169B5 /* ProductListViewModel+CollectionViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewModel+CollectionViewModelInterface.swift"; sourceTree = "<group>"; };
 		88CE01762969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListViewModel+CollectionViewLayoutViewModelInterface.swift"; sourceTree = "<group>"; };
 		88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStreamCompletionHandler.swift; sourceTree = "<group>"; };
+		88D9FB8B296D2AED005D1752 /* ProductListRepositoryTransfer+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductListRepositoryTransfer+Interface.swift"; sourceTree = "<group>"; };
 		88E712AD2912C16000E54378 /* ProductListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionView.swift; sourceTree = "<group>"; };
 		88E712B12912C28B00E54378 /* ProductListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewLayout.swift; sourceTree = "<group>"; };
 		C106EA739AEFD2580B4EFDAC /* Pods-front-endTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-front-endTests.release.xcconfig"; path = "Target Support Files/Pods-front-endTests/Pods-front-endTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 		882CBE8829083E9900550A8E /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				88C89F84296C2D1A0008796A /* ProductListRepositoryTransferInterface.swift */,
 				8878025829434BF0009F4F9A /* ProductImageRepositoryInterface.swift */,
 				88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */,
 				88CE01722969840A003169B5 /* ProductImageCacheRepositoryInterface.swift */,
@@ -267,6 +270,7 @@
 				8878025629434399009F4F9A /* ProductImageRepository+Interface.swift */,
 				887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */,
 				88CE0170296983F0003169B5 /* ProductImageCacheRepository+interface.swift */,
+				88D9FB8B296D2AED005D1752 /* ProductListRepositoryTransfer+Interface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -457,6 +461,7 @@
 		889532C628E57C3200C3293F /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				88D217882964567900715D2F /* Utils */,
 				882CBE8829083E9900550A8E /* Protocols */,
 				882CBE9529084B0F00550A8E /* Extensions */,
 			);
@@ -466,7 +471,6 @@
 		889532C728E57C7300C3293F /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				88D217882964567900715D2F /* Utils */,
 				88A7FF47295ABE3C00F2E9CD /* MockData */,
 				8897C467292CC3F300823980 /* HTTP */,
 				8897C457292CC07200823980 /* TCP_Socket */,
@@ -494,7 +498,6 @@
 		8897C45C292CC0B500823980 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				88C89F84296C2D1A0008796A /* SocketAdd.swift */,
 				8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */,
 				88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */,
 			);
@@ -922,7 +925,7 @@
 				887D54A12953046400DA2F15 /* ProductListViewModelInterface.swift in Sources */,
 				8887D1602936227B005DA3C6 /* TransitionProductListViewController.swift in Sources */,
 				8887D14E2935A621005DA3C6 /* HasChildCoordinator.swift in Sources */,
-				88C89F85296C2D1A0008796A /* SocketAdd.swift in Sources */,
+				88C89F85296C2D1A0008796A /* ProductListRepositoryTransferInterface.swift in Sources */,
 				8874F4CE29373D55003981C3 /* ProductImageUseCase+Interface.swift in Sources */,
 				882CBE772908285C00550A8E /* Product.swift in Sources */,
 				88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */,
@@ -941,6 +944,7 @@
 				8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */,
 				888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */,
 				8870DCA128E5701E005328C0 /* AppDelegate.swift in Sources */,
+				88D9FB8C296D2AED005D1752 /* ProductListRepositoryTransfer+Interface.swift in Sources */,
 				88CE01772969B73A003169B5 /* ProductListViewModel+CollectionViewLayoutViewModelInterface.swift in Sources */,
 				8887D15D2936223F005DA3C6 /* TransitionDetailProductViewController.swift in Sources */,
 				889CCD7429139BC3008D1E2F /* MockProductsListAPI.swift in Sources */,

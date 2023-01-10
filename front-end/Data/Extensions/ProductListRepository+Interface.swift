@@ -25,13 +25,13 @@ final class ProductListRepository:ProductListRepositoryInterface{
     let productListObservable:Observable<Result<[Product],Error>>
     let requestObserver:AnyObserver<Void>
     private let apiService:GetProductsList
-    private let streamingProductPrice:SocketAdd<StreamPrice>
+    private let streamingProductPrice:ProductListRepositoryTransferInterface
     private let disposeBag:DisposeBag
-    init(ApiService:GetProductsList,StreamingService:SocketAdd<StreamPrice>) {
+    init(ApiService:GetProductsList,StreamingServiceTransfer:ProductListRepositoryTransferInterface) {
         print("Repo Init")
         disposeBag = DisposeBag()
         apiService = ApiService
-        streamingProductPrice = StreamingService
+        streamingProductPrice = StreamingServiceTransfer
         let queue = DispatchQueue(label: "testQueue")
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
         let resultProductObserver = resultProductSubject.asObserver()
@@ -56,6 +56,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
             .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
         streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
+            print("===&&&&&&&&&&&&&&&&&====")
             let (owner,result) = arg1
             let sumResult = owner.sumResult(before: list, after: result)
             return sumResult
