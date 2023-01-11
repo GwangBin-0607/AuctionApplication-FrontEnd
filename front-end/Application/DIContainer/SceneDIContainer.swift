@@ -13,11 +13,11 @@ class SceneDIContainer{
     private func returnStreamingService()->SocketNetworkInterface{
         SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
-    private func returnProductListCollectionView(viewModel:ProductListCollectionViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
-        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+    private func returnProductListCollectionView(delegate:ReturnPriceWhenReloadCellInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+        ProductListCollectionView(collectionViewLayout: layout,delegate: delegate, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout(viewModel:ProductListCollectionViewLayoutViewModelInterface)->ProductListCollectionViewLayout{
-        ProductListCollectionViewLayout(viewModel: viewModel)
+    private func returnProductListCollectionViewLayout(delegate:ReturnImageHeightWhenPrepareCollectionViewLayoutInterface)->ProductListCollectionViewLayout{
+        ProductListCollectionViewLayout(delegate: delegate)
     }
     private func returnShowProductImageHeightUseCase()->ProductImageHeightUsecaseInterface{
         ProductImageHeightUseCase(productsImageRepository: returnProductsImageRepository())
@@ -34,11 +34,8 @@ extension SceneDIContainer{
     private func returnProductListUsecaseInterface()->ProductListWithImageHeightUsecaseInterface{
         ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: returnProductsImageRepository())
     }
-    private func returnProductListRepositoryTransferInterface()->ProductListRepositoryTransferInterface{
-        ProductListRepositoryTransfer(socketNetwork: returnStreamingService())
-    }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingServiceTransfer: returnProductListRepositoryTransferInterface())
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingServiceTransfer: returnStreamingService())
     }
     
 }
@@ -57,8 +54,8 @@ protocol ProductListViewSceneDIContainer{
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
         let viewModel = returnProductListViewModelInterface()
-        let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: viewModel)
-        let collectionView = returnProductListCollectionView(viewModel:viewModel, layout: collectionViewLayout)
+        let collectionViewLayout = returnProductListCollectionViewLayout(delegate: viewModel)
+        let collectionView = returnProductListCollectionView(delegate:viewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
         return productListViewController
     }

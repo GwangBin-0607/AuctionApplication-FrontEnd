@@ -15,13 +15,13 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
-    private let viewModel:ProductListCollectionViewLayoutViewModelInterface
+    private let returnImageHeightDelegate:ReturnImageHeightWhenPrepareCollectionViewLayoutInterface
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    init(viewModel:ProductListCollectionViewLayoutViewModelInterface) {
-        self.viewModel = viewModel
+    init(delegate:ReturnImageHeightWhenPrepareCollectionViewLayoutInterface) {
+        self.returnImageHeightDelegate = delegate
         super.init()
         print("Layout INIT")
     }
@@ -54,7 +54,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
           let indexPath = IndexPath(item: item, section: 0)
             
-            let photoHeight = viewModel.returnImageHeightFromViewModel(index: indexPath)
+            let photoHeight = returnImageHeightDelegate.returnImageHeightFromViewModel(index: indexPath)
           let height = cellPadding * 2 + photoHeight
           let frame = CGRect(x: xOffset[column],
                              y: yOffset[column],

@@ -9,11 +9,11 @@ import Foundation
 import RxSwift
 extension ProductListRepository{
     func streamState(state: isConnecting) {
-        streamingProductPrice.controlSocketState.onNext(state)
+        streamingProductPrice.controlSocketConnect.onNext(state)
     }
     
     func observableSteamState() -> Observable<SocketConnectState> {
-        return streamingProductPrice.isSocketState
+        return streamingProductPrice.isSocketConnect
     }
 }
 final class ProductListRepository:ProductListRepositoryInterface{
@@ -24,13 +24,16 @@ final class ProductListRepository:ProductListRepositoryInterface{
     //MARK: OUTPUT
     let productListObservable:Observable<Result<[Product],Error>>
     let requestObserver:AnyObserver<Void>
-    private let apiService:GetProductsList
-    private let streamingProductPrice:ProductListRepositoryTransferInterface
+    private let httpService:GetProductsList
+    private let streamingProductPrice:SocketNetworkInterface
+    private let socketDataTransfer:ProductListRepositorySocketTransferInterface
     private let disposeBag:DisposeBag
-    init(ApiService:GetProductsList,StreamingServiceTransfer:ProductListRepositoryTransferInterface) {
+    let sendThread = DispatchQueue(label: "sendThread")
+    init(ApiService:GetProductsList,StreamingServiceTransfer:SocketNetworkInterface) {
         print("Repo Init")
+        socketDataTransfer = ProductListRepositorySocketTransfer()
         disposeBag = DisposeBag()
-        apiService = ApiService
+        httpService = ApiService
         streamingProductPrice = StreamingServiceTransfer
         let queue = DispatchQueue(label: "testQueue")
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
@@ -54,7 +57,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 return re
             })
             .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
-        streamingProductPrice.inputDataObservable.withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
+        streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:)).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
             print("===&&&&&&&&&&&&&&&&&====")
             let (owner,result) = arg1
@@ -115,7 +118,7 @@ extension ProductListRepository{
     private func returnData() -> Observable<Data> {
         return Observable.create { [weak self] observer in
             
-            self?.apiService.getProductData() { result in
+            self?.httpService.getProductData() { result in
                 switch result {
                 case let .success(data):
                     observer.onNext(data)
@@ -144,6 +147,7 @@ extension ProductListRepository{
 }
 extension ProductListRepository{
     func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
-        return streamingProductPrice.sendData(data: data, completion: completion)
+        return socketDataTransfer.encode(socketNetwork: streamingProductPrice, data: data, completion: completion)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
 }

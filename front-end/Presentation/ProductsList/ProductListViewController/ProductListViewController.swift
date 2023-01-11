@@ -5,10 +5,10 @@ import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:ProductListViewControllerViewModelInterface
     private let disposeBag:DisposeBag
-    private let collectionView:ProductListCollectionView
+    private let collectionView:UICollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
-    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:UICollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView

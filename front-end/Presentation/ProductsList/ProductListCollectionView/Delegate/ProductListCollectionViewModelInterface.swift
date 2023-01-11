@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ProductListCollectionViewModelInterface {
+protocol ReturnPriceWhenReloadCellInterface {
     func returnPrice(index:IndexPath)->Int
 }

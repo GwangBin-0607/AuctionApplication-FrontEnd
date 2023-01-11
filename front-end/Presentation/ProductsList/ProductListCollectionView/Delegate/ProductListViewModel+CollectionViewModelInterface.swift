@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ProductListViewModel:ProductListCollectionViewModelInterface{
+extension ProductListViewModel:ReturnPriceWhenReloadCellInterface{
     func returnPrice(index: IndexPath) -> Int {
         do{
             let product = try products.value()

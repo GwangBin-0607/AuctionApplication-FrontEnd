@@ -7,40 +7,17 @@
 
 import Foundation
 import RxSwift
-class ProductListRepositoryTransfer:ProductListRepositoryTransferInterface{
-    var inputDataObservable: Observable<Result<[StreamPrice], Error>>
-    
-    let controlSocketState: AnyObserver<isConnecting>
-    
-    let isSocketState: Observable<SocketConnectState>
-    
-    let socketNetwork:SocketNetworkInterface
+final class ProductListRepositorySocketTransfer:ProductListRepositorySocketTransferInterface{
     let socketInput:InputStreamDataTransferInterface
     let socketOutput:OutputStreamDataTransferInterface
     let socketCompletionHandler:OutputStreamCompletionHandlerInterface
-    private let disposeBag:DisposeBag
-    init(socketNetwork: SocketNetworkInterface) {
-        let subject = PublishSubject<Result<[StreamPrice],Error>>()
-        disposeBag = DisposeBag()
-        self.socketNetwork = socketNetwork
+    init() {
         self.socketInput = InputStreamDataTransfer()
         self.socketOutput = OutputStreamDataTransfer()
         self.socketCompletionHandler = OutputStreamCompletionHandler()
-        isSocketState = socketNetwork.isSocketConnect
-        controlSocketState = socketNetwork.controlSocketConnect
-        inputDataObservable = subject.asObservable()
-        socketNetwork.inputDataObservable.map(decode(result:)).subscribe(onNext: {
-            result in
-            switch result {
-            case .success(let list):
-                subject.asObserver().onNext(.success(list))
-            case .failure(let error):
-                subject.asObserver().onNext(.failure(error))
-            }
-        }).disposed(by: disposeBag)
     }
     
-    private func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>{
+    func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>{
         switch result{
         case .success(let data):
             var returnArray:[StreamPrice]=[]
@@ -63,13 +40,12 @@ class ProductListRepositoryTransfer:ProductListRepositoryTransferInterface{
             
         }
     }
-    let th = DispatchQueue(label: "level")
-    private func encode(dataType:StreamDataType,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
+    func encode(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
         return Observable<Error?>.create { [weak self] observer in
             if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
                let data = try? self?.socketOutput.encodeOutputStream(dataType: dataType, completionId: completionId, output: data){
                 self?.socketCompletionHandler.registerCompletion(completion: completion)
-                self?.socketNetwork.sendData(data: data, completion: {
+                socketNetwork.sendData(data: data, completion: {
                     error in
                     if let error = error{
                         self?.socketCompletionHandler.removeCompleted(completionId: completionId)
@@ -84,10 +60,6 @@ class ProductListRepositoryTransfer:ProductListRepositoryTransferInterface{
                 return Disposables.create()
             }
 
-        }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: th))
+        }
     }
-    func sendData(data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
-        encode(dataType: .OutputStreamReaded, data: data, completion: completion)
-    }
-    
 }

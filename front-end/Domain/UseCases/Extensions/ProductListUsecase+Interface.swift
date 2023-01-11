@@ -16,10 +16,10 @@ class ProductListWithImageHeightUsecase{
 }
 extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInterface{
     func returnProductList() -> Observable<Result<[Product], Error>> {
-        listRepo.productListObservable.flatMap { result in
+        listRepo.productListObservable.withUnretained(self).flatMap { owner,result in
             switch result{
             case .success(let list):
-                return self.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
+                return owner.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
                     return Observable<Result<[Product],Error>>.create { ob in
                         ob.onNext(.success(list))
                         ob.onCompleted()
