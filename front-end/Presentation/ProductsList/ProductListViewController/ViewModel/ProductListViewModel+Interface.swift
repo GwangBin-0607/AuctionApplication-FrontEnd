@@ -50,9 +50,10 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
 //            print("\(state.socketConnect) ||||\(state.error)")
         }).disposed(by: disposeBag)
         
+        print("\(String(describing: self)) INIT")
     }
     deinit {
-        print("VIEWMODEL DEINIT")
+        print("\(String(describing: self)) DEINIT")
     }
     func controlSocketState(state: isConnecting) {
         usecase.returnControlStreamState(state: state)

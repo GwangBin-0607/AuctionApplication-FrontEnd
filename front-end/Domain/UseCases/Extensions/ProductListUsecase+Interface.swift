@@ -4,7 +4,7 @@ protocol ProductListWithImageHeightUsecaseInterface{
     func returnRequestObserver() -> AnyObserver<Void>
     func returnObservableStreamState() -> Observable<SocketConnectState>
     func returnControlStreamState(state: isConnecting)
-    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>
+    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Decodable,Error>>
 }
 class ProductListWithImageHeightUsecase{
     private let listRepo:ProductListRepositoryInterface
@@ -12,6 +12,10 @@ class ProductListWithImageHeightUsecase{
     init(ListRepo:ProductListRepositoryInterface,ImageHeightRepo:ProductImageRepositoryInterface) {
         listRepo = ListRepo
         imageHeightRepo = ImageHeightRepo
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
 }
 extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInterface{
@@ -44,11 +48,9 @@ extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInt
     func returnControlStreamState(state: isConnecting) {
         listRepo.streamState(state: state)
     }
-    func updateStreamProduct(visibleCell:[Int])->Observable<Error?>{
+    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Decodable,Error>>{
         let t = StreamStateData(result: 1)
         let set = Set(visibleCell)
-        return listRepo.sendData(output: t) { err in
-            print(err)
-        }
+        return listRepo.sendData(output: t)
     }
 }

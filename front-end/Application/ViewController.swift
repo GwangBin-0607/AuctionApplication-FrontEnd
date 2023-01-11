@@ -128,10 +128,10 @@ class ViewController: UIViewController {
 //        })
 //        pro.sendData(ProductPrice: StreamPrice(product_id: 5000, product_price: 5000))
 //        repo.requestObserver.onNext(2)
-//        let diContainer = SceneDIContainer()
-//        var productViewController = diContainer.returnProductsListViewController()
-////        productViewController.modalPresentationStyle = .fullScreen
-//        self.present(productViewController, animated: true, completion: nil)
+        let diContainer = SceneDIContainer()
+        var productViewController = diContainer.returnProductsListViewController()
+//        productViewController.modalPresentationStyle = .fullScreen
+        self.present(productViewController, animated: true, completion: nil)
     }
     var basicArray = [1,2,3,4,5,6,7]
     let lock = NSLock()

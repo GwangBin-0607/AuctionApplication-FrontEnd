@@ -65,9 +65,10 @@ final class ProductListRepository:ProductListRepositoryInterface{
             return sumResult
         }).subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
+        print("\(String(describing: self)) INIT")
     }
     deinit {
-        print("REPO DEINIT")
+        print("\(String(describing: self)) DEINIT")
     }
     private func addResult(before:Result<[Product],Error>,after:Result<[Product],Error>)->Result<[Product],Error>{
         switch (before,after){
@@ -146,8 +147,8 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
-        return socketDataTransfer.encodeAndSendExtension(socketNetwork: streamingProductPrice, data: data, completion: completion)
+    func sendData(output data:Encodable)->Observable<Result<Decodable,Error>>{
+        return socketDataTransfer.encodeAndSendExtension(socketNetwork: streamingProductPrice, data: data)
             .subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
 }

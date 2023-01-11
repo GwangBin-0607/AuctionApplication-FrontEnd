@@ -78,7 +78,12 @@ protocol InputStreamDataTransferInterface{
 }
 
 class InputStreamDataTransfer:InputStreamDataTransferInterface{
-    
+    init() {
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
+    }
     func decodeInputStreamDataType(data:Data) throws -> [InputStreamData]{
         let test = String(data: data, encoding: .utf8)
         let splitString = test?.split(separator: "/")

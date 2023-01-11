@@ -35,6 +35,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var shouldKeeping:Bool = false
     private let disposeBag:DisposeBag
     private var currentRunloop:RunLoop?
+    private let connected = BehaviorSubject<SocketConnectState>(value: SocketConnectState(socketConnect: .disconnect, error: nil))
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
     init(hostName: String, portNumber: Int) {
@@ -44,7 +45,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         disposeBag = DisposeBag()
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let connected = PublishSubject<SocketConnectState>()
         let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
@@ -68,6 +68,10 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         
         
         start()
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
     private func connect() {
         let streamTask = urlSession.streamTask(withHostName: self.hostName, port: self.portNumber)
@@ -88,9 +92,12 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
         timer.setEventHandler(handler: {
             [weak self] in
-            if self?.inputStream?.streamStatus == .open,self?.outputStream?.streamStatus == .open,self?.shouldKeeping == true{
-                self?.timer.cancel()
-            }else{
+            if  let connectState = try? self?.connected.value(),
+                connectState.socketConnect == .disconnect,
+                (connectState.error == SocketStateError.ServerEncounter || connectState.error == nil),
+                self?.inputStream?.streamStatus != .open,
+               self?.outputStream?.streamStatus != .open,
+               self?.shouldKeeping == false{
                 self?.connect()
             }
         })
@@ -111,9 +118,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private func initStream(){
         inputStream = nil
         outputStream = nil
-    }
-    deinit {
-        print("SOCKET DEINIT")
     }
     func sendData(data:Data,completion:@escaping(Error?)->Void){
         data.withUnsafeBytes { pointer in

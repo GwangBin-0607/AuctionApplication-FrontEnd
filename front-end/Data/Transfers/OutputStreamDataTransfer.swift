@@ -36,6 +36,12 @@ class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
         let data = try JSONEncoder().encode(data)+splitter!
         return data
     }
+    init() {
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
+    }
     func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:StreamStateData)throws->Data{
         let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
         return try addSplitter(data: original)

@@ -6,37 +6,69 @@
 //
 
 import Foundation
-protocol OutputStreamCompletionHandlerInterface{
-    func registerCompletion(completion:@escaping(Error?)->Void)
-    func executeCompletion(completionId:Int16)
+protocol ExecuteOutputStreamCompletionHandlerInterface:AnyObject{
+    func executeCompletion(completionId: Int16,data:Decodable?,error:Error?)
+}
+
+extension ExecuteOutputStreamCompletionHandlerInterface{
+    func executeCompletionExtension(completionId:Int16,data:Decodable? = nil,error:Error? = nil){
+        executeCompletion(completionId: completionId, data: data, error: error)
+    }
+}
+
+protocol ManageOutputStreamCompletionHandlerInterface{
+    typealias completionType = ((Result<Decodable,Error>)->Void)?
+    func registerCompletion(completion:completionType,setTimeOut:Int)
     func removeAllWhenEncounter()
-    func removeCompleted(completionId:Int16)
     func returnCurrentCompletionId()->Int16
 }
+
+typealias OutputStreamCompletionHandlerInterface = ManageOutputStreamCompletionHandlerInterface&ExecuteOutputStreamCompletionHandlerInterface
+
 class OutputStreamCompletionHandler{
-    let threadLock:NSLock
+    private let threadLock:NSLock
+    private var completionId:Int16=0
+    private var completionHandler:Dictionary<Int16,CustomCompletion>=[:]
     init() {
         self.threadLock = NSLock()
+        print("\(String(describing: self)) INIT")
     }
-    private var completionId:Int16=0
-    private var completionHandler:Dictionary<Int16,(Error?)->Void>=[:]
+    deinit {
+        print("\(String(describing: self)) DEINIT")
+    }
+}
+extension OutputStreamCompletionHandler{
+    class CustomCompletion{
+        let completion:completionType
+        let completionId:Int16
+        let timeOut:DispatchSourceTimer
+        weak var delegate:ExecuteOutputStreamCompletionHandlerInterface?
+        init(Completion:completionType,Delegate:ExecuteOutputStreamCompletionHandlerInterface?
+             ,CompletionId:Int16,setTimeOut:Int) {
+            completionId = CompletionId
+            completion = Completion
+            delegate = Delegate
+            let time:DispatchTime = .now() + CGFloat(integerLiteral: setTimeOut)
+            timeOut = DispatchSource.makeTimerSource(queue: .global(qos: .background))
+            timeOut.setEventHandler(handler: {
+                [weak self] in
+                if let completionId = self?.completionId{
+                    print("completionId \(completionId)")
+                    let timeOutError = NSError(domain: "Time Out Error", code: -1)
+                    self?.delegate?.executeCompletionExtension(completionId: completionId,error: timeOutError)
+                }
+            })
+            timeOut.schedule(deadline: time)
+            timeOut.resume()
+            print("\(String(describing: self)) INIT")
+        }
+        deinit {
+            print("\(String(describing: self)) DEINIT")
+        }
+    }
 }
 extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
-    func removeAllWhenEncounter() {
-        completionHandler.removeAll()
-    }
-    func registerCompletion(completion: @escaping (Error?) -> Void) {
-        threadLock.lock()
-        defer{
-            threadLock.unlock()
-        }
-        completionHandler[completionId] = completion
-        updateCompletionId()
-    }
-    private func updateCompletionId(){
-        completionId += 1
-    }
-    func executeCompletion(completionId: Int16) {
+    func executeCompletion(completionId: Int16, data: Decodable?, error: Error?) {
         threadLock.lock()
         defer{
             threadLock.unlock()
@@ -44,10 +76,34 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
         guard let completionHandler = completionHandler[completionId]else{
             return
         }
-        completionHandler(nil)
+        if let data = data{
+            completionHandler.completion?(.success(data))
+        }else if let error = error{
+            completionHandler.completion?(.failure(error))
+        }
         removeCompleted(completionId: completionId)
     }
-    func removeCompleted(completionId:Int16){
+    
+    func removeAllWhenEncounter() {
+        threadLock.lock()
+        defer{
+            threadLock.unlock()
+        }
+        completionHandler.removeAll()
+    }
+    func registerCompletion(completion: completionType,setTimeOut:Int) {
+        threadLock.lock()
+        defer{
+            threadLock.unlock()
+        }
+        let customCompletion = CustomCompletion(Completion: completion, Delegate: self, CompletionId: completionId, setTimeOut: setTimeOut)
+        completionHandler[completionId] = customCompletion
+        updateCompletionId()
+    }
+    private func updateCompletionId(){
+        completionId += 1
+    }
+    private func removeCompleted(completionId:Int16){
         completionHandler.removeValue(forKey: completionId)
     }
     func returnCurrentCompletionId() -> Int16 {
