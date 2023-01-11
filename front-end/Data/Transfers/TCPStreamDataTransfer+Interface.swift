@@ -7,7 +7,7 @@
 
 import Foundation
 import RxSwift
-final class ProductListRepositorySocketTransfer:ProductListRepositorySocketTransferInterface{
+final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
     let socketInput:InputStreamDataTransferInterface
     let socketOutput:OutputStreamDataTransferInterface
     let socketCompletionHandler:OutputStreamCompletionHandlerInterface
@@ -34,18 +34,23 @@ final class ProductListRepositorySocketTransfer:ProductListRepositorySocketTrans
                     }
                 }
             }
-            return .success(returnArray)
+            if returnArray.count == 0{
+                let error = NSError(domain: "No StreamPrice Data", code: -1)
+                return .failure(error)
+            }else{
+                return .success(returnArray)
+            }
         case .failure(let error):
             return .failure(error)
             
         }
     }
-    func encode(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
-        return Observable<Error?>.create { [weak self] observer in
+    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
+        return Observable<Error?>.create { [weak self,weak socketNetwork] observer in
             if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
                let data = try? self?.socketOutput.encodeOutputStream(dataType: dataType, completionId: completionId, output: data){
                 self?.socketCompletionHandler.registerCompletion(completion: completion)
-                socketNetwork.sendData(data: data, completion: {
+                socketNetwork?.sendData(data: data, completion: {
                     error in
                     if let error = error{
                         self?.socketCompletionHandler.removeCompleted(completionId: completionId)

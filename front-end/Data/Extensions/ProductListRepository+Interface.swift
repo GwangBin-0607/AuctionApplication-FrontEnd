@@ -26,12 +26,12 @@ final class ProductListRepository:ProductListRepositoryInterface{
     let requestObserver:AnyObserver<Void>
     private let httpService:GetProductsList
     private let streamingProductPrice:SocketNetworkInterface
-    private let socketDataTransfer:ProductListRepositorySocketTransferInterface
+    private let socketDataTransfer:TCPStreamDataTransferInterface
     private let disposeBag:DisposeBag
     let sendThread = DispatchQueue(label: "sendThread")
     init(ApiService:GetProductsList,StreamingServiceTransfer:SocketNetworkInterface) {
         print("Repo Init")
-        socketDataTransfer = ProductListRepositorySocketTransfer()
+        socketDataTransfer = TCPStreamDataTransfer()
         disposeBag = DisposeBag()
         httpService = ApiService
         streamingProductPrice = StreamingServiceTransfer
@@ -147,7 +147,7 @@ extension ProductListRepository{
 }
 extension ProductListRepository{
     func sendData(output data:Encodable,completion:@escaping(Error?)->Void)->Observable<Error?>{
-        return socketDataTransfer.encode(socketNetwork: streamingProductPrice, data: data, completion: completion)
+        return socketDataTransfer.encodeAndSendExtension(socketNetwork: streamingProductPrice, data: data, completion: completion)
             .subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
 }

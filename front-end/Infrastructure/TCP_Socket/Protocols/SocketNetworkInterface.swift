@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-protocol SocketNetworkInterface{
+protocol SocketNetworkInterface:AnyObject{
     // MARK: INPUT
     var controlSocketConnect:AnyObserver<isConnecting>{get}
     // MARK: OUTPUT
