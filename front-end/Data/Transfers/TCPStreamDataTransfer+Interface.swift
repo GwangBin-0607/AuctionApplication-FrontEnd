@@ -45,10 +45,11 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
             
         }
     }
-    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
+    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable,completion:@escaping (Error?)->Void)->Observable<Error?>{
         return Observable<Error?>.create { [weak self,weak socketNetwork] observer in
             if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
-               let data = try? self?.socketOutput.encodeOutputStream(dataType: dataType, completionId: completionId, output: data){
+               let outputDataType = data as? StreamStateData,
+               let data = try? self?.socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: outputDataType){
                 self?.socketCompletionHandler.registerCompletion(completion: completion)
                 socketNetwork?.sendData(data: data, completion: {
                     error in

@@ -45,9 +45,10 @@ extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInt
         listRepo.streamState(state: state)
     }
     func updateStreamProduct(visibleCell:[Int])->Observable<Error?>{
+        let t = StreamStateData(result: 1)
         let set = Set(visibleCell)
-        return listRepo.sendData(output: set) { err in
-            
+        return listRepo.sendData(output: t) { err in
+            print(err)
         }
     }
 }

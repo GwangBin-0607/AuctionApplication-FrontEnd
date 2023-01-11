@@ -31,7 +31,7 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
             owner.usecase.updateStreamProduct(visibleCell: visibleCells)
         }).subscribe(onNext: {
             error in
-//            print("Error Result  \(error)")
+            print("Error Result  \(error)")
         },onDisposed: {
             print("Disposed")
         }).disposed(by: disposeBag)

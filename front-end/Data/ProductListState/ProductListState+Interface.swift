@@ -8,9 +8,6 @@
 import Foundation
 
 final class ProductListState:ProductListStateInterface{
-    private struct StreamState:Encodable{
-        let state:Int
-    }
     func updateState(transfer: TCPStreamDataTransfer, streamService: SocketNetworkInterface) {
         httpServiceState += 1 
     }

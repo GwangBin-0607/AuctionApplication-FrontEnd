@@ -6,10 +6,13 @@
 //
 
 import Foundation
+struct StreamStateData:Encodable{
+    let result:Int
+}
 struct OutputStreamData:Encodable{
     let dataType:StreamDataType
     let completionId:Int16
-    let data:Encodable
+    let data:StreamStateData
     
     private enum CodingKeys: CodingKey {
         case dataType
@@ -24,14 +27,17 @@ struct OutputStreamData:Encodable{
     }
 }
 protocol OutputStreamDataTransferInterface{
-    func encodeOutputStream(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data
+    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:StreamStateData)throws->Data
 }
 
 class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
-    func encodeOutputStream(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data{
-        let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
+    private func addSplitter(data:OutputStreamData)throws -> Data{
         let splitter = "/".data(using: .utf8)
-        let data = try JSONEncoder().encode(original)+splitter!
+        let data = try JSONEncoder().encode(data)+splitter!
         return data
+    }
+    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:StreamStateData)throws->Data{
+        let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
+        return try addSplitter(data: original)
     }
 }

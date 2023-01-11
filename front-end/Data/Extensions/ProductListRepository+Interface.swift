@@ -29,12 +29,12 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let socketDataTransfer:TCPStreamDataTransferInterface
     private let disposeBag:DisposeBag
     let sendThread = DispatchQueue(label: "sendThread")
-    init(ApiService:GetProductsList,StreamingServiceTransfer:SocketNetworkInterface) {
+    init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface,TCPStreamDataTransfer:TCPStreamDataTransferInterface) {
         print("Repo Init")
-        socketDataTransfer = TCPStreamDataTransfer()
+        socketDataTransfer = TCPStreamDataTransfer
         disposeBag = DisposeBag()
         httpService = ApiService
-        streamingProductPrice = StreamingServiceTransfer
+        streamingProductPrice = StreamingService
         let queue = DispatchQueue(label: "testQueue")
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
         let resultProductObserver = resultProductSubject.asObserver()

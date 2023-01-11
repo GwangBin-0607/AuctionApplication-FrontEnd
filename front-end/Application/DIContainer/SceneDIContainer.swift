@@ -35,9 +35,11 @@ extension SceneDIContainer{
         ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: returnProductsImageRepository())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingServiceTransfer: returnStreamingService())
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface())
     }
-    
+    private func returnTCPStreamDataTransferInterface()->TCPStreamDataTransferInterface{
+        TCPStreamDataTransfer()
+    }
 }
 protocol MainContainerViewSceneDIContainer{
     func returnProductListViewCoordinator(ContainerViewController:TransitioningViewController)->Coordinator
