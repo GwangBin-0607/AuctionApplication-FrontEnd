@@ -17,9 +17,10 @@ final class ProductListCollectionView: UICollectionView {
     }
     override func reloadItems(at indexPaths: [IndexPath]) {
         for i in 0..<indexPaths.count{
-                let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell
+            if let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell{
                 let price = self.returnPriceDelegate.returnPrice(index: indexPaths[i])
-                cell?.animationObserver.onNext(price)
+                cell.animationObserver.onNext(price)
+            }
         }
     }
 }
