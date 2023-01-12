@@ -12,7 +12,7 @@ struct StreamStateData:Encodable{
 struct OutputStreamData:Encodable{
     let dataType:StreamDataType
     let completionId:Int16
-    let data:StreamStateData
+    let data:Encodable
     
     private enum CodingKeys: CodingKey {
         case dataType
@@ -27,7 +27,7 @@ struct OutputStreamData:Encodable{
     }
 }
 protocol OutputStreamDataTransferInterface{
-    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:StreamStateData)throws->Data
+    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data
 }
 
 class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
@@ -42,7 +42,7 @@ class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
     deinit {
         print("\(String(describing: self)) DEINIT")
     }
-    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:StreamStateData)throws->Data{
+    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data{
         let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
         return try addSplitter(data: original)
     }

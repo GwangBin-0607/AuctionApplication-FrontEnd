@@ -8,5 +8,5 @@
 import Foundation
 
 protocol ProductListStateInterface {
-    func updateState(transfer:TCPStreamDataTransfer,streamService:SocketNetworkInterface)
+    func updateState(repository:ProductListRepositoryInterface)
 }

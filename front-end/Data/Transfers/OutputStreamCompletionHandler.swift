@@ -7,17 +7,17 @@
 
 import Foundation
 protocol ExecuteOutputStreamCompletionHandlerInterface:AnyObject{
-    func executeCompletion(completionId: Int16,data:Decodable?,error:Error?)
+    func executeCompletion(completionId: Int16,data:ResultData?,error:Error?)
 }
 
 extension ExecuteOutputStreamCompletionHandlerInterface{
-    func executeCompletionExtension(completionId:Int16,data:Decodable? = nil,error:Error? = nil){
+    func executeCompletionExtension(completionId:Int16,data:ResultData? = nil,error:Error? = nil){
         executeCompletion(completionId: completionId, data: data, error: error)
     }
 }
 
 protocol ManageOutputStreamCompletionHandlerInterface{
-    typealias completionType = ((Result<Decodable,Error>)->Void)?
+    typealias completionType = ((Result<ResultData,Error>)->Void)?
     func registerCompletion(completion:completionType,setTimeOut:Int)
     func removeAllWhenEncounter()
     func returnCurrentCompletionId()->Int16
@@ -68,7 +68,7 @@ extension OutputStreamCompletionHandler{
     }
 }
 extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
-    func executeCompletion(completionId: Int16, data: Decodable?, error: Error?) {
+    func executeCompletion(completionId: Int16, data: ResultData?, error: Error?) {
         threadLock.lock()
         defer{
             threadLock.unlock()

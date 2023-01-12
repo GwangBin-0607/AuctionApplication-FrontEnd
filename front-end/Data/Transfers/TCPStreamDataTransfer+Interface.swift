@@ -31,11 +31,10 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
             
         }
     }
-    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable)->Observable<Result<Decodable,Error>>{
-        return Observable<Result<Decodable,Error>>.create { [weak self,weak socketNetwork] observer in
+    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable)->Observable<Result<ResultData,Error>>{
+        return Observable<Result<ResultData,Error>>.create { [weak self,weak socketNetwork] observer in
             if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
-               let outputDataType = data as? StreamStateData,
-               let outputData = try? self?.socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: outputDataType){
+               let outputData = try? self?.socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: data){
                 self?.socketCompletionHandler.registerCompletion(completion: {
                     result in
                     observer.onNext(result)

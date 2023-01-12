@@ -1,11 +1,4 @@
 import RxSwift
-protocol ProductListWithImageHeightUsecaseInterface{
-    func returnProductList() -> Observable<Result<[Product], Error>>
-    func returnRequestObserver() -> AnyObserver<Void>
-    func returnObservableStreamState() -> Observable<SocketConnectState>
-    func returnControlStreamState(state: isConnecting)
-    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Decodable,Error>>
-}
 class ProductListWithImageHeightUsecase{
     private let listRepo:ProductListRepositoryInterface
     private let imageHeightRepo:ProductImageRepositoryInterface
@@ -48,7 +41,7 @@ extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInt
     func returnControlStreamState(state: isConnecting) {
         listRepo.streamState(state: state)
     }
-    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Decodable,Error>>{
+    func updateStreamProduct(visibleCell:[Int])->Observable<Result<ResultData,Error>>{
         let t = StreamStateData(result: 1)
         let set = Set(visibleCell)
         return listRepo.sendData(output: t)

@@ -69,8 +69,11 @@ struct InputStreamData:Decodable{
         self.dataType = value
       }
 }
-struct ResultOutputStreamReaded:Decodable{
+struct ResultData:Decodable{
     let result:Bool
+}
+struct ResultOutputStreamReaded:Decodable{
+    let result:ResultData
     let completionId:Int16
 }
 protocol InputStreamDataTransferInterface{

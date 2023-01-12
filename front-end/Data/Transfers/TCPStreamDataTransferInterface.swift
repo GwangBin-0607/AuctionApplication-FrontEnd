@@ -9,10 +9,10 @@ import Foundation
 import RxSwift
 protocol TCPStreamDataTransferInterface{
     func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>
-    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable)->Observable<Result<Decodable,Error>>
+    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable)->Observable<Result<ResultData,Error>>
 }
 extension TCPStreamDataTransferInterface{
-    func encodeAndSendExtension(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable)->Observable<Result<Decodable,Error>>{
+    func encodeAndSendExtension(socketNetwork:SocketNetworkInterface,dataType:StreamDataType = .OutputStreamReaded,data:Encodable)->Observable<Result<ResultData,Error>>{
         encodeAndSend(socketNetwork: socketNetwork, dataType: dataType, data: data)
     }
 }
