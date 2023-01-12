@@ -24,36 +24,41 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
     func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>{
         switch result{
         case .success(let data):
-            return socketInput.decode(completioHandler: socketCompletionHandler, data: data)
+            var returnArray:[StreamPrice]=[]
+            do{
+                let inputData = try socketInput.decodeInputStreamDataType(data: data)
+                inputData.forEach { inputStreamData in
+                    switch inputStreamData.dataType{
+                    case .InputStreamProductPrice:
+                        if let inputStream = inputStreamData.data as? StreamPrice{
+                            returnArray.append(inputStream)
+                        }
+                    case .OutputStreamReaded:
+                        if let resultData = inputStreamData.data as? ResultOutputStreamReaded{
+                            socketCompletionHandler.executeCompletionExtension(completionId: resultData.completionId,data: resultData.result)
+                        }
+                    }
+                }
+                if returnArray.count == 0{
+                    let error = NSError(domain: "No StreamPrice Data", code: -1)
+                    return .failure(error)
+                }else{
+                    return .success(returnArray)
+                }
+            }catch{
+                return .failure(error)
+            }
         case .failure(let error):
             socketCompletionHandler.removeAllWhenEncounter()
             return .failure(error)
             
         }
     }
-    func encodeAndSend(socketNetwork:SocketNetworkInterface,dataType:StreamDataType,data:Encodable)->Observable<Result<ResultData,Error>>{
-        return Observable<Result<ResultData,Error>>.create { [weak self,weak socketNetwork] observer in
-            if let completionId = self?.socketCompletionHandler.returnCurrentCompletionId(),
-               let outputData = try? self?.socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: data){
-                self?.socketCompletionHandler.registerCompletion(completion: {
-                    result in
-                    observer.onNext(result)
-                    observer.onCompleted()
-                },setTimeOut: 10)
-                socketNetwork?.sendData(data: outputData, completion: {
-                    error in
-                    if let error = error{
-                        observer.onNext(.failure(error))
-                        observer.onCompleted()
-                    }
-                })
-                return Disposables.create()
-            }else{
-                observer.onNext(.failure(SocketOutputError.EncodeError))
-                observer.onCompleted()
-                return Disposables.create()
-            }
-
-        }
+    func encodeOutputStreamState(dataType:StreamDataType,output:Encodable)throws -> Data{
+        let completionId = socketCompletionHandler.returnCurrentCompletionId()
+        return try socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: output)
+    }
+    func register(completion:@escaping(Result<ResultData,Error>)->Void,timeOut:Int){
+        socketCompletionHandler.registerCompletion(completion:completion,setTimeOut: timeOut)
     }
 }

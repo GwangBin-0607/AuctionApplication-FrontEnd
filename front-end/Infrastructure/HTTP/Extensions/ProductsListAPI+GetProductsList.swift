@@ -14,7 +14,7 @@ final class ProductsListHTTP{
     }
 }
 extension ProductsListHTTP:GetProductsList{
-    func getProductData(onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(requestNum:Int?,onComplete: @escaping (Result<Data, Error>) -> Void) {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,Int8> = ["pageNum":0]

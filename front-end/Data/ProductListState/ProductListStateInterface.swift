@@ -6,7 +6,8 @@
 //
 
 import Foundation
-
+import RxSwift
 protocol ProductListStateInterface {
-    func updateState(repository:ProductListRepositoryInterface)
+    func updateState(sendObservable:Observable<Result<ResultData,Error>>)->Observable<Result<ResultData,Error>>
+    func returnHttpState()->Int
 }

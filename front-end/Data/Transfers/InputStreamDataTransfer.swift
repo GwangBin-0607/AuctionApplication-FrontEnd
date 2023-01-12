@@ -77,7 +77,7 @@ struct ResultOutputStreamReaded:Decodable{
     let completionId:Int16
 }
 protocol InputStreamDataTransferInterface{
-    func decode(completioHandler:ExecuteOutputStreamCompletionHandlerInterface,data:Data)->Result<[StreamPrice],Error>
+    func decodeInputStreamDataType(data:Data)throws-> [InputStreamData]
 }
 
 class InputStreamDataTransfer:InputStreamDataTransferInterface{
@@ -87,7 +87,7 @@ class InputStreamDataTransfer:InputStreamDataTransferInterface{
     deinit {
         print("\(String(describing: self)) DEINIT")
     }
-    private func decodeInputStreamDataType(data:Data) throws -> [InputStreamData]{
+    func decodeInputStreamDataType(data:Data) throws -> [InputStreamData]{
         let test = String(data: data, encoding: .utf8)
         let splitString = test?.split(separator: "/")
         var resultInputStreamData:[InputStreamData]=[]
@@ -99,32 +99,5 @@ class InputStreamDataTransfer:InputStreamDataTransferInterface{
         })
         
         return resultInputStreamData
-    }
-    func decode(completioHandler:ExecuteOutputStreamCompletionHandlerInterface,data:Data)->Result<[StreamPrice],Error>{
-        var returnArray:[StreamPrice]=[]
-        do {
-            let inputData = try decodeInputStreamDataType(data: data)
-            inputData.forEach {
-                inputStreamData in
-                switch inputStreamData.dataType{
-                case .InputStreamProductPrice:
-                    if let inputStream = inputStreamData.data as? StreamPrice{
-                        returnArray.append(inputStream)
-                    }
-                case .OutputStreamReaded:
-                    if let resultData = inputStreamData.data as? ResultOutputStreamReaded{
-                        completioHandler.executeCompletionExtension(completionId: resultData.completionId,data: resultData.result)
-                    }
-                }
-            }
-            if returnArray.count == 0{
-                let error = NSError(domain: "No StreamPrice Data", code: -1)
-                return .failure(error)
-            }else{
-                return .success(returnArray)
-            }
-        }catch{
-            return .failure(error)
-        }
     }
 }

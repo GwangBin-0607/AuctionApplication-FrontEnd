@@ -47,9 +47,14 @@ final class ProductListRepository:ProductListRepositoryInterface{
         requestObserver = requestSubject.asObserver()
         requestObservable
             .withUnretained(self)
+            .map({ tuple in
+                let (owner,_) = tuple
+                return owner.productListState.returnHttpState()
+            })
+            .withUnretained(self)
             .flatMap({
-                owner,_ in
-                owner.transferDataToProductList()
+                owner,requestNum in
+                owner.transferDataToProductList(requestNum:requestNum)
                 
             })
             .withUnretained(self)
@@ -119,10 +124,10 @@ final class ProductListRepository:ProductListRepositoryInterface{
     }
 }
 extension ProductListRepository{
-    private func returnData() -> Observable<Data> {
+    private func returnData(requestNum:Int) -> Observable<Data> {
         return Observable.create { [weak self] observer in
             
-            self?.httpService.getProductData() { result in
+            self?.httpService.getProductData(requestNum:requestNum) { result in
                 switch result {
                 case let .success(data):
                     observer.onNext(data)
@@ -140,8 +145,8 @@ extension ProductListRepository{
         array.append(contentsOf:addArray)
     }
     
-    private func transferDataToProductList() -> Observable<Result<[Product],Error>>{
-        returnData().map { Data in
+    private func transferDataToProductList(requestNum:Int) -> Observable<Result<[Product],Error>>{
+        returnData(requestNum: requestNum).map { Data in
             guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
                 throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
             }
@@ -151,7 +156,31 @@ extension ProductListRepository{
 }
 extension ProductListRepository{
     func sendData(output data:Encodable)->Observable<Result<ResultData,Error>>{
-        return socketDataTransfer.encodeAndSendExtension(socketNetwork: streamingProductPrice, data: data)
-            .subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
+        return encodeAndSend(dataType:.OutputStreamReaded,data: data)
+    }
+   private func encodeAndSend(dataType:StreamDataType,data:Encodable)->Observable<Result<ResultData,Error>>{
+        return Observable<Result<ResultData,Error>>.create { [weak self] observer in
+            guard let self = self,
+                  let data = try? self.socketDataTransfer.encodeOutputStreamState(dataType: dataType, output: data)
+            else{
+                observer.onNext(.failure(SocketOutputError.EncodeError))
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.socketDataTransfer.register(completion:  {
+                result in
+                observer.onNext(result)
+                observer.onCompleted()
+            }, timeOut: 10)
+            self.streamingProductPrice.sendData(data: data, completion: {
+                error in
+                if let error = error{
+                    observer.onNext(.failure(error))
+                    observer.onCompleted()
+                }
+            })
+            return Disposables.create()
+
+        }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
 }

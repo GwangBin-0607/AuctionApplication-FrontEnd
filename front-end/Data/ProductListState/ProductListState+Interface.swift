@@ -8,19 +8,12 @@
 import Foundation
 import RxSwift
 final class ProductListState:ProductListStateInterface{
-    func updateState(repository:ProductListRepositoryInterface) {
-        repository.sendData(output: StreamStateData(result: streamServiceState)).withUnretained(self).subscribe(onNext: {
-            owner,result in
-            switch result {
-            case .success(let resultData):
-                if resultData.result{
-                    owner.streamServiceState += 1
-                }
-            case .failure( _):
-                break;
-            }
-        }).disposed(by: disposeBag)
-        httpServiceState += 1 
+    func updateState(sendObservable:Observable<Result<ResultData,Error>>)->Observable<Result<ResultData,Error>> {
+        httpServiceState += 1
+        return sendObservable
+    }
+    func returnHttpState() -> Int {
+        httpServiceState
     }
     private let disposeBag:DisposeBag
     private var httpServiceState:Int = 0
