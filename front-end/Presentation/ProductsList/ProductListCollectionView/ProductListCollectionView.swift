@@ -6,6 +6,7 @@ final class ProductListCollectionView: UICollectionView {
         self.returnPriceDelegate = delegate
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
+        self.register(FooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterView.Identifier)
     }
 
     required init?(coder: NSCoder) {

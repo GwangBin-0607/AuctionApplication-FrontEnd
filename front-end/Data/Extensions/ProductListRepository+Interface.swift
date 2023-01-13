@@ -45,6 +45,27 @@ final class ProductListRepository:ProductListRepositoryInterface{
         let requestSubject = PublishSubject<Void>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
+        let updateStreamState = PublishSubject<Int>()
+        let updateStreamStateObserver = updateStreamState.asObserver()
+        Observable.combineLatest(updateStreamState,streamingProductPrice.isSocketConnect.distinctUntilChanged(), resultSelector: {
+            stateNumber,connectState -> StreamStateData? in
+            print("=======")
+            print(stateNumber)
+            print(connectState)
+            let streamState = StreamStateData(stateNum: stateNumber)
+            if connectState.socketConnect != .connect{
+                return nil
+            }else{
+                return streamState
+            }
+        }).withUnretained(self).flatMap({
+            owner,streamState in
+            owner.updateStreamState(state: streamState, timeOut: 10)
+        }).withUnretained(self).subscribe(onNext: {
+            owner,result in
+            owner.productListState.updateTCPState(result: result)
+        }).disposed(by: disposeBag)
+        
         requestObservable
             .withUnretained(self)
             .map({ tuple in
@@ -64,10 +85,16 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 let re = owner.addResult(before: seed, after: newValue)
                 return re
             })
-            .subscribe(onNext:resultProductObserver.onNext).disposed(by: disposeBag)
+            .withUnretained(self)
+            .subscribe(onNext:{
+            owner,list in
+                let tcpState = owner.productListState.returnTCPState()
+                updateStreamStateObserver.onNext(tcpState)
+                owner.productListState.updateHTTPState()
+                resultProductObserver.onNext(list)
+            }).disposed(by: disposeBag)
         streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:)).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
-            print("===&&&&&&&&&&&&&&&&&====")
             let (owner,result) = arg1
             let sumResult = owner.sumResult(before: list, after: result)
             return sumResult
@@ -155,13 +182,13 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable)->Observable<Result<ResultData,Error>>{
-        return encodeAndSend(dataType:.OutputStreamReaded,data: data)
+    func sendData(output data:Encodable,timeOut:Int)->Observable<Result<ResultData,Error>>{
+        return encodeAndSend(data: data,timeOut: timeOut)
     }
-   private func encodeAndSend(dataType:StreamDataType,data:Encodable)->Observable<Result<ResultData,Error>>{
+    private func encodeAndSend(data:Encodable,timeOut:Int)->Observable<Result<ResultData,Error>>{
         return Observable<Result<ResultData,Error>>.create { [weak self] observer in
             guard let self = self,
-                  let data = try? self.socketDataTransfer.encodeOutputStreamState(dataType: dataType, output: data)
+                  let data = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .OutputStreamReaded, output: data)
             else{
                 observer.onNext(.failure(SocketOutputError.EncodeError))
                 observer.onCompleted()
@@ -171,7 +198,7 @@ extension ProductListRepository{
                 result in
                 observer.onNext(result)
                 observer.onCompleted()
-            }, timeOut: 10)
+            }, timeOut: timeOut)
             self.streamingProductPrice.sendData(data: data, completion: {
                 error in
                 if let error = error{
@@ -182,5 +209,13 @@ extension ProductListRepository{
             return Disposables.create()
 
         }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
+    }
+    private func updateStreamState(state:StreamStateData?,timeOut:Int)->Observable<Result<ResultData,Error>>{
+        if let state = state{
+           return sendData(output: state, timeOut: timeOut)
+        }else{
+            let error = NSError(domain: "Not Connect", code: -1)
+            return Observable<Result<ResultData,Error>>.just(.failure(error))
+        }
     }
 }

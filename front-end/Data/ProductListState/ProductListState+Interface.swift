@@ -8,9 +8,21 @@
 import Foundation
 import RxSwift
 final class ProductListState:ProductListStateInterface{
-    func updateState(sendObservable:Observable<Result<ResultData,Error>>)->Observable<Result<ResultData,Error>> {
+    func updateTCPState(result:Result<ResultData,Error>) {
+        switch result {
+        case .success(let resultData):
+            if resultData.result{
+                streamServiceState += 1
+            }
+        default:
+            break;
+        }
+    }
+    func updateHTTPState() {
         httpServiceState += 1
-        return sendObservable
+    }
+    func returnTCPState() -> Int {
+        streamServiceState
     }
     func returnHttpState() -> Int {
         httpServiceState

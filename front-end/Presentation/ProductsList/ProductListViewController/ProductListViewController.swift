@@ -41,7 +41,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     //    }
     private func bindingViewModel(){
         viewModel.productsList.bind(to: collectionView.rx.items(dataSource: returnDatasource())).disposed(by: disposeBag)
-        
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
             owner, indexpath in
             owner.viewModel.controlSocketState(state: .disconnect)
@@ -97,7 +96,26 @@ extension ProductListViewController{
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
             cell.bindingData.onNext(item)
             return cell
-        })
+        }) { _, colview, headerOrFooter, indexpath in
+            if headerOrFooter == UICollectionView.elementKindSectionFooter{
+                let footer = colview.dequeueReusableSupplementaryView(ofKind: headerOrFooter, withReuseIdentifier: FooterView.Identifier, for: indexpath)
+                return footer
+            }else{
+                return UICollectionReusableView()
+            }
+        }
     }
+}
+class FooterView:UICollectionReusableView{
+    static let Identifier:String = "FooterView"
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
+        self.backgroundColor = .red
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
 

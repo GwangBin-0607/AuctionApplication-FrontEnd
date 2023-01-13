@@ -146,21 +146,17 @@ class ViewController: UIViewController {
         basicArray[num] = basicArray[num]+100
     }
     func testFunction(){
-        let subject = PublishSubject<Int>()
-        subject.do(onNext:{
+        let subject = BehaviorSubject<Int>(value: 0)
+        let two = PublishSubject<Int>()
+        subject.onNext(50000)
+        Observable.combineLatest(subject,two, resultSelector: {
+            fir,sec in
+            fir+sec
+        }).subscribe(onNext: {
             num in
             print(num)
-        }).flatMap { result in
-            return Observable<Int>.create { observer in
-                sleep(5)
-                observer.onNext(100000)
-                return Disposables.create()
-            }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-        }.subscribe(onNext: {
-            result in
-            print(result)
         })
-        subject.onNext(5555)
+        two.asObserver().onNext(1234)
 //        repo.streamState(state: .connect)
 //        let subject = PublishSubject<Void>()
 //        let observable = subject.asObservable()

@@ -12,7 +12,7 @@ enum SocketStateError:Error{
     case ServerEncounter
     case ClientEncounter
 }
-struct SocketConnectState {
+struct SocketConnectState:Equatable {
     let socketConnect:isConnecting
     let error:SocketStateError?
 }
