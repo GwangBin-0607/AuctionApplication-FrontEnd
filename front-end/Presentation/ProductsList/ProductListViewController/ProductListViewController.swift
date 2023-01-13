@@ -5,10 +5,10 @@ import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
     private let viewModel:ProductListViewControllerViewModelInterface
     private let disposeBag:DisposeBag
-    private let collectionView:UICollectionView
+    private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
-    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:UICollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -40,18 +40,17 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     //        print("======================")
     //    }
     private func bindingViewModel(){
-        viewModel.productsList.bind(to: collectionView.rx.items(dataSource: returnDatasource())).disposed(by: disposeBag)
+        viewModel.productsList.bind(to: collectionView.rx.items(dataSource: collectionView.returnDataSource())).disposed(by: disposeBag)
         collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
             owner, indexpath in
             owner.viewModel.controlSocketState(state: .disconnect)
 //            owner.dismiss(animated: true)
 //            owner.delegate?.presentDetailViewController()
         }).disposed(by: disposeBag)
-        collectionView.rx.didScroll.withUnretained(self).subscribe(onNext: {
-            owner,_ in
-            owner.viewModel.scrollScrollView.onNext(owner.collectionView.indexPathsForVisibleItems.map({$0.item}))
-        }).disposed(by: disposeBag)
-        
+//        collectionView.rx.didScroll.withUnretained(self).subscribe(onNext: {
+//            owner,_ in
+//            owner.viewModel.scrollScrollView.onNext(owner.collectionView.indexPathsForVisibleItems.map({$0.item}))
+//        }).disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {
@@ -85,37 +84,5 @@ extension ProductListViewController{
         ])
         return containerView
     }
-}
-extension ProductListViewController{
-    private func returnDatasource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
-        return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
-            _,_,change in
-            print(change)
-            return .animated
-        }, configureCell: { _ , colview, indexpath, item in
-            let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
-            cell.bindingData.onNext(item)
-            return cell
-        }) { _, colview, headerOrFooter, indexpath in
-            if headerOrFooter == UICollectionView.elementKindSectionFooter{
-                let footer = colview.dequeueReusableSupplementaryView(ofKind: headerOrFooter, withReuseIdentifier: FooterView.Identifier, for: indexpath)
-                return footer
-            }else{
-                return UICollectionReusableView()
-            }
-        }
-    }
-}
-class FooterView:UICollectionReusableView{
-    static let Identifier:String = "FooterView"
-    init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
-        self.backgroundColor = .red
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 

@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import RxDataSources
 struct Product:Decodable{
-    static let productHeader:Int = 0
     let product_id:Int
     var product_price:Int
     let imageURL:[Product_Images]
@@ -41,7 +40,7 @@ extension Product:IdentifiableType,Equatable{
     }
 }
 struct ProductSection{
-    var sectionHeader:Int = Product.productHeader
+    var sectionHeader:Int = 0
     var products:[Product]
 }
 extension ProductSection:AnimatableSectionModelType{
