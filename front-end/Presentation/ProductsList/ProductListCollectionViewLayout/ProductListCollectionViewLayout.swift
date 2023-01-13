@@ -66,8 +66,13 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
           let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
           attributes.frame = insetFrame
           cache.append(attributes)
+            if item == collectionView.numberOfItems(inSection: 0)-1{
+                let f = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: 0))
+                f.frame = CGRect(x: attributes.frame.minX, y: attributes.frame.maxY, width: attributes.frame.width, height: attributes.frame.height)
+                cache.append(f)
+            }
             
-          contentHeight = max(contentHeight, frame.maxY)
+            contentHeight = max(contentHeight, frame.maxY+frame.height)
           yOffset[column] = yOffset[column] + height
             
           column = column < (numberOfColumns - 1) ? (column + 1) : 0

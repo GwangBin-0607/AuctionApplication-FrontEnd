@@ -9,8 +9,8 @@ import Foundation
 import RxSwift
 
 class ProductListCollectionViewCellViewModel{
-    let imageUsecase:ProductImageLoadUsecaseInterface
-    init(ImageUsecase:ProductImageLoadUsecaseInterface) {
+    let imageUsecase:Pr_ProductImageLoadUsecase
+    init(ImageUsecase:Pr_ProductImageLoadUsecase) {
         self.imageUsecase = ImageUsecase
     }
 }

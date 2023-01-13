@@ -75,7 +75,8 @@ final class ProductListRepository:ProductListRepositoryInterface{
             .withUnretained(self)
             .flatMap({
                 owner,requestNum in
-                owner.transferDataToProductList(requestNum:requestNum)
+                print("22")
+                return owner.transferDataToProductList(requestNum:requestNum)
                 
             })
             .withUnretained(self)

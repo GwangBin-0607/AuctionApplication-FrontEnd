@@ -1,6 +1,6 @@
 import Foundation
 import RxSwift
-class ProductImageHeightUseCase:ProductImageHeightUsecaseInterface{
+class ProductImageHeightUseCase:Pr_ProductImageHeightUsecase{
     func returnProductsWithImageHeight(products: [Product]) -> Observable<[Product]> {
         productsImageRepository.returnProductWithImageHeight(product: products)
     }
@@ -9,7 +9,7 @@ class ProductImageHeightUseCase:ProductImageHeightUsecaseInterface{
         self.productsImageRepository = productsImageRepository
     }
 }
-class ProductImageLoadUseCase:ProductImageLoadUsecaseInterface{
+class ProductImageLoadUseCase:Pr_ProductImageLoadUsecase{
     func returnImage(productId: Int, imageURL: String?) -> Observable<CellImageTag> {
         productsImageRepository.returnImage(productId: productId, imageURL: imageURL)
     }

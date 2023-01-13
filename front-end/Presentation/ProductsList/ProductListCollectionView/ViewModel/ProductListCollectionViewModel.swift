@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
-    private let usecase:ProductListWithImageHeightUsecaseInterface
+    private let usecase:Pr_ProductListWithImageHeightUsecase
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
@@ -17,7 +17,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let socketState: Observable<SocketConnectState>
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
-    init(UseCase:ProductListWithImageHeightUsecaseInterface) {
+    init(UseCase:Pr_ProductListWithImageHeightUsecase) {
         self.usecase = UseCase
         disposeBag = DisposeBag()
         let scrollSubject = PublishSubject<[Int]>()

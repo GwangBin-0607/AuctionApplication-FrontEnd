@@ -1,6 +1,6 @@
 import RxSwift
 
-protocol ProductListWithImageHeightUsecaseInterface{
+protocol Pr_ProductListWithImageHeightUsecase{
     func returnProductList() -> Observable<Result<[Product], Error>>
     func returnRequestObserver() -> AnyObserver<Void>
     func returnObservableStreamState() -> Observable<SocketConnectState>

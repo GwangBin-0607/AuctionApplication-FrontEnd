@@ -18,6 +18,13 @@ final class ProductListCollectionView: UICollectionView {
     }
     private func bind(){
         returnPriceDelegate.productsList.bind(to: self.rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
+        self.rx.willDisplayCell.subscribe(onNext: {
+            cel,inx in
+            if inx.item == 11{
+                self.returnPriceDelegate.requestProductsList.onNext(())
+                print("11")
+            }
+        })
     }
     
     deinit {

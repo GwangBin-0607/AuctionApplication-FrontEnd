@@ -11,10 +11,10 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
     let socketInput:InputStreamDataTransferInterface
     let socketOutput:OutputStreamDataTransferInterface
     let socketCompletionHandler:OutputStreamCompletionHandlerInterface
-    init() {
-        self.socketInput = InputStreamDataTransfer()
-        self.socketOutput = OutputStreamDataTransfer()
-        self.socketCompletionHandler = OutputStreamCompletionHandler()
+    init(inputStreamDataTransfer:InputStreamDataTransferInterface,outputStreamDataTransfer:OutputStreamDataTransferInterface,outputStreamCompletionHandler:OutputStreamCompletionHandlerInterface) {
+        self.socketInput = inputStreamDataTransfer
+        self.socketOutput = outputStreamDataTransfer
+        self.socketCompletionHandler = outputStreamCompletionHandler
         print("\(String(describing: self)) INIT")
     }
     deinit {

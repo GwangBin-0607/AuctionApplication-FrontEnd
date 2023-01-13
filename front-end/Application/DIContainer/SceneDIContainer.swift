@@ -32,20 +32,29 @@ extension SceneDIContainer{
         ProductListState()
     }
     private func returnTCPStreamDataTransferInterface()->TCPStreamDataTransferInterface{
-        TCPStreamDataTransfer()
+        TCPStreamDataTransfer(inputStreamDataTransfer: returnInputStreamDataTransfer(), outputStreamDataTransfer: returnOutputStreamDataTransfer(), outputStreamCompletionHandler: returnOutputStreamCompletionHandler())
+    }
+    private func returnInputStreamDataTransfer()->InputStreamDataTransferInterface{
+        InputStreamDataTransfer()
+    }
+    private func returnOutputStreamDataTransfer()->OutputStreamDataTransferInterface{
+        OutputStreamDataTransfer()
+    }
+    private func returnOutputStreamCompletionHandler()->OutputStreamCompletionHandlerInterface{
+        OutputStreamCompletionHandler()
     }
 }
 
 //MARK: Usecase
 extension SceneDIContainer{
-    private func returnProductListUsecaseInterface()->ProductListWithImageHeightUsecaseInterface{
+    private func returnProductListUsecaseInterface()->Pr_ProductListWithImageHeightUsecase{
         ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: returnProductsImageRepository())
     }
 }
 
 //MARK: ViewModel,View
 extension SceneDIContainer{
-    private func returnProductListCollectionViewModel()->ProductListCollectionViewModel{
+    private func returnProductListCollectionViewModel()->Pr_ProductListCollectionViewModel&Pr_Out_ProductListCollectionViewLayoutViewModel{
         ProductListCollectionViewModel(UseCase: returnProductListUsecaseInterface())
     }
     private func returnProductListCollectionView(delegate:Pr_Out_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{

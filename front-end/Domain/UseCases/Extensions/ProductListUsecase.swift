@@ -11,7 +11,7 @@ class ProductListWithImageHeightUsecase{
         print("\(String(describing: self)) DEINIT")
     }
 }
-extension ProductListWithImageHeightUsecase:ProductListWithImageHeightUsecaseInterface{
+extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase{
     func returnProductList() -> Observable<Result<[Product], Error>> {
         listRepo.productListObservable.withUnretained(self).flatMap { owner,result in
             switch result{
