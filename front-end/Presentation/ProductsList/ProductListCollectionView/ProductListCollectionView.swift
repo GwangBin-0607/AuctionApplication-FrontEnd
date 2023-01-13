@@ -2,9 +2,9 @@ import UIKit
 import RxSwift
 import RxDataSources
 final class ProductListCollectionView: UICollectionView {
-    private let returnPriceDelegate:Out_ProductListCollectionViewModelInterface
+    private let returnPriceDelegate:Pr_Out_ProductListCollectionViewModel
     private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,delegate:Out_ProductListCollectionViewModelInterface, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,delegate:Pr_Out_ProductListCollectionViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
         disposeBag = DisposeBag()
         self.returnPriceDelegate = delegate
         super.init(frame: .zero, collectionViewLayout: layout)
@@ -55,8 +55,8 @@ extension ProductListCollectionView{
 }
 class FooterView:UICollectionReusableView{
     static let Identifier:String = "FooterView"
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.backgroundColor = .red
     }
     

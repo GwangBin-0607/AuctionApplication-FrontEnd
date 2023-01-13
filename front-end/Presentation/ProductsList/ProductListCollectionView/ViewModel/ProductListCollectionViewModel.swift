@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class ProductListCollectionViewModel:ProductListCollectionViewModelInterface{
+final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     private let usecase:ProductListWithImageHeightUsecaseInterface
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT

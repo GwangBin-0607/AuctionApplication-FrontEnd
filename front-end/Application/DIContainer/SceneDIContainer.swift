@@ -48,13 +48,13 @@ extension SceneDIContainer{
     private func returnProductListCollectionViewModel()->ProductListCollectionViewModel{
         ProductListCollectionViewModel(UseCase: returnProductListUsecaseInterface())
     }
-    private func returnProductListCollectionView(delegate:Out_ProductListCollectionViewModelInterface,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+    private func returnProductListCollectionView(delegate:Pr_Out_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,delegate: delegate, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
     }
-    private func returnProductListCollectionViewLayout(delegate:ProductListCollectionViewLayoutViewModelInterface)->ProductListCollectionViewLayout{
+    private func returnProductListCollectionViewLayout(delegate:Pr_Out_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(delegate: delegate)
     }
-    private func returnProductListViewModelInterface(collectionViewModel:In_ProductListCollectionViewModelInterface)->ProductListViewControllerViewModelInterface{
+    private func returnProductListViewModelInterface(collectionViewModel:Pr_In_ProductListCollectionViewModel)->Pr_ProductListViewControllerViewModel{
         ProductListViewControllerViewModel(collectionViewModel:collectionViewModel)
     }
 

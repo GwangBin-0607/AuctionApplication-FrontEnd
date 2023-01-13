@@ -8,14 +8,14 @@
 import Foundation
 import RxSwift
 
-protocol Out_ProductListCollectionViewModelInterface{
+protocol Pr_Out_ProductListCollectionViewModel{
     var productsList:Observable<[ProductSection]> {get}
     var socketState:Observable<SocketConnectState>{get}
     var scrollScrollView:AnyObserver<[Int]> {get}
     func returnPrice(index:IndexPath)->Int
 }
-protocol In_ProductListCollectionViewModelInterface{
+protocol Pr_In_ProductListCollectionViewModel{
     var requestProductsList:AnyObserver<Void> {get}
     func controlSocketState(state:isConnecting)
 }
-typealias ProductListCollectionViewModelInterface = In_ProductListCollectionViewModelInterface&Out_ProductListCollectionViewModelInterface
+typealias Pr_ProductListCollectionViewModel = Pr_In_ProductListCollectionViewModel&Pr_Out_ProductListCollectionViewModel
