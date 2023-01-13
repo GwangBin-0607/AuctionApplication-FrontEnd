@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class ProductListViewModel:ProductListViewControllerViewModelInterface{
+final class ProductListCollectionViewModel:ProductListCollectionViewModelInterface{
     private let usecase:ProductListWithImageHeightUsecaseInterface
     private let disposeBag:DisposeBag
     // MARK: VIEWCONTROLLER OUTPUT
@@ -57,5 +57,14 @@ final class ProductListViewModel:ProductListViewControllerViewModelInterface{
     }
     func controlSocketState(state: isConnecting) {
         usecase.returnControlStreamState(state: state)
+    }
+    func returnPrice(index: IndexPath) -> Int {
+        do{
+            let product = try products.value()
+           return product[index.item].product_price
+            
+        }catch{
+           return 0
+        }
     }
 }

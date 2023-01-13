@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ProductListViewModel:ReturnImageHeightWhenPrepareCollectionViewLayoutInterface{
+extension ProductListCollectionViewModel:ProductListCollectionViewLayoutViewModelInterface{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()

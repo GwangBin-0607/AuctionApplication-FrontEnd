@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ReturnImageHeightWhenPrepareCollectionViewLayoutInterface{
+protocol ProductListCollectionViewLayoutViewModelInterface{
     func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
 }

@@ -3,12 +3,12 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 final class ProductListViewController: UIViewController,SetCoordinatorViewController {
-    private let viewModel:ProductListViewControllerViewModelInterface
+    private let viewModel:In_ProductListViewControllerViewModelInterface
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
     weak var delegate:TransitionProductListViewController?
-    init(viewModel:ProductListViewControllerViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:In_ProductListViewControllerViewModelInterface,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
@@ -22,7 +22,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
-        self.viewModel.requestProductsList.onNext(())
     }
     //    func setCADisplay(){
     //        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
@@ -40,17 +39,8 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     //        print("======================")
     //    }
     private func bindingViewModel(){
-        viewModel.productsList.bind(to: collectionView.rx.items(dataSource: collectionView.returnDataSource())).disposed(by: disposeBag)
-        collectionView.rx.itemSelected.withUnretained(self).subscribe(onNext: {
-            owner, indexpath in
-            owner.viewModel.controlSocketState(state: .disconnect)
-//            owner.dismiss(animated: true)
-//            owner.delegate?.presentDetailViewController()
-        }).disposed(by: disposeBag)
-//        collectionView.rx.didScroll.withUnretained(self).subscribe(onNext: {
-//            owner,_ in
-//            owner.viewModel.scrollScrollView.onNext(owner.collectionView.indexPathsForVisibleItems.map({$0.item}))
-//        }).disposed(by: disposeBag)
+        self.viewModel.requestProductList.onNext(())
+
     }
     
     required init?(coder: NSCoder) {

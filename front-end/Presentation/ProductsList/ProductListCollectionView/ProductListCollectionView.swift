@@ -1,20 +1,23 @@
 import UIKit
 import RxSwift
 import RxDataSources
-protocol ReturnDataSource:UICollectionView{
-    func returnDataSource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>
-}
-final class ProductListCollectionView: UICollectionView,ReturnDataSource {
-    private let returnPriceDelegate:ReturnPriceWhenReloadCellInterface
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,delegate:ReturnPriceWhenReloadCellInterface, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+final class ProductListCollectionView: UICollectionView {
+    private let returnPriceDelegate:Out_ProductListCollectionViewModelInterface
+    private let disposeBag:DisposeBag
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,delegate:Out_ProductListCollectionViewModelInterface, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+        disposeBag = DisposeBag()
         self.returnPriceDelegate = delegate
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
         self.register(FooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterView.Identifier)
+        bind()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    private func bind(){
+        returnPriceDelegate.productsList.bind(to: self.rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
     }
     
     deinit {
