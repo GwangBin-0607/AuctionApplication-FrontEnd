@@ -41,12 +41,9 @@ extension OutputStreamCompletionHandler{
     class CustomCompletion{
         let completion:completionType
         let completionId:Int16
-        weak var delegate:ExecuteOutputStreamCompletionHandlerInterface?
-        init(Completion:completionType,Delegate:ExecuteOutputStreamCompletionHandlerInterface?
-             ,CompletionId:Int16) {
+        init(Completion:completionType,CompletionId:Int16) {
             completionId = CompletionId
             completion = Completion
-            delegate = Delegate
             print("\(String(describing: self)) INIT")
         }
         deinit {
@@ -72,18 +69,17 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
     }
     
     func removeAllWhenEncounter() {
-        threadLock.lock()
-        defer{
-            threadLock.unlock()
+        completionHandler.forEach { key,value in
+            let error = NSError(domain: "Encounter Server", code: -1)
+            executeCompletionExtension(completionId: key,error: error)
         }
-        completionHandler.removeAll()
     }
     func registerCompletion(completion: completionType) {
         threadLock.lock()
         defer{
             threadLock.unlock()
         }
-        let customCompletion = CustomCompletion(Completion: completion, Delegate: self, CompletionId: completionId)
+        let customCompletion = CustomCompletion(Completion: completion, CompletionId: completionId)
         completionHandler[completionId] = customCompletion
         updateCompletionId()
     }

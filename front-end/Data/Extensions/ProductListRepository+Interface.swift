@@ -127,9 +127,9 @@ final class ProductListRepository:ProductListRepositoryInterface{
         case (.success(var productList),.success(let streamList)):
             changeProductPrice(before: &productList, after: streamList)
             return .success(productList)
+        case (.success(let productList),.failure(_)):
+            return .success(productList)
         case (.failure(let err), _):
-            return .failure(err)
-        case (_, .failure(let err)):
             return .failure(err)
         }
     }

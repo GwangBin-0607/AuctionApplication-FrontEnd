@@ -29,7 +29,7 @@ extension SceneDIContainer{
         ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnSocketNWConnection(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
     }
     private func returnProductListState()->ProductListStateInterface{
         ProductListState()
