@@ -15,6 +15,7 @@ protocol Pr_Out_ProductListCollectionViewModel:Pr_Common_ProductListCollectionVi
     var socketState:Observable<SocketConnectState>{get}
     var scrollScrollView:AnyObserver<[Int]> {get}
     func returnPrice(index:IndexPath)->Int
+    func returnCellViewModel()->Pr_ProductListCollectionViewCellViewModel
 }
 protocol Pr_In_ProductListCollectionViewModel:Pr_Common_ProductListCollectionViewModel{
     func controlSocketState(state:isConnecting)

@@ -3,9 +3,10 @@ import UIKit
 import RxSwift
 class ProductImageRepository:ProductImageRepositoryInterface{
     private let imageServer:GetProductImage
-    private let cacheRepository:ProductImageCacheRepositoryInterface = ProductImageCacheRepository.shared
-    init(ImageServer:GetProductImage) {
+    private let cacheRepository:ProductImageCacheRepositoryInterface
+    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface) {
         imageServer = ImageServer
+        cacheRepository = CacheRepository
     }
     private func returnImageHeight(image:UIImage)->CGFloat{
         image.size.height

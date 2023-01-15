@@ -18,7 +18,7 @@ extension ExecuteOutputStreamCompletionHandlerInterface{
 
 protocol ManageOutputStreamCompletionHandlerInterface{
     typealias completionType = ((Result<ResultData,Error>)->Void)?
-    func registerCompletion(completion:completionType,setTimeOut:Int)
+    func registerCompletion(completion:completionType)
     func removeAllWhenEncounter()
     func returnCurrentCompletionId()->Int16
 }
@@ -41,25 +41,12 @@ extension OutputStreamCompletionHandler{
     class CustomCompletion{
         let completion:completionType
         let completionId:Int16
-        let timeOut:DispatchSourceTimer
         weak var delegate:ExecuteOutputStreamCompletionHandlerInterface?
         init(Completion:completionType,Delegate:ExecuteOutputStreamCompletionHandlerInterface?
-             ,CompletionId:Int16,setTimeOut:Int) {
+             ,CompletionId:Int16) {
             completionId = CompletionId
             completion = Completion
             delegate = Delegate
-            let time:DispatchTime = .now() + CGFloat(integerLiteral: setTimeOut)
-            timeOut = DispatchSource.makeTimerSource(queue: .global(qos: .background))
-            timeOut.setEventHandler(handler: {
-                [weak self] in
-                if let completionId = self?.completionId{
-                    print("completionId \(completionId)")
-                    let timeOutError = NSError(domain: "Time Out Error", code: -1)
-                    self?.delegate?.executeCompletionExtension(completionId: completionId,error: timeOutError)
-                }
-            })
-            timeOut.schedule(deadline: time)
-            timeOut.resume()
             print("\(String(describing: self)) INIT")
         }
         deinit {
@@ -91,12 +78,12 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
         }
         completionHandler.removeAll()
     }
-    func registerCompletion(completion: completionType,setTimeOut:Int) {
+    func registerCompletion(completion: completionType) {
         threadLock.lock()
         defer{
             threadLock.unlock()
         }
-        let customCompletion = CustomCompletion(Completion: completion, Delegate: self, CompletionId: completionId, setTimeOut: setTimeOut)
+        let customCompletion = CustomCompletion(Completion: completion, Delegate: self, CompletionId: completionId)
         completionHandler[completionId] = customCompletion
         updateCompletionId()
     }

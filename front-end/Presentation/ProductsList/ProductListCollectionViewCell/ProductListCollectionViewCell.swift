@@ -10,19 +10,19 @@ final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
     private let disposeBag:DisposeBag
     private let borderAnimator:UIViewPropertyAnimator
     // MARK: OUTPUT
+    let data:PublishSubject<Product>
     let bindingData:AnyObserver<Product>
     let animationObserver: AnyObserver<Int>
-    private let viewModel:ProductListCollectionViewCellViewModelInterface!
+    private var viewModel:Pr_ProductListCollectionViewCellViewModel!
     override init(frame: CGRect) {
         print("CELL INIT")
-        viewModel = ProductListCollectionViewCellViewModel(ImageUsecase: ProductImageLoadUseCase(productsImageRepository: ProductImageRepository(ImageServer: ProductImageAPI())))
+        data = PublishSubject<Product>()
         titleLabel = UILabel()
         priceLabel = UILabel()
         productImageView = UIImageView()
         checkUpDown = UIImageView()
         disposeBag = DisposeBag()
         borderView = UIView()
-        let data = PublishSubject<Product>()
         bindingData = data.asObserver()
         let animationSubject = PublishSubject<Int>()
         animationObserver = animationSubject.asObserver()
@@ -32,25 +32,32 @@ final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
             owner,price in
             owner.priceLabel.text = String(price)
         }).disposed(by: disposeBag)
-        data.withUnretained(self).do { owner,item in
-            owner.tag = item.product_id
-            owner.titleLabel.text = item.product_name
-            owner.priceLabel.text = String(item.product_price)
-        }.flatMap { owner,item in
-            owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL)
-        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-            owner,cellImageTag in
-            if(cellImageTag.tag == owner.tag){
-                switch cellImageTag.result {
-                case .success(let image):
-                    owner.productImageView.image = image
-                case .failure(_):
-                    owner.productImageView.image = UIImage()
-                }
-            }
-        }).disposed(by: disposeBag)
+        
         layoutContentView()
     }
+    func bindingViewModel(cellViewModel:Pr_ProductListCollectionViewCellViewModel?){
+        if cellViewModel != nil || self.viewModel == nil{
+            self.viewModel = cellViewModel
+            data.withUnretained(self).do { owner,item in
+                owner.tag = item.product_id
+                owner.titleLabel.text = item.product_name
+                owner.priceLabel.text = String(item.product_price)
+            }.flatMap { owner,item in
+                return owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL).subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+                owner,cellImageTag in
+                if(cellImageTag.tag == owner.tag){
+                    switch cellImageTag.result {
+                    case .success(let image):
+                        owner.productImageView.image = image
+                    case .failure(_):
+                        owner.productImageView.image = UIImage()
+                    }
+                }
+            }).disposed(by: disposeBag)
+        }
+    }
+    
     private func layoutContentView(){
         contentView.backgroundColor = .red
         self.contentView.layer.masksToBounds = true

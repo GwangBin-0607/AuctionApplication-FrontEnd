@@ -2,36 +2,36 @@
     "product_id" : 13,
     "product_price" : 3000,
     "Product_Images" : [{"url":"07"}],
-    "product_name" : "일곱",
+    "product_name" : "열 셋",
     "checkUpDown" : false
 },{
     "product_id" : 14,
     "product_price" : 5000,
     "Product_Images" : [{"url":"08"}],
-    "product_name" : "여덟",
+    "product_name" : "열 넷",
     "checkUpDown" : true
 },{
     "product_id" : 15,
     "product_price" : 5000,
     "Product_Images" : [{"url":"09"}],
-    "product_name" : "아홉",
+    "product_name" : "열 다섯",
     "checkUpDown" : true
 },{
     "product_id" : 16,
     "product_price" : 5000,
     "Product_Images" : [{"url":"10"}],
-    "product_name" : "열",
+    "product_name" : "열 여섯",
     "checkUpDown" : true
 },{
     "product_id" : 17,
     "product_price" : 5000,
     "Product_Images" : [{"url":"11"}],
-    "product_name" : "열 하나",
+    "product_name" : "열 일곱",
     "checkUpDown" : true
 },{
     "product_id" : 18,
     "product_price" : 5000,
     "Product_Images" : [{"url":"12"}],
-    "product_name" : "열 둘",
+    "product_name" : "열 여덟",
     "checkUpDown" : true
 }]

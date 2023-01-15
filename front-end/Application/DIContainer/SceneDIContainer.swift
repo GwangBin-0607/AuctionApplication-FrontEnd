@@ -22,8 +22,11 @@ extension SceneDIContainer{
 
 //MARK: Repository
 extension SceneDIContainer{
+    private func returnProductCacheImageRepository()->ProductImageCacheRepositoryInterface{
+        ProductImageCacheRepository()
+    }
     private func returnProductsImageRepository()->ProductImageRepositoryInterface{
-        ProductImageRepository(ImageServer: returnHTTPImageService())
+        ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
         return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
@@ -47,21 +50,30 @@ extension SceneDIContainer{
 
 //MARK: Usecase
 extension SceneDIContainer{
-    private func returnProductListUsecaseInterface()->Pr_ProductListWithImageHeightUsecase{
-        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: returnProductsImageRepository())
+    private func returnProductListUsecaseInterface(ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
+        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: ImageHeightRepository)
+    }
+    private func returnProductImageLoadUsecase(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
+        ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
     }
 }
 
 //MARK: ViewModel,View
 extension SceneDIContainer{
-    private func returnProductListCollectionViewModel()->Pr_ProductListCollectionViewModel&Pr_Out_ProductListCollectionViewLayoutViewModel{
-        ProductListCollectionViewModel(UseCase: returnProductListUsecaseInterface())
+    private func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
+        ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase)
     }
-    private func returnProductListCollectionView(delegate:Pr_Out_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
-        ProductListCollectionView(collectionViewLayout: layout,delegate: delegate, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+    private func returnProductListCollectionViewModel(ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_Out_ProductListCollectionViewLayoutViewModel{
+        let listUsecase = returnProductListUsecaseInterface(ImageHeightRepository: ImageRepository)
+        let imageLoadUsecase = returnProductImageLoadUsecase(ImageLoadRepository: ImageRepository)
+        let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
+        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel)
     }
-    private func returnProductListCollectionViewLayout(delegate:Pr_Out_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
-        ProductListCollectionViewLayout(delegate: delegate)
+    private func returnProductListCollectionView(viewModel:Pr_Out_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self, cellIndentifier: ProductListCollectionViewCell.Identifier)
+    }
+    private func returnProductListCollectionViewLayout(viewModel:Pr_Out_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
+        ProductListCollectionViewLayout(viewModel: viewModel)
     }
     private func returnProductListViewModelInterface(collectionViewModel:Pr_In_ProductListCollectionViewModel)->Pr_ProductListViewControllerViewModel{
         ProductListViewControllerViewModel(collectionViewModel:collectionViewModel)
@@ -87,10 +99,11 @@ protocol ProductListViewSceneDIContainer{
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        let collectionViewModel = returnProductListCollectionViewModel()
+        let imageRepository = returnProductsImageRepository()
+        let collectionViewModel = returnProductListCollectionViewModel(ImageRepository: imageRepository)
         let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel)
-        let collectionViewLayout = returnProductListCollectionViewLayout(delegate: collectionViewModel)
-        let collectionView = returnProductListCollectionView(delegate:collectionViewModel, layout: collectionViewLayout)
+        let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel)
+        let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
         return productListViewController
     }

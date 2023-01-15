@@ -157,6 +157,8 @@ extension SocketNetwork:StreamDelegate{
             inputDataObserver.onNext(.failure(error))
             break;
         case .endEncountered:
+            let error = NSError(domain: "Encounter", code: -1)
+            inputDataObserver.onNext(.failure(error))
             isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
             disconnect()
             start()

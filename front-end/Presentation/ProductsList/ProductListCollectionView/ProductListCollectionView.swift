@@ -2,11 +2,11 @@ import UIKit
 import RxSwift
 import RxDataSources
 final class ProductListCollectionView: UICollectionView {
-    private let returnPriceDelegate:Pr_Out_ProductListCollectionViewModel
+    private let viewModel:Pr_Out_ProductListCollectionViewModel
     private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,delegate:Pr_Out_ProductListCollectionViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_Out_ProductListCollectionViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
         disposeBag = DisposeBag()
-        self.returnPriceDelegate = delegate
+        self.viewModel = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(cellType, forCellWithReuseIdentifier: indentifier)
         self.register(FooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterView.Identifier)
@@ -17,14 +17,18 @@ final class ProductListCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
-        returnPriceDelegate.productsList.bind(to: self.rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
-        self.rx.willDisplayCell.subscribe(onNext: {
-            cel,inx in
-            if inx.item == 11{
-                self.returnPriceDelegate.requestProductsList.onNext(())
-                print("11")
-            }
-        })
+        viewModel.productsList.bind(to: self.rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
+        self.rx.willDisplaySupplementaryView.subscribe(onNext: {
+            a,b,c in
+            self.viewModel.requestProductsList.onNext(())
+        }).disposed(by: disposeBag)
+//        self.rx.willDisplayCell.subscribe(onNext: {
+//            cel,inx in
+//            if inx.item == 11{
+//                self.viewModel.requestProductsList.onNext(())
+//                print("11")
+//            }
+//        }).disposed(by: disposeBag)
     }
     
     deinit {
@@ -33,7 +37,7 @@ final class ProductListCollectionView: UICollectionView {
     override func reloadItems(at indexPaths: [IndexPath]) {
         for i in 0..<indexPaths.count{
             if let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell{
-                let price = self.returnPriceDelegate.returnPrice(index: indexPaths[i])
+                let price = self.viewModel.returnPrice(index: indexPaths[i])
                 cell.animationObserver.onNext(price)
             }
         }
@@ -44,8 +48,9 @@ extension ProductListCollectionView{
         return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
             return .animated
-        }, configureCell: { _ , colview, indexpath, item in
+        }, configureCell: { [weak self] _ , colview, indexpath, item in
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell
+            cell.bindingViewModel(cellViewModel:self?.viewModel.returnCellViewModel())
             cell.bindingData.onNext(item)
             return cell
         },configureSupplementaryView: {

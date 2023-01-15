@@ -14,7 +14,7 @@ class ProductListCollectionViewCellViewModel{
         self.imageUsecase = ImageUsecase
     }
 }
-extension ProductListCollectionViewCellViewModel:ProductListCollectionViewCellViewModelInterface{
+extension ProductListCollectionViewCellViewModel:Pr_ProductListCollectionViewCellViewModel{
     func returnImage(productId: Int, imageURL: String?) -> Observable<CellImageTag>{
         return imageUsecase.returnImage(productId: productId, imageURL: imageURL)
     }

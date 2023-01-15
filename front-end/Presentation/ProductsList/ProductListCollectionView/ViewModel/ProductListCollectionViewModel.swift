@@ -17,8 +17,11 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let socketState: Observable<SocketConnectState>
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
-    init(UseCase:Pr_ProductListWithImageHeightUsecase) {
+    
+    let cellViewModel:Pr_ProductListCollectionViewCellViewModel
+    init(UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel) {
         self.usecase = UseCase
+        self.cellViewModel = CellViewModel
         disposeBag = DisposeBag()
         let scrollSubject = PublishSubject<[Int]>()
         scrollScrollView = scrollSubject.asObserver()
@@ -66,5 +69,8 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         }catch{
            return 0
         }
+    }
+    func returnCellViewModel() -> Pr_ProductListCollectionViewCellViewModel {
+        cellViewModel
     }
 }

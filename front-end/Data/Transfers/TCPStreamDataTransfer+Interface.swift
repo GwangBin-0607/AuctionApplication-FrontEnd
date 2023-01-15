@@ -54,11 +54,14 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
             
         }
     }
-    func encodeOutputStreamState(dataType:StreamDataType,output:Encodable)throws -> Data{
+    func encodeOutputStreamState(dataType:StreamDataType,output:Encodable)throws -> (Int16,Data){
         let completionId = socketCompletionHandler.returnCurrentCompletionId()
-        return try socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: output)
+        return try (completionId,socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: output))
     }
-    func register(completion:@escaping(Result<ResultData,Error>)->Void,timeOut:Int){
-        socketCompletionHandler.registerCompletion(completion:completion,setTimeOut: timeOut)
+    func register(completion:@escaping(Result<ResultData,Error>)->Void){
+        socketCompletionHandler.registerCompletion(completion:completion)
+    }
+    func executeIfSendError(completionId:Int16,error:Error){
+        socketCompletionHandler.executeCompletionExtension(completionId: completionId,error: error)
     }
 }

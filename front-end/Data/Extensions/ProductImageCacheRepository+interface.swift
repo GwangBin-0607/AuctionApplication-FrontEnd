@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 final class ProductImageCacheRepository{
-    static let shared = ProductImageCacheRepository()
     let lock:NSLock
     let imageCache:NSCache<NSNumber,UIImage>
-    private init(){
+    init(){
         lock = NSLock()
         imageCache = NSCache()
     }

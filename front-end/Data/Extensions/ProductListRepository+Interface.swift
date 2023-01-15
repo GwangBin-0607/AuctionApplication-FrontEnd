@@ -38,10 +38,9 @@ final class ProductListRepository:ProductListRepositoryInterface{
         disposeBag = DisposeBag()
         httpService = ApiService
         streamingProductPrice = StreamingService
-        let queue = DispatchQueue(label: "testQueue")
         let resultProductSubject = PublishSubject<Result<[Product],Error>>()
         let resultProductObserver = resultProductSubject.asObserver()
-        productListObservable = resultProductSubject.asObservable().observe(on: SerialDispatchQueueScheduler(queue: queue, internalSerialQueueName: "a"))
+        productListObservable = resultProductSubject.asObservable()
         let requestSubject = PublishSubject<Void>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
@@ -60,12 +59,13 @@ final class ProductListRepository:ProductListRepositoryInterface{
             }
         }).withUnretained(self).flatMap({
             owner,streamState in
-            owner.updateStreamState(state: streamState, timeOut: 10)
+            owner.updateStreamState(state: streamState)
         }).withUnretained(self).subscribe(onNext: {
             owner,result in
             owner.productListState.updateTCPState(result: result)
         }).disposed(by: disposeBag)
         
+        let listQueue = DispatchQueue(label: "productListSerialQueue")
         requestObservable
             .withUnretained(self)
             .map({ tuple in
@@ -87,6 +87,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 return re
             })
             .withUnretained(self)
+            .observe(on: SerialDispatchQueueScheduler(queue: listQueue, internalSerialQueueName: "productListSerialQeue"))
             .subscribe(onNext:{
             owner,list in
                 let tcpState = owner.productListState.returnTCPState()
@@ -99,7 +100,9 @@ final class ProductListRepository:ProductListRepositoryInterface{
             let (owner,result) = arg1
             let sumResult = owner.sumResult(before: list, after: result)
             return sumResult
-        }).subscribe(onNext:resultProductObserver.onNext)
+        })
+        .observe(on: SerialDispatchQueueScheduler(queue: listQueue, internalSerialQueueName: "productListSerialQeue"))
+        .subscribe(onNext:resultProductObserver.onNext)
             .disposed(by: disposeBag)
         print("\(String(describing: self)) INIT")
     }
@@ -183,13 +186,13 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable,timeOut:Int)->Observable<Result<ResultData,Error>>{
-        return encodeAndSend(data: data,timeOut: timeOut)
+    func sendData(output data:Encodable)->Observable<Result<ResultData,Error>>{
+        return encodeAndSend(data: data)
     }
-    private func encodeAndSend(data:Encodable,timeOut:Int)->Observable<Result<ResultData,Error>>{
+    private func encodeAndSend(data:Encodable)->Observable<Result<ResultData,Error>>{
         return Observable<Result<ResultData,Error>>.create { [weak self] observer in
             guard let self = self,
-                  let data = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .OutputStreamReaded, output: data)
+                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .OutputStreamReaded, output: data)
             else{
                 observer.onNext(.failure(SocketOutputError.EncodeError))
                 observer.onCompleted()
@@ -199,10 +202,12 @@ extension ProductListRepository{
                 result in
                 observer.onNext(result)
                 observer.onCompleted()
-            }, timeOut: timeOut)
+            })
             self.streamingProductPrice.sendData(data: data, completion: {
                 error in
                 if let error = error{
+                    print("----")
+                    self.socketDataTransfer.executeIfSendError(completionId: completionId, error: error)
                     observer.onNext(.failure(error))
                     observer.onCompleted()
                 }
@@ -211,9 +216,9 @@ extension ProductListRepository{
 
         }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
-    private func updateStreamState(state:StreamStateData?,timeOut:Int)->Observable<Result<ResultData,Error>>{
+    private func updateStreamState(state:StreamStateData?)->Observable<Result<ResultData,Error>>{
         if let state = state{
-           return sendData(output: state, timeOut: timeOut)
+           return sendData(output: state)
         }else{
             let error = NSError(domain: "Not Connect", code: -1)
             return Observable<Result<ResultData,Error>>.just(.failure(error))
