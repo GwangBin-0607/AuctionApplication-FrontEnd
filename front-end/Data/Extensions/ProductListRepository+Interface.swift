@@ -44,13 +44,12 @@ final class ProductListRepository:ProductListRepositoryInterface{
         let requestSubject = PublishSubject<Void>()
         let requestObservable = requestSubject.asObservable()
         requestObserver = requestSubject.asObserver()
-        let updateStreamState = PublishSubject<Int>()
+        let updateStreamState = PublishSubject<Void>()
         let updateStreamStateObserver = updateStreamState.asObserver()
+        
         Observable.combineLatest(updateStreamState,streamingProductPrice.isSocketConnect.distinctUntilChanged(), resultSelector: {
-            stateNumber,connectState -> StreamStateData? in
-            print("=======")
-            print(stateNumber)
-            print(connectState)
+            _,connectState -> StreamStateData? in
+            let stateNumber = self.productListState.returnTCPState()
             let streamState = StreamStateData(stateNum: stateNumber)
             if connectState.socketConnect != .connect{
                 return nil
@@ -75,7 +74,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
             .withUnretained(self)
             .flatMap({
                 owner,requestNum in
-                print("22")
                 return owner.transferDataToProductList(requestNum:requestNum)
                 
             })
@@ -90,11 +88,11 @@ final class ProductListRepository:ProductListRepositoryInterface{
             .observe(on: SerialDispatchQueueScheduler(queue: listQueue, internalSerialQueueName: "productListSerialQeue"))
             .subscribe(onNext:{
             owner,list in
-                let tcpState = owner.productListState.returnTCPState()
-                updateStreamStateObserver.onNext(tcpState)
+                updateStreamStateObserver.onNext(())
                 owner.productListState.updateHTTPState()
                 resultProductObserver.onNext(list)
             }).disposed(by: disposeBag)
+        
         streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:)).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
             let (owner,result) = arg1

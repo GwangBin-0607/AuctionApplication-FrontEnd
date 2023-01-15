@@ -36,8 +36,10 @@ final class SocketNWConnection:SocketNetworkInterface{
         port = Port
         controlSocketNetwork.asObservable().withUnretained(self).subscribe(onNext: {
             owner,isConnecting in
-            owner.clientEncounter = true
-            owner.connection?.forceCancel()
+            if isConnecting == .disconnect{
+                owner.clientEncounter = true
+                owner.connection?.forceCancel()
+            }
         }).disposed(by: disposeBag)
         
         startConnection()
@@ -78,15 +80,14 @@ final class SocketNWConnection:SocketNetworkInterface{
         connection?.receive(minimumIncompleteLength: 0, maximumLength: 1024) {
             [weak self] content, contentContext, isComplete, error in
             if content == nil,isComplete{
-                print(1)
                 self?.clientEncounter = false
+                let error = NSError(domain: "Encoutered Server", code: -1)
+                self?.inputDataObserver.onNext(.failure(error))
                 self?.connection?.cancel()
             }else if let content = content,!isComplete{
-                print(2)
                 self?.inputDataObserver.onNext(.success(content))
                 self?.receive()
             }else if let error = error{
-                print(3)
                 self?.inputDataObserver.onNext(.failure(error))
             }
         }
@@ -114,9 +115,6 @@ final class SocketNWConnection:SocketNetworkInterface{
             error in
             completion(error)
         }))
-    }
-    func sendData(data: Encodable, completion: @escaping (Error?) -> Void) {
-
     }
     deinit {
         print("NWConnection DEINIT")

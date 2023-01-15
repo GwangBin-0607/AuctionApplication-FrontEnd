@@ -8,16 +8,18 @@
 import Foundation
 import RxSwift
 final class ProductListState:ProductListStateInterface{
-    func updateTCPState(result:Result<ResultData,Error>) {
+    func updateTCPState(result: Result<ResultData, Error>){
         switch result {
         case .success(let resultData):
             if resultData.result{
+                print("==\(streamServiceState)===")
                 streamServiceState += 1
             }
-        default:
+        case .failure(_):
             break;
         }
     }
+   
     func updateHTTPState() {
         httpServiceState += 1
     }
