@@ -108,6 +108,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
         fatalError("init(coder:) has not been implemented")
     }
 }
-protocol AnimationCell{
+protocol AnimationCell:UICollectionViewCell{
     var animationObserver:AnyObserver<Int>{get}
 }

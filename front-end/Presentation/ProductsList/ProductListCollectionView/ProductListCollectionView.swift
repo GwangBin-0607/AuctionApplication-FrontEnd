@@ -35,9 +35,9 @@ final class ProductListCollectionView: UICollectionView {
         print("CollectionView DEINIT")
     }
     override func reloadItems(at indexPaths: [IndexPath]) {
-        print("Reload")
         for i in 0..<indexPaths.count{
-            if let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell{
+            if let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell,self.visibleCells.contains(cell){
+                print("Animate")
                 let price = self.viewModel.returnPrice(index: indexPaths[i])
                 cell.animationObserver.onNext(price)
             }

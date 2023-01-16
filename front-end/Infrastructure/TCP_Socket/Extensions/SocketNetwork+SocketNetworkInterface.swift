@@ -27,7 +27,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var shouldKeeping:Bool = false
     private let disposeBag:DisposeBag
     private var currentRunloop:RunLoop?
-    private let connected = BehaviorSubject<isConnecting>(value: .disconnect)
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
     init(hostName: String, portNumber: Int) {
@@ -42,6 +41,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         let controlSocketNetwork = PublishSubject<isConnecting>()
         let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
+        let connected = BehaviorSubject<isConnecting>(value: .disconnect)
         isSocketConnect = connected.asObservable()
         isSocketConnected = connected.asObserver()
         inputDataObservable = inputPricing.asObservable()
@@ -97,6 +97,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         outputStream = nil
     }
     func sendData(data:Data,completion:@escaping(Error?)->Void){
+        print("Send")
         data.withUnsafeBytes { pointer in
             let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
             let result = outputStream?.write(buffer, maxLength: data.count)

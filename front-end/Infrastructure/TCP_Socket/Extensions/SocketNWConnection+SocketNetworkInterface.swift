@@ -25,7 +25,7 @@ final class SocketNWConnection:SocketNetworkInterface{
     init(Host:NWEndpoint.Host,Port:NWEndpoint.Port) {
         disposeBag = DisposeBag()
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let connected = PublishSubject<isConnecting>()
+        let connected = BehaviorSubject<isConnecting>(value: .disconnect)
         let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
@@ -46,6 +46,18 @@ final class SocketNWConnection:SocketNetworkInterface{
     }
     func initConnection(){
         connection = NWConnection(host: host, port: port, using: .tcp)
+        connection?.stateUpdateHandler = {
+            [weak self] state in
+            switch state {
+            case .ready:
+                self?.isSocketConnected.onNext(.connect)
+            case .cancelled:
+                self?.isSocketConnected.onNext(.disconnect)
+                self?.startConnection()
+            default:
+                break;
+            }
+        }
     }
     func startConnection(){
         initConnection()
@@ -55,12 +67,12 @@ final class SocketNWConnection:SocketNetworkInterface{
     func receive(){
         connection?.receive(minimumIncompleteLength: 0, maximumLength: 1024) {
             [weak self] content, contentContext, isComplete, error in
+            print("RECEIVE")
             if content == nil,isComplete{
                 print("Encounter")
                 let error = NSError(domain: "Encoutered Server", code: -1)
                 self?.inputDataObserver.onNext(.failure(error))
-                self?.connection?.forceCancel()
-                self?.startConnection()
+                self?.connection?.cancel()
             }else if let content = content,!isComplete{
                 self?.inputDataObserver.onNext(.success(content))
                 self?.receive()
@@ -70,6 +82,7 @@ final class SocketNWConnection:SocketNetworkInterface{
         }
     }
     func sendData(data: Data, completion: @escaping (Error?) -> Void) {
+        print("Send")
         connection?.send(content: data, contentContext: .defaultMessage, isComplete: true, completion: .contentProcessed({
             error in
             completion(error)
