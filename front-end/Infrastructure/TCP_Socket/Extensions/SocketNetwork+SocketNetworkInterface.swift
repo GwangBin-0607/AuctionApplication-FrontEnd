@@ -8,24 +8,16 @@ enum SocketOutputError:Error{
     case OutputError
     case EncodeError
 }
-enum SocketStateError:Error{
-    case ServerEncounter
-    case ClientEncounter
-}
-struct SocketConnectState:Equatable {
-    let socketConnect:isConnecting
-    let error:SocketStateError?
-}
 final class SocketNetwork: NSObject,SocketNetworkInterface  {
     
     // MARK: INPUT
     let controlSocketConnect: AnyObserver<isConnecting>
     // MARK: OUTPUT
-    let isSocketConnect: Observable<SocketConnectState>
+    let isSocketConnect: Observable<isConnecting>
     let inputDataObservable: Observable<Result<Data,Error>>
     
     
-    private let isSocketConnected:AnyObserver<SocketConnectState>
+    private let isSocketConnected:AnyObserver<isConnecting>
     private let inputDataObserver:AnyObserver<Result<Data,Error>>
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
@@ -35,13 +27,16 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     private var shouldKeeping:Bool = false
     private let disposeBag:DisposeBag
     private var currentRunloop:RunLoop?
-    private let connected = BehaviorSubject<SocketConnectState>(value: SocketConnectState(socketConnect: .disconnect, error: nil))
+    private let connected = BehaviorSubject<isConnecting>(value: .disconnect)
     /// - parameter hostName: host Address
     /// - parameter portNumber: port Number
     init(hostName: String, portNumber: Int) {
         self.hostName = hostName
         self.portNumber = portNumber
-        self.urlSession = URLSession(configuration: URLSessionConfiguration.default)
+        let sessionConfigure = URLSessionConfiguration.default
+        sessionConfigure.waitsForConnectivity = true
+        
+        self.urlSession = URLSession(configuration: sessionConfigure)
         disposeBag = DisposeBag()
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
@@ -61,13 +56,13 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
                 owner.connect()
             case .disconnect:
                 owner.disconnect{
-                    owner.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
+                    owner.isSocketConnected.onNext(.disconnect)
                 }
             }
         }).disposed(by: disposeBag)
         
         
-        start()
+        connect()
         print("\(String(describing: self)) INIT")
     }
     deinit {
@@ -85,24 +80,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         removeFromThread()
         initStream()
         completion()
-    }
-    private var timer:DispatchSourceTimer!
-    private var repeatTime = 5.0
-    private func start(){
-        timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
-        timer.setEventHandler(handler: {
-            [weak self] in
-            if  let connectState = try? self?.connected.value(),
-                connectState.socketConnect == .disconnect,
-                (connectState.error == SocketStateError.ServerEncounter || connectState.error == nil),
-                self?.inputStream?.streamStatus != .open,
-               self?.outputStream?.streamStatus != .open,
-               self?.shouldKeeping == false{
-                self?.connect()
-            }
-        })
-        timer.schedule(wallDeadline: .now(), repeating: repeatTime)
-        timer.resume()
     }
     private func removeFromThread(){
         guard let currentRunloop = currentRunloop else{
@@ -137,9 +114,10 @@ extension SocketNetwork:StreamDelegate{
         switch eventCode {
         case .openCompleted:
             print("connect")
-            isSocketConnected.onNext(SocketConnectState(socketConnect: .connect, error: nil))
+            isSocketConnected.onNext(.connect)
         case .hasBytesAvailable:
             if aStream == inputStream {
+                print("READ")
                 var dataBuffer = Array<UInt8>(repeating: 0, count: 4096)
                 var len: Int
                 len = (inputStream?.read(&dataBuffer, maxLength: 4096))!
@@ -157,11 +135,12 @@ extension SocketNetwork:StreamDelegate{
             inputDataObserver.onNext(.failure(error))
             break;
         case .endEncountered:
+            print("01010101")
             let error = NSError(domain: "Encounter", code: -1)
             inputDataObserver.onNext(.failure(error))
-            isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
+            isSocketConnected.onNext(.disconnect)
             disconnect()
-            start()
+            connect()
         default:
             print("Unknown event")
         }

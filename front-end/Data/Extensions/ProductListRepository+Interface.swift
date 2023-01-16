@@ -12,7 +12,7 @@ extension ProductListRepository{
         streamingProductPrice.controlSocketConnect.onNext(state)
     }
     
-    func observableSteamState() -> Observable<SocketConnectState> {
+    func observableSteamState() -> Observable<isConnecting> {
         return streamingProductPrice.isSocketConnect
     }
 }
@@ -51,7 +51,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
             _,connectState -> StreamStateData? in
             let stateNumber = self.productListState.returnTCPState()
             let streamState = StreamStateData(stateNum: stateNumber)
-            if connectState.socketConnect != .connect{
+            if connectState != .connect{
                 return nil
             }else{
                 return streamState
@@ -116,8 +116,8 @@ final class ProductListRepository:ProductListRepositoryInterface{
             return .success(array)
         case (.failure(let err),.failure(_)):
             return .failure(err)
-        case (_, .failure(let err)):
-            return .failure(err)
+        case (.success(let result), .failure(_)):
+            return .success(result)
         }
     }
     

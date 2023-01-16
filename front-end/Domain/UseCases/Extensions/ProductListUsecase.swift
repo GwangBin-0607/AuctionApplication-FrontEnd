@@ -35,7 +35,7 @@ extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase
     func returnRequestObserver() -> AnyObserver<Void> {
         listRepo.requestObserver
     }
-    func returnObservableStreamState() -> Observable<SocketConnectState> {
+    func returnObservableStreamState() -> Observable<isConnecting> {
         listRepo.observableSteamState()
     }
     func returnControlStreamState(state: isConnecting) {

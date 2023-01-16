@@ -11,7 +11,7 @@ import Network
 
 final class SocketNWConnection:SocketNetworkInterface{
     
-    let isSocketConnect: Observable<SocketConnectState>
+    let isSocketConnect: Observable<isConnecting>
     let controlSocketConnect: AnyObserver<isConnecting>
     let inputDataObservable: Observable<Result<Data,Error>>
     
@@ -20,12 +20,12 @@ final class SocketNWConnection:SocketNetworkInterface{
     private let port:NWEndpoint.Port
     private let thread = DispatchQueue(label: "quee",qos: .background)
     private let disposeBag:DisposeBag
-    private let isSocketConnected:AnyObserver<SocketConnectState>
+    private let isSocketConnected:AnyObserver<isConnecting>
     private let inputDataObserver:AnyObserver<Result<Data,Error>>
     init(Host:NWEndpoint.Host,Port:NWEndpoint.Port) {
         disposeBag = DisposeBag()
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let connected = PublishSubject<SocketConnectState>()
+        let connected = PublishSubject<isConnecting>()
         let inputPricing = PublishSubject<Result<Data,Error>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         isSocketConnect = connected.asObservable()
@@ -37,7 +37,6 @@ final class SocketNWConnection:SocketNetworkInterface{
         controlSocketNetwork.asObservable().withUnretained(self).subscribe(onNext: {
             owner,isConnecting in
             if isConnecting == .disconnect{
-                owner.clientEncounter = true
                 owner.connection?.forceCancel()
             }
         }).disposed(by: disposeBag)
@@ -45,45 +44,23 @@ final class SocketNWConnection:SocketNetworkInterface{
         startConnection()
         
     }
-    func setUpdateHandler(){
-        connection?.stateUpdateHandler = {
-            [weak self] (state) in
-            switch state {
-            case .failed(_),.waiting(_),.cancelled:
-                self?.timeInterval = .now()+5.0
-                if (self?.clientEncounter == false){
-                    self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ServerEncounter))
-                }else if self?.clientEncounter == true{
-                    self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .disconnect, error: SocketStateError.ClientEncounter))
-                }
-                self?.startConnection()
-            case .ready:
-                self?.isSocketConnected.onNext(SocketConnectState(socketConnect: .connect, error: nil))
-                self?.connect = true
-            default:
-                break;
-            }
-            
-        }
-    }
     func initConnection(){
         connection = NWConnection(host: host, port: port, using: .tcp)
-        connect = false
     }
     func startConnection(){
         initConnection()
-        setUpdateHandler()
-        start()
         receive()
+        connection?.start(queue: thread)
     }
     func receive(){
         connection?.receive(minimumIncompleteLength: 0, maximumLength: 1024) {
             [weak self] content, contentContext, isComplete, error in
             if content == nil,isComplete{
-                self?.clientEncounter = false
+                print("Encounter")
                 let error = NSError(domain: "Encoutered Server", code: -1)
                 self?.inputDataObserver.onNext(.failure(error))
-                self?.connection?.cancel()
+                self?.connection?.forceCancel()
+                self?.startConnection()
             }else if let content = content,!isComplete{
                 self?.inputDataObserver.onNext(.success(content))
                 self?.receive()
@@ -91,24 +68,6 @@ final class SocketNWConnection:SocketNetworkInterface{
                 self?.inputDataObserver.onNext(.failure(error))
             }
         }
-    }
-    private var clientEncounter:Bool = false
-    private var connect:Bool = false
-    private var timeInterval:DispatchWallTime = .now()
-    private var repeatTime = 5.0
-    private var timer:DispatchSourceTimer?
-    func start(){
-        timer = DispatchSource.makeTimerSource(queue: .global(qos: .background))
-        timer?.setEventHandler(handler: {
-            [weak self] in
-            if self?.connect == false,let queue = self?.thread{
-                self?.connection?.start(queue: queue)
-            }else if self?.connect == true{
-                self?.timer?.cancel()
-            }
-        })
-        timer?.schedule(wallDeadline: timeInterval, repeating: repeatTime)
-        timer?.resume()
     }
     func sendData(data: Data, completion: @escaping (Error?) -> Void) {
         connection?.send(content: data, contentContext: .defaultMessage, isComplete: true, completion: .contentProcessed({

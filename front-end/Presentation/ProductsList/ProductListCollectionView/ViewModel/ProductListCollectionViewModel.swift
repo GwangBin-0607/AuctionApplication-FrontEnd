@@ -14,7 +14,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     // MARK: VIEWCONTROLLER OUTPUT
     let productsList: Observable<[ProductSection]>
     let requestProductsList: AnyObserver<Void>
-    let socketState: Observable<SocketConnectState>
+    let socketState: Observable<isConnecting>
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
     
