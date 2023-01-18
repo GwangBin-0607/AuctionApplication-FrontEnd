@@ -22,12 +22,9 @@ final class ProductListCollectionView: UICollectionView {
             a,b,c in
             self.viewModel.requestProductsList.onNext(())
         }).disposed(by: disposeBag)
-//        self.rx.willDisplayCell.subscribe(onNext: {
-//            cel,inx in
-//            if inx.item == 11{
-//                self.viewModel.requestProductsList.onNext(())
-//                print("11")
-//            }
+//        self.rx.didScroll.subscribe(onNext: {
+//            let item = self.indexPathsForVisibleItems.map({$0.item})
+//            self.viewModel.scrollScrollView.onNext(item)
 //        }).disposed(by: disposeBag)
     }
     

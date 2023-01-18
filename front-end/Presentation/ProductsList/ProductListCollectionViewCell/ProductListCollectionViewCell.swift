@@ -32,29 +32,29 @@ final class ProductListCollectionViewCell: UICollectionViewCell,AnimationCell{
             owner,price in
             owner.priceLabel.text = String(price)
         }).disposed(by: disposeBag)
+        data.withUnretained(self).do { owner,item in
+            owner.tag = item.product_id
+            owner.titleLabel.text = item.product_name
+            owner.priceLabel.text = String(item.product_price)
+        }.flatMap { owner,item in
+            return owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL).subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                switch cellImageTag.result {
+                case .success(let image):
+                    owner.productImageView.image = image
+                case .failure(_):
+                    owner.productImageView.image = UIImage()
+                }
+            }
+        }).disposed(by: disposeBag)
         
         layoutContentView()
     }
     func bindingViewModel(cellViewModel:Pr_ProductListCollectionViewCellViewModel?){
-        if cellViewModel != nil || self.viewModel == nil{
+        if cellViewModel != nil && self.viewModel == nil{
             self.viewModel = cellViewModel
-            data.withUnretained(self).do { owner,item in
-                owner.tag = item.product_id
-                owner.titleLabel.text = item.product_name
-                owner.priceLabel.text = String(item.product_price)
-            }.flatMap { owner,item in
-                return owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL).subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-            }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-                owner,cellImageTag in
-                if(cellImageTag.tag == owner.tag){
-                    switch cellImageTag.result {
-                    case .success(let image):
-                        owner.productImageView.image = image
-                    case .failure(_):
-                        owner.productImageView.image = UIImage()
-                    }
-                }
-            }).disposed(by: disposeBag)
         }
     }
     

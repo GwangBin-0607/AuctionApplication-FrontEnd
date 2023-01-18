@@ -12,10 +12,10 @@ extension SceneDIContainer{
     private func returnHTTPService()->GetProductsList{
         ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist")
     }
-    private func returnSocketNWConnection()->SocketNetworkInterface{
-//        SocketNWConnection(Host: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", Port: 8100)
-        SocketNWConnection(Host: "localhost", Port: 3200)
-    }
+//    private func returnSocketNWConnection()->SocketNetworkInterface{
+////        SocketNWConnection(Host: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", Port: 8100)
+//        SocketNWConnection(Host: "localhost", Port: 3200)
+//    }
     private func returnStreamingService()->SocketNetworkInterface{
 //        SocketNetwork(hostName: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", portNumber: 8100)
         SocketNetwork(hostName: "localhost", portNumber: 3200)
@@ -31,7 +31,7 @@ extension SceneDIContainer{
         ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService: returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
+        return ProductListRepository(ApiService: MockProductsListAPI(), StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
     }
     private func returnProductListState()->ProductListStateInterface{
         ProductListState()

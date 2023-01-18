@@ -78,18 +78,21 @@ final class ProductListRepository:ProductListRepositoryInterface{
                 
             })
         
-        let res = httpObservable.observe(on: SerialDispatchQueueScheduler(queue: listQueue, internalSerialQueueName: "productListSerialQeue")).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
+        httpObservable.observe(on: SerialDispatchQueueScheduler(queue: listQueue, internalSerialQueueName: "productListSerialQeue")).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             arg,beforeList in
             
             let (owner,afterList) = arg
             let re = owner.addResult(before: beforeList, after: afterList)
-            updateStreamStateObserver.onNext(())
-            owner.productListState.updateHTTPState()
-            resultProductSubject.onNext(re)
-            return re
+            return (owner,re)
             
-        })
-        streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:)).withUnretained(self).withLatestFrom(res, resultSelector: {
+        }).subscribe(onNext: {
+            result in
+            let (owner,resultList) = result
+            owner.productListState.updateHTTPState()
+            resultProductSubject.onNext(resultList)
+            updateStreamStateObserver.onNext(())
+        }).disposed(by: disposeBag)
+        streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:)).withUnretained(self).withLatestFrom(resultProductSubject, resultSelector: {
             (arg1,list) in
             let (owner,result) = arg1
             let sumResult = owner.sumResult(before: list, after: result)
@@ -207,12 +210,12 @@ extension ProductListRepository{
                 }
             })
             return Disposables.create()
-            
+
         }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
     private func updateStreamState(state:StreamStateData?)->Observable<Result<ResultData,Error>>{
         if let state = state{
-            return sendData(output: state)
+           return sendData(output: state)
         }else{
             let error = NSError(domain: "Not Connect", code: -1)
             return Observable<Result<ResultData,Error>>.just(.failure(error))
