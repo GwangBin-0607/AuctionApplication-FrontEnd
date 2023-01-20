@@ -14,5 +14,9 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
     init(collectionViewModel:Pr_In_ProductListCollectionViewModel) {
         self.collectionViewModel = collectionViewModel
         requestProductList = self.collectionViewModel.requestProductsList
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
 }

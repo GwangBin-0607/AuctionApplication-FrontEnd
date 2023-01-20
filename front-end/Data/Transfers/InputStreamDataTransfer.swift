@@ -13,17 +13,19 @@ enum InputStreamDataDecodeError:Error{
     case ProductPriceDecodeError
 }
 enum StreamDataType:Codable{
-    case InputStreamProductPrice
-    case OutputStreamReaded
+    case StreamStateUpdate
+    case StreamProductPriceUpdate
+    case InitStreamState
     private enum CodingKeys: CodingKey {
         case InputStreamProductPrice
         case OutputStreamReaded
     }
     init(from decoder: Decoder) throws {
-         let label = try decoder.singleValueContainer().decode(String.self)
+         let label = try decoder.singleValueContainer().decode(Int.self)
          switch label {
-         case "InputStreamProductPrice": self = .InputStreamProductPrice
-         case "OutputStreamReaded": self = .OutputStreamReaded
+         case 1: self = .StreamStateUpdate
+         case 2: self = .StreamProductPriceUpdate
+         case 3: self = .InitStreamState
          default:
              throw InputStreamDataDecodeError.InputStreamDataTypeDecodeError
             // default: self = .other(label)
@@ -32,10 +34,12 @@ enum StreamDataType:Codable{
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self{
-        case .OutputStreamReaded:
-            try container.encode("OutputStreamReaded")
-        case .InputStreamProductPrice:
-            try container.encode("InputStreamProductPrice")
+        case .StreamStateUpdate:
+            try container.encode(1)
+        case .StreamProductPriceUpdate:
+            try container.encode(2)
+        case .InitStreamState:
+            try container.encode(3)
         }
     }
 }
@@ -51,14 +55,14 @@ struct InputStreamData:Decodable{
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let value = try container.decode(StreamDataType.self, forKey: .dataType)
         switch value {
-        case .InputStreamProductPrice:
+        case .StreamProductPriceUpdate:
             do{
                 let valueTwo = try container.decode([StreamPrice].self, forKey: .data)
                 self.data = valueTwo
             }catch{
                 throw InputStreamDataDecodeError.ProductPriceDecodeError
             }
-        case .OutputStreamReaded:
+        case .StreamStateUpdate,.InitStreamState:
             do{
                 let valueTwo = try container.decode(ResultOutputStreamReaded.self, forKey: .data)
                 self.data = valueTwo
@@ -69,11 +73,8 @@ struct InputStreamData:Decodable{
         self.dataType = value
       }
 }
-struct ResultData:Decodable{
-    let result:Bool
-}
 struct ResultOutputStreamReaded:Decodable{
-    let result:ResultData
+    let result:Bool
     let completionId:Int16
 }
 protocol InputStreamDataTransferInterface{

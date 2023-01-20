@@ -21,27 +21,8 @@ class ProductImageAPI:GetProductImage{
 //            }
 //        })
     }
-    func returnJson(){
-        var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/alllist")!)
-        urlRequest.httpMethod = "GET"
-        URLSession.shared.dataTask(with: urlRequest, completionHandler: {
-            imageData,response,error in
-            print(imageData,response,error)
-            guard let data = imageData else{
-                return
-            }
-            
-            do{let testProduct = try JSONDecoder().decode([TestProduct].self, from: data)
-                print(testProduct)
-            }catch{
-                print(error)
-            }
-//
-//            let string = String.init(data: data, encoding: .utf8)
-//            print(string)
-        }).resume()
     }
-}
+
 struct Product_Images:Decodable{
     let url:String
 }

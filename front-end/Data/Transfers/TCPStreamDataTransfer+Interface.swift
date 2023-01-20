@@ -29,11 +29,11 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                 let inputData = try socketInput.decodeInputStreamDataType(data: data)
                 inputData.forEach { inputStreamData in
                     switch inputStreamData.dataType{
-                    case .InputStreamProductPrice:
+                    case .StreamProductPriceUpdate:
                         if let inputStream = inputStreamData.data as? [StreamPrice]{
                             addResultArray(original: &returnArray, added: inputStream)
                         }
-                    case .OutputStreamReaded:
+                    case .StreamStateUpdate,.InitStreamState:
                         if let resultData = inputStreamData.data as? ResultOutputStreamReaded{
                             socketCompletionHandler.executeCompletionExtension(completionId: resultData.completionId,data: resultData.result)
                         }
@@ -46,6 +46,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                     return .success(returnArray)
                 }
             }catch{
+                print(error)
                 return .failure(error)
             }
         case .failure(let error):
@@ -61,7 +62,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
         let completionId = socketCompletionHandler.returnCurrentCompletionId()
         return try (completionId,socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: output))
     }
-    func register(completion:@escaping(Result<ResultData,Error>)->Void){
+    func register(completion:@escaping(Result<Bool,Error>)->Void){
         socketCompletionHandler.registerCompletion(completion:completion)
     }
     func executeIfSendError(completionId:Int16,error:Error){

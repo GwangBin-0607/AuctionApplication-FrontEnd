@@ -47,12 +47,14 @@ final class ProductListRepository:ProductListRepositoryInterface{
         let updateStreamStateObserver = updateStreamState.asObserver()
         
         Observable.combineLatest(updateStreamState,streamingProductPrice.isSocketConnect.distinctUntilChanged(), resultSelector: {
-            _,connectState -> StreamStateData? in
-            let stateNumber = self.productListState.returnTCPState()
-            let streamState = StreamStateData(stateNum: stateNumber)
+            [weak self] _,connectState -> StreamStateData? in
+            guard let stateNumber = self?.productListState.returnTCPState()else{
+                return nil
+            }
             if connectState != .connect{
                 return nil
             }else{
+                let streamState = StreamStateData(stateNum: stateNumber)
                 return streamState
             }
         }).withUnretained(self).flatMap({
@@ -184,13 +186,13 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable)->Observable<Result<ResultData,Error>>{
+    func sendData(output data:Encodable)->Observable<Result<Bool,Error>>{
         return encodeAndSend(data: data)
     }
-    private func encodeAndSend(data:Encodable)->Observable<Result<ResultData,Error>>{
-        return Observable<Result<ResultData,Error>>.create { [weak self] observer in
+    private func encodeAndSend(data:Encodable)->Observable<Result<Bool,Error>>{
+        return Observable<Result<Bool,Error>>.create { [weak self] observer in
             guard let self = self,
-                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .OutputStreamReaded, output: data)
+                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .StreamStateUpdate, output: data)
             else{
                 observer.onNext(.failure(SocketOutputError.EncodeError))
                 observer.onCompleted()
@@ -213,12 +215,12 @@ extension ProductListRepository{
 
         }.subscribe(on: ConcurrentDispatchQueueScheduler(queue: sendThread))
     }
-    private func updateStreamState(state:StreamStateData?)->Observable<Result<ResultData,Error>>{
+    private func updateStreamState(state:StreamStateData?)->Observable<Result<Bool,Error>>{
         if let state = state{
            return sendData(output: state)
         }else{
             let error = NSError(domain: "Not Connect", code: -1)
-            return Observable<Result<ResultData,Error>>.just(.failure(error))
+            return Observable<Result<Bool,Error>>.just(.failure(error))
         }
     }
 }

@@ -56,6 +56,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
                 owner.connect()
             case .disconnect:
                 owner.disconnect{
+                    owner.urlSession.invalidateAndCancel()
                     owner.isSocketConnected.onNext(.disconnect)
                 }
             }
@@ -161,5 +162,4 @@ extension SocketNetwork:URLSessionStreamDelegate{
         self.outputStream?.open()
         while(shouldKeeping&&RunLoop.current.run(mode: .default, before: .now+1.0)){}
     }
-    
 }

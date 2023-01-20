@@ -5,5 +5,5 @@ protocol Pr_ProductListWithImageHeightUsecase{
     func returnRequestObserver() -> AnyObserver<Void>
     func returnObservableStreamState() -> Observable<isConnecting>
     func returnControlStreamState(state: isConnecting)
-    func updateStreamProduct(visibleCell:[Int])->Observable<Result<ResultData,Error>>
+    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Bool,Error>>
 }

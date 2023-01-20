@@ -134,29 +134,7 @@ class ViewController: UIViewController {
         self.present(productViewController, animated: true, completion: nil)
     }
     var basicArray = [1,2,3,4,5,6,7]
-    let lock = NSLock()
-    func changeArrayLock(num:Int){
-        lock.lock()
-        defer{
-            lock.unlock()
-        }
-        basicArray[num] = basicArray[num]+100
-    }
-    func changeArrayUnLock(num:Int){
-        basicArray[num] = basicArray[num]+100
-    }
     func testFunction(){
-        let subject = BehaviorSubject<Int>(value: 0)
-        let two = PublishSubject<Int>()
-        subject.onNext(50000)
-        Observable.combineLatest(subject,two, resultSelector: {
-            fir,sec in
-            fir+sec
-        }).subscribe(onNext: {
-            num in
-            print(num)
-        })
-        two.asObserver().onNext(1234)
 //        repo.streamState(state: .connect)
 //        let subject = PublishSubject<Void>()
 //        let observable = subject.asObservable()

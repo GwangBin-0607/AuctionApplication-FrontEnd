@@ -15,9 +15,10 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         disposeBag = DisposeBag()
         categoryView = UIView()
         super.init(nibName: nil, bundle: nil)
+        print("\(String(describing: self)) INIT")
     }
     deinit {
-        print("Viewcontroller DEINIT")
+        print("\(String(describing: self)) DEINIT")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
