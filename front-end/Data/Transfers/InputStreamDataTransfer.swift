@@ -21,7 +21,7 @@ enum StreamDataType:Codable{
         case OutputStreamReaded
     }
     init(from decoder: Decoder) throws {
-         let label = try decoder.singleValueContainer().decode(Int.self)
+         let label = try decoder.singleValueContainer().decode(Int8.self)
          switch label {
          case 1: self = .StreamStateUpdate
          case 2: self = .StreamProductPriceUpdate
@@ -57,7 +57,7 @@ struct InputStreamData:Decodable{
         switch value {
         case .StreamProductPriceUpdate:
             do{
-                let valueTwo = try container.decode([StreamPrice].self, forKey: .data)
+                let valueTwo = try container.decode(StreamPrice.self, forKey: .data)
                 self.data = valueTwo
             }catch{
                 throw InputStreamDataDecodeError.ProductPriceDecodeError

@@ -41,9 +41,26 @@ extension OutputStreamCompletionHandler{
     class CustomCompletion{
         let completion:completionType
         let completionId:Int16
-        init(Completion:completionType,CompletionId:Int16) {
+        let timeOut:DispatchSourceTimer
+        weak var delegate:ExecuteOutputStreamCompletionHandlerInterface?
+        init(Completion:completionType,Delegate:ExecuteOutputStreamCompletionHandlerInterface?
+             ,CompletionId:Int16) {
             completionId = CompletionId
             completion = Completion
+            delegate = Delegate
+            print(completionId)
+            let time:DispatchTime = .now() + CGFloat(integerLiteral: 60)
+            timeOut = DispatchSource.makeTimerSource(queue: .global(qos: .background))
+            timeOut.setEventHandler(handler: {
+                [weak self] in
+                if let completionId = self?.completionId{
+                    print("completionId \(completionId)")
+                    let timeOutError = NSError(domain: "Time Out Error", code: -1)
+                    self?.delegate?.executeCompletionExtension(completionId: completionId,error: timeOutError)
+                }
+            })
+            timeOut.schedule(deadline: time)
+            timeOut.resume()
             print("\(String(describing: self)) INIT")
         }
         deinit {
@@ -79,7 +96,7 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
         defer{
             threadLock.unlock()
         }
-        let customCompletion = CustomCompletion(Completion: completion, CompletionId: completionId)
+        let customCompletion = CustomCompletion(Completion: completion,Delegate: self, CompletionId: completionId)
         completionHandler[completionId] = customCompletion
         updateCompletionId()
     }

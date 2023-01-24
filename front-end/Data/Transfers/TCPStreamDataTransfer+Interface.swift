@@ -30,7 +30,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                 inputData.forEach { inputStreamData in
                     switch inputStreamData.dataType{
                     case .StreamProductPriceUpdate:
-                        if let inputStream = inputStreamData.data as? [StreamPrice]{
+                        if let inputStream = inputStreamData.data as? StreamPrice{
                             addResultArray(original: &returnArray, added: inputStream)
                         }
                     case .StreamStateUpdate,.InitStreamState:
@@ -55,8 +55,8 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
             
         }
     }
-    private func addResultArray(original:inout[StreamPrice],added:[StreamPrice]){
-        original = original+added
+    private func addResultArray(original:inout[StreamPrice],added:StreamPrice){
+        original.append(added)
     }
     func encodeOutputStreamState(dataType:StreamDataType,output:Encodable)throws -> (Int16,Data){
         let completionId = socketCompletionHandler.returnCurrentCompletionId()

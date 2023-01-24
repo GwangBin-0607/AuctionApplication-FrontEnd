@@ -7,7 +7,7 @@
 
 import Foundation
 struct StreamStateData:Encodable{
-    let stateNum:Int
+    let stateNumber:Int
 }
 struct OutputStreamData:Encodable{
     let dataType:StreamDataType

@@ -54,7 +54,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
             if connectState != .connect{
                 return nil
             }else{
-                let streamState = StreamStateData(stateNum: stateNumber)
+                let streamState = StreamStateData(stateNumber: stateNumber)
                 return streamState
             }
         }).withUnretained(self).flatMap({
@@ -207,8 +207,6 @@ extension ProductListRepository{
                 error in
                 if let error = error{
                     self.socketDataTransfer.executeIfSendError(completionId: completionId, error: error)
-                    observer.onNext(.failure(error))
-                    observer.onCompleted()
                 }
             })
             return Disposables.create()

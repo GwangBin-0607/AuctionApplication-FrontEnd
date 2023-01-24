@@ -14,6 +14,8 @@ final class ProductListState:ProductListStateInterface{
             if resultData{
                 print("==\(streamServiceState)===")
                 streamServiceState += 1
+            }else{
+                print("===FALSE===")
             }
         case .failure(_):
             break;
