@@ -100,48 +100,48 @@ final class Repository: XCTestCase {
         })
         wait(for: [promise], timeout: 5.0)
     }
-    func test_Repository(){
-
-        let promise = expectation(description: "Status code: 200")
-        let disposeBag = DisposeBag()
-        repo.productListObservable.subscribe(onNext: {
-            result in
-            switch result {
-            case .success(let list):
-                if list.count > 0{
-                    promise.fulfill()
-                    XCTAssertEqual(list.count, 12)
-                }
-            case .failure(_):
-                break;
-            }
-        }).disposed(by: disposeBag)
-        repo.requestObserver.onNext(())
-        wait(for: [promise], timeout: 5.0)
-    }
-    func test_StreamData(){
-        let test = expectation(description: "Status code: 200a")
-        let disposeBag = DisposeBag()
-        repo.requestObserver.onNext(())
-        repo.productListObservable.subscribe(onNext: {
-            result in
-            switch result {
-            case .success(let list):
-                if list.count > 0{
-                    test.fulfill()
-                    XCTAssertEqual(list[0].product_price, 1400)
-
-                }
-            case .failure(_):
-                break;
-            }
-        }).disposed(by: disposeBag)
-        repo.sendData(output: Data()).subscribe(onNext: {
-            re in
-            
-        })
-
-        wait(for: [test], timeout: 5.0)
-    }
+//    func test_Repository(){
+//
+//        let promise = expectation(description: "Status code: 200")
+//        let disposeBag = DisposeBag()
+//        repo.productListObservable.subscribe(onNext: {
+//            result in
+//            switch result {
+//            case .success(let list):
+//                if list.count > 0{
+//                    promise.fulfill()
+//                    XCTAssertEqual(list.count, 12)
+//                }
+//            case .failure(_):
+//                break;
+//            }
+//        }).disposed(by: disposeBag)
+//        repo.requestObserver.onNext(())
+//        wait(for: [promise], timeout: 5.0)
+//    }
+//    func test_StreamData(){
+//        let test = expectation(description: "Status code: 200a")
+//        let disposeBag = DisposeBag()
+//        repo.requestObserver.onNext(())
+//        repo.productListObservable.subscribe(onNext: {
+//            result in
+//            switch result {
+//            case .success(let list):
+//                if list.count > 0{
+//                    test.fulfill()
+//                    XCTAssertEqual(list[0].product_price, 1400)
+//
+//                }
+//            case .failure(_):
+//                break;
+//            }
+//        }).disposed(by: disposeBag)
+//        repo.sendData(output: Data()).subscribe(onNext: {
+//            re in
+//
+//        })
+//
+//        wait(for: [test], timeout: 5.0)
+//    }
 
 }

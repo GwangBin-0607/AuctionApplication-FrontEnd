@@ -43,6 +43,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                     let error = NSError(domain: "No StreamPrice Data", code: -1)
                     return .failure(error)
                 }else{
+                    print("StreamPrice Data")
                     return .success(returnArray)
                 }
             }catch{

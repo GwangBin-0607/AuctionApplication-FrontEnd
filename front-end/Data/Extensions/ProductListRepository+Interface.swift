@@ -80,7 +80,7 @@ extension ProductListRepository{
         }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
         
     }
-    func T_transfer()->Observable<Result<[Product],Error>>{
+    func httpList()->Observable<Result<[Product],Error>>{
         let requestNum = productListState.returnHttpState()
         return returnData(requestNum: requestNum).map { Data in
             guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
