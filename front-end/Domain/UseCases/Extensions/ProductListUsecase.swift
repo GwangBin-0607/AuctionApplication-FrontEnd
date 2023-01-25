@@ -13,7 +13,7 @@ class ProductListWithImageHeightUsecase{
 }
 extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase{
     func returnProductList() -> Observable<Result<[Product], Error>> {
-        listRepo.productListObservable.withUnretained(self).flatMap { owner,result in
+        listRepo.T_transfer().withUnretained(self).flatMap { owner,result in
             switch result{
             case .success(let list):
                 return owner.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
@@ -32,9 +32,6 @@ extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase
             }
         }
     }
-    func returnRequestObserver() -> AnyObserver<Void> {
-        listRepo.requestObserver
-    }
     func returnObservableStreamState() -> Observable<isConnecting> {
         listRepo.observableSteamState()
     }
@@ -45,5 +42,8 @@ extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase
         let t = StreamStateData(stateNumber: 1)
         let set = Set(visibleCell)
         return listRepo.sendData(output: t)
+    }
+    func returnStreamProduct() -> Observable<Result<[StreamPrice], Error>> {
+        listRepo.streamingList
     }
 }

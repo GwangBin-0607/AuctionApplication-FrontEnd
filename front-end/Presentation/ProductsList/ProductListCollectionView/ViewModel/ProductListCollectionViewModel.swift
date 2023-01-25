@@ -25,7 +25,8 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         disposeBag = DisposeBag()
         let scrollSubject = PublishSubject<[Int]>()
         scrollScrollView = scrollSubject.asObserver()
-        requestProductsList = usecase.returnRequestObserver()
+        let requestSubject = PublishSubject<Void>()
+        requestProductsList = requestSubject.asObserver()
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
@@ -39,15 +40,37 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             print("Disposed")
         }).disposed(by: disposeBag)
         
-        usecase.returnProductList().withUnretained(self).subscribe(onNext: {
+        requestSubject.asObservable().withUnretained(self).flatMap({
+            owner,_ in
+            return owner.usecase.returnProductList()
+        }).withUnretained(self).withLatestFrom(products,resultSelector: {
+            arg1,before in
+            let (owner,after) = arg1
+            return owner.addResult(before: before, after: after)
+        }).withUnretained(self).subscribe(onNext: {
             owner,result in
             switch result {
             case .success(let list):
                 owner.products.onNext(list)
-            case .failure(let error):
-                print(error)
+            case .failure(let err):
+                print(err)
             }
         }).disposed(by: disposeBag)
+        
+        usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
+            arg1,before in
+            let (owner,after) = arg1
+            return owner.sumResult(before: before, after: after)
+        }).withUnretained(self).subscribe(onNext: {
+            owner,result in
+            switch result {
+            case .success(let list):
+                owner.products.onNext(list)
+            case .failure(let err):
+                print(err)
+            }
+        }).disposed(by: disposeBag)
+        
         usecase.returnObservableStreamState().subscribe(onNext: {
             state in
 //            print("\(state.socketConnect) ||||\(state.error)")
@@ -72,5 +95,42 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     }
     func returnCellViewModel() -> Pr_ProductListCollectionViewCellViewModel {
         cellViewModel
+    }
+}
+extension ProductListCollectionViewModel{
+    private func addArray(array: [Product],addArray:[Product])->[Product]{
+        var resultProducts = array
+        resultProducts.append(contentsOf:addArray)
+        return resultProducts
+    }
+    private func addResult(before:[Product],after:Result<[Product],Error>)->Result<[Product],Error>{
+        switch after {
+        case .success(let list):
+            return .success(addArray(array: before, addArray: list))
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
+    private func sumResult(before:[Product],after:Result<[StreamPrice],Error>)->Result<[Product],Error>{
+        switch after {
+        case .success(let list):
+            return .success(changeProductPrice(before: before, after: list))
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    private func changeProductPrice(before: [Product],after:[StreamPrice])->[Product]{
+        var resultArray = before
+        for i in 0..<after.count{
+            for j in 0..<before.count{
+                
+                if(after[i].product_id == resultArray[j].product_id && after[i].product_price != resultArray[j].product_price){
+                    resultArray[j].product_price = after[i].product_price
+                }
+            }
+            
+        }
+        return resultArray
     }
 }

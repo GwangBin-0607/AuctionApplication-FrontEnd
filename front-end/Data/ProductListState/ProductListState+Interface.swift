@@ -24,6 +24,7 @@ final class ProductListState:ProductListStateInterface{
    
     func updateHTTPState() {
         httpServiceState += 1
+        
     }
     func returnTCPState() -> Int8 {
         streamServiceState
