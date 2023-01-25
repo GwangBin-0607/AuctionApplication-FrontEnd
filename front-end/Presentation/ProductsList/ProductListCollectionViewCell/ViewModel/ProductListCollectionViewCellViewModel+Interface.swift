@@ -17,5 +17,6 @@ class ProductListCollectionViewCellViewModel{
 extension ProductListCollectionViewCellViewModel:Pr_ProductListCollectionViewCellViewModel{
     func returnImage(productId: Int, imageURL: String?) -> Observable<CellImageTag>{
         return imageUsecase.returnImage(productId: productId, imageURL: imageURL)
+            .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
 }

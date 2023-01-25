@@ -18,7 +18,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
     
-    let cellViewModel:Pr_ProductListCollectionViewCellViewModel
+    private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
     init(UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel) {
         self.usecase = UseCase
         self.cellViewModel = CellViewModel

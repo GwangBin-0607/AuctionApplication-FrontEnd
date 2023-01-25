@@ -12,6 +12,11 @@ final class ProductsListHTTP{
     init(ServerURL serverURL:String) {
         url = URL(string:serverURL)!
     }
+    enum HTTPError:Error{
+        case ResponseError
+        case DataError
+        case StatusError
+    }
 }
 extension ProductsListHTTP:GetProductsList{
     func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void) {
@@ -27,10 +32,16 @@ extension ProductsListHTTP:GetProductsList{
                 onComplete(.failure(error))
                 return
             }
+            guard let httpResponse = response as? HTTPURLResponse else{
+                onComplete(.failure(HTTPError.ResponseError))
+                return
+            }
+            guard httpResponse.statusCode == 200 else{
+                onComplete(.failure(HTTPError.StatusError))
+                return
+            }
             guard let data = data else{
-                let httpResponse = response as! HTTPURLResponse
-                let responseError = NSError(domain: "Data Error", code: httpResponse.statusCode, userInfo: nil)
-                onComplete(.failure(responseError))
+                onComplete(.failure(HTTPError.DataError))
                 return
             }
             onComplete(.success(data))
