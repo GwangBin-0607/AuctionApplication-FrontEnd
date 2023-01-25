@@ -14,10 +14,10 @@ final class ProductsListHTTP{
     }
 }
 extension ProductsListHTTP:GetProductsList{
-    func getProductData(requestNum:Int?,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void) {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
-        let json:Dictionary<String,Int8> = ["pageNum":0]
+        let json:Dictionary<String,Int8> = ["pageNum":requestNum]
         let data = try! JSONSerialization.data(withJSONObject: json, options: [])
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = data

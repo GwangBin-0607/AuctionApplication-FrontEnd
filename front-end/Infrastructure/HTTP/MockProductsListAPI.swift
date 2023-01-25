@@ -7,7 +7,7 @@
 
 import Foundation
 final class MockProductsListAPI:GetProductsList{
-    func getProductData(requestNum:Int?,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void) {
         if requestNum == 1{
             guard let path = Bundle.main.path(forResource: "FetchingProductsListTestDataTwo", ofType: "json")
                     ,let jsonString = try? String(contentsOfFile: path)

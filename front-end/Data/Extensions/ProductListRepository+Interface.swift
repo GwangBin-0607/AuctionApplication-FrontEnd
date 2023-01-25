@@ -155,7 +155,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
     }
 }
 extension ProductListRepository{
-    private func returnData(requestNum:Int) -> Observable<Data> {
+    private func returnData(requestNum:Int8) -> Observable<Data> {
         return Observable.create { [weak self] observer in
             
             self?.httpService.getProductData(requestNum:requestNum) { result in
@@ -176,7 +176,7 @@ extension ProductListRepository{
         array.append(contentsOf:addArray)
     }
     
-    private func transferDataToProductList(requestNum:Int) -> Observable<Result<[Product],Error>>{
+    private func transferDataToProductList(requestNum:Int8) -> Observable<Result<[Product],Error>>{
         returnData(requestNum: requestNum).map { Data in
             guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
                 throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)

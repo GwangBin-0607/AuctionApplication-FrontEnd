@@ -68,6 +68,7 @@
 		88CED134297137DB0048367A /* Pr_ProductListViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CED133297137DB0048367A /* Pr_ProductListViewControllerViewModel.swift */; };
 		88CED136297137E90048367A /* ProductListViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88CED135297137E80048367A /* ProductListViewControllerViewModel.swift */; };
 		88CEEAFF29700C6E0015C9E6 /* FetchingProductsListTestDataOne.json in Resources */ = {isa = PBXBuildFile; fileRef = 88CEEAFE29700C6E0015C9E6 /* FetchingProductsListTestDataOne.json */; };
+		88D09A9329815623005ADE60 /* HTTPServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D09A9229815623005ADE60 /* HTTPServiceTest.swift */; };
 		88D2178A296456DC00715D2F /* OutputStreamCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */; };
 		88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */; };
 		88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712AD2912C16000E54378 /* ProductListCollectionView.swift */; };
@@ -168,6 +169,7 @@
 		88CED133297137DB0048367A /* Pr_ProductListViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ProductListViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88CED135297137E80048367A /* ProductListViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88CEEAFE29700C6E0015C9E6 /* FetchingProductsListTestDataOne.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchingProductsListTestDataOne.json; sourceTree = "<group>"; };
+		88D09A9229815623005ADE60 /* HTTPServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServiceTest.swift; sourceTree = "<group>"; };
 		88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStreamCompletionHandler.swift; sourceTree = "<group>"; };
 		88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCPStreamDataTransfer+Interface.swift"; sourceTree = "<group>"; };
 		88E712AD2912C16000E54378 /* ProductListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionView.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 		8870DCB628E57020005328C0 /* front-endTests */ = {
 			isa = PBXGroup;
 			children = (
+				88D09A91298155FF005ADE60 /* HTTPService_Test */,
 				88583F2C297A9CEF001AE75C /* Repository_Test */,
 			);
 			path = "front-endTests";
@@ -666,6 +669,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		88D09A91298155FF005ADE60 /* HTTPService_Test */ = {
+			isa = PBXGroup;
+			children = (
+				88D09A9229815623005ADE60 /* HTTPServiceTest.swift */,
+			);
+			path = HTTPService_Test;
+			sourceTree = "<group>";
+		};
 		88D217882964567900715D2F /* Transfers */ = {
 			isa = PBXGroup;
 			children = (
@@ -993,6 +1004,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88583F2A297A7205001AE75C /* Repository.swift in Sources */,
+				88D09A9329815623005ADE60 /* HTTPServiceTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

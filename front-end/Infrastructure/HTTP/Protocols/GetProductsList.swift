@@ -8,5 +8,5 @@
 import Foundation
 
 protocol GetProductsList{
-    func getProductData(requestNum:Int?,onComplete: @escaping (Result<Data, Error>) -> Void)
+    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void)
 }
