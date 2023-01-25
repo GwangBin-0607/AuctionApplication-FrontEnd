@@ -14,7 +14,7 @@ extension ProductListCollectionViewModel:Pr_Out_ProductListCollectionViewLayoutV
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()
-            return product[index.item].imageHeight ?? 150
+            return product[index.item].imageHeight
         }catch{
             return 150
         }

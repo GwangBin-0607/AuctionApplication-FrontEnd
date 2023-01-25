@@ -23,7 +23,7 @@ struct Product:Decodable{
     }
     let product_name:String
     var checkUpDown:Bool?
-    var imageHeight:CGFloat?
+    var imageHeight:CGFloat!
     enum CodingKeys:String,CodingKey{
         case product_id
         case product_price

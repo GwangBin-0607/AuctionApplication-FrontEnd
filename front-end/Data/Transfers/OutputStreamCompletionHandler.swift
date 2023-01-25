@@ -48,7 +48,6 @@ extension OutputStreamCompletionHandler{
             completionId = CompletionId
             completion = Completion
             delegate = Delegate
-            print(completionId)
             let time:DispatchTime = .now() + CGFloat(integerLiteral: 60)
             timeOut = DispatchSource.makeTimerSource(queue: .global(qos: .background))
             timeOut.setEventHandler(handler: {

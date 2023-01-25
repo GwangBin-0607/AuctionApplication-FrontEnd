@@ -23,22 +23,23 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         bindingViewModel()
+        setCADisplay()
     }
-    //    func setCADisplay(){
-    //        let display = CADisplayLink(target: self, selector: #selector(displayCheck))
-    //        display.add(to: .current, forMode: .tracking)
-    //    }
-    //    var previoutTime = 0.0
-    //    @objc func displayCheck(displaylink:CADisplayLink){
-    //        print("========================")
-    //        print(previoutTime)
-    //        var tum = displaylink.targetTimestamp - previoutTime
-    //
-    //        previoutTime = displaylink.targetTimestamp
-    //        print(displaylink.targetTimestamp)
-    //        print(tum)
-    //        print("======================")
-    //    }
+        func setCADisplay(){
+            let display = CADisplayLink(target: self, selector: #selector(displayCheck))
+            display.add(to: .current, forMode: .tracking)
+        }
+        var previoutTime = 0.0
+        @objc func displayCheck(displaylink:CADisplayLink){
+            print("========================")
+            print(previoutTime)
+            var tum = displaylink.targetTimestamp - previoutTime
+    
+            previoutTime = displaylink.targetTimestamp
+            print(displaylink.targetTimestamp)
+            print(tum)
+            print("======================")
+        }
     private func bindingViewModel(){
         self.viewModel.requestProductList.onNext(())
 

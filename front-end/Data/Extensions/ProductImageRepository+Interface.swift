@@ -102,13 +102,13 @@ extension ProductImageRepository{
                 case .failure(_):
                     inProduct.imageHeight = 150
                 }
-                return product
+                return inProduct
             }
         }
         return Observable<Product>.create {
             [weak self] observer in
             inProduct.imageHeight = self?.returnImageHeight(image: CacheImage)
-            observer.onNext(product)
+            observer.onNext(inProduct)
             observer.onCompleted()
             return Disposables.create()
         }
@@ -117,8 +117,17 @@ extension ProductImageRepository{
     func returnProductWithImageHeight(product: [Product]) -> Observable<[Product]> {
         var observables:[Observable<Product>]=[]
         product.forEach { product in
-            let observable = returnImageHeight(product:product)
-            observables.append(observable)
+            if product.imageHeight == nil{
+                let observable = returnImageHeight(product:product)
+                observables.append(observable)
+            }else{
+                let observable = Observable<Product>.create { ob in
+                    ob.onNext(product)
+                    ob.onCompleted()
+                    return Disposables.create()
+                }
+                observables.append(observable)
+            }
         }
         return Observable.combineLatest(observables)
     }

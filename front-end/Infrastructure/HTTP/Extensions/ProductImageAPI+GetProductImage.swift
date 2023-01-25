@@ -26,16 +26,4 @@ class ProductImageAPI:GetProductImage{
 struct Product_Images:Decodable{
     let url:String
 }
-struct TestProduct:Decodable {
-    let product_id:Int
-    let product_name:String
-    let product_price:Int
-    let product_images:[Product_Images]
-    enum CodingKeys:String,CodingKey{
-        case product_id
-        case product_name
-        case product_price
-        case product_images = "Product_Images"
-    }
-}
 
