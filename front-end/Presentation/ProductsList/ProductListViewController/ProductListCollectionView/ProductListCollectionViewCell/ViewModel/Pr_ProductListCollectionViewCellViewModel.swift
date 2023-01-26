@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 struct CellImageTag {
-    let result:Result<UIImage,Error>
+    let result:Result<UIImage,HTTPError>
     let tag:Int
 }
 

@@ -2,24 +2,44 @@ import Foundation
 import RxSwift
 
 protocol GetProductImage{
-    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, Error>) -> Void)
+    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
 }
 class ProductImageAPI:GetProductImage{
-    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
         var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/productimage")!)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,String> = ["imageURL":imageURL]
         let data = try! JSONSerialization.data(withJSONObject: json, options: [])
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = data
-        onComplete(.failure(NSError(domain: "Handling", code: -1)))
-//        URLSession.shared.dataTask(with: urlRequest, completionHandler: {
-//            imageData,response,error in
-//            print("=====\(error)=====")
-//            if let error = error{
-//                onComplete(.failure(error))
-//            }
-//        })
+        URLSession.shared.dataTask(with: urlRequest) {
+            data, response, error in
+            if error != nil {
+                onComplete(.failure(HTTPError.RequestError))
+                return
+            }
+            guard let httpResponse = response as? HTTPURLResponse else{
+                onComplete(.failure(HTTPError.ResponseError))
+                return
+            }
+            guard httpResponse.statusCode == 200 else{
+                if httpResponse.statusCode == 201{
+                    onComplete(.failure(HTTPError.NoImageData))
+
+                }else{
+                    onComplete(.failure(HTTPError.StatusError))
+
+                }
+                return
+            }
+            guard let data = data else{
+                onComplete(.failure(HTTPError.DataError))
+                return
+            }
+            onComplete(.success(data))
+            
+            
+        }.resume()
     }
     }
 

@@ -74,7 +74,6 @@ final class ProductListRepository:ProductListRepositoryInterface{
 extension ProductListRepository{
     private func returnData(requestNum:Int8) -> Observable<Result<Data,HTTPError>> {
         return Observable.create { [weak self] observer in
-            print(Thread.current)
             self?.httpService.getProductData(requestNum:requestNum) { result in
                 observer.onNext(result)
                 observer.onCompleted()

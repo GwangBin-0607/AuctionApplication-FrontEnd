@@ -59,6 +59,7 @@
 		889FC3F329825732009B8A2A /* ErrorAlterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FC3F229825732009B8A2A /* ErrorAlterView.swift */; };
 		889FC3F5298257FC009B8A2A /* ErrorAlterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FC3F4298257FC009B8A2A /* ErrorAlterViewModel.swift */; };
 		889FC3F829825815009B8A2A /* Pr_ErrorAlterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FC3F729825815009B8A2A /* Pr_ErrorAlterViewModel.swift */; };
+		889FC3FA2982D942009B8A2A /* GradationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FC3F92982D942009B8A2A /* GradationView.swift */; };
 		88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */; };
 		88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */; };
 		88BF04C129557CDB001F7725 /* Pr_ProductListUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C029557CDB001F7725 /* Pr_ProductListUsecase.swift */; };
@@ -166,6 +167,7 @@
 		889FC3F229825732009B8A2A /* ErrorAlterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlterView.swift; sourceTree = "<group>"; };
 		889FC3F4298257FC009B8A2A /* ErrorAlterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlterViewModel.swift; sourceTree = "<group>"; };
 		889FC3F729825815009B8A2A /* Pr_ErrorAlterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ErrorAlterViewModel.swift; sourceTree = "<group>"; };
+		889FC3F92982D942009B8A2A /* GradationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradationView.swift; sourceTree = "<group>"; };
 		88A34F6D28E6E3FF0067209F /* Release_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release_Configuration.xcconfig; sourceTree = "<group>"; };
 		88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNWConnection+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
@@ -648,9 +650,9 @@
 		88CE0164296975A2003169B5 /* ProductListViewController */ = {
 			isa = PBXGroup;
 			children = (
-				8887D15E2936226C005DA3C6 /* Transition */,
-				88CE016B2969761A003169B5 /* ViewModel */,
 				882CBE7F29083DC400550A8E /* ProductListViewController.swift */,
+				88CE016B2969761A003169B5 /* ViewModel */,
+				8887D15E2936226C005DA3C6 /* Transition */,
 				88CE0165296975AE003169B5 /* ProductListCollectionView */,
 				889FC3F129825723009B8A2A /* ErrorAlterView */,
 			);
@@ -683,6 +685,7 @@
 			children = (
 				88CE016829697601003169B5 /* ViewModel */,
 				889CCD6F29139100008D1E2F /* ProductListCollectionViewCell.swift */,
+				889FC3F92982D942009B8A2A /* GradationView.swift */,
 			);
 			path = ProductListCollectionViewCell;
 			sourceTree = "<group>";
@@ -1030,6 +1033,7 @@
 				8874F4CE29373D55003981C3 /* ProductImageUseCase.swift in Sources */,
 				889FC3F829825815009B8A2A /* Pr_ErrorAlterViewModel.swift in Sources */,
 				882CBE772908285C00550A8E /* Product.swift in Sources */,
+				889FC3FA2982D942009B8A2A /* GradationView.swift in Sources */,
 				88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */,
 				888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */,
 				8874F4CA2937394D003981C3 /* Pr_ProductImageUsecase.swift in Sources */,

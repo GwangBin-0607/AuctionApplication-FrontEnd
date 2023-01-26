@@ -1,25 +1,5 @@
 import UIKit
 import RxSwift
-final class GradationView:UIView{
-    let gradationLayer:CAGradientLayer
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        gradationLayer.frame = rect
-    }
-    init(){
-        gradationLayer = CAGradientLayer()
-        gradationLayer.colors = [UIColor.darkGray.withAlphaComponent(0.5).cgColor,UIColor.systemGroupedBackground.withAlphaComponent(0.5).cgColor]
-        gradationLayer.locations = [0.0 , 1.0]
-        gradationLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradationLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
-        super.init(frame: .zero)
-        self.layer.addSublayer(gradationLayer)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
@@ -72,8 +52,10 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
                     switch cellImageTag.result {
                     case .success(let image):
                         owner.productImageView.image = image
-                    case .failure(_):
-                        owner.productImageView.image = UIImage()
+                    case .failure(let error):
+                        if error == .NoImageData || error == .RequestError{
+                            owner.productImageView.image = UIImage(named: "NoImage")
+                        }
                     }
                 }
             }).disposed(by: disposeBag)
@@ -81,8 +63,8 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     }
     
     private func layoutContentView(){
-        contentView.backgroundColor = .red
-        self.contentView.layer.masksToBounds = true
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
         self.productImageView.contentMode = .scaleAspectFill
         contentView.addSubview(productImageView)
         contentView.addSubview(gradationView)
@@ -94,7 +76,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         checkUpDown.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 30)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 25)
         titleLabel.textColor = .white
         priceLabel.font = UIFont.boldSystemFont(ofSize: 15)
         priceLabel.textColor = .systemBlue
@@ -123,7 +105,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         ])
         priceLabel.setContentCompressionResistancePriority(UILayoutPriority(50), for: .horizontal)
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
-        productImageView.backgroundColor = .green
         checkUpDown.backgroundColor = .systemYellow
     }
     deinit {

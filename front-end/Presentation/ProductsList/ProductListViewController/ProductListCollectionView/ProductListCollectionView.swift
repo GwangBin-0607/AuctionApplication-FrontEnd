@@ -21,7 +21,7 @@ final class ProductListCollectionView: UICollectionView {
         viewModel.requestProductsList.onNext(())
         viewModel.productsList.bind(to: rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
         self.rx.willDisplaySupplementaryView.subscribe(onNext: {
-            [weak self] a,b,c in
+            [weak self] _,_,_ in
             self?.viewModel.requestProductsList.onNext(())
         }).disposed(by: disposeBag)
         viewModel.errorMessage.subscribe(onNext: {
@@ -51,7 +51,6 @@ extension ProductListCollectionView{
     func returnDataSource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
         return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
-            print(change)
             return .animated
         }, configureCell: { [weak self] _ , colview, indexpath, item in
             let cell = colview.dequeueReusableCell(withReuseIdentifier: ProductListCollectionViewCell.Identifier, for: indexpath) as! ProductListCollectionViewCell

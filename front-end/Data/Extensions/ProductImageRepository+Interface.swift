@@ -67,8 +67,7 @@ extension ProductImageRepository{
         return Observable<CellImageTag>.create {
             [weak self] observer in
             guard let self = self,let imageURL = imageURL else{
-                let err = NSError(domain: "No ImageURL", code: -1)
-                observer.onNext(CellImageTag(result: .failure(err), tag: productId))
+                observer.onNext(CellImageTag(result: .failure(HTTPError.RequestError), tag: productId))
                 observer.onCompleted()
                 return Disposables.create()
             }

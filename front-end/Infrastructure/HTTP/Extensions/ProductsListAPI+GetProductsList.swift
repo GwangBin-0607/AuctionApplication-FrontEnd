@@ -14,6 +14,7 @@ enum HTTPError:Error{
     case StatusError
     case DecodeError
     case EndProductList
+    case NoImageData
 }
 final class ProductsListHTTP{
     private let url:URL
@@ -23,7 +24,6 @@ final class ProductsListHTTP{
 }
 extension ProductsListHTTP:GetProductsList{
     func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        sleep(2)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,Int8> = ["index":requestNum]
