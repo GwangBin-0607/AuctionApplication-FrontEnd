@@ -53,7 +53,14 @@ final class ProductListRepository:ProductListRepositoryInterface{
             owner.updateStreamState(state: streamState)
         }).withUnretained(self).subscribe(onNext: {
             owner,result in
-            owner.productListState.updateTCPState(result: result)
+            switch result {
+            case .success(let checkStatus):
+                if checkStatus {
+                    owner.productListState.updateTCPState()
+                }
+            case .failure(_):
+                break;
+            }
         }).disposed(by: disposeBag)
 
         print("\(String(describing: self)) INIT")

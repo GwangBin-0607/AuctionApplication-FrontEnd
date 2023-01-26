@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 protocol ProductListStateInterface {
-    func updateTCPState(result:Result<Bool,Error>)
+    func updateTCPState()
     func updateHTTPState()
     func returnHttpState()->Int8
     func returnTCPState()->Int8

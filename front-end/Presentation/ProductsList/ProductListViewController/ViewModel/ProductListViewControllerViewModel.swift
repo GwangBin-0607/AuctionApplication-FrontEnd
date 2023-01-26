@@ -10,8 +10,8 @@ import RxSwift
 
 class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
     var requestProductList: AnyObserver<Void>
-    private let collectionViewModel:Pr_In_ProductListCollectionViewModel
-    init(collectionViewModel:Pr_In_ProductListCollectionViewModel) {
+    private let collectionViewModel:Pr_ProductListCollectionViewModel
+    init(collectionViewModel:Pr_ProductListCollectionViewModel) {
         self.collectionViewModel = collectionViewModel
         requestProductList = self.collectionViewModel.requestProductsList
         print("\(String(describing: self)) INIT")

@@ -7,17 +7,16 @@
 
 import Foundation
 import RxSwift
-protocol Pr_Common_ProductListCollectionViewModel{
+protocol Pr_ProductListCollectionViewModel{
     var requestProductsList:AnyObserver<Void> {get}
-}
-protocol Pr_Out_ProductListCollectionViewModel:Pr_Common_ProductListCollectionViewModel{
     var productsList:Observable<[ProductSection]> {get}
     var socketState:Observable<isConnecting>{get}
     var scrollScrollView:AnyObserver<[Int]> {get}
+    var errorMessage:Observable<Error>{get}
+    func lastIndex()->IndexPath
     func returnPrice(index:IndexPath)->Int
     func returnCellViewModel()->Pr_ProductListCollectionViewCellViewModel
-}
-protocol Pr_In_ProductListCollectionViewModel:Pr_Common_ProductListCollectionViewModel{
+    func returnFooterViewModel() -> Pr_ProductListCollectionFooterViewModel
     func controlSocketState(state:isConnecting)
 }
-typealias Pr_ProductListCollectionViewModel = Pr_In_ProductListCollectionViewModel&Pr_Out_ProductListCollectionViewModel
+

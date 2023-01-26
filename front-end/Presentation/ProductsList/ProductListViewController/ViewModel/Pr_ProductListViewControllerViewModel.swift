@@ -7,7 +7,6 @@
 
 import Foundation
 import RxSwift
-protocol Pr_In_ProductListViewControllerViewModel{
+protocol Pr_ProductListViewControllerViewModel{
     var requestProductList:AnyObserver<Void>{get}
 }
-typealias Pr_ProductListViewControllerViewModel = Pr_In_ProductListViewControllerViewModel

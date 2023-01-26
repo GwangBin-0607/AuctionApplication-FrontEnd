@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol Pr_Out_ProductListCollectionViewLayoutViewModel{
+protocol Pr_ProductListCollectionViewLayoutViewModel{
     func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
 }
-extension ProductListCollectionViewModel:Pr_Out_ProductListCollectionViewLayoutViewModel{
+extension ProductListCollectionViewModel:Pr_ProductListCollectionViewLayoutViewModel{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
         do{
             let product = try products.value()

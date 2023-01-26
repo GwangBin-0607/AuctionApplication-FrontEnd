@@ -2,14 +2,14 @@ import UIKit
 import RxSwift
 import RxDataSources
 final class ProductListCollectionView: UICollectionView {
-    private let viewModel:Pr_Out_ProductListCollectionViewModel
+    private let viewModel:Pr_ProductListCollectionViewModel
     private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_Out_ProductListCollectionViewModel, collectionViewCell cellType:UICollectionViewCell.Type , cellIndentifier indentifier:String) {
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_ProductListCollectionViewModel, collectionViewCell cellType:ProductListCollectionViewCell.Type ,footerView:ProductListCollectionFooterView.Type) {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
-        self.register(cellType, forCellWithReuseIdentifier: indentifier)
-        self.register(FooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterView.Identifier)
+        self.register(cellType, forCellWithReuseIdentifier: cellType.Identifier)
+        self.register(footerView, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerView.Identifier)
         bind()
         print("\(String(describing: self)) INIT")
     }
@@ -22,6 +22,12 @@ final class ProductListCollectionView: UICollectionView {
         self.rx.willDisplaySupplementaryView.subscribe(onNext: {
             [weak self] a,b,c in
             self?.viewModel.requestProductsList.onNext(())
+        }).disposed(by: disposeBag)
+        viewModel.errorMessage.subscribe(onNext: {
+            [weak self] _ in
+            if let lastIndex = self?.viewModel.lastIndex(){
+                self?.scrollToItem(at: lastIndex, at: .bottom, animated: true)
+            }
         }).disposed(by: disposeBag)
 //        self.rx.didScroll.subscribe(onNext: {
 //            let item = self.indexPathsForVisibleItems.map({$0.item})
@@ -36,7 +42,7 @@ deinit {
 }
     override func reloadItems(at indexPaths: [IndexPath]) {
         for i in 0..<indexPaths.count{
-            if let cell = self.cellForItem(at: indexPaths[i]) as? AnimationCell,self.visibleCells.contains(cell){
+            if let cell = self.cellForItem(at: indexPaths[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
                 print("Animate")
                 let price = self.viewModel.returnPrice(index: indexPaths[i])
                 cell.animationObserver.onNext(price)
@@ -56,26 +62,15 @@ extension ProductListCollectionView{
             cell.bindingData.onNext(item)
             return cell
         },configureSupplementaryView: {
-            ds, colview, headerOrFooter, indexPath in
+            [weak self] ds, colview, headerOrFooter, indexPath in
             if headerOrFooter == UICollectionView.elementKindSectionFooter{
-                let footer = colview.dequeueReusableSupplementaryView(ofKind: headerOrFooter, withReuseIdentifier: FooterView.Identifier, for: indexPath)
-                return footer
+                let footer = colview.dequeueReusableSupplementaryView(ofKind: headerOrFooter, withReuseIdentifier: ProductListCollectionFooterView.Identifier, for: indexPath) as? ProductListCollectionFooterView
+                footer?.bindingViewModel(FooterViewModel: self?.viewModel.returnFooterViewModel())
+                return footer ?? UICollectionReusableView()
             }else{
                 fatalError("NONO")
             }
             
         })
     }
-}
-class FooterView:UICollectionReusableView{
-    static let Identifier:String = "FooterView"
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .red
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }

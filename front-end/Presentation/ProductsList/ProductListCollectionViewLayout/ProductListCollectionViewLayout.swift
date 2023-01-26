@@ -15,12 +15,12 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
-    private let viewModel:Pr_Out_ProductListCollectionViewLayoutViewModel
+    private let viewModel:Pr_ProductListCollectionViewLayoutViewModel
     
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
-    init(viewModel:Pr_Out_ProductListCollectionViewLayoutViewModel) {
+    init(viewModel:Pr_ProductListCollectionViewLayoutViewModel) {
         self.viewModel = viewModel
         super.init()
         print("Layout INIT")
@@ -38,44 +38,47 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         print("Prepare")
         cache.removeAll()
         guard
-          cache.isEmpty == true,
-          let collectionView = collectionView
-          else {
-              return
+            cache.isEmpty == true,
+            let collectionView = collectionView
+        else {
+            return
         }
         let columnWidth = contentWidth / CGFloat(numberOfColumns)
         var xOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {
-          xOffset.append(CGFloat(column) * columnWidth)
+            xOffset.append(CGFloat(column) * columnWidth)
         }
         var column = 0
         var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
-          
+        
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
-          let indexPath = IndexPath(item: item, section: 0)
+            let indexPath = IndexPath(item: item, section: 0)
             
             let photoHeight = viewModel.returnImageHeightFromViewModel(index: indexPath)
-          let height = cellPadding * 2 + photoHeight
-          let frame = CGRect(x: xOffset[column],
-                             y: yOffset[column],
-                             width: columnWidth,
-                             height: height)
-          let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
-          
+            let height = cellPadding * 2 + photoHeight
+            let frame = CGRect(x: xOffset[column],
+                               y: yOffset[column],
+                               width: columnWidth,
+                               height: height)
+            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
             
-          let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-          attributes.frame = insetFrame
-          cache.append(attributes)
-            if item == collectionView.numberOfItems(inSection: 0)-1{
-                let f = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: 0))
-                f.frame = CGRect(x: attributes.frame.minX, y: attributes.frame.maxY, width: attributes.frame.width, height: attributes.frame.height)
-                cache.append(f)
-            }
             
-            contentHeight = max(contentHeight, frame.maxY+frame.height)
-          yOffset[column] = yOffset[column] + height
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attributes.frame = insetFrame
+            cache.append(attributes)
+            contentHeight = max(contentHeight, frame.maxY)
+            yOffset[column] = yOffset[column] + height
             
-          column = column < (numberOfColumns - 1) ? (column + 1) : 0
+            column = column < (numberOfColumns - 1) ? (column + 1) : 0
+        }
+        setFooterViewAttribute(maxY: cache.last?.frame.maxY)
+    }
+    private func setFooterViewAttribute(maxY:CGFloat?){
+        if let maxY = maxY{
+            let f = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: 0))
+            f.frame = CGRect(x: 0.0, y: maxY, width: contentWidth, height: 50)
+            cache.append(f)
+            contentHeight = max(contentHeight,f.frame.maxY)
         }
     }
     
@@ -89,6 +92,6 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         }
         return visibleLayoutAttributes
     }
- 
+    
 }
 
