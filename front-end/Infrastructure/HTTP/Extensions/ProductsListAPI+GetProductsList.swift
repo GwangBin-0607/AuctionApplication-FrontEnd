@@ -7,19 +7,22 @@
 
 import Foundation
 import RxSwift
+enum HTTPError:Error{
+    case RequestError
+    case ResponseError
+    case DataError
+    case StatusError
+    case DecodeError
+    case EndProductList
+}
 final class ProductsListHTTP{
     private let url:URL
     init(ServerURL serverURL:String) {
         url = URL(string:serverURL)!
     }
-    enum HTTPError:Error{
-        case ResponseError
-        case DataError
-        case StatusError
-    }
 }
 extension ProductsListHTTP:GetProductsList{
-    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,Int8> = ["pageNum":requestNum]
@@ -29,7 +32,7 @@ extension ProductsListHTTP:GetProductsList{
         URLSession.shared.dataTask(with: urlRequest) {
             data, response, error in
             if let error = error {
-                onComplete(.failure(error))
+                onComplete(.failure(HTTPError.RequestError))
                 return
             }
             guard let httpResponse = response as? HTTPURLResponse else{

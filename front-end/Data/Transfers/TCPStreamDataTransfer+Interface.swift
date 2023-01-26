@@ -21,7 +21,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
         print("\(String(describing: self)) DEINIT")
     }
     
-    func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>{
+    func decode(result:Result<Data,StreamError>)->Result<[StreamPrice],StreamError>{
         switch result{
         case .success(let data):
             var returnArray:[StreamPrice]=[]
@@ -34,21 +34,19 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                             addResultArray(original: &returnArray, added: inputStream)
                         }
                     case .StreamStateUpdate,.InitStreamState:
-                        if let resultData = inputStreamData.data as? ResultOutputStreamReaded{
+                        if let resultData = inputStreamData.data as? ResponseStreamOutput{
                             socketCompletionHandler.executeCompletionExtension(completionId: resultData.completionId,data: resultData.result)
                         }
                     }
                 }
                 if returnArray.count == 0{
-                    let error = NSError(domain: "No StreamPrice Data", code: -1)
-                    return .failure(error)
+                    return .failure(StreamError.NoStreamPriceData)
                 }else{
                     print("StreamPrice Data")
                     return .success(returnArray)
                 }
             }catch{
-                print(error)
-                return .failure(error)
+                return .failure(StreamError.InputStreamDataTypeDecodeError)
             }
         case .failure(let error):
             socketCompletionHandler.removeAllWhenEncounter()
@@ -63,10 +61,10 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
         let completionId = socketCompletionHandler.returnCurrentCompletionId()
         return try (completionId,socketOutput.encodeOutputStreamState(dataType: dataType, completionId: completionId, output: output))
     }
-    func register(completion:@escaping(Result<Bool,Error>)->Void){
+    func register(completion:@escaping(Result<Bool,StreamError>)->Void){
         socketCompletionHandler.registerCompletion(completion:completion)
     }
-    func executeIfSendError(completionId:Int16,error:Error){
+    func executeIfSendError(completionId:Int16,error:StreamError){
         socketCompletionHandler.executeCompletionExtension(completionId: completionId,error: error)
     }
 }

@@ -45,9 +45,9 @@ final class HTTPServiceTest: XCTestCase {
                 XCTAssertNotNil(data)
             case .failure(let error):
                 promise.fulfill()
-                let er = error as! ProductsListHTTP.HTTPError
+                let er = error as! HTTPError
                 print(er)
-                XCTAssertEqual(er, ProductsListHTTP.HTTPError.StatusError)
+                XCTAssertEqual(er,HTTPError.StatusError)
             }
         })
         wait(for: [promise], timeout: 5.0)

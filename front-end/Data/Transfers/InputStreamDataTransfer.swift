@@ -7,11 +7,6 @@
 
 import Foundation
 
-enum InputStreamDataDecodeError:Error{
-    case InputStreamDataTypeDecodeError
-    case ResultOutputStreamReadedDecodeError
-    case ProductPriceDecodeError
-}
 enum StreamDataType:Codable{
     case StreamStateUpdate
     case StreamProductPriceUpdate
@@ -27,7 +22,7 @@ enum StreamDataType:Codable{
          case 2: self = .StreamProductPriceUpdate
          case 3: self = .InitStreamState
          default:
-             throw InputStreamDataDecodeError.InputStreamDataTypeDecodeError
+             throw StreamError.InputStreamDataTypeDecodeError
             // default: self = .other(label)
          }
       }
@@ -60,20 +55,20 @@ struct InputStreamData:Decodable{
                 let valueTwo = try container.decode(StreamPrice.self, forKey: .data)
                 self.data = valueTwo
             }catch{
-                throw InputStreamDataDecodeError.ProductPriceDecodeError
+                throw StreamError.ProductPriceDecodeError
             }
         case .StreamStateUpdate,.InitStreamState:
             do{
-                let valueTwo = try container.decode(ResultOutputStreamReaded.self, forKey: .data)
+                let valueTwo = try container.decode(ResponseStreamOutput.self, forKey: .data)
                 self.data = valueTwo
             }catch{
-                throw InputStreamDataDecodeError.ResultOutputStreamReadedDecodeError
+                throw StreamError.ResponseStreamOutputDecodeError
             }
         }
         self.dataType = value
       }
 }
-struct ResultOutputStreamReaded:Decodable{
+struct ResponseStreamOutput:Decodable{
     let result:Bool
     let completionId:Int16
 }

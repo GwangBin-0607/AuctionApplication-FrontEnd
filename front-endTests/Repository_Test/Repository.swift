@@ -19,15 +19,16 @@ final class Repository: XCTestCase {
         }
         var controlSocketConnect: AnyObserver<isConnecting>
         
-        var inputDataObservable: Observable<Result<Data, Error>>
+        var inputDataObservable: Observable<Result<Data, StreamError>>
         
         var isSocketConnect: Observable<isConnecting>
         
-        func sendData(data: Data, completion: @escaping (Error?) -> Void) {
+        func sendData(data: Data, completion: @escaping (StreamError?) -> Void) {
+            inputDataObserver.onNext(.success(MockInputData))
         }
-        private let inputDataObserver:AnyObserver<Result<Data,Error>>
+        private let inputDataObserver:AnyObserver<Result<Data,StreamError>>
         init(){
-            let inputDataPublishSubject = PublishSubject<Result<Data,Error>>()
+            let inputDataPublishSubject = PublishSubject<Result<Data,StreamError>>()
             controlSocketConnect = AnyObserver<isConnecting>(eventHandler: {
                 _ in
                 
@@ -100,48 +101,28 @@ final class Repository: XCTestCase {
         })
         wait(for: [promise], timeout: 5.0)
     }
-//    func test_Repository(){
-//
-//        let promise = expectation(description: "Status code: 200")
-//        let disposeBag = DisposeBag()
-//        repo.productListObservable.subscribe(onNext: {
-//            result in
-//            switch result {
-//            case .success(let list):
-//                if list.count > 0{
-//                    promise.fulfill()
-//                    XCTAssertEqual(list.count, 12)
-//                }
-//            case .failure(_):
-//                break;
-//            }
-//        }).disposed(by: disposeBag)
-//        repo.requestObserver.onNext(())
-//        wait(for: [promise], timeout: 5.0)
-//    }
-//    func test_StreamData(){
-//        let test = expectation(description: "Status code: 200a")
-//        let disposeBag = DisposeBag()
-//        repo.requestObserver.onNext(())
-//        repo.productListObservable.subscribe(onNext: {
-//            result in
-//            switch result {
-//            case .success(let list):
-//                if list.count > 0{
-//                    test.fulfill()
-//                    XCTAssertEqual(list[0].product_price, 1400)
-//
-//                }
-//            case .failure(_):
-//                break;
-//            }
-//        }).disposed(by: disposeBag)
-//        repo.sendData(output: Data()).subscribe(onNext: {
-//            re in
-//
-//        })
-//
-//        wait(for: [test], timeout: 5.0)
-//    }
+    func test_StreamData(){
+        let test = expectation(description: "Status code: 200a")
+        let disposeBag = DisposeBag()
+        repo.streamingList.subscribe(onNext: {
+            result in
+            print("=====\(result)=====")
+            switch result{
+            case .success(let list):
+                test.fulfill()
+                XCTAssertEqual(list[0].product_price, 1400)
+            case .failure(let error):
+                print("=====\(error)=====")
+                print(error)
+                break;
+            }
+        })
+        repo.sendData(output: Data()).subscribe(onNext: {
+            re in
+
+        })
+
+        wait(for: [test], timeout: 5.0)
+    }
 
 }

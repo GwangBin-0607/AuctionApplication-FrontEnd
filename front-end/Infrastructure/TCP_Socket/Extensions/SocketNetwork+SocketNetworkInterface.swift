@@ -4,9 +4,16 @@ enum isConnecting {
     case connect
     case disconnect
 }
-enum SocketOutputError:Error{
+enum StreamError:Error{
     case OutputError
     case EncodeError
+    case InputStreamDataTypeDecodeError
+    case ResponseStreamOutputDecodeError
+    case ProductPriceDecodeError
+    case Disconnected
+    case NoStreamPriceData
+    case ResponseTimeOut
+    case Unknown
 }
 final class SocketNetwork: NSObject,SocketNetworkInterface  {
     
@@ -14,11 +21,11 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
     let controlSocketConnect: AnyObserver<isConnecting>
     // MARK: OUTPUT
     let isSocketConnect: Observable<isConnecting>
-    let inputDataObservable: Observable<Result<Data,Error>>
+    let inputDataObservable: Observable<Result<Data,StreamError>>
     
     
     private let isSocketConnected:AnyObserver<isConnecting>
-    private let inputDataObserver:AnyObserver<Result<Data,Error>>
+    private let inputDataObserver:AnyObserver<Result<Data,StreamError>>
     private var inputStream: InputStream?
     private var outputStream: OutputStream?
     private let urlSession:URLSession
@@ -39,7 +46,7 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         disposeBag = DisposeBag()
         
         let controlSocketNetwork = PublishSubject<isConnecting>()
-        let inputPricing = PublishSubject<Result<Data,Error>>()
+        let inputPricing = PublishSubject<Result<Data,StreamError>>()
         controlSocketConnect = controlSocketNetwork.asObserver()
         let connected = BehaviorSubject<isConnecting>(value: .disconnect)
         isSocketConnect = connected.asObservable()
@@ -97,13 +104,13 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         inputStream = nil
         outputStream = nil
     }
-    func sendData(data:Data,completion:@escaping(Error?)->Void){
+    func sendData(data:Data,completion:@escaping(StreamError?)->Void){
         print("Send")
         data.withUnsafeBytes { pointer in
             let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
             let result = outputStream?.write(buffer, maxLength: data.count)
             if result == nil || result == -1{
-                completion(SocketOutputError.OutputError)
+                completion(StreamError.OutputError)
                 
             }else{
                 completion(nil)
@@ -131,15 +138,10 @@ extension SocketNetwork:StreamDelegate{
         case .hasSpaceAvailable:
             break;
         case .errorOccurred:
-            guard let error = aStream.streamError else{
-                return
-            }
-            inputDataObserver.onNext(.failure(error))
+            inputDataObserver.onNext(.failure(StreamError.Unknown))
             break;
         case .endEncountered:
-            print("01010101")
-            let error = NSError(domain: "Encounter", code: -1)
-            inputDataObserver.onNext(.failure(error))
+            inputDataObserver.onNext(.failure(StreamError.Disconnected))
             isSocketConnected.onNext(.disconnect)
             disconnect()
             connect()

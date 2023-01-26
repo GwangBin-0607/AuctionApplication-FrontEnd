@@ -4,12 +4,12 @@ import RxDataSources
 final class ProductListCollectionView: UICollectionView {
     private let viewModel:Pr_ProductListCollectionViewModel
     private let disposeBag:DisposeBag
-    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_ProductListCollectionViewModel, collectionViewCell cellType:ProductListCollectionViewCell.Type ,footerView:ProductListCollectionFooterView.Type) {
+    init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_ProductListCollectionViewModel) {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
-        self.register(cellType, forCellWithReuseIdentifier: cellType.Identifier)
-        self.register(footerView, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerView.Identifier)
+        self.register(ProductListCollectionViewCell.self, forCellWithReuseIdentifier: ProductListCollectionViewCell.Identifier)
+        self.register(ProductListCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ProductListCollectionFooterView.Identifier)
         bind()
         print("\(String(describing: self)) INIT")
     }
@@ -18,7 +18,8 @@ final class ProductListCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
-        viewModel.productsList.bind(to: self.rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
+        viewModel.requestProductsList.onNext(())
+        viewModel.productsList.bind(to: rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
         self.rx.willDisplaySupplementaryView.subscribe(onNext: {
             [weak self] a,b,c in
             self?.viewModel.requestProductsList.onNext(())
@@ -29,10 +30,6 @@ final class ProductListCollectionView: UICollectionView {
                 self?.scrollToItem(at: lastIndex, at: .bottom, animated: true)
             }
         }).disposed(by: disposeBag)
-//        self.rx.didScroll.subscribe(onNext: {
-//            let item = self.indexPathsForVisibleItems.map({$0.item})
-//            self.viewModel.scrollScrollView.onNext(item)
-//        }).disposed(by: disposeBag)
         
     }
     

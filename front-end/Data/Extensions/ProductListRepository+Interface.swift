@@ -17,6 +17,7 @@ extension ProductListRepository{
     }
 }
 final class ProductListRepository:ProductListRepositoryInterface{
+    
     //MARK: OUTPUT
     private let httpService:GetProductsList
     private let streamingProductPrice:SocketNetworkInterface
@@ -25,7 +26,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let disposeBag:DisposeBag
     
     private let updateStreamStateObserver:AnyObserver<Void>
-    let streamingList:Observable<Result<[StreamPrice],Error>>
+    let streamingList:Observable<Result<[StreamPrice],StreamError>>
     init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface,TCPStreamDataTransfer:TCPStreamDataTransferInterface,
          ProductListState:ProductListStateInterface) {
         productListState = ProductListState
@@ -71,30 +72,30 @@ final class ProductListRepository:ProductListRepositoryInterface{
 
 }
 extension ProductListRepository{
-    private func returnData(requestNum:Int8) -> Observable<Data> {
+    private func returnData(requestNum:Int8) -> Observable<Result<Data,HTTPError>> {
         return Observable.create { [weak self] observer in
             print(Thread.current)
             self?.httpService.getProductData(requestNum:requestNum) { result in
-                switch result {
-                case let .success(data):
-                    observer.onNext(data)
-                    observer.onCompleted()
-                case let .failure(error):
-                    observer.onError(error)
-                }
+                observer.onNext(result)
+                observer.onCompleted()
             }
             return Disposables.create()
         }.subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
         
     }
-    func httpList()->Observable<Result<[Product],Error>>{
+    func httpList()->Observable<Result<[Product],HTTPError>>{
         let requestNum = productListState.returnHttpState()
-        return returnData(requestNum: requestNum).map { Data in
-            guard let response = try? JSONDecoder().decode([Product].self, from: Data)else{
-                throw NSError(domain: "Decoding Error", code: -1, userInfo: nil)
+        return returnData(requestNum: requestNum).map { result in
+            switch result{
+            case .success(let data):
+                guard let response = try? JSONDecoder().decode([Product].self, from: data)else{
+                    return .failure(HTTPError.DecodeError)
+                }
+                return .success(response)
+            case .failure(let error):
+                return .failure(error)
             }
-            return .success(response)
-        }.catch{.just(.failure($0))}.do(onNext: {
+        }.do(onNext: {
             [weak self] result in
             switch result{
             case .success(_):
@@ -107,15 +108,15 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable)->Observable<Result<Bool,Error>>{
+    func sendData(output data:Encodable)->Observable<Result<Bool,StreamError>>{
         return encodeAndSend(data: data)
     }
-    private func encodeAndSend(data:Encodable)->Observable<Result<Bool,Error>>{
-        return Observable<Result<Bool,Error>>.create { [weak self] observer in
+    private func encodeAndSend(data:Encodable)->Observable<Result<Bool,StreamError>>{
+        return Observable<Result<Bool,StreamError>>.create { [weak self] observer in
             guard let self = self,
                   let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .StreamStateUpdate, output: data)
             else{
-                observer.onNext(.failure(SocketOutputError.EncodeError))
+                observer.onNext(.failure(StreamError.EncodeError))
                 observer.onCompleted()
                 return Disposables.create()
             }
@@ -133,12 +134,11 @@ extension ProductListRepository{
             return Disposables.create()
         }.subscribe(on: SerialDispatchQueueScheduler(internalSerialQueueName: "sendThread"))
     }
-    private func updateStreamState(state:StreamStateData?)->Observable<Result<Bool,Error>>{
+    private func updateStreamState(state:StreamStateData?)->Observable<Result<Bool,StreamError>>{
         if let state = state{
            return sendData(output: state)
         }else{
-            let error = NSError(domain: "Not Connect", code: -1)
-            return Observable<Result<Bool,Error>>.just(.failure(error))
+            return Observable<Result<Bool,StreamError>>.just(.failure(StreamError.Disconnected))
         }
     }
 }

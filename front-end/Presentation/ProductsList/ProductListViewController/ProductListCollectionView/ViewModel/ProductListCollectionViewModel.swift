@@ -118,7 +118,7 @@ extension ProductListCollectionViewModel{
         resultProducts.append(contentsOf:addArray)
         return resultProducts
     }
-    private func addResult(before:[Product],after:Result<[Product],Error>)->Result<[Product],Error>{
+    private func addResult(before:[Product],after:Result<[Product],HTTPError>)->Result<[Product],HTTPError>{
         switch after {
         case .success(let list):
             return .success(addArray(array: before, addArray: list))
@@ -127,7 +127,7 @@ extension ProductListCollectionViewModel{
         }
     }
     
-    private func sumResult(before:[Product],after:Result<[StreamPrice],Error>)->Result<[Product],Error>{
+    private func sumResult(before:[Product],after:Result<[StreamPrice],StreamError>)->Result<[Product],StreamError>{
         switch after {
         case .success(let list):
             return .success(changeProductPrice(before: before, after: list))

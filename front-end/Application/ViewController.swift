@@ -61,6 +61,11 @@ class ViewController: UIViewController {
         let firstStruct = StructTest(num: 500)
         sendStruct(structReceive: firstStruct)
         testNetwork()
+        animatorTest = setAnimation()
+        self.view.addSubview(animationView)
+        animationView.frame = CGRect(x: 200, y: 200, width: 150, height: 150)
+        animationView.backgroundColor = .systemYellow
+        animationView.alpha = 0.0
     
     }
     func testNetwork(){
@@ -114,7 +119,32 @@ class ViewController: UIViewController {
 //        }
 //    }
 //    let repo = ProductListRepository(ApiService: ProductsListHTTP(ServerURL: "localhost"), StreamingService: SocketNetwork(hostName: "localhost", portNumber: 3200))
+    var check = false
+    let animationView = UIView()
+    var animatorTest:UIViewPropertyAnimator!
+    private func setAnimation()->UIViewPropertyAnimator{
+        let animator = UIViewPropertyAnimator(duration: 1.0, curve: .linear)
+        animator.addAnimations {
+            self.animationView.alpha = 1.0
+        }
+        animator.pausesOnCompletion = true
+        return animator
+    }
+    private func testAnimtion(){
+        UIView.animateKeyframes(withDuration: 6.0, delay: 0.0,options: .allowUserInteraction, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.5, animations: {
+                self.animationView.alpha = 1.0
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5, animations: {
+                self.animationView.alpha = 0.0
+            })
+        })
+    }
     @objc func action(){
+        testAnimtion()
+//        animatorTest.isReversed = check
+//        animatorTest.startAnimation()
+//        check = !check
 //        repo.sendData(output: [1,2,3])?.subscribe(onNext: {
 //            error in
 //            print("=====")
@@ -128,10 +158,10 @@ class ViewController: UIViewController {
 //        })
 //        pro.sendData(ProductPrice: StreamPrice(product_id: 5000, product_price: 5000))
 //        repo.requestObserver.onNext(2)
-        let diContainer = SceneDIContainer()
-        var productViewController = diContainer.returnProductsListViewController()
-//        productViewController.modalPresentationStyle = .fullScreen
-        self.present(productViewController, animated: true, completion: nil)
+//        let diContainer = SceneDIContainer()
+//        var productViewController = diContainer.returnProductsListViewController()
+////        productViewController.modalPresentationStyle = .fullScreen
+//        self.present(productViewController, animated: true, completion: nil)
     }
     var basicArray = [1,2,3,4,5,6,7]
     func testFunction(){

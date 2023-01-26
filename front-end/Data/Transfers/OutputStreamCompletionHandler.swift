@@ -7,17 +7,17 @@
 
 import Foundation
 protocol ExecuteOutputStreamCompletionHandlerInterface:AnyObject{
-    func executeCompletion(completionId: Int16,data:Bool?,error:Error?)
+    func executeCompletion(completionId: Int16,data:Bool?,error:StreamError?)
 }
 
 extension ExecuteOutputStreamCompletionHandlerInterface{
-    func executeCompletionExtension(completionId:Int16,data:Bool? = nil,error:Error? = nil){
+    func executeCompletionExtension(completionId:Int16,data:Bool? = nil,error:StreamError? = nil){
         executeCompletion(completionId: completionId, data: data, error: error)
     }
 }
 
 protocol ManageOutputStreamCompletionHandlerInterface{
-    typealias completionType = ((Result<Bool,Error>)->Void)?
+    typealias completionType = ((Result<Bool,StreamError>)->Void)?
     func registerCompletion(completion:completionType)
     func removeAllWhenEncounter()
     func returnCurrentCompletionId()->Int16
@@ -54,8 +54,7 @@ extension OutputStreamCompletionHandler{
                 [weak self] in
                 if let completionId = self?.completionId{
                     print("completionId \(completionId)")
-                    let timeOutError = NSError(domain: "Time Out Error", code: -1)
-                    self?.delegate?.executeCompletionExtension(completionId: completionId,error: timeOutError)
+                    self?.delegate?.executeCompletionExtension(completionId: completionId,error: StreamError.ResponseTimeOut)
                 }
             })
             timeOut.schedule(deadline: time)
@@ -68,7 +67,7 @@ extension OutputStreamCompletionHandler{
     }
 }
 extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
-    func executeCompletion(completionId: Int16, data:  Bool?, error: Error?) {
+    func executeCompletion(completionId: Int16, data:  Bool?, error: StreamError?) {
         threadLock.lock()
         defer{
             threadLock.unlock()
@@ -86,8 +85,7 @@ extension OutputStreamCompletionHandler:OutputStreamCompletionHandlerInterface{
     
     func removeAllWhenEncounter() {
         completionHandler.forEach { key,value in
-            let error = NSError(domain: "Encounter Server", code: -1)
-            executeCompletionExtension(completionId: key,error: error)
+            executeCompletionExtension(completionId: key,error: StreamError.Disconnected)
         }
     }
     func registerCompletion(completion: completionType) {

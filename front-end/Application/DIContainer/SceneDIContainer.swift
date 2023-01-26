@@ -68,16 +68,22 @@ extension SceneDIContainer{
         return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel())
     }
     private func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
-        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel, collectionViewCell: ProductListCollectionViewCell.self,footerView: ProductListCollectionFooterView.self)
+        ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)
     }
     private func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(viewModel: viewModel)
     }
-    private func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel)->Pr_ProductListViewControllerViewModel{
-        ProductListViewControllerViewModel(collectionViewModel:collectionViewModel)
+    private func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel)->Pr_ProductListViewControllerViewModel{
+        ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel)
     }
     private func returnProductListCollectionFooterViewModel()->Pr_ProductListCollectionFooterViewModel{
         ProductListCollectionFooterViewModel()
+    }
+    private func returnErrorAlterView(errorAlterViewModel:Pr_ErrorAlterViewModel)->ErrorAlterView{
+        ErrorAlterView(viewModel: errorAlterViewModel)
+    }
+    private func returnErrorAlterViewModel()->Pr_ErrorAlterViewModel{
+        ErrorAlterViewModel()
     }
 
  
@@ -102,10 +108,12 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
         let imageRepository = returnProductsImageRepository()
         let collectionViewModel = returnProductListCollectionViewModel(ImageRepository: imageRepository)
-        let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel)
+        let errorAlterViewModel = returnErrorAlterViewModel()
+        let errorAlterView = returnErrorAlterView(errorAlterViewModel: errorAlterViewModel)
+        let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel)
         let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel)
         let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
-        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning)
+        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning,ErrorAlterView: errorAlterView)
         return productListViewController
     }
     func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{

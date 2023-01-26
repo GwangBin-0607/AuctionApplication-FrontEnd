@@ -9,11 +9,17 @@ import Foundation
 import RxSwift
 
 class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
-    var requestProductList: AnyObserver<Void>
     private let collectionViewModel:Pr_ProductListCollectionViewModel
-    init(collectionViewModel:Pr_ProductListCollectionViewModel) {
+    private let errorAlterViewModel:Pr_ErrorAlterViewModel
+    private let disposeBag:DisposeBag
+    init(collectionViewModel:Pr_ProductListCollectionViewModel,ErrorAlterViewModel:Pr_ErrorAlterViewModel) {
         self.collectionViewModel = collectionViewModel
-        requestProductList = self.collectionViewModel.requestProductsList
+        self.errorAlterViewModel = ErrorAlterViewModel
+        disposeBag = DisposeBag()
+        self.collectionViewModel.errorMessage.subscribe(onNext: {
+            [weak self] err in
+            self?.errorAlterViewModel.errorMessageObserver.onNext("Error!")
+        }).disposed(by:disposeBag )
         print("\(String(describing: self)) INIT")
     }
     deinit {

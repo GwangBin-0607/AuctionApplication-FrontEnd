@@ -7,13 +7,15 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let categoryView:UIView
+    private let errorView:ErrorAlterView
     weak var delegate:TransitionProductListViewController?
-    init(viewModel:Pr_ProductListViewControllerViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil) {
+    init(viewModel:Pr_ProductListViewControllerViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil,ErrorAlterView:ErrorAlterView) {
         self.delegate = transitioning
         self.viewModel = viewModel
         collectionView = CollectionView
         disposeBag = DisposeBag()
         categoryView = UIView()
+        errorView = ErrorAlterView
         super.init(nibName: nil, bundle: nil)
         print("\(String(describing: self)) INIT")
     }
@@ -41,7 +43,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
 //            print("======================")
 //        }
     private func bindingViewModel(){
-        self.viewModel.requestProductList.onNext(())
 
     }
     
@@ -64,6 +65,8 @@ extension ProductListViewController{
         containerView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
+        containerView.addSubview(errorView)
+        errorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             categoryView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
             categoryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -72,7 +75,11 @@ extension ProductListViewController{
             collectionView.topAnchor.constraint(equalTo: categoryView.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor),
+            errorView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            errorView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            NSLayoutConstraint(item: errorView, attribute: .width, relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 0.4, constant: 0.0),
+            NSLayoutConstraint(item: errorView, attribute: .height, relatedBy: .equal, toItem: errorView, attribute: .width, multiplier: 0.3, constant: 0.0)
         ])
         return containerView
     }

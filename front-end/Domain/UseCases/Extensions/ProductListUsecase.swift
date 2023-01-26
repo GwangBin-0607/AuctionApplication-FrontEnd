@@ -12,19 +12,19 @@ class ProductListWithImageHeightUsecase{
     }
 }
 extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase{
-    func returnProductList() -> Observable<Result<[Product], Error>> {
+    func returnProductList() -> Observable<Result<[Product], HTTPError>> {
         listRepo.httpList().withUnretained(self).flatMap { owner,result in
             switch result{
             case .success(let list):
                 return owner.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
-                    return Observable<Result<[Product],Error>>.create { ob in
+                    return Observable<Result<[Product],HTTPError>>.create { ob in
                         ob.onNext(.success(list))
                         ob.onCompleted()
                         return Disposables.create()
                     }
                 }
             case .failure(let error):
-                return Observable<Result<[Product],Error>>.create { observer in
+                return Observable<Result<[Product],HTTPError>>.create { observer in
                     observer.onNext(.failure(error))
                     observer.onCompleted()
                     return Disposables.create()
@@ -38,12 +38,11 @@ extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase
     func returnControlStreamState(state: isConnecting) {
         listRepo.streamState(state: state)
     }
-    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Bool,Error>>{
+    func updateStreamProduct(visibleCell:[Int])->Observable<Result<Bool,StreamError>>{
         let t = StreamStateData(stateNumber: 1)
-        let set = Set(visibleCell)
         return listRepo.sendData(output: t)
     }
-    func returnStreamProduct() -> Observable<Result<[StreamPrice], Error>> {
+    func returnStreamProduct() -> Observable<Result<[StreamPrice], StreamError>> {
         listRepo.streamingList
     }
 }

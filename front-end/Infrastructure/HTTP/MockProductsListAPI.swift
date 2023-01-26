@@ -7,7 +7,7 @@
 
 import Foundation
 final class MockProductsListAPI:GetProductsList{
-    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, Error>) -> Void) {
+    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
         sleep(2)
         if requestNum == 1{
             guard let path = Bundle.main.path(forResource: "FetchingProductsListTestDataTwo", ofType: "json")
@@ -24,8 +24,7 @@ final class MockProductsListAPI:GetProductsList{
             }
             onComplete(.success(data))
         }else{
-            let error = NSError(domain: "Not ProductList Data", code: -1)
-            onComplete(.failure(error))
+            onComplete(.failure(HTTPError.EndProductList))
         }
         
         

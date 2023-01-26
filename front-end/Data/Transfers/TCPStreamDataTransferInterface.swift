@@ -8,9 +8,9 @@
 import Foundation
 import RxSwift
 protocol TCPStreamDataTransferInterface{
-    func decode(result:Result<Data,Error>)->Result<[StreamPrice],Error>
+    func decode(result:Result<Data,StreamError>)->Result<[StreamPrice],StreamError>
     func encodeOutputStreamState(dataType:StreamDataType,output:Encodable)throws  -> (Int16,Data)
-    func register(completion:@escaping(Result<Bool,Error>)->Void)
-    func executeIfSendError(completionId:Int16,error:Error)
+    func register(completion:@escaping(Result<Bool,StreamError>)->Void)
+    func executeIfSendError(completionId:Int16,error:StreamError)
 }
 

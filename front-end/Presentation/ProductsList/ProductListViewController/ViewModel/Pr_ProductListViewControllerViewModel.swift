@@ -8,5 +8,4 @@
 import Foundation
 import RxSwift
 protocol Pr_ProductListViewControllerViewModel{
-    var requestProductList:AnyObserver<Void>{get}
 }

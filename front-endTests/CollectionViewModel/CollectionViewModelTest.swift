@@ -17,8 +17,9 @@ func testFinishObservable<testType>()->Observable<testType>{
 final class CollectionViewModelTest: XCTestCase {
     var viewModel:Pr_ProductListCollectionViewModel!
     class Mock_ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase{
-        func returnProductList() -> Observable<Result<[Product], Error>> {
-            return Observable<Result<[Product],Error>>.create { obser in
+        
+        func returnProductList() -> Observable<Result<[Product], HTTPError>> {
+            return Observable<Result<[Product],HTTPError>>.create { obser in
                 let list = [Product(product_id: 1, product_price: 1000, imageURL: [], product_name: "one"),Product(product_id: 2, product_price: 1000, imageURL: [], product_name: "one"),Product(product_id: 3, product_price: 1000, imageURL: [], product_name: "one"),Product(product_id: 4, product_price: 1000, imageURL: [], product_name: "one"),Product(product_id: 5, product_price: 1000, imageURL: [], product_name: "one")]
                 obser.onNext(.success(list))
                 obser.onCompleted()
@@ -26,7 +27,7 @@ final class CollectionViewModelTest: XCTestCase {
             }
         }
         
-        func returnStreamProduct() -> Observable<Result<[StreamPrice], Error>> {
+        func returnStreamProduct() -> Observable<Result<[StreamPrice], StreamError>> {
             return streamObservable
         }
         
@@ -38,17 +39,17 @@ final class CollectionViewModelTest: XCTestCase {
             
         }
         
-        func updateStreamProduct(visibleCell: [Int]) -> Observable<Result<Bool, Error>> {
+        func updateStreamProduct(visibleCell: [Int]) -> Observable<Result<Bool, StreamError>> {
             testFinishObservable()
         }
         func sendStreamPrice(price:StreamPrice){
             let stream = [price]
             streamObserver.onNext(.success(stream))
         }
-        let streamObservable:Observable<Result<[StreamPrice],Error>>
-        let streamObserver:AnyObserver<Result<[StreamPrice],Error>>
+        let streamObservable:Observable<Result<[StreamPrice],StreamError>>
+        let streamObserver:AnyObserver<Result<[StreamPrice],StreamError>>
         init() {
-            let streamSubject = PublishSubject<Result<[StreamPrice],Error>>()
+            let streamSubject = PublishSubject<Result<[StreamPrice],StreamError>>()
             streamObservable = streamSubject.asObservable()
             streamObserver = streamSubject.asObserver()
         }
@@ -67,7 +68,7 @@ final class CollectionViewModelTest: XCTestCase {
     }
     let mock_usecase = Mock_ProductListWithImageHeightUsecase()
     override func setUpWithError() throws {
-        viewModel = ProductListCollectionViewModel(UseCase: mock_usecase, CellViewModel: Mock_ProductListCollectionViewCellViewModel())
+        viewModel = ProductListCollectionViewModel(UseCase: mock_usecase, CellViewModel: Mock_ProductListCollectionViewCellViewModel(),FooterViewModel: ProductListCollectionFooterViewModel())
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
