@@ -18,23 +18,29 @@ class ErrorAlterView:UIView{
         self.viewModel = viewModel
         super.init(frame: .zero)
         bind()
+        initProperty()
         layoutContentView()
     }
     private func executeAnimation(){
-        UIView.animateKeyframes(withDuration: 2.0, delay: 0.0,options: .calculationModeLinear, animations: {
-            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.2, animations: {
+        UIView.animateKeyframes(withDuration: 1.0, delay: 0.0,options: .beginFromCurrentState, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.1, animations: {
                 self.alpha = 1.0
+                self.transform = CGAffineTransform.identity
             })
-            UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.9, relativeDuration: 0.1, animations: {
                 self.alpha = 0.0
+                self.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
             })
         })
     }
-    
-    private func layoutContentView(){
+    private func initProperty(){
+        self.layer.cornerRadius = 15
         self.alpha = 0.0
-        self.addSubview(label)
+        self.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
         self.backgroundColor = .systemYellow
+    }
+    private func layoutContentView(){
+        self.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true

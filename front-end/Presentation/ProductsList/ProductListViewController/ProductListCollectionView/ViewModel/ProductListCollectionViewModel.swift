@@ -17,7 +17,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let socketState: Observable<isConnecting>
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
-    let errorMessage: Observable<Error>
+    let errorMessage: Observable<HTTPError>
     
     private let footerViewModel:Pr_ProductListCollectionFooterViewModel
     private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
@@ -30,7 +30,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         scrollScrollView = scrollSubject.asObserver()
         let requestSubject = PublishSubject<Void>()
         requestProductsList = requestSubject.asObserver()
-        let errorSubject = PublishSubject<Error>()
+        let errorSubject = PublishSubject<HTTPError>()
         errorMessage = errorSubject.asObservable().observe(on: MainScheduler.asyncInstance)
         let errorObserver = errorSubject.asObserver()
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in

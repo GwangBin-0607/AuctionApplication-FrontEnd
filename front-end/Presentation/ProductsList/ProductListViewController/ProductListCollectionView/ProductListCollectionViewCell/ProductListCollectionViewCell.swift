@@ -1,5 +1,25 @@
 import UIKit
 import RxSwift
+final class GradationView:UIView{
+    let gradationLayer:CAGradientLayer
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        gradationLayer.frame = rect
+    }
+    init(){
+        gradationLayer = CAGradientLayer()
+        gradationLayer.colors = [UIColor.darkGray.withAlphaComponent(0.5).cgColor,UIColor.systemGroupedBackground.withAlphaComponent(0.5).cgColor]
+        gradationLayer.locations = [0.0 , 1.0]
+        gradationLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradationLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
+        super.init(frame: .zero)
+        self.layer.addSublayer(gradationLayer)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
@@ -9,6 +29,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     private let checkUpDown:UIImageView
     private let disposeBag:DisposeBag
     private let borderAnimator:UIViewPropertyAnimator
+    private let gradationView:GradationView
     // MARK: OUTPUT
     private let data:PublishSubject<Product>
     let bindingData:AnyObserver<Product>
@@ -16,6 +37,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     private var viewModel:Pr_ProductListCollectionViewCellViewModel!
     override init(frame: CGRect) {
         print("CELL INIT")
+        gradationView = GradationView()
         data = PublishSubject<Product>()
         titleLabel = UILabel()
         priceLabel = UILabel()
@@ -63,10 +85,12 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         self.contentView.layer.masksToBounds = true
         self.productImageView.contentMode = .scaleAspectFill
         contentView.addSubview(productImageView)
+        contentView.addSubview(gradationView)
         contentView.addSubview(priceLabel)
         contentView.addSubview(checkUpDown)
         contentView.addSubview(titleLabel)
         productImageView.translatesAutoresizingMaskIntoConstraints = false
+        gradationView.translatesAutoresizingMaskIntoConstraints = false
         checkUpDown.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +115,11 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             priceLabel.trailingAnchor.constraint(equalTo: checkUpDown.leadingAnchor, constant: -5.0),
             titleLabel.bottomAnchor.constraint(equalTo: priceLabel.topAnchor, constant: -2.0),
             titleLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -5.0)
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -5.0),
+            gradationView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            gradationView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            gradationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            NSLayoutConstraint(item: gradationView, attribute: .height, relatedBy: .equal, toItem: contentView, attribute: .height, multiplier: 0.4, constant: 0.0)
         ])
         priceLabel.setContentCompressionResistancePriority(UILayoutPriority(50), for: .horizontal)
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)

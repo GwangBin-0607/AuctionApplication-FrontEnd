@@ -18,7 +18,9 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
         disposeBag = DisposeBag()
         self.collectionViewModel.errorMessage.subscribe(onNext: {
             [weak self] err in
-            self?.errorAlterViewModel.errorMessageObserver.onNext("Error!")
+            if err == HTTPError.EndProductList{
+                self?.errorAlterViewModel.errorMessageObserver.onNext("마지막 상품입니다")
+            }
         }).disposed(by:disposeBag )
         print("\(String(describing: self)) INIT")
     }
