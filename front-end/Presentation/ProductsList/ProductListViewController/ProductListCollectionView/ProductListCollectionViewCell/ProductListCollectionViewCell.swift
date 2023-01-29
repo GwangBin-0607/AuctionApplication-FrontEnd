@@ -1,5 +1,9 @@
 import UIKit
 import RxSwift
+struct AnimtionValue{
+    let price:Int
+    let state:Bool
+}
 final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
@@ -13,7 +17,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     // MARK: OUTPUT
     private let data:PublishSubject<Product>
     let bindingData:AnyObserver<Product>
-    let animationObserver: AnyObserver<Int>
+    let animationObserver: AnyObserver<AnimtionValue?>
     private var viewModel:Pr_ProductListCollectionViewCellViewModel!
     override init(frame: CGRect) {
         print("CELL INIT")
@@ -26,13 +30,20 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         disposeBag = DisposeBag()
         borderView = UIView()
         bindingData = data.asObserver()
-        let animationSubject = PublishSubject<Int>()
+        let animationSubject = PublishSubject<AnimtionValue?>()
         animationObserver = animationSubject.asObserver()
         borderAnimator = UIViewPropertyAnimator()
         super.init(frame: frame)
         animationSubject.asObservable().observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
-            owner,price in
-            owner.priceLabel.text = String(price)
+            owner,value in
+            if let value = value{
+                owner.priceLabel.text = String(value.price)
+                if value.state{
+                    owner.checkUpDown.image = UIImage(named: "upState")
+                }else{
+                    owner.checkUpDown.image = UIImage(named: "Nothing")
+                }
+            }
         }).disposed(by: disposeBag)
         layoutContentView()
     }
@@ -44,6 +55,11 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
                 owner.tag = item.product_id
                 owner.titleLabel.text = item.product_name
                 owner.priceLabel.text = String(item.product_price)
+                if item.checkUpDown.state{
+                    owner.checkUpDown.image = UIImage(named: "upState")
+                }else{
+                    owner.checkUpDown.image = UIImage(named: "Nothing")
+                }
             }.flatMap { owner,item in
                 return owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL)
             }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
@@ -66,6 +82,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
         self.productImageView.contentMode = .scaleAspectFill
+        checkUpDown.contentMode = .scaleAspectFit
         contentView.addSubview(productImageView)
         contentView.addSubview(gradationView)
         contentView.addSubview(priceLabel)
@@ -105,7 +122,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         ])
         priceLabel.setContentCompressionResistancePriority(UILayoutPriority(50), for: .horizontal)
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
-        checkUpDown.backgroundColor = .systemYellow
     }
     deinit {
         print("CELL DEINIT")

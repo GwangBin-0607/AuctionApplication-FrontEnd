@@ -99,13 +99,11 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     func controlSocketState(state: isConnecting) {
         usecase.returnControlStreamState(state: state)
     }
-    func returnPrice(index: IndexPath) -> Int {
-        do{
-            let product = try products.value()
-           return product[index.item].product_price
-            
-        }catch{
-           return 0
+    func returnAnimationValue(index: IndexPath) -> AnimtionValue? {
+        if let product = try? products.value(){
+            return AnimtionValue(price: product[index.item].product_price, state: product[index.item].checkUpDown.state)
+        }else{
+            return nil
         }
     }
     func returnCellViewModel() -> Pr_ProductListCollectionViewCellViewModel {

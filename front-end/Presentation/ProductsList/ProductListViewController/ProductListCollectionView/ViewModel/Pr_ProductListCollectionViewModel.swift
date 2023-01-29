@@ -14,7 +14,7 @@ protocol Pr_ProductListCollectionViewModel{
     var scrollScrollView:AnyObserver<[Int]> {get}
     var errorMessage:Observable<HTTPError>{get}
     func lastIndex()->IndexPath
-    func returnPrice(index:IndexPath)->Int
+    func returnAnimationValue(index:IndexPath)->AnimtionValue?
     func returnCellViewModel()->Pr_ProductListCollectionViewCellViewModel
     func returnFooterViewModel() -> Pr_ProductListCollectionFooterViewModel
     func controlSocketState(state:isConnecting)

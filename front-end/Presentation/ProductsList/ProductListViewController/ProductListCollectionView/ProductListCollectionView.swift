@@ -45,8 +45,8 @@ deinit {
         for i in 0..<indexPaths.count{
             if let cell = self.cellForItem(at: indexPaths[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
                 print("Animate")
-                let price = self.viewModel.returnPrice(index: indexPaths[i])
-                cell.animationObserver.onNext(price)
+                let animationValue = self.viewModel.returnAnimationValue(index: indexPaths[i])
+                cell.animationObserver.onNext(animationValue)
             }
         }
     }
