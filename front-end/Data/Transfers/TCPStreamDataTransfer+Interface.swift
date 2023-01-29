@@ -33,7 +33,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                         if let inputStream = inputStreamData.data as? StreamPrice{
                             addResultArray(original: &returnArray, added: inputStream)
                         }
-                    case .StreamStateUpdate,.InitStreamState:
+                    case .StreamStateUpdate:
                         if let resultData = inputStreamData.data as? ResponseStreamOutput{
                             socketCompletionHandler.executeCompletionExtension(completionId: resultData.completionId,data: resultData.result)
                         }

@@ -10,17 +10,15 @@ import Foundation
 enum StreamDataType:Codable{
     case StreamStateUpdate
     case StreamProductPriceUpdate
-    case InitStreamState
     private enum CodingKeys: CodingKey {
-        case InputStreamProductPrice
-        case OutputStreamReaded
+        case StreamStateUpdate
+        case StreamProductPriceUpdate
     }
     init(from decoder: Decoder) throws {
          let label = try decoder.singleValueContainer().decode(Int8.self)
          switch label {
          case 1: self = .StreamStateUpdate
          case 2: self = .StreamProductPriceUpdate
-         case 3: self = .InitStreamState
          default:
              throw StreamError.InputStreamDataTypeDecodeError
             // default: self = .other(label)
@@ -33,8 +31,6 @@ enum StreamDataType:Codable{
             try container.encode(1)
         case .StreamProductPriceUpdate:
             try container.encode(2)
-        case .InitStreamState:
-            try container.encode(3)
         }
     }
 }
@@ -57,7 +53,7 @@ struct InputStreamData:Decodable{
             }catch{
                 throw StreamError.ProductPriceDecodeError
             }
-        case .StreamStateUpdate,.InitStreamState:
+        case .StreamStateUpdate:
             do{
                 let valueTwo = try container.decode(ResponseStreamOutput.self, forKey: .data)
                 self.data = valueTwo

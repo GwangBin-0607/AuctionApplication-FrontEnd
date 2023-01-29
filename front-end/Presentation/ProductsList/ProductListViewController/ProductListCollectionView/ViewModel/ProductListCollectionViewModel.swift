@@ -56,10 +56,10 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             arg1,before in
             let (owner,after) = arg1
             return owner.addResult(before: before, after: after)
-        }).withUnretained(self).do(onNext: {
+        }).do(onNext: {
             [weak self] _ in
             self?.footerViewModel.activityObserver.onNext(false)
-        }).subscribe(onNext: {
+        }).withUnretained(self).subscribe(onNext: {
             owner,result in
             switch result {
             case .success(let list):
