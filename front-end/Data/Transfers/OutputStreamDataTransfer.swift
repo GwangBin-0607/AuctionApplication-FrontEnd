@@ -32,8 +32,12 @@ enum OutputStreamDataType:Codable{
         }
     }
 }
-struct StreamStateData:Encodable{
+struct UpdateStreamStateData:Encodable{
     let stateNumber:Int8
+}
+struct UpdateStreamProductPriceData:Encodable{
+    let product_id:Int
+    let product_price:Int
 }
 struct OutputStreamData:Encodable{
     let dataType:OutputStreamDataType

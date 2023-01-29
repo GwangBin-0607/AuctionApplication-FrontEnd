@@ -7,5 +7,9 @@ class ProductImageLoadUseCase:Pr_ProductImageLoadUsecase{
     private let productsImageRepository:ProductImageRepositoryInterface
     init(productsImageRepository:ProductImageRepositoryInterface) {
         self.productsImageRepository = productsImageRepository
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
 }

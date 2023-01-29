@@ -7,6 +7,10 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface) {
         imageServer = ImageServer
         cacheRepository = CacheRepository
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
     private func returnImageHeight(image:UIImage)->CGFloat{
         image.size.height

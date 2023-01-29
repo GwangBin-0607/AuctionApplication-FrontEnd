@@ -40,14 +40,14 @@ final class ProductListRepository:ProductListRepositoryInterface{
         streamingList = streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:))
         httpTransfer = HTTPDataTransfer
         Observable.combineLatest(updateStreamState,streamingProductPrice.isSocketConnect.distinctUntilChanged(), resultSelector: {
-            [weak self] _,connectState -> StreamStateData? in
+            [weak self] _,connectState -> UpdateStreamStateData? in
             guard let stateNumber = self?.productListState.returnTCPState()else{
                 return nil
             }
             if connectState != .connect{
                 return nil
             }else{
-                let streamState = StreamStateData(stateNumber: stateNumber)
+                let streamState = UpdateStreamStateData(stateNumber: stateNumber)
                 return streamState
             }
         }).withUnretained(self).flatMap({
@@ -116,13 +116,13 @@ extension ProductListRepository{
     }
 }
 extension ProductListRepository{
-    func sendData(output data:Encodable)->Observable<Result<Bool,StreamError>>{
-        return encodeAndSend(data: data)
+    func sendData(output data:Encodable,dataType:OutputStreamDataType)->Observable<Result<Bool,StreamError>>{
+        return encodeAndSend(data: data,dataType: dataType)
     }
-    private func encodeAndSend(data:Encodable)->Observable<Result<Bool,StreamError>>{
+    private func encodeAndSend(data:Encodable,dataType:OutputStreamDataType)->Observable<Result<Bool,StreamError>>{
         return Observable<Result<Bool,StreamError>>.create { [weak self] observer in
             guard let self = self,
-                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .SocketStatusUpdate, output: data)
+                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: dataType, output: data)
             else{
                 observer.onNext(.failure(StreamError.EncodeError))
                 observer.onCompleted()
@@ -142,11 +142,14 @@ extension ProductListRepository{
             return Disposables.create()
         }.subscribe(on: SerialDispatchQueueScheduler(internalSerialQueueName: "sendThread"))
     }
-    private func updateStreamState(state:StreamStateData?)->Observable<Result<Bool,StreamError>>{
+    private func updateStreamState(state:UpdateStreamStateData?)->Observable<Result<Bool,StreamError>>{
         if let state = state{
-           return sendData(output: state)
+            return sendData(output: state,dataType: .SocketStatusUpdate)
         }else{
             return Observable<Result<Bool,StreamError>>.just(.failure(StreamError.Disconnected))
         }
+    }
+    func updateStreamProductPrice(output data: UpdateStreamProductPriceData) -> Observable<Result<Bool, StreamError>> {
+        sendData(output: data,dataType: .StreamProductPriceUpdate)
     }
 }

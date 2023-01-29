@@ -19,6 +19,12 @@ final class HTTPDataTransfer:Pr_HTTPDataTransfer{
         let jsonDecoder = JSONDecoder()
         return try jsonDecoder.decode([Product].self, from: data)
     }
+    init() {
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
+    }
     
     
 }

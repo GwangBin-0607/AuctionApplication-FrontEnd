@@ -46,6 +46,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                     return .success(returnArray)
                 }
             }catch{
+                print(error)
                 return .failure(StreamError.InputStreamDataTypeDecodeError)
             }
         case .failure(let error):

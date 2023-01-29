@@ -7,15 +7,16 @@
 
 import Foundation
 final class MockProductsListAPI:GetProductsList{
-    func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        if requestNum == 1{
+    func getProductData(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
+        let testNum = try? JSONDecoder().decode(Int.self, from: requestData)
+        if testNum == 1{
             guard let path = Bundle.main.path(forResource: "FetchingProductsListTestDataTwo", ofType: "json")
                     ,let jsonString = try? String(contentsOfFile: path)
                     ,let data = jsonString.data(using: .utf8)else{
                 return
             }
             onComplete(.success(data))
-        }else if requestNum == 0{
+        }else if testNum == 0{
             guard let path = Bundle.main.path(forResource: "FetchingProductsListTestData", ofType: "json")
                     ,let jsonString = try? String(contentsOfFile: path)
                     ,let data = jsonString.data(using: .utf8)else{
@@ -25,10 +26,6 @@ final class MockProductsListAPI:GetProductsList{
         }else{
             onComplete(.failure(HTTPError.EndProductList))
         }
-        
-        
-    }
-    func getProductData(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
         
     }
     

@@ -2,17 +2,17 @@ import Foundation
 import UIKit
 
 
-class SceneDIContainer{}
+final class SceneDIContainer{}
 
 //MARK: Infrastructure
 extension SceneDIContainer{
-    private func returnHTTPImageService()->GetProductImage{
+     func returnHTTPImageService()->GetProductImage{
         ProductImageAPI()
     }
-    private func returnHTTPService()->GetProductsList{
+     func returnHTTPService()->GetProductsList{
         ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist")
     }
-    private func returnStreamingService()->SocketNetworkInterface{
+     func returnStreamingService()->SocketNetworkInterface{
 //        SocketNetwork(hostName: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", portNumber: 8100)
         SocketNetwork(hostName: "localhost", portNumber: 3200)
     }
@@ -20,72 +20,72 @@ extension SceneDIContainer{
 
 //MARK: Repository
 extension SceneDIContainer{
-    private func returnProductCacheImageRepository()->ProductImageCacheRepositoryInterface{
+     func returnProductCacheImageRepository()->ProductImageCacheRepositoryInterface{
         ProductImageCacheRepository()
     }
-    private func returnProductsImageRepository()->ProductImageRepositoryInterface{
+     func returnProductsImageRepository()->ProductImageRepositoryInterface{
         ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
     }
-    private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
+     func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
         return ProductListRepository(ApiService: returnHTTPService(), StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
     }
-    private func returnProductListState()->ProductListStateInterface{
+     func returnProductListState()->ProductListStateInterface{
         ProductListState()
     }
-    private func returnTCPStreamDataTransferInterface()->TCPStreamDataTransferInterface{
+     func returnTCPStreamDataTransferInterface()->TCPStreamDataTransferInterface{
         TCPStreamDataTransfer(inputStreamDataTransfer: returnInputStreamDataTransfer(), outputStreamDataTransfer: returnOutputStreamDataTransfer(), outputStreamCompletionHandler: returnOutputStreamCompletionHandler())
     }
-    private func returnInputStreamDataTransfer()->InputStreamDataTransferInterface{
+     func returnInputStreamDataTransfer()->InputStreamDataTransferInterface{
         InputStreamDataTransfer()
     }
-    private func returnOutputStreamDataTransfer()->OutputStreamDataTransferInterface{
+     func returnOutputStreamDataTransfer()->OutputStreamDataTransferInterface{
         OutputStreamDataTransfer()
     }
-    private func returnOutputStreamCompletionHandler()->OutputStreamCompletionHandlerInterface{
+     func returnOutputStreamCompletionHandler()->OutputStreamCompletionHandlerInterface{
         OutputStreamCompletionHandler()
     }
-    private func returnHTTPDataTransfer()->Pr_HTTPDataTransfer{
+     func returnHTTPDataTransfer()->Pr_HTTPDataTransfer{
         HTTPDataTransfer()
     }
 }
 
 //MARK: Usecase
 extension SceneDIContainer{
-    private func returnProductListUsecaseInterface(ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
+     func returnProductListUsecaseInterface(ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
         ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: ImageHeightRepository)
     }
-    private func returnProductImageLoadUsecase(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
+     func returnProductImageLoadUsecase(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
         ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
     }
 }
 
 //MARK: ViewModel,View
 extension SceneDIContainer{
-    private func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
+     func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase)
     }
-    private func returnProductListCollectionViewModel(ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
+     func returnProductListCollectionViewModel(ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         let listUsecase = returnProductListUsecaseInterface(ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecase(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
         return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel())
     }
-    private func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
+     func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)
     }
-    private func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
+     func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(viewModel: viewModel)
     }
-    private func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel)->Pr_ProductListViewControllerViewModel{
+     func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel)->Pr_ProductListViewControllerViewModel{
         ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel)
     }
-    private func returnProductListCollectionFooterViewModel()->Pr_ProductListCollectionFooterViewModel{
+     func returnProductListCollectionFooterViewModel()->Pr_ProductListCollectionFooterViewModel{
         ProductListCollectionFooterViewModel()
     }
-    private func returnErrorAlterView(errorAlterViewModel:Pr_ErrorAlterViewModel)->ErrorAlterView{
+     func returnErrorAlterView(errorAlterViewModel:Pr_ErrorAlterViewModel)->ErrorAlterView{
         ErrorAlterView(viewModel: errorAlterViewModel)
     }
-    private func returnErrorAlterViewModel()->Pr_ErrorAlterViewModel{
+     func returnErrorAlterViewModel()->Pr_ErrorAlterViewModel{
         ErrorAlterViewModel()
     }
 

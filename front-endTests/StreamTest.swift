@@ -33,5 +33,35 @@ final class StreamTest: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    func test_StreamProductPriceUpdate(){
+        let promise = expectation(description: "Multi Device Stream Test")
+        let diContainer = SceneDIContainer()
+        let oneDevice = diContainer.returnProductListRepositoryInterface()
+        let twoDevice = diContainer.returnProductListRepositoryInterface()
+        oneDevice.streamingList.subscribe(onNext: {
+            result in
+            
+        })
+        twoDevice.streamingList.subscribe(onNext: {
+            result in
+            switch result {
+            case .success(let updateList):
+                promise.fulfill()
+                XCTAssertEqual(updateList[0].product_price, 7000)
+            default:
+                break;
+            }
+        })
+        let mockUpdateData = UpdateStreamProductPriceData(product_id: 5, product_price: 7000)
+        DispatchQueue.global().async {
+            sleep(2)
+            oneDevice.updateStreamProductPrice(output: mockUpdateData).subscribe(onNext:{
+                result in
+                print(result)
+            })
+        }
+        wait(for: [promise], timeout: 5.0)
+        
+    }
 
 }

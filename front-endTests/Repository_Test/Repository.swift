@@ -58,7 +58,8 @@ final class Repository: XCTestCase {
         let outputHandler = OutputStreamCompletionHandler()
         let transfer = TCPStreamDataTransfer(inputStreamDataTransfer: inputTransfer, outputStreamDataTransfer: outputTransfer, outputStreamCompletionHandler: outputHandler)
         let productListState = ProductListState()
-        repo = ProductListRepository(ApiService: mock_Http_Infra, StreamingService: mock_Stream_Infra, TCPStreamDataTransfer: transfer, ProductListState: productListState)
+        let tran = HTTPDataTransfer()
+        repo = ProductListRepository(ApiService: mock_Http_Infra, StreamingService: mock_Stream_Infra, TCPStreamDataTransfer: transfer, ProductListState: productListState,HTTPDataTransfer: tran)
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -117,7 +118,7 @@ final class Repository: XCTestCase {
                 break;
             }
         })
-        repo.sendData(output: Data()).subscribe(onNext: {
+        repo.sendData(output: Data(),dataType: .SocketStatusUpdate).subscribe(onNext: {
             re in
 
         })

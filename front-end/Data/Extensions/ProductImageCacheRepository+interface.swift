@@ -13,6 +13,10 @@ final class ProductImageCacheRepository{
     init(){
         lock = NSLock()
         imageCache = NSCache()
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
 }
 extension ProductImageCacheRepository:ProductImageCacheRepositoryInterface{

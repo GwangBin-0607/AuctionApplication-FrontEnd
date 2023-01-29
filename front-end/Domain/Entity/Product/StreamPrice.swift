@@ -9,5 +9,6 @@ import Foundation
 
 struct StreamPrice:Codable{
     let product_id:Int
-    var product_price:Int
+    let product_price:Int
+    let state:Bool
 }

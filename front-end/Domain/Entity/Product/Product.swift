@@ -22,14 +22,18 @@ struct Product:Decodable{
         }
     }
     let product_name:String
-    var checkUpDown:Bool?
+    var checkUpDown:ProductUpDown
     var imageHeight:CGFloat!
     enum CodingKeys:String,CodingKey{
         case product_id
         case product_price
         case product_name
         case imageURL = "Product_Images"
+        case checkUpDown = "Product_UpDown"
     }
+}
+struct ProductUpDown:Decodable{
+    var state:Bool
 }
 extension Product:IdentifiableType,Equatable{
     var identity: Int {

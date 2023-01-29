@@ -65,6 +65,8 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             case .success(let list):
                 owner.products.onNext(list)
             case .failure(let err):
+                print("-========")
+                print(err)
                 errorObserver.onNext(err)
             }
         }).disposed(by: disposeBag)
@@ -79,6 +81,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             case .success(let list):
                 owner.products.onNext(list)
             case .failure(let err):
+                print("-========")
                 print(err)
             }
         }).disposed(by: disposeBag)
@@ -140,6 +143,7 @@ extension ProductListCollectionViewModel{
         after.forEach { eachProduct in
             if let index = resultArray.firstIndex(where: {$0.product_id == eachProduct.product_id}){
                 resultArray[index].product_price = eachProduct.product_price
+                resultArray[index].checkUpDown.state = eachProduct.state
             }
         }
         return resultArray
