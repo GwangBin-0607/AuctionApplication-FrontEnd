@@ -6,11 +6,37 @@
 //
 
 import Foundation
+enum OutputStreamDataType:Codable{
+    case SocketStatusUpdate
+    case StreamProductPriceUpdate
+    private enum CodingKeys: CodingKey {
+        case SocketStatusUpdate
+        case StreamProductPriceUpdate
+    }
+    init(from decoder: Decoder) throws {
+         let label = try decoder.singleValueContainer().decode(Int8.self)
+         switch label {
+         case 1: self = .SocketStatusUpdate
+         case 2: self = .StreamProductPriceUpdate
+         default:
+             throw StreamError.EncodeError
+         }
+      }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self{
+        case .SocketStatusUpdate:
+            try container.encode(1)
+        case .StreamProductPriceUpdate:
+            try container.encode(2)
+        }
+    }
+}
 struct StreamStateData:Encodable{
     let stateNumber:Int8
 }
 struct OutputStreamData:Encodable{
-    let dataType:StreamDataType
+    let dataType:OutputStreamDataType
     let completionId:Int16
     let data:Encodable
     
@@ -27,7 +53,7 @@ struct OutputStreamData:Encodable{
     }
 }
 protocol OutputStreamDataTransferInterface{
-    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data
+    func encodeOutputStreamState(dataType:OutputStreamDataType,completionId:Int16,output:Encodable)throws->Data
 }
 
 class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
@@ -42,7 +68,7 @@ class OutputStreamDataTransfer:OutputStreamDataTransferInterface{
     deinit {
         print("\(String(describing: self)) DEINIT")
     }
-    func encodeOutputStreamState(dataType:StreamDataType,completionId:Int16,output:Encodable)throws->Data{
+    func encodeOutputStreamState(dataType:OutputStreamDataType,completionId:Int16,output:Encodable)throws->Data{
         let original = OutputStreamData(dataType: dataType, completionId: completionId, data: output)
         return try addSplitter(data: original)
     }

@@ -1,13 +1,15 @@
 //
-//  EnumDecode.swift
+//  StreamTest.swift
 //  front-endTests
 //
-//  Created by 안광빈 on 2023/01/27.
+//  Created by 안광빈 on 2023/01/29.
 //
 
 import XCTest
+@testable import front_end_DEBUG
+@testable import RxSwift
 
-final class EnumDecode: XCTestCase {
+final class StreamTest: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -30,28 +32,6 @@ final class EnumDecode: XCTestCase {
         self.measure {
             // Put the code you want to measure the time of here.
         }
-    }
-    struct A{
-        var a:Int
-        var b:Int?
-    }
-    let a = A()
-    struct TestModelTwo:Codable,Equatable{
-        let dataNumber:Int
-    }
-    struct TestModel:Codable,Equatable{
-        let dataNumber:TestEnum
-    }
-    enum TestEnum:Int,Codable{
-        case up
-        case down
-    }
-    func testDecode(){
-        let mockData = TestModel(dataNumber:.down)
-        print(mockData)
-        let data = try! JSONEncoder().encode(mockData)
-        let result = try! JSONDecoder().decode(TestModelTwo.self, from: data)
-        XCTAssertEqual(result, TestModelTwo(dataNumber:0))
     }
 
 }

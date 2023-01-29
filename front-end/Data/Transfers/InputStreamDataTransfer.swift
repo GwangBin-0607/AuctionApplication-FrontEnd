@@ -7,9 +7,9 @@
 
 import Foundation
 
-enum StreamDataType:Codable{
-    case StreamStateUpdate
-    case StreamProductPriceUpdate
+enum InputStreamDataType:Codable{
+    case RequestResponse
+    case StreamProductPrice
     private enum CodingKeys: CodingKey {
         case StreamStateUpdate
         case StreamProductPriceUpdate
@@ -17,25 +17,24 @@ enum StreamDataType:Codable{
     init(from decoder: Decoder) throws {
          let label = try decoder.singleValueContainer().decode(Int8.self)
          switch label {
-         case 1: self = .StreamStateUpdate
-         case 2: self = .StreamProductPriceUpdate
+         case 1: self = .RequestResponse
+         case 2: self = .StreamProductPrice
          default:
              throw StreamError.InputStreamDataTypeDecodeError
-            // default: self = .other(label)
          }
       }
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self{
-        case .StreamStateUpdate:
+        case .RequestResponse:
             try container.encode(1)
-        case .StreamProductPriceUpdate:
+        case .StreamProductPrice:
             try container.encode(2)
         }
     }
 }
 struct InputStreamData:Decodable{
-    let dataType:StreamDataType
+    let dataType:InputStreamDataType
     let data:Decodable
     
     private enum CodingKeys: CodingKey {
@@ -44,16 +43,16 @@ struct InputStreamData:Decodable{
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let value = try container.decode(StreamDataType.self, forKey: .dataType)
+        let value = try container.decode(InputStreamDataType.self, forKey: .dataType)
         switch value {
-        case .StreamProductPriceUpdate:
+        case .StreamProductPrice:
             do{
                 let valueTwo = try container.decode(StreamPrice.self, forKey: .data)
                 self.data = valueTwo
             }catch{
                 throw StreamError.ProductPriceDecodeError
             }
-        case .StreamStateUpdate:
+        case .RequestResponse:
             do{
                 let valueTwo = try container.decode(ResponseStreamOutput.self, forKey: .data)
                 self.data = valueTwo

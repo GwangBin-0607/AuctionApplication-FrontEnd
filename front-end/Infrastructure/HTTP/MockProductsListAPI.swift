@@ -28,6 +28,9 @@ final class MockProductsListAPI:GetProductsList{
         
         
     }
+    func getProductData(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
+        
+    }
     
     
 }

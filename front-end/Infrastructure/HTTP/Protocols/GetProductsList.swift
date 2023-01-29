@@ -9,4 +9,5 @@ import Foundation
 
 protocol GetProductsList{
     func getProductData(requestNum:Int8,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
+    func getProductData(requestData:Data,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
 }

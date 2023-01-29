@@ -27,7 +27,7 @@ extension SceneDIContainer{
         ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
     }
     private func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: returnHTTPService(), StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState())
+        return ProductListRepository(ApiService: returnHTTPService(), StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
     }
     private func returnProductListState()->ProductListStateInterface{
         ProductListState()
@@ -43,6 +43,9 @@ extension SceneDIContainer{
     }
     private func returnOutputStreamCompletionHandler()->OutputStreamCompletionHandlerInterface{
         OutputStreamCompletionHandler()
+    }
+    private func returnHTTPDataTransfer()->Pr_HTTPDataTransfer{
+        HTTPDataTransfer()
     }
 }
 

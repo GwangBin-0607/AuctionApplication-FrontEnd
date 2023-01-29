@@ -11,7 +11,6 @@
 		881AEBFC29519622004A7CDA /* StreamingProductPriceListTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */; };
 		881AEC00295200CF004A7CDA /* FetchingProductsListTestDataTwo.json in Resources */ = {isa = PBXBuildFile; fileRef = 881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */; };
 		881F82F0297FB3CD00B058D7 /* MockInputData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881F82EF297FB3CD00B058D7 /* MockInputData.json */; };
-		8821C9102983E6DD00BABCC5 /* EnumDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8821C90F2983E6DD00BABCC5 /* EnumDecode.swift */; };
 		882CBE772908285C00550A8E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE762908285C00550A8E /* Product.swift */; };
 		882CBE8029083DC400550A8E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE7F29083DC400550A8E /* ProductListViewController.swift */; };
 		88583F2A297A7205001AE75C /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88583F29297A7205001AE75C /* Repository.swift */; };
@@ -79,6 +78,9 @@
 		88D09A9329815623005ADE60 /* HTTPServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D09A9229815623005ADE60 /* HTTPServiceTest.swift */; };
 		88D09A9629818928005ADE60 /* CollectionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D09A9529818928005ADE60 /* CollectionViewModelTest.swift */; };
 		88D2178A296456DC00715D2F /* OutputStreamCompletionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */; };
+		88D3AC492986BE8F0044BDE7 /* StreamTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC482986BE8F0044BDE7 /* StreamTest.swift */; };
+		88D3AC4B2986C76B0044BDE7 /* Pr_HTTPDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransfer.swift */; };
+		88D3AC4D2986C7C60044BDE7 /* HTTPDataTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC4C2986C7C60044BDE7 /* HTTPDataTransfer.swift */; };
 		88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */; };
 		88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712AD2912C16000E54378 /* ProductListCollectionView.swift */; };
 		88E712B22912C28B00E54378 /* ProductListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E712B12912C28B00E54378 /* ProductListCollectionViewLayout.swift */; };
@@ -115,7 +117,6 @@
 		881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = StreamingProductPriceListTestData.json; sourceTree = "<group>"; };
 		881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchingProductsListTestDataTwo.json; sourceTree = "<group>"; };
 		881F82EF297FB3CD00B058D7 /* MockInputData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockInputData.json; sourceTree = "<group>"; };
-		8821C90F2983E6DD00BABCC5 /* EnumDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumDecode.swift; sourceTree = "<group>"; };
 		882CBE762908285C00550A8E /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		882CBE7F29083DC400550A8E /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		88583F29297A7205001AE75C /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -189,6 +190,9 @@
 		88D09A9229815623005ADE60 /* HTTPServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPServiceTest.swift; sourceTree = "<group>"; };
 		88D09A9529818928005ADE60 /* CollectionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModelTest.swift; sourceTree = "<group>"; };
 		88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputStreamCompletionHandler.swift; sourceTree = "<group>"; };
+		88D3AC482986BE8F0044BDE7 /* StreamTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamTest.swift; sourceTree = "<group>"; };
+		88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_HTTPDataTransfer.swift; sourceTree = "<group>"; };
+		88D3AC4C2986C7C60044BDE7 /* HTTPDataTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDataTransfer.swift; sourceTree = "<group>"; };
 		88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCPStreamDataTransfer+Interface.swift"; sourceTree = "<group>"; };
 		88E712AD2912C16000E54378 /* ProductListCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionView.swift; sourceTree = "<group>"; };
 		88E712B12912C28B00E54378 /* ProductListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -348,7 +352,7 @@
 				88D09A9429818919005ADE60 /* CollectionViewModel */,
 				88D09A91298155FF005ADE60 /* HTTPService_Test */,
 				88583F2C297A9CEF001AE75C /* Repository_Test */,
-				8821C90F2983E6DD00BABCC5 /* EnumDecode.swift */,
+				88D3AC482986BE8F0044BDE7 /* StreamTest.swift */,
 			);
 			path = "front-endTests";
 			sourceTree = "<group>";
@@ -752,6 +756,8 @@
 				88C6A0A62967D10C0027BDD3 /* InputStreamDataTransfer.swift */,
 				88C6A0A92967D2780027BDD3 /* OutputStreamDataTransfer.swift */,
 				88D21789296456DC00715D2F /* OutputStreamCompletionHandler.swift */,
+				88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransfer.swift */,
+				88D3AC4C2986C7C60044BDE7 /* HTTPDataTransfer.swift */,
 			);
 			path = Transfers;
 			sourceTree = "<group>";
@@ -1052,6 +1058,7 @@
 				8878025929434BF0009F4F9A /* ProductImageRepositoryInterface.swift in Sources */,
 				88CED136297137E90048367A /* ProductListViewControllerViewModel.swift in Sources */,
 				88CE016329697057003169B5 /* Pr_ProductListCollectionViewCellViewModel.swift in Sources */,
+				88D3AC4D2986C7C60044BDE7 /* HTTPDataTransfer.swift in Sources */,
 				8887D1512935A65C005DA3C6 /* MainContainerViewController.swift in Sources */,
 				8878025729434399009F4F9A /* ProductImageRepository+Interface.swift in Sources */,
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
@@ -1064,6 +1071,7 @@
 				88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */,
 				88BF04C129557CDB001F7725 /* Pr_ProductListUsecase.swift in Sources */,
 				888B4D30292F453B00784E46 /* ProductListViewCoordinator.swift in Sources */,
+				88D3AC4B2986C76B0044BDE7 /* Pr_HTTPDataTransfer.swift in Sources */,
 				8878025D29439B66009F4F9A /* ProductImageAPI+GetProductImage.swift in Sources */,
 				88BF04C529557F01001F7725 /* ProductListRepositoryInterface.swift in Sources */,
 				88CE01732969840A003169B5 /* ProductImageCacheRepositoryInterface.swift in Sources */,
@@ -1077,10 +1085,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8821C9102983E6DD00BABCC5 /* EnumDecode.swift in Sources */,
 				88583F2A297A7205001AE75C /* Repository.swift in Sources */,
 				88D09A9629818928005ADE60 /* CollectionViewModelTest.swift in Sources */,
 				88D09A9329815623005ADE60 /* HTTPServiceTest.swift in Sources */,
+				88D3AC492986BE8F0044BDE7 /* StreamTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

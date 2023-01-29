@@ -26,9 +26,10 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let disposeBag:DisposeBag
     
     private let updateStreamStateObserver:AnyObserver<Void>
+    private let httpTransfer:Pr_HTTPDataTransfer
     let streamingList:Observable<Result<[StreamPrice],StreamError>>
     init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface,TCPStreamDataTransfer:TCPStreamDataTransferInterface,
-         ProductListState:ProductListStateInterface) {
+         ProductListState:ProductListStateInterface,HTTPDataTransfer:Pr_HTTPDataTransfer) {
         productListState = ProductListState
         socketDataTransfer = TCPStreamDataTransfer
         disposeBag = DisposeBag()
@@ -37,7 +38,7 @@ final class ProductListRepository:ProductListRepositoryInterface{
         let updateStreamState = PublishSubject<Void>()
         updateStreamStateObserver = updateStreamState.asObserver()
         streamingList = streamingProductPrice.inputDataObservable.map(socketDataTransfer.decode(result:))
-        
+        httpTransfer = HTTPDataTransfer
         Observable.combineLatest(updateStreamState,streamingProductPrice.isSocketConnect.distinctUntilChanged(), resultSelector: {
             [weak self] _,connectState -> StreamStateData? in
             guard let stateNumber = self?.productListState.returnTCPState()else{
@@ -74,8 +75,13 @@ final class ProductListRepository:ProductListRepositoryInterface{
 extension ProductListRepository{
     private func returnData(requestNum:Int8) -> Observable<Result<Data,HTTPError>> {
         return Observable.create { [weak self] observer in
-            self?.httpService.getProductData(requestNum:requestNum) { result in
-                observer.onNext(result)
+            let requestProductListData = RequestProductListData(index: requestNum)
+            if let data = try? self?.httpTransfer.requestProductList(requestData: requestProductListData){
+                self?.httpService.getProductData(requestData:data) { result in
+                    observer.onNext(result)
+                    observer.onCompleted()
+                }
+            }else{
                 observer.onCompleted()
             }
             return Disposables.create()
@@ -84,13 +90,16 @@ extension ProductListRepository{
     }
     func httpList()->Observable<Result<[Product],HTTPError>>{
         let requestNum = productListState.returnHttpState()
-        return returnData(requestNum: requestNum).map { result in
+        return returnData(requestNum: requestNum).withUnretained(self).map {
+            owner,result in
             switch result{
             case .success(let data):
-                guard let response = try? JSONDecoder().decode([Product].self, from: data)else{
+                do{
+                    let response = try owner.httpTransfer.responseProductList(data: data)
+                    return .success(response)
+                }catch{
                     return .failure(HTTPError.DecodeError)
                 }
-                return .success(response)
             case .failure(let error):
                 return .failure(error)
             }
@@ -113,7 +122,7 @@ extension ProductListRepository{
     private func encodeAndSend(data:Encodable)->Observable<Result<Bool,StreamError>>{
         return Observable<Result<Bool,StreamError>>.create { [weak self] observer in
             guard let self = self,
-                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .StreamStateUpdate, output: data)
+                  let (completionId,data) = try? self.socketDataTransfer.encodeOutputStreamState(dataType: .SocketStatusUpdate, output: data)
             else{
                 observer.onNext(.failure(StreamError.EncodeError))
                 observer.onCompleted()
