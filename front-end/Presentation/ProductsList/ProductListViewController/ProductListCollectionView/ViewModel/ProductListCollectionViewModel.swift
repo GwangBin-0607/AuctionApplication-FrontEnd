@@ -101,7 +101,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     }
     func returnAnimationValue(index: IndexPath) -> AnimtionValue? {
         if let product = try? products.value(){
-            return AnimtionValue(price: product[index.item].product_price, state: product[index.item].checkUpDown.state)
+            return AnimtionValue(price: product[index.item].product_price.price, state: product[index.item].checkUpDown.state)
         }else{
             return nil
         }
@@ -140,7 +140,7 @@ extension ProductListCollectionViewModel{
         var resultArray = before
         after.forEach { eachProduct in
             if let index = resultArray.firstIndex(where: {$0.product_id == eachProduct.product_id}){
-                resultArray[index].product_price = eachProduct.product_price
+                resultArray[index].product_price.price = eachProduct.product_price
                 resultArray[index].checkUpDown.state = eachProduct.state
             }
         }

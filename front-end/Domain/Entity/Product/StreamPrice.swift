@@ -10,5 +10,6 @@ import Foundation
 struct StreamPrice:Codable{
     let product_id:Int
     let product_price:Int
+    let auction_date:String
     let state:Bool
 }

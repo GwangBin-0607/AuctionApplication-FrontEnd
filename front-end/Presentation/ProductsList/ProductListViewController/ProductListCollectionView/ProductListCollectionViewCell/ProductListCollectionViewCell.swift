@@ -54,7 +54,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             data.withUnretained(self).do { owner,item in
                 owner.tag = item.product_id
                 owner.titleLabel.text = item.product_name
-                owner.priceLabel.text = String(item.product_price)
+                owner.priceLabel.text = String(item.product_price.price)
                 if item.checkUpDown.state{
                     owner.checkUpDown.image = UIImage(named: "upState")
                 }else{

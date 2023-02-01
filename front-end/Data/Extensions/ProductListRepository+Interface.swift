@@ -98,6 +98,7 @@ extension ProductListRepository{
                     let response = try owner.httpTransfer.responseProductList(data: data)
                     return .success(response)
                 }catch{
+                    print(error)
                     return .failure(HTTPError.DecodeError)
                 }
             case .failure(let error):

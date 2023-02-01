@@ -47,6 +47,7 @@ final class StreamTest: XCTestCase {
             switch result {
             case .success(let updateList):
                 promise.fulfill()
+                print(updateList)
                 XCTAssertEqual(updateList[0].product_price, 7000)
             default:
                 break;

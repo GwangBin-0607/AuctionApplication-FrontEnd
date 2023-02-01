@@ -10,7 +10,7 @@ import UIKit
 import RxDataSources
 struct Product:Decodable{
     let product_id:Int
-    var product_price:Int
+    var original_price:Int
     let imageURL:[Product_Images]
     var mainImageURL:String?{
         get{
@@ -24,13 +24,20 @@ struct Product:Decodable{
     let product_name:String
     var checkUpDown:ProductUpDown
     var imageHeight:CGFloat!
+    var product_price:ProductPrice
     enum CodingKeys:String,CodingKey{
         case product_id
-        case product_price
+        case original_price
         case product_name
         case imageURL = "Product_Images"
         case checkUpDown = "Product_UpDown"
+        case product_price = "Product_Price"
     }
+}
+struct ProductPrice:Decodable{
+    var auction_date:String
+    var price:Int
+    
 }
 struct ProductUpDown:Decodable{
     var state:Bool
@@ -40,7 +47,7 @@ extension Product:IdentifiableType,Equatable{
         product_id
     }
     static func == (lhs: Product, rhs: Product) -> Bool {
-        lhs.product_id == rhs.product_id && lhs.product_price == rhs.product_price
+        lhs.product_id == rhs.product_id && lhs.product_price.price == rhs.product_price.price && lhs.product_price.auction_date == rhs.product_price.auction_date
     }
 }
 struct ProductSection{
