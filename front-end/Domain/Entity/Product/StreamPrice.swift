@@ -12,4 +12,5 @@ struct StreamPrice:Codable{
     let product_price:Int
     let auction_date:String
     let state:Bool
+    let beforePrice:Int
 }

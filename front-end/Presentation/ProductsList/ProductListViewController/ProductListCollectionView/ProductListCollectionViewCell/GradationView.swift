@@ -15,10 +15,11 @@ final class GradationView:UIView{
     }
     init(){
         gradationLayer = CAGradientLayer()
-        gradationLayer.colors = [UIColor.darkGray.withAlphaComponent(0.7).cgColor,UIColor.systemGroupedBackground.withAlphaComponent(0.5).cgColor]
+        gradationLayer.colors = [UIColor.darkGray.withAlphaComponent(0.7).cgColor,UIColor.systemGroupedBackground.withAlphaComponent(0.7).cgColor]
         gradationLayer.locations = [0.5 , 1.0]
         gradationLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradationLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
+        gradationLayer.cornerRadius = 10
         super.init(frame: .zero)
         self.layer.addSublayer(gradationLayer)
     }

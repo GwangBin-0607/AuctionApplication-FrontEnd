@@ -36,21 +36,27 @@ final class HTTPServiceTest: XCTestCase {
         }
     }
     func test_productList(){
-//        let promise = expectation(description: "Http service test")
-//        httpService.getProductData(requestNum: 0, onComplete: {
-//            result in
-//            switch result {
-//            case .success(let data):
-//                promise.fulfill()
-//                XCTAssertNotNil(data)
-//            case .failure(let error):
-//                promise.fulfill()
-//                let er = error as! HTTPError
-//                print(er)
-//                XCTAssertEqual(er,HTTPError.StatusError)
-//            }
-//        })
-//        wait(for: [promise], timeout: 5.0)
+        let promise = expectation(description: "Http service test")
+        let data = RequestProductListData(index: 0)
+        let dataEncode = try! JSONEncoder().encode(data)
+        httpService.getProductData(requestData: dataEncode, onComplete: {
+            result in
+            switch result {
+            case .success(let data):
+                promise.fulfill()
+                print(data)
+                let decode = JSONDecoder()
+                let products = try! decode.decode([Product].self, from: data)
+                print(products)
+                XCTAssertEqual(products.count, 15)
+            case .failure(let error):
+                promise.fulfill()
+                let er = error as! HTTPError
+                print(er)
+                XCTAssertEqual(er,HTTPError.StatusError)
+            }
+        })
+        wait(for: [promise], timeout: 5.0)
     }
 
 }

@@ -30,10 +30,6 @@ final class ProductListCollectionView: UICollectionView {
                 self?.scrollToItem(at: lastIndex, at: .bottom, animated: true)
             }
         }).disposed(by: disposeBag)
-        self.rx.itemSelected.subscribe(onNext: {
-            [weak self] i in
-            self?.viewModel.controlSocketState(state: .disconnect)
-        })
         
     }
     

@@ -37,6 +37,7 @@ struct Product:Decodable{
 struct ProductPrice:Decodable{
     var auction_date:String
     var price:Int
+    var beforePrice:Int
     
 }
 struct ProductUpDown:Decodable{

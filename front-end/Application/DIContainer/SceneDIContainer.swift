@@ -54,7 +54,7 @@ extension SceneDIContainer{
      func returnProductListUsecaseInterface(ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
         ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: ImageHeightRepository)
     }
-     func returnProductImageLoadUsecase(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
+     func returnProductImageLoadUsecaseInterface(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
         ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
     }
 }
@@ -66,7 +66,7 @@ extension SceneDIContainer{
     }
      func returnProductListCollectionViewModel(ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         let listUsecase = returnProductListUsecaseInterface(ImageHeightRepository: ImageRepository)
-        let imageLoadUsecase = returnProductImageLoadUsecase(ImageLoadRepository: ImageRepository)
+        let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
         return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel())
     }
