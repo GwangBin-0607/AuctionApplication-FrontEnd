@@ -12,9 +12,11 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
     private let collectionViewModel:Pr_ProductListCollectionViewModel
     private let errorAlterViewModel:Pr_ErrorAlterViewModel
     private let disposeBag:DisposeBag
+    let presentDetailProductObservable: Observable<Int?>
     init(collectionViewModel:Pr_ProductListCollectionViewModel,ErrorAlterViewModel:Pr_ErrorAlterViewModel) {
         self.collectionViewModel = collectionViewModel
         self.errorAlterViewModel = ErrorAlterViewModel
+        presentDetailProductObservable = self.collectionViewModel.presentDetailProductObservable
         disposeBag = DisposeBag()
         self.collectionViewModel.errorMessage.subscribe(onNext: {
             [weak self] err in

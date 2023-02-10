@@ -18,7 +18,8 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<[Product]>(value: [])
     let errorMessage: Observable<HTTPError>
-    
+    let presentDetailProductObserver: AnyObserver<Int>
+    var presentDetailProductObservable: Observable<Int?>!
     private let footerViewModel:Pr_ProductListCollectionFooterViewModel
     private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
     init(UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel) {
@@ -26,6 +27,8 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         self.footerViewModel = FooterViewModel
         self.cellViewModel = CellViewModel
         disposeBag = DisposeBag()
+        let presentDetailProductSubject = PublishSubject<Int>()
+        presentDetailProductObserver = presentDetailProductSubject.asObserver()
         let scrollSubject = PublishSubject<[Int]>()
         scrollScrollView = scrollSubject.asObserver()
         let requestSubject = PublishSubject<Void>()
@@ -37,6 +40,11 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
         socketState = usecase.returnObservableStreamState()
+        presentDetailProductObservable = presentDetailProductSubject.map({
+            [weak self] idx in
+            self?.returnProductId(index: idx)
+        })
+        
         scrollSubject.withUnretained(self).flatMap( { owner,visibleCells in
             owner.usecase.updateStreamProduct(visibleCell: visibleCells)
         }).subscribe(onNext: {
@@ -156,6 +164,14 @@ extension ProductListCollectionViewModel{
             
         }catch{
            return IndexPath(item: 0, section: 0)
+        }
+    }
+    private func returnProductId(index:Int)->Int?{
+        do{
+            let product = try products.value()
+            return product[index].product_id
+        }catch{
+            return nil
         }
     }
 }

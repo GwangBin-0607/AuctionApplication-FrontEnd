@@ -41,7 +41,10 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
 //            print("======================")
 //        }
     private func bind(){
-        
+        viewModel.presentDetailProductObservable.subscribe(onNext: {
+            productId in
+            
+        }).disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {
