@@ -2,7 +2,9 @@ import Foundation
 import UIKit
 final class MainContainerViewController:UIViewController{
     private let containerView:UIView
+    private let navigationView:UIView
     init() {
+        navigationView = UIView()
         containerView = UIView()
         super.init(nibName: nil, bundle: nil)
     }
@@ -14,9 +16,16 @@ final class MainContainerViewController:UIViewController{
         let view = UIView()
         view.backgroundColor = .red
         view.addSubview(containerView)
+        view.addSubview(navigationView)
+        navigationView.backgroundColor = .systemGreen
+        navigationView.translatesAutoresizingMaskIntoConstraints = false
         containerView.backgroundColor = .yellow
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        navigationView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        navigationView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        navigationView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        NSLayoutConstraint(item: navigationView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.2, constant: 0.0).isActive = true
+        containerView.topAnchor.constraint(equalTo:  navigationView.bottomAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true

@@ -6,7 +6,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private let viewModel:Pr_ProductListViewControllerViewModel
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
-    private let categoryView:UIView
     private let errorView:ErrorAlterView
     weak var delegate:TransitionProductListViewController?
     init(viewModel:Pr_ProductListViewControllerViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil,ErrorAlterView:ErrorAlterView) {
@@ -14,7 +13,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
         self.viewModel = viewModel
         collectionView = CollectionView
         disposeBag = DisposeBag()
-        categoryView = UIView()
         errorView = ErrorAlterView
         super.init(nibName: nil, bundle: nil)
         print("\(String(describing: self)) INIT")
@@ -24,7 +22,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindingViewModel()
+        bind()
 //        setCADisplay()
     }
 //        func setCADisplay(){
@@ -42,8 +40,8 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
 //            print(tum)
 //            print("======================")
 //        }
-    private func bindingViewModel(){
-
+    private func bind(){
+        
     }
     
     required init?(coder: NSCoder) {
@@ -59,20 +57,13 @@ extension ProductListViewController{
     private func setLayout()->UIView{
         let containerView = UIView()
         containerView.backgroundColor = .white
-        containerView.addSubview(categoryView)
-        categoryView.translatesAutoresizingMaskIntoConstraints = false
-        categoryView.backgroundColor = .red
         containerView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
         containerView.addSubview(errorView)
         errorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            categoryView.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor),
-            categoryView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            categoryView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            NSLayoutConstraint(item: categoryView, attribute: .height, relatedBy: .equal, toItem: containerView, attribute: .height, multiplier: 0.08, constant: 0.0),
-            collectionView.topAnchor.constraint(equalTo: categoryView.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: containerView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor),

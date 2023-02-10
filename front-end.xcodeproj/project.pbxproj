@@ -375,14 +375,6 @@
 			path = Product;
 			sourceTree = "<group>";
 		};
-		88769C282938B2B800FDA06A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				8887D1502935A65C005DA3C6 /* MainContainerViewController.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		88769C292938B2C000FDA06A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,7 +386,7 @@
 		8887D14F2935A642005DA3C6 /* Container */ = {
 			isa = PBXGroup;
 			children = (
-				88769C282938B2B800FDA06A /* Views */,
+				8887D1502935A65C005DA3C6 /* MainContainerViewController.swift */,
 				8887D1522935A6D6005DA3C6 /* Protocols */,
 			);
 			path = Container;
@@ -669,8 +661,8 @@
 		88CE0165296975AE003169B5 /* ProductListCollectionView */ = {
 			isa = PBXGroup;
 			children = (
-				88CE016A29697612003169B5 /* ViewModel */,
 				88E712AD2912C16000E54378 /* ProductListCollectionView.swift */,
+				88CE016A29697612003169B5 /* ViewModel */,
 				88CE0166296975BC003169B5 /* ProductListCollectionViewLayout */,
 				889FC3E929823107009B8A2A /* ProductListCollectionFooterView */,
 				88CE0167296975D2003169B5 /* ProductListCollectionViewCell */,

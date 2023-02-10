@@ -47,7 +47,7 @@ class ErrorAlterView:UIView{
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 12.0)
     }
-    func bind(){
+    private func bind(){
         viewModel.errorMessage.subscribe(onNext: {
             [weak self] message in
             self?.label.text = message
