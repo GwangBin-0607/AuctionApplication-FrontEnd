@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-protocol TransitioningViewController{
+protocol ContainerViewController{
     func present(ViewController:UIViewController?,animate:Bool)
     func dismiss(animate:Bool)
 }

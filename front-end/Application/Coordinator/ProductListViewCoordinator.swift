@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 final class ProductListViewCoordinator:Coordinator{
-    let containerViewController: TransitioningViewController
+    let containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:ProductListViewSceneDIContainer
-    init(ContainerViewController:TransitioningViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
     }

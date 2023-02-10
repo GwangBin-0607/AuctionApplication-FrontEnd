@@ -10,6 +10,6 @@ import Foundation
 protocol Coordinator:AnyObject{
     
     var childCoordinator:[Coordinator]{get set}
-    var containerViewController:TransitioningViewController{get}
+    var containerViewController:ContainerViewController{get}
     func start()->Void
 }

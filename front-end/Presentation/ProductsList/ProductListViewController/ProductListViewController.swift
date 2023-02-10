@@ -43,7 +43,6 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
     private func bind(){
         viewModel.presentDetailProductObservable.subscribe(onNext: {
             productId in
-            
         }).disposed(by: disposeBag)
     }
     
@@ -69,7 +68,7 @@ extension ProductListViewController{
             collectionView.topAnchor.constraint(equalTo: containerView.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             errorView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             errorView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             NSLayoutConstraint(item: errorView, attribute: .width, relatedBy: .equal, toItem: containerView, attribute: .width, multiplier: 0.4, constant: 0.0),

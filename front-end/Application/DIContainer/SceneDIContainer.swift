@@ -92,18 +92,34 @@ extension SceneDIContainer{
  
 }
 protocol MainContainerViewSceneDIContainer{
-    func returnProductListViewCoordinator(ContainerViewController:TransitioningViewController)->Coordinator
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator
+    func returnMainContainerViewController(setBackgroundColor:UIColor,borderWidth:CGFloat,borderColor:UIColor)->MainContainerViewController
 }
 
 //MARK: ProductList Coordinator
 extension SceneDIContainer:MainContainerViewSceneDIContainer{
-    func returnProductListViewCoordinator(ContainerViewController:TransitioningViewController)->Coordinator{
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
+    }
+    func returnMainContainerViewController(setBackgroundColor:UIColor,borderWidth:CGFloat,borderColor:UIColor) -> MainContainerViewController {
+        let navigationCircleViewModel = returnNavigationCircleViewModel()
+        let navigationCircleView = returnNavigationCornerRadiusView(setBackgroundColor: setBackgroundColor, navigationCircleViewModel: navigationCircleViewModel,borderWidth: borderWidth,borderColor: borderColor)
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
+        return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
+    }
+    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
+    }
+    private func returnNavigationCornerRadiusView(setBackgroundColor:UIColor,navigationCircleViewModel:Pr_NavigationCircleViewModel,borderWidth:CGFloat,borderColor:UIColor)->NavigationCornerRadiusView{
+        NavigationCornerRadiusView(setBackgroundColor: setBackgroundColor, ViewModel: navigationCircleViewModel,borderWidth: borderWidth,borderColor: borderColor)
+    }
+    private func returnNavigationCircleViewModel()->Pr_NavigationCircleViewModel{
+        NavigationCircleViewModel()
     }
 }
 protocol ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?) -> UIViewController
-    func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
@@ -119,7 +135,7 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning,ErrorAlterView: errorAlterView)
         return productListViewController
     }
-    func returnDetailProductViewCoordinator(ContainerViewController:TransitioningViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)
     }
 }

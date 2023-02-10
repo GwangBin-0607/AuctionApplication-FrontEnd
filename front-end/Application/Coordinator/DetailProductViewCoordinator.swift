@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
-    let containerViewController: TransitioningViewController
+    let containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:DetailProductViewSceneDIContainer
     let delegate: HasChildCoordinator
-    init(ContainerViewController:TransitioningViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator) {
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator) {
         self.delegate = DetailProductViewCoordinatorDelegate
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
