@@ -20,5 +20,6 @@ protocol Pr_ProductListCollectionViewModel{
     func controlSocketState(state:isConnecting)
     var presentDetailProductObservable:Observable<Int?>!{get}
     var presentDetailProductObserver:AnyObserver<Int>{get}
+    var updatingObserver:AnyObserver<Bool>{get}
 }
 

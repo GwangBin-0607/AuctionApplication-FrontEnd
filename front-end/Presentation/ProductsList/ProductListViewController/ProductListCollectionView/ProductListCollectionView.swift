@@ -34,6 +34,18 @@ final class ProductListCollectionView: UICollectionView {
             [weak self] idx in
             self?.viewModel.presentDetailProductObserver.onNext(idx.item)
         }).disposed(by: disposeBag)
+        self.rx.willBeginDragging.subscribe(onNext: {
+            [weak self] in
+            self?.viewModel.updatingObserver.onNext(false)
+        }).disposed(by: disposeBag)
+        self.rx.didEndDecelerating.subscribe(onNext: {
+            [weak self] in
+            self?.viewModel.updatingObserver.onNext(true)
+        }).disposed(by: disposeBag)
+        self.rx.didEndDragging.subscribe(onNext: {
+            [weak self] check in
+            self?.viewModel.updatingObserver.onNext(!check)
+        }).disposed(by: disposeBag)
         
     }
     
