@@ -2,14 +2,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxDataSources
-final class ProductListViewController: UIViewController,SetCoordinatorViewController {
+final class ProductListViewController: UIViewController {
     private let viewModel:Pr_ProductListViewControllerViewModel
     private let disposeBag:DisposeBag
     private let collectionView:ProductListCollectionView
     private let errorView:ErrorAlterView
-    weak var delegate:TransitionProductListViewController?
-    init(viewModel:Pr_ProductListViewControllerViewModel,CollectionView:ProductListCollectionView,transitioning:TransitionProductListViewController?=nil,ErrorAlterView:ErrorAlterView) {
-        self.delegate = transitioning
+    init(viewModel:Pr_ProductListViewControllerViewModel,CollectionView:ProductListCollectionView,ErrorAlterView:ErrorAlterView) {
         self.viewModel = viewModel
         collectionView = CollectionView
         disposeBag = DisposeBag()
@@ -41,9 +39,7 @@ final class ProductListViewController: UIViewController,SetCoordinatorViewContro
 //            print("======================")
 //        }
     private func bind(){
-        viewModel.presentDetailProductObservable.subscribe(onNext: {
-            productId in
-        }).disposed(by: disposeBag)
+        
     }
     
     required init?(coder: NSCoder) {

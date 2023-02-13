@@ -74,8 +74,8 @@ extension SceneDIContainer{
      func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
         ProductListCollectionViewLayout(viewModel: viewModel)
     }
-     func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel)->Pr_ProductListViewControllerViewModel{
-        ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel)
+    func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController)->Pr_ProductListViewControllerViewModel{
+        ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel,transitioning: transitioning)
     }
      func returnProductListCollectionFooterViewModel()->Pr_ProductListCollectionFooterViewModel{
         ProductListCollectionFooterViewModel()
@@ -116,22 +116,22 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     }
 }
 protocol ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionProductListViewController?) -> UIViewController
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
     func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController {
         let httpService = returnHTTPServices()
         let imageRepository = returnProductsImageRepository(httpService: httpService)
         let collectionViewModel = returnProductListCollectionViewModel(httpService: httpService,ImageRepository: imageRepository)
         let errorAlterViewModel = returnErrorAlterViewModel()
         let errorAlterView = returnErrorAlterView(errorAlterViewModel: errorAlterViewModel)
-        let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel)
+        let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel,transitioning: transitioning)
         let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel)
         let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
-        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,transitioning: transitioning,ErrorAlterView: errorAlterView)
+        let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
         return productListViewController
     }
     func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{

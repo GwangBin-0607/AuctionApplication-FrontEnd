@@ -8,16 +8,20 @@
 import Foundation
 import RxSwift
 
-class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel{
+class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,SetCoordinatorViewController{
     private let collectionViewModel:Pr_ProductListCollectionViewModel
     private let errorAlterViewModel:Pr_ErrorAlterViewModel
     private let disposeBag:DisposeBag
-    let presentDetailProductObservable: Observable<Int?>
-    init(collectionViewModel:Pr_ProductListCollectionViewModel,ErrorAlterViewModel:Pr_ErrorAlterViewModel) {
+    weak var delegate:TransitionProductListViewController?
+    init(collectionViewModel:Pr_ProductListCollectionViewModel,ErrorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController) {
+        self.delegate = transitioning
         self.collectionViewModel = collectionViewModel
         self.errorAlterViewModel = ErrorAlterViewModel
-        presentDetailProductObservable = self.collectionViewModel.presentDetailProductObservable
         disposeBag = DisposeBag()
+        self.collectionViewModel.presentDetailProductObservable.subscribe(onNext: {
+            [weak self] product_id in
+            self?.delegate?.presentDetailViewController()
+        }).disposed(by: disposeBag)
         self.collectionViewModel.errorMessage.subscribe(onNext: {
             [weak self] err in
             if err == HTTPError.EndProductList{

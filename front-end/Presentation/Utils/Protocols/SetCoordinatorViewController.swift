@@ -1,6 +1,6 @@
 import Foundation
 protocol SetCoordinatorViewController{
     associatedtype TransitionViewProtocol
-    var delegate:TransitionViewProtocol{get set}
+    var delegate:TransitionViewProtocol{get}
 }
 
