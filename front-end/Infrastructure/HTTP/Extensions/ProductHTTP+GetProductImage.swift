@@ -4,9 +4,10 @@ import RxSwift
 protocol GetProductImage{
     func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
 }
-class ProductImageAPI:GetProductImage{
+extension ProductHTTP:GetProductImage{
     func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        var urlRequest = URLRequest(url: URL(string: "http://localhost:3100/products/productimage")!)
+        var urlRequest = URLRequest(url:productImageURL)
+
         urlRequest.httpMethod = "POST"
         let json:Dictionary<String,String> = ["imageURL":imageURL]
         let data = try! JSONSerialization.data(withJSONObject: json, options: [])

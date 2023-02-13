@@ -2,19 +2,17 @@ import Foundation
 import UIKit
 
 
-final class SceneDIContainer{}
+final class SceneDIContainer{
+    let configure = ExportConfigure()
+}
 
 //MARK: Infrastructure
 extension SceneDIContainer{
-     func returnHTTPImageService()->GetProductImage{
-        ProductImageAPI()
-    }
-     func returnHTTPService()->GetProductsList{
-        ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist")
+     func returnHTTPServices()->GetProductsList&GetProductImage{
+         return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL())
     }
      func returnStreamingService()->SocketNetworkInterface{
-//        SocketNetwork(hostName: "ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com", portNumber: 8100)
-        SocketNetwork(hostName: "localhost", portNumber: 3200)
+         SocketNetwork(hostName: configure.getSocketHost(), portNumber: configure.getSocketPort())
     }
 }
 
@@ -23,11 +21,11 @@ extension SceneDIContainer{
      func returnProductCacheImageRepository()->ProductImageCacheRepositoryInterface{
         ProductImageCacheRepository()
     }
-     func returnProductsImageRepository()->ProductImageRepositoryInterface{
-        ProductImageRepository(ImageServer: returnHTTPImageService(),CacheRepository: returnProductCacheImageRepository())
+    func returnProductsImageRepository(httpService:GetProductImage)->ProductImageRepositoryInterface{
+        ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository())
     }
-     func returnProductListRepositoryInterface()->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: returnHTTPService(), StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
+    func returnProductListRepositoryInterface(httpService:GetProductsList)->ProductListRepositoryInterface{
+        return ProductListRepository(ApiService: httpService, StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
     }
      func returnProductListState()->ProductListStateInterface{
         ProductListState()
@@ -51,8 +49,8 @@ extension SceneDIContainer{
 
 //MARK: Usecase
 extension SceneDIContainer{
-     func returnProductListUsecaseInterface(ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
-        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(), ImageHeightRepo: ImageHeightRepository)
+    func returnProductListUsecaseInterface(httpService:GetProductsList,ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
+        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(httpService: httpService), ImageHeightRepo: ImageHeightRepository)
     }
      func returnProductImageLoadUsecaseInterface(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
         ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
@@ -64,8 +62,8 @@ extension SceneDIContainer{
      func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase)
     }
-     func returnProductListCollectionViewModel(ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
-        let listUsecase = returnProductListUsecaseInterface(ImageHeightRepository: ImageRepository)
+    func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
+        let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
         return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel())
@@ -125,8 +123,9 @@ protocol ProductListViewSceneDIContainer{
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController?=nil) -> UIViewController {
-        let imageRepository = returnProductsImageRepository()
-        let collectionViewModel = returnProductListCollectionViewModel(ImageRepository: imageRepository)
+        let httpService = returnHTTPServices()
+        let imageRepository = returnProductsImageRepository(httpService: httpService)
+        let collectionViewModel = returnProductListCollectionViewModel(httpService: httpService,ImageRepository: imageRepository)
         let errorAlterViewModel = returnErrorAlterViewModel()
         let errorAlterView = returnErrorAlterView(errorAlterViewModel: errorAlterViewModel)
         let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel)

@@ -16,15 +16,17 @@ enum HTTPError:Error{
     case EndProductList
     case NoImageData
 }
-final class ProductsListHTTP{
-    private let url:URL
-    init(ServerURL serverURL:String) {
-        url = URL(string:serverURL)!
+final class ProductHTTP{
+    let productListURL:URL
+    let productImageURL:URL
+    init(ProductListURL listURL:URL,ProductImageURL imageURL:URL) {
+        self.productListURL = listURL
+        self.productImageURL = imageURL
     }
 }
-extension ProductsListHTTP:GetProductsList{
+extension ProductHTTP:GetProductsList{
     func getProductData(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        var urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: productListURL)
         urlRequest.httpMethod = "POST"
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = requestData

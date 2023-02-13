@@ -13,7 +13,7 @@ final class HTTPServiceTest: XCTestCase {
     var httpService:GetProductsList!
 
     override func setUpWithError() throws {
-        httpService = ProductsListHTTP(ServerURL: "http://localhost:3100/products/alllist")
+        httpService = ProductHTTP(ServerURL: "http://localhost:3100/products/alllist")
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 

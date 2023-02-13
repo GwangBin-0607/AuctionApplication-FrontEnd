@@ -48,7 +48,7 @@ extension ProductImageRepository{
                     owner,cellImageTag in
                     switch cellImageTag.result {
                     case .success(let image):
-                        let downImage = owner.returnImageObservable(productId: productId, image: image)
+                        let downImage = owner.returnDownImage(productId: productId, image: image)
                         return CellImageTag(result: .success(downImage), tag: productId)
                     case .failure(let error):
                         return CellImageTag(result: .failure(error), tag: productId)
@@ -62,7 +62,7 @@ extension ProductImageRepository{
             return Disposables.create()
         }
     }
-    private func returnImageObservable(productId:Int,image:UIImage)->UIImage{
+    private func returnDownImage(productId:Int,image:UIImage)->UIImage{
         let downImage = downImageSize(image: image)
         setCacheImage(productId: productId, image: image)
         return downImage
