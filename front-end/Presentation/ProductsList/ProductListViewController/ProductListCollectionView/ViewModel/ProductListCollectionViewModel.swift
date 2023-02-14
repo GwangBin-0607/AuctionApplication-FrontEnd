@@ -19,7 +19,6 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let productsList: Observable<[ProductSection]>
     let requestProductsList: AnyObserver<Void>
     let socketState: Observable<isConnecting>
-    let scrollScrollView: AnyObserver<[Int]>
     let products = BehaviorSubject<ProductWithIsUpdating>(value: ProductWithIsUpdating(list: [], isUpdating: true))
     let errorMessage: Observable<HTTPError>
     let presentDetailProductObserver: AnyObserver<Int>
@@ -27,15 +26,15 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let updatingObserver: AnyObserver<Bool>
     private let footerViewModel:Pr_ProductListCollectionFooterViewModel
     private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
-    init(UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel) {
+    init
+    (UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel)
+    {
         self.usecase = UseCase
         self.footerViewModel = FooterViewModel
         self.cellViewModel = CellViewModel
         disposeBag = DisposeBag()
         let presentDetailProductSubject = PublishSubject<Int>()
         presentDetailProductObserver = presentDetailProductSubject.asObserver()
-        let scrollSubject = PublishSubject<[Int]>()
-        scrollScrollView = scrollSubject.asObserver()
         let requestSubject = PublishSubject<Void>()
         requestProductsList = requestSubject.asObserver()
         let errorSubject = PublishSubject<HTTPError>()
@@ -54,18 +53,34 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         socketState = usecase.returnObservableStreamState()
         let updatingSubject = BehaviorSubject<Bool>(value: true)
         updatingObserver = updatingSubject.asObserver()
+        print("\(String(describing: self)) INIT")
+        
         presentDetailProductObservable = presentDetailProductSubject.map({
             [weak self] idx in
             self?.returnProductId(index: idx)
         })
         
-        scrollSubject.withUnretained(self).flatMap( { owner,visibleCells in
-            owner.usecase.updateStreamProduct(visibleCell: visibleCells)
-        }).subscribe(onNext: {
-            error in
-            print("Error Result  \(error)")
-        },onDisposed: {
-            print("Disposed")
+        let streaming = usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
+            arg1,before in
+            let (owner,after) = arg1
+            return owner.sumResult(before: before.list, after: after)
+        })
+        Observable.combineLatest(updatingSubject.asObservable().distinctUntilChanged(),streaming).withUnretained(self).subscribe(onNext: {
+            arg1 in
+            let (owner,arg2) = arg1
+            let (isUpdating,result) = arg2
+            switch result {
+            case .success(let list):
+                owner.products.onNext(ProductWithIsUpdating(list: list, isUpdating: isUpdating))
+            case .failure(let err):
+                print("-========")
+                print(err)
+            }
+            
+        }).disposed(by: disposeBag)
+        usecase.returnObservableStreamState().subscribe(onNext: {
+            state in
+            //            print("\(state.socketConnect) ||||\(state.error)")
         }).disposed(by: disposeBag)
         
         requestSubject.asObservable().do(onNext: {
@@ -93,36 +108,9 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             }
         }).disposed(by: disposeBag)
         
-        usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
-            arg1,before in
-            let (owner,after) = arg1
-            return owner.sumResult(before: before.list, after: after)
-        }).withLatestFrom(updatingSubject.asObservable().distinctUntilChanged(), resultSelector: {
-            result,isUpdating in
-            (result,isUpdating)
-        }).withUnretained(self).subscribe(onNext: {
-            owner,arg1 in
-            let (result,isUpdating) = arg1
-            switch result {
-            case .success(let list):
-                owner.products.onNext(ProductWithIsUpdating(list: list, isUpdating: isUpdating))
-            case .failure(let err):
-                print("-========")
-                print(err)
-            }
-        }).disposed(by: disposeBag)
-            
-            
-
-        
-        usecase.returnObservableStreamState().subscribe(onNext: {
-            state in
-//            print("\(state.socketConnect) ||||\(state.error)")
-        }).disposed(by: disposeBag)
-        
-        print("\(String(describing: self)) INIT")
     }
-    deinit {
+    
+    deinit{
         print("\(String(describing: self)) DEINIT")
     }
     func controlSocketState(state: isConnecting) {
@@ -184,7 +172,7 @@ extension ProductListCollectionViewModel{
             return IndexPath(item: product.list.count-1, section: 0)
             
         }catch{
-           return IndexPath(item: 0, section: 0)
+            return IndexPath(item: 0, section: 0)
         }
     }
     private func returnProductId(index:Int)->Int?{
