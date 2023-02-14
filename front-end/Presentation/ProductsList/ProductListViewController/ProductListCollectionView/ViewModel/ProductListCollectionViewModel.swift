@@ -59,16 +59,18 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             [weak self] idx in
             self?.returnProductId(index: idx)
         })
-        
-        let streaming = usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
+
+        usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
             arg1,before in
+            print(before.list.count)
             let (owner,after) = arg1
             return owner.sumResult(before: before.list, after: after)
-        })
-        Observable.combineLatest(updatingSubject.asObservable().distinctUntilChanged(),streaming).withUnretained(self).subscribe(onNext: {
-            arg1 in
-            let (owner,arg2) = arg1
-            let (isUpdating,result) = arg2
+        }).withLatestFrom(updatingSubject.asObservable().distinctUntilChanged(), resultSelector: {
+            result,isUpdating in
+            (result,isUpdating)
+        }).withUnretained(self).subscribe(onNext: {
+            owner,arg1 in
+            let (result,isUpdating) = arg1
             switch result {
             case .success(let list):
                 owner.products.onNext(ProductWithIsUpdating(list: list, isUpdating: isUpdating))
@@ -76,7 +78,6 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
                 print("-========")
                 print(err)
             }
-            
         }).disposed(by: disposeBag)
         usecase.returnObservableStreamState().subscribe(onNext: {
             state in
