@@ -42,11 +42,9 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                 if returnArray.count == 0{
                     return .failure(StreamError.NoStreamPriceData)
                 }else{
-                    print("StreamPrice Data")
                     return .success(returnArray)
                 }
             }catch{
-                print(error)
                 return .failure(StreamError.InputStreamDataTypeDecodeError)
             }
         case .failure(let error):
