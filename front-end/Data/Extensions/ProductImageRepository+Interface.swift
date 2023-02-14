@@ -4,9 +4,11 @@ import RxSwift
 class ProductImageRepository:ProductImageRepositoryInterface{
     private let imageServer:GetProductImage
     private let cacheRepository:ProductImageCacheRepositoryInterface
-    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface) {
+    private let imageWidth:CGFloat
+    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface,imageWidth:CGFloat) {
         imageServer = ImageServer
         cacheRepository = CacheRepository
+        self.imageWidth = imageWidth
         print("\(String(describing: self)) INIT")
     }
     deinit {
@@ -21,22 +23,17 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     private func returnCacheImage(productId:Int)->UIImage?{
         return cacheRepository.getImage(key: productId)
     }
-    private func downImageSize(image:UIImage) -> UIImage {
-        let data = image.pngData()! as CFData
-        //        let imageSourceOptions = [kCGImageSourceShouldCache:false] as CFDictionary
-        let imageSource = CGImageSourceCreateWithData(data, nil)!
-        let maxPixel = max(image.size.width, image.size.height)
-        let downSampleOptions = [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
-            kCGImageSourceShouldCacheImmediately: true,
-            kCGImageSourceCreateThumbnailWithTransform: true,
-            kCGImageSourceThumbnailMaxPixelSize: maxPixel
-        ] as CFDictionary
-        
-        let downSampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downSampleOptions)!
-        
-        let newImage = UIImage(cgImage: downSampledImage)
-        return newImage
+    private func downImageSize(image:UIImage,newWidth:CGFloat) -> UIImage{
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+
+        let size = CGSize(width: newWidth, height: newHeight)
+        let render = UIGraphicsImageRenderer(size: size)
+        let renderImage = render.image { context in
+            print(Thread.isMainThread)
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+        return renderImage
     }
 }
 extension ProductImageRepository{
@@ -63,8 +60,8 @@ extension ProductImageRepository{
         }
     }
     private func returnDownImage(productId:Int,image:UIImage)->UIImage{
-        let downImage = downImageSize(image: image)
-        setCacheImage(productId: productId, image: image)
+        let downImage = downImageSize(image: image, newWidth: imageWidth)
+        setCacheImage(productId: productId, image: downImage)
         return downImage
     }
     private func imageLoadObservable(productId:Int,imageURL:String?)->Observable<CellImageTag>{

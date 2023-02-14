@@ -4,6 +4,11 @@ import UIKit
 
 final class SceneDIContainer{
     let configure = ExportConfigure()
+    func returnImageWidth(scale:CGFloat)->CGFloat{
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        return screenWidth/scale
+    }
 }
 
 //MARK: Infrastructure
@@ -22,7 +27,7 @@ extension SceneDIContainer{
         ProductImageCacheRepository()
     }
     func returnProductsImageRepository(httpService:GetProductImage)->ProductImageRepositoryInterface{
-        ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository())
+        return ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository(),imageWidth: returnImageWidth(scale: 2.0))
     }
     func returnProductListRepositoryInterface(httpService:GetProductsList)->ProductListRepositoryInterface{
         return ProductListRepository(ApiService: httpService, StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())

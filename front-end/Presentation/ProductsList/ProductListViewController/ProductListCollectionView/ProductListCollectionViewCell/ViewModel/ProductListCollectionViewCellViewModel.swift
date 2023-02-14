@@ -9,9 +9,11 @@ import Foundation
 import RxSwift
 
 class ProductListCollectionViewCellViewModel{
+    let imageLoadSerialQueue:DispatchQueue
     let imageUsecase:Pr_ProductImageLoadUsecase
     init(ImageUsecase:Pr_ProductImageLoadUsecase) {
         self.imageUsecase = ImageUsecase
+        self.imageLoadSerialQueue = DispatchQueue(label: "ImageLoad")
     }
 }
 extension ProductListCollectionViewCellViewModel:Pr_ProductListCollectionViewCellViewModel{

@@ -35,6 +35,9 @@ class NavigationCornerRadiusView:CornerRadiusView{
             animationReverser(animation: alphaAnimation, reverse: true)
         }
     }
+    deinit {
+        alphaAnimation.stopAnimation(true)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -53,8 +56,6 @@ extension NavigationCornerRadiusView{
     }
     private func animationReverser(animation:UIViewPropertyAnimator,reverse:Bool){
         animation.isReversed = reverse
-        if animation.fractionComplete == 0.0 || animation.fractionComplete == 1.0{
-            animation.startAnimation()
-        }
+        animation.startAnimation()
     }
 }

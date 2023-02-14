@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 final class ProductListCollectionViewLayout:UICollectionViewLayout{
-    private let numberOfColumns = 2
     private let cellPadding: CGFloat = 6
     
     private var cache: [UICollectionViewLayoutAttributes] = []
@@ -46,13 +45,13 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
             print("Prepare")
             self.cache.removeAll()
             removeFooterViewAttributes()
-            let columnWidth = contentWidth / CGFloat(numberOfColumns)
+            let columnWidth = contentWidth / CGFloat(self.viewModel.returnContentCountOfWidth())
             var xOffset: [CGFloat] = []
-            for column in 0..<numberOfColumns {
+            for column in 0..<self.viewModel.returnContentCountOfWidth() {
                 xOffset.append(CGFloat(column) * columnWidth)
             }
             var column = 0
-            var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
+            var yOffset: [CGFloat] = .init(repeating: 0, count: self.viewModel.returnContentCountOfWidth())
             
             for item in 0..<collectionView.numberOfItems(inSection: 0) {
                 let indexPath = IndexPath(item: item, section: 0)
@@ -72,18 +71,18 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
                 contentHeight = max(contentHeight, frame.maxY)
                 yOffset[column] = yOffset[column] + height
                 
-                column = column < (numberOfColumns - 1) ? (column + 1) : 0
+                column = column < (self.viewModel.returnContentCountOfWidth() - 1) ? (column + 1) : 0
             }
-            setFooterViewAttribute(maxY: cache.last?.frame.maxY)
+            setFooterViewAttribute(maxY: contentHeight)
         }
     }
-    func removeFooterViewAttributes(){
+    private func removeFooterViewAttributes(){
         if cache.last?.representedElementKind != nil{
             cache.remove(at: cache.count-1)
         }
     }
-    private func setFooterViewAttribute(maxY:CGFloat?){
-        if let maxY = maxY{
+    private func setFooterViewAttribute(maxY:CGFloat){
+        if maxY != 0{
             let f = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: 0))
             f.frame = CGRect(x: 0.0, y: maxY, width: contentWidth, height: 50)
             cache.append(f)
