@@ -20,15 +20,16 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         return CGSize(width: contentWidth, height: contentHeight)
     }
     private let minimunCellHeight:CGFloat = 150
-    init(viewModel:Pr_ProductListCollectionViewLayoutViewModel) {
+    init(viewModel:Pr_ProductListCollectionViewLayoutViewModel,cellCount:Int) {
         self.viewModel = viewModel
+        self.cellCount = cellCount
         super.init()
         print("Layout INIT")
     }
     deinit {
         print("CollectionViewLayOut DEINIT")
     }
-    private let cellCount = 2
+    private let cellCount:Int
     
     
     required init?(coder: NSCoder) {
@@ -45,7 +46,6 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         if self.cache.count-1 == collectionView.numberOfItems(inSection: 0){
             return
         }else{
-            print("Prepare")
             removeFooterViewAttributes()
             let columnWidth = contentWidth / CGFloat(cellCount)
             var xOffset: [CGFloat] = []
@@ -56,7 +56,6 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
                 let indexPath = IndexPath(item: item, section: 0)
                 
                 let photoHeight = max(viewModel.returnImageHeightFromViewModel(index: indexPath),minimunCellHeight)
-                print(photoHeight)
                 let height = cellPadding * 2 + photoHeight
                 let frame = CGRect(x: xOffset[column],
                                    y: yOffset[column],
@@ -100,6 +99,12 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         }
         return visibleLayoutAttributes
     }
-    
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return cache.last
+    }
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        return cache[indexPath.item]
+    }
+
 }
 

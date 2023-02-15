@@ -4,10 +4,13 @@ import UIKit
 
 final class SceneDIContainer{
     let configure = ExportConfigure()
-    func returnImageWidth(scale:CGFloat)->CGFloat{
+    private func returnImageWidth(scale:CGFloat)->CGFloat{
         let screenSize: CGRect = UIScreen.main.bounds
         let screenWidth = screenSize.width
         return screenWidth/scale
+    }
+    private func returnCellCount()->Int{
+        2
     }
 }
 
@@ -27,7 +30,7 @@ extension SceneDIContainer{
         ProductImageCacheRepository()
     }
     func returnProductsImageRepository(httpService:GetProductImage)->ProductImageRepositoryInterface{
-        return ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository(),imageWidth: returnImageWidth(scale: 2.0))
+        return ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository())
     }
     func returnProductListRepositoryInterface(httpService:GetProductsList)->ProductListRepositoryInterface{
         return ProductListRepository(ApiService: httpService, StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
@@ -65,19 +68,19 @@ extension SceneDIContainer{
 //MARK: ViewModel,View
 extension SceneDIContainer{
      func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
-        ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase)
+         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,ImageWidth: returnImageWidth(scale: 2.0))
     }
     func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
-        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel())
+        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),ImageWidth: returnImageWidth(scale: 2.0))
     }
      func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)
     }
      func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
-        ProductListCollectionViewLayout(viewModel: viewModel)
+        ProductListCollectionViewLayout(viewModel: viewModel,cellCount: returnCellCount())
     }
     func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController)->Pr_ProductListViewControllerViewModel{
         ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel,transitioning: transitioning)

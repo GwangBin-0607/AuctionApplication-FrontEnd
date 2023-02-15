@@ -26,9 +26,11 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let updatingObserver: AnyObserver<Bool>
     private let footerViewModel:Pr_ProductListCollectionFooterViewModel
     private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
+    private let imageWidth:CGFloat
     init
-    (UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel)
+    (UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel,ImageWidth:CGFloat)
     {
+        self.imageWidth = ImageWidth
         self.usecase = UseCase
         self.footerViewModel = FooterViewModel
         self.cellViewModel = CellViewModel
@@ -62,7 +64,6 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
 
         usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
             arg1,before in
-            print(before.list.count)
             let (owner,after) = arg1
             return owner.sumResult(before: before.list, after: after)
         }).withLatestFrom(updatingSubject.asObservable().distinctUntilChanged(), resultSelector: {
@@ -89,7 +90,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             self?.footerViewModel.activityObserver.onNext(true)
         }).withUnretained(self).flatMap({
             owner,_ in
-            return owner.usecase.returnProductList()
+            return owner.usecase.returnProductList(imageWidth:owner.imageWidth)
         }).withUnretained(self).withLatestFrom(products,resultSelector: {
             arg1,before in
             let (owner,after) = arg1

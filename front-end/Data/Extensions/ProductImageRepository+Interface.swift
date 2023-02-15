@@ -4,11 +4,9 @@ import RxSwift
 class ProductImageRepository:ProductImageRepositoryInterface{
     private let imageServer:GetProductImage
     private let cacheRepository:ProductImageCacheRepositoryInterface
-    private let imageWidth:CGFloat
-    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface,imageWidth:CGFloat) {
+    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface) {
         imageServer = ImageServer
         cacheRepository = CacheRepository
-        self.imageWidth = imageWidth
         print("\(String(describing: self)) INIT")
     }
     deinit {
@@ -25,7 +23,6 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
     private func downImageSize(image:UIImage,newWidth:CGFloat) -> UIImage{
         let scale = newWidth / image.size.width
-        print(scale)
         let newHeight = image.size.height * scale
 
         let size = CGSize(width: newWidth, height: newHeight)
@@ -37,7 +34,7 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
 }
 extension ProductImageRepository{
-    func returnImage(productId:Int,imageURL:String?)->Observable<CellImageTag>{
+    func returnImage(productId:Int,imageURL:String?,imageWidth:CGFloat)->Observable<CellImageTag>{
         guard let cacheImage = returnCacheImage(productId: productId) else{
             return imageLoadObservable(productId:productId,imageURL: imageURL)
                 .withUnretained(self)
@@ -45,7 +42,7 @@ extension ProductImageRepository{
                     owner,cellImageTag in
                     switch cellImageTag.result {
                     case .success(let image):
-                        let downImage = owner.returnDownImage(productId: productId, image: image)
+                        let downImage = owner.returnDownImage(productId: productId, image: image,imageWidth: imageWidth)
                         return CellImageTag(result: .success(downImage), tag: productId)
                     case .failure(let error):
                         return CellImageTag(result: .failure(error), tag: productId)
@@ -59,7 +56,7 @@ extension ProductImageRepository{
             return Disposables.create()
         }
     }
-    private func returnDownImage(productId:Int,image:UIImage)->UIImage{
+    private func returnDownImage(productId:Int,image:UIImage,imageWidth:CGFloat)->UIImage{
         let downImage = downImageSize(image: image, newWidth: imageWidth)
         setCacheImage(productId: productId, image: downImage)
         return downImage
@@ -91,11 +88,11 @@ extension ProductImageRepository{
     private func decodeImage(imageData:Data)->UIImage{
         return UIImage(data: imageData)!
     }
-    private func returnImageHeight(product:Product)->Observable<Product>{
+    private func returnImageHeight(product:Product,imageWidth:CGFloat)->Observable<Product>{
         var inProduct = product
         guard let CacheImage = self.returnCacheImage(productId: inProduct.product_id)
         else{
-            return returnImage(productId: inProduct.product_id, imageURL: inProduct.mainImageURL).withUnretained(self).map { owner,cellImageTag in
+            return returnImage(productId: inProduct.product_id, imageURL: inProduct.mainImageURL,imageWidth: imageWidth).withUnretained(self).map { owner,cellImageTag in
                 switch cellImageTag.result{
                 case .success(let image):
                     inProduct.imageHeight = owner.returnImageHeight(image: image)
@@ -114,11 +111,11 @@ extension ProductImageRepository{
         }
     }
     
-    func returnProductWithImageHeight(product: [Product]) -> Observable<[Product]> {
+    func returnProductWithImageHeight(product: [Product],imageWidth:CGFloat) -> Observable<[Product]> {
         var observables:[Observable<Product>]=[]
         product.forEach { product in
             if product.imageHeight == nil{
-                let observable = returnImageHeight(product:product)
+                let observable = returnImageHeight(product:product,imageWidth: imageWidth)
                 observables.append(observable)
             }else{
                 let observable = Observable<Product>.create { ob in

@@ -8,6 +8,7 @@ final class ProductListCollectionView: UICollectionView {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
+        self.backgroundColor = .black
         self.register(ProductListCollectionViewCell.self, forCellWithReuseIdentifier: ProductListCollectionViewCell.Identifier)
         self.register(ProductListCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ProductListCollectionFooterView.Identifier)
         bind()
@@ -26,7 +27,7 @@ final class ProductListCollectionView: UICollectionView {
         }).disposed(by: disposeBag)
         self.rx.itemSelected.subscribe(onNext: {
             [weak self] idx in
-            self?.viewModel.presentDetailProductObserver.onNext(idx.item)
+            self?.reloadItems(at: [IndexPath(item: 0, section: 0)])
         }).disposed(by: disposeBag)
         self.rx.willBeginDragging.subscribe(onNext: {
             [weak self] in
@@ -40,26 +41,31 @@ final class ProductListCollectionView: UICollectionView {
             [weak self] check in
             self?.viewModel.updatingObserver.onNext(!check)
         }).disposed(by: disposeBag)
-        
     }
     
- 
-deinit {
-    print("\(String(describing: self)) DEINIT")
-}
+    deinit {
+        print("\(String(describing: self)) DEINIT")
+    }
     override func reloadItems(at indexPaths: [IndexPath]) {
         for i in 0..<indexPaths.count{
             if let cell = self.cellForItem(at: indexPaths[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
-                print("Animate")
                 let animationValue = self.viewModel.returnAnimationValue(index: indexPaths[i])
+                cell.animationObserver.onNext(animationValue)
+            }
+        }
+    }
+    override func animationItem(idx: [IndexPath]) {
+        for i in 0..<idx.count{
+            if let cell = self.cellForItem(at: idx[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
+                let animationValue = self.viewModel.returnAnimationValue(index: idx[i])
                 cell.animationObserver.onNext(animationValue)
             }
         }
     }
 }
 extension ProductListCollectionView{
-    func returnDataSource()->RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
-        return RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
+    func returnDataSource()->CustomDataSource<ProductSection>{
+        return CustomDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
             return .animated
         }, configureCell: { [weak self] _ , colview, indexpath, item in

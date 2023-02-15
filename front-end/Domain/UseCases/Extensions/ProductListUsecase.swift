@@ -12,11 +12,11 @@ class ProductListWithImageHeightUsecase{
     }
 }
 extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase{
-    func returnProductList() -> Observable<Result<[Product], HTTPError>> {
+    func returnProductList(imageWidth:CGFloat) -> Observable<Result<[Product], HTTPError>> {
         listRepo.httpList().withUnretained(self).flatMap { owner,result in
             switch result{
             case .success(let list):
-                return owner.imageHeightRepo.returnProductWithImageHeight(product: list).flatMap { list in
+                return owner.imageHeightRepo.returnProductWithImageHeight(product: list,imageWidth:imageWidth).flatMap { list in
                     return Observable<Result<[Product],HTTPError>>.create { ob in
                         ob.onNext(.success(list))
                         ob.onCompleted()

@@ -11,14 +11,16 @@ import RxSwift
 class ProductListCollectionViewCellViewModel{
     let imageLoadSerialQueue:DispatchQueue
     let imageUsecase:Pr_ProductImageLoadUsecase
-    init(ImageUsecase:Pr_ProductImageLoadUsecase) {
+    private let imageWidth:CGFloat
+    init(ImageUsecase:Pr_ProductImageLoadUsecase,ImageWidth:CGFloat) {
         self.imageUsecase = ImageUsecase
+        self.imageWidth = ImageWidth
         self.imageLoadSerialQueue = DispatchQueue(label: "ImageLoad")
     }
 }
 extension ProductListCollectionViewCellViewModel:Pr_ProductListCollectionViewCellViewModel{
     func returnImage(productId: Int, imageURL: String?) -> Observable<CellImageTag>{
-        return imageUsecase.returnImage(productId: productId, imageURL: imageURL)
+        return imageUsecase.returnImage(productId: productId, imageURL: imageURL,imageWidth: imageWidth)
             .subscribe(on: ConcurrentDispatchQueueScheduler(qos: .background))
     }
 }
