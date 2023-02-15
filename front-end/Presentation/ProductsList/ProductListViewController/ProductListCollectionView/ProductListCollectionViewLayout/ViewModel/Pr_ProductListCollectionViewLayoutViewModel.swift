@@ -9,7 +9,6 @@ import Foundation
 
 protocol Pr_ProductListCollectionViewLayoutViewModel{
     func returnImageHeightFromViewModel(index:IndexPath)->CGFloat
-    func returnContentCountOfWidth()->Int
 }
 extension ProductListCollectionViewModel:Pr_ProductListCollectionViewLayoutViewModel{
     func returnImageHeightFromViewModel(index: IndexPath) -> CGFloat {
@@ -19,8 +18,5 @@ extension ProductListCollectionViewModel:Pr_ProductListCollectionViewLayoutViewM
         }catch{
             return 150
         }
-    }
-    func returnContentCountOfWidth() -> Int {
-        2
     }
 }

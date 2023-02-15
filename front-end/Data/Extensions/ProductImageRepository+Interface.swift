@@ -25,12 +25,12 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
     private func downImageSize(image:UIImage,newWidth:CGFloat) -> UIImage{
         let scale = newWidth / image.size.width
+        print(scale)
         let newHeight = image.size.height * scale
 
         let size = CGSize(width: newWidth, height: newHeight)
         let render = UIGraphicsImageRenderer(size: size)
         let renderImage = render.image { context in
-            print(Thread.isMainThread)
             image.draw(in: CGRect(origin: .zero, size: size))
         }
         return renderImage

@@ -19,6 +19,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     override var collectionViewContentSize: CGSize {
         return CGSize(width: contentWidth, height: contentHeight)
     }
+    private let minimunCellHeight:CGFloat = 150
     init(viewModel:Pr_ProductListCollectionViewLayoutViewModel) {
         self.viewModel = viewModel
         super.init()
@@ -27,12 +28,14 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     deinit {
         print("CollectionViewLayOut DEINIT")
     }
+    private let cellCount = 2
     
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    var column = 0
+    lazy var yOffset: [CGFloat] = .init(repeating: 0, count: cellCount)
     override func prepare() {
         guard
             let collectionView = collectionView
@@ -43,20 +46,17 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
             return
         }else{
             print("Prepare")
-            self.cache.removeAll()
             removeFooterViewAttributes()
-            let columnWidth = contentWidth / CGFloat(self.viewModel.returnContentCountOfWidth())
+            let columnWidth = contentWidth / CGFloat(cellCount)
             var xOffset: [CGFloat] = []
-            for column in 0..<self.viewModel.returnContentCountOfWidth() {
+            for column in 0..<cellCount {
                 xOffset.append(CGFloat(column) * columnWidth)
             }
-            var column = 0
-            var yOffset: [CGFloat] = .init(repeating: 0, count: self.viewModel.returnContentCountOfWidth())
-            
-            for item in 0..<collectionView.numberOfItems(inSection: 0) {
+            for item in cache.count..<collectionView.numberOfItems(inSection: 0) {
                 let indexPath = IndexPath(item: item, section: 0)
                 
-                let photoHeight = viewModel.returnImageHeightFromViewModel(index: indexPath)
+                let photoHeight = max(viewModel.returnImageHeightFromViewModel(index: indexPath),minimunCellHeight)
+                print(photoHeight)
                 let height = cellPadding * 2 + photoHeight
                 let frame = CGRect(x: xOffset[column],
                                    y: yOffset[column],
@@ -71,7 +71,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
                 contentHeight = max(contentHeight, frame.maxY)
                 yOffset[column] = yOffset[column] + height
                 
-                column = column < (self.viewModel.returnContentCountOfWidth() - 1) ? (column + 1) : 0
+                column = column < (cellCount - 1) ? (column + 1) : 0
             }
             setFooterViewAttribute(maxY: contentHeight)
         }

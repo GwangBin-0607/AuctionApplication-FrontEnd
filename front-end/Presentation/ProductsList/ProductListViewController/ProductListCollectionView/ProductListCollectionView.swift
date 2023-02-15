@@ -24,12 +24,6 @@ final class ProductListCollectionView: UICollectionView {
             [weak self] _,_,_ in
             self?.viewModel.requestProductsList.onNext(())
         }).disposed(by: disposeBag)
-        viewModel.errorMessage.subscribe(onNext: {
-            [weak self] _ in
-            if let lastIndex = self?.viewModel.lastIndex(){
-                self?.scrollToItem(at: lastIndex, at: .bottom, animated: true)
-            }
-        }).disposed(by: disposeBag)
         self.rx.itemSelected.subscribe(onNext: {
             [weak self] idx in
             self?.viewModel.presentDetailProductObserver.onNext(idx.item)
