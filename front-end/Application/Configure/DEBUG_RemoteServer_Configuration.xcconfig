@@ -1,5 +1,0 @@
-#include "../../../Pods/Target Support Files/Pods-front-end/Pods-front-end.cnf_debug(remoteserver).xcconfig"
-HTTP_LIST_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/alllist
-HTTP_IMAGE_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/productimage
-SOCKET_HOST = ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com
-SOCKET_PORT = 8100

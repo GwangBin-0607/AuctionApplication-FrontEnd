@@ -1,0 +1,5 @@
+#include "../../../Pods/Target Support Files/Pods-Auction/Pods-Auction.cnf_debug(localserver_docker).xcconfig"
+HTTP_LIST_URL = http:/$()/localhost:8099/products/alllist
+HTTP_IMAGE_URL = http:/$()/localhost:8099/products/productimage
+SOCKET_HOST = localhost
+SOCKET_PORT = 8100
