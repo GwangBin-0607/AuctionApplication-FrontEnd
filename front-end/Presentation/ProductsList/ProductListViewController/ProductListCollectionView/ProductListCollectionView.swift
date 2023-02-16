@@ -4,6 +4,7 @@ import RxDataSources
 final class ProductListCollectionView: UICollectionView {
     private let viewModel:Pr_ProductListCollectionViewModel
     private let disposeBag:DisposeBag
+    private var isScrolling:Bool = false
     init(collectionViewLayout layout:ProductListCollectionViewLayout,viewModel:Pr_ProductListCollectionViewModel) {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
@@ -31,15 +32,15 @@ final class ProductListCollectionView: UICollectionView {
         }).disposed(by: disposeBag)
         self.rx.willBeginDragging.subscribe(onNext: {
             [weak self] in
-            self?.viewModel.updatingObserver.onNext(false)
+            self?.isScrolling = true
         }).disposed(by: disposeBag)
         self.rx.didEndDecelerating.subscribe(onNext: {
             [weak self] in
-            self?.viewModel.updatingObserver.onNext(true)
+            self?.isScrolling = false
         }).disposed(by: disposeBag)
         self.rx.didEndDragging.subscribe(onNext: {
             [weak self] check in
-            self?.viewModel.updatingObserver.onNext(!check)
+            self?.isScrolling = check
         }).disposed(by: disposeBag)
     }
     
@@ -47,10 +48,12 @@ final class ProductListCollectionView: UICollectionView {
         print("\(String(describing: self)) DEINIT")
     }
     override func reloadItems(at indexPaths: [IndexPath]) {
-        for i in 0..<indexPaths.count{
-            if let cell = self.cellForItem(at: indexPaths[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
-                let animationValue = self.viewModel.returnAnimationValue(index: indexPaths[i])
-                cell.animationObserver.onNext(animationValue)
+        if !isScrolling{
+            for i in 0..<indexPaths.count{
+                if let cell = self.cellForItem(at: indexPaths[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
+                    let animationValue = self.viewModel.returnAnimationValue(index: indexPaths[i])
+                    cell.animationObserver.onNext(animationValue)
+                }
             }
         }
     }
