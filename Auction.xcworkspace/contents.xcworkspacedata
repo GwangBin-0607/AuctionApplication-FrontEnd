@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-<<<<<<< HEAD
-=======
    <FileRef
       location = "group:Auction.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
->>>>>>> parent of 1e99d4f (Revert "Change Project Name")
 </Workspace>
