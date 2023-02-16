@@ -54,18 +54,10 @@ final class ProductListCollectionView: UICollectionView {
             }
         }
     }
-    override func animationItem(idx: [IndexPath]) {
-        for i in 0..<idx.count{
-            if let cell = self.cellForItem(at: idx[i]) as? ProductListCollectionViewCell,self.visibleCells.contains(cell){
-                let animationValue = self.viewModel.returnAnimationValue(index: idx[i])
-                cell.animationObserver.onNext(animationValue)
-            }
-        }
-    }
 }
 extension ProductListCollectionView{
-    func returnDataSource()->CustomDataSource<ProductSection>{
-        return CustomDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
+    func returnDataSource()->Custom_RxCollectionViewSectionedAnimatedDataSource<ProductSection>{
+        return Custom_RxCollectionViewSectionedAnimatedDataSource(animationConfiguration: AnimationConfiguration(insertAnimation: .fade, reloadAnimation: .left, deleteAnimation: .fade), decideViewTransition: {
             _,_,change in
             return .animated
         }, configureCell: { [weak self] _ , colview, indexpath, item in

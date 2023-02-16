@@ -67,14 +67,15 @@ extension SceneDIContainer{
 
 //MARK: ViewModel,View
 extension SceneDIContainer{
-     func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase)->Pr_ProductListCollectionViewCellViewModel{
-         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,ImageWidth: returnImageWidth(scale: 2.0))
+    func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase,imageWidth:CGFloat)->Pr_ProductListCollectionViewCellViewModel{
+         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,ImageWidth: imageWidth)
     }
     func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
+        let imageWidth = returnImageWidth(scale: 2.0)
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
-        let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase)
-        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),ImageWidth: returnImageWidth(scale: 2.0))
+        let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
+        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),ImageWidth: imageWidth)
     }
      func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)

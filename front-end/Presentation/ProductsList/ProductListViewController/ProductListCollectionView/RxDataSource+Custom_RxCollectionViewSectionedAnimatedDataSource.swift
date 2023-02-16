@@ -1,11 +1,3 @@
-//
-//  RxCollectionViewSectionedAnimatedDataSource.swift
-//  RxExample
-//
-//  Created by Krunoslav Zaher on 7/2/15.
-//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
-//
-
 #if os(iOS) || os(tvOS)
 import Foundation
 import UIKit
@@ -14,10 +6,9 @@ import RxSwift
 import RxCocoa
 #endif
 import Differentiator
-
-open class RxCollectionViewSectionedAnimatedDataSource<Section: AnimatableSectionModelType>
-    : CollectionViewSectionedDataSource<Section>
-    , RxCollectionViewDataSourceType {
+import RxDataSources
+class Custom_RxCollectionViewSectionedAnimatedDataSource<Section: AnimatableSectionModelType>: CollectionViewSectionedDataSource<Section>
+, RxCollectionViewDataSourceType{
     public typealias Element = [Section]
     public typealias DecideViewTransition = (CollectionViewSectionedDataSource<Section>, UICollectionView, [Changeset<Section>]) -> ViewTransition
 
@@ -49,8 +40,9 @@ open class RxCollectionViewSectionedAnimatedDataSource<Section: AnimatableSectio
     // but it is kept as a feature everyone got used to
     var dataSet = false
 
-    open func collectionView(_ collectionView: UICollectionView, observedEvent: Event<Element>) {
-        Binder(self) { dataSource, newSections in
+    func collectionView(_ collectionView: UICollectionView, observedEvent: Event<RxCollectionViewSectionedAnimatedDataSource<Section>.Element>) {
+        Binder(self) {
+            [weak self] dataSource, newSections in
             #if DEBUG
                 dataSource._dataSourceBound = true
             #endif
@@ -74,15 +66,19 @@ open class RxCollectionViewSectionedAnimatedDataSource<Section: AnimatableSectio
                     case .animated:
                         // each difference must be run in a separate 'performBatchUpdates', otherwise it crashes.
                         // this is a limitation of Diff tool
-                        print(differences)
                         for difference in differences {
-                            let updateBlock = {
-                                // sections must be set within updateBlock in 'performBatchUpdates'
+                            if self?.returnWithOutReload(dif: difference) == true{
+                                let updateBlock = {
+                                    // sections must be set within updateBlock in 'performBatchUpdates'
+                                    dataSource.setSections(difference.finalSections)
+                                    collectionView.batchUpdates(difference, animationConfiguration: dataSource.animationConfiguration)
+                                }
+                                
+                                collectionView.performBatchUpdates(updateBlock, completion: nil)
+                            }else if let index = self?.returnReloadIndexPath(dif: difference){
+                                collectionView.reloadItems(at: index)
                                 dataSource.setSections(difference.finalSections)
-                                collectionView.batchUpdates(difference, animationConfiguration: dataSource.animationConfiguration)
                             }
-                            
-                            collectionView.performBatchUpdates(updateBlock, completion: nil)
                         }
                         
                     case .reload:
@@ -91,13 +87,26 @@ open class RxCollectionViewSectionedAnimatedDataSource<Section: AnimatableSectio
                         return
                     }
                 }
-                catch let e {
-                    rxDebugFatalError(e)
+                catch {
                     dataSource.setSections(newSections)
                     collectionView.reloadData()
                 }
             }
         }.on(observedEvent)
     }
+    private func returnWithOutReload<T:AnimatableSectionModelType>(dif:Changeset<T>)->Bool{
+        dif.insertedItems.isEmpty && dif.deletedItems.isEmpty && dif.movedItems.isEmpty ? false : true
+    }
+    
+    private func returnReloadIndexPath<T:AnimatableSectionModelType>(dif:Changeset<T>)->[IndexPath]{
+        var arrayIdx:[IndexPath] = []
+        dif.updatedItems.forEach { itemPath in
+            arrayIdx.append(IndexPath(item: itemPath.itemIndex, section: itemPath.sectionIndex))
+        }
+        return arrayIdx
+        
+    }
+    
+    
 }
 #endif
