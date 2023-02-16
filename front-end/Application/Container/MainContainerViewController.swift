@@ -24,7 +24,6 @@ final class MainContainerViewController:UIViewController{
         view.addSubview(containerView)
         view.addSubview(navigationCircleView)
         navigationCircleView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.backgroundColor = .yellow
         containerView.translatesAutoresizingMaskIntoConstraints = false
         navigationCircleViewTop = navigationCircleView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0.0)
         navigationCircleViewTop.isActive = true

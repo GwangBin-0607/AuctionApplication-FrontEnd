@@ -9,11 +9,14 @@ final class ProductListCollectionView: UICollectionView {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         super.init(frame: .zero, collectionViewLayout: layout)
-        self.backgroundColor = .black
         self.register(ProductListCollectionViewCell.self, forCellWithReuseIdentifier: ProductListCollectionViewCell.Identifier)
         self.register(ProductListCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ProductListCollectionFooterView.Identifier)
         bind()
         print("\(String(describing: self)) INIT")
+        setLayout()
+    }
+    private func setLayout(){
+        self.backgroundColor = .black.withAlphaComponent(0.9)
     }
     
     required init?(coder: NSCoder) {

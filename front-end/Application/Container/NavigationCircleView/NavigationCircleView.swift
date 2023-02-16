@@ -10,15 +10,15 @@ class NavigationCornerRadiusView:CornerRadiusView{
     
     let viewModel:Pr_NavigationCircleViewModel
     private var alphaAnimation:UIViewPropertyAnimator!
-    init(setBackgroundColor:UIColor,ViewModel:Pr_NavigationCircleViewModel,borderWidth:CGFloat,borderColor:UIColor) {
+    init(ViewModel:Pr_NavigationCircleViewModel) {
         self.viewModel = ViewModel
-        super.init(frame: .zero, borderWidth: borderWidth, borderColor: borderColor)
-        self.backgroundColor = setBackgroundColor.withAlphaComponent(0.5)
+        super.init(frame: .zero, borderWidth: 2.0, borderColor: ManageColor.singleton.getMainColor())
+        self.backgroundColor = ManageColor.singleton.getMainColor().withAlphaComponent(0.5)
         self.addGestureRecognizer(makePangesture())
         alphaAnimation = UIViewPropertyAnimator(duration: 1.0,curve: .linear)
         alphaAnimation.addAnimations({
             [weak self] in
-            self?.backgroundColor = setBackgroundColor.withAlphaComponent(1.0)
+            self?.backgroundColor = ManageColor.singleton.getMainColor().withAlphaComponent(1.0)
         })
         alphaAnimation.pausesOnCompletion = true
     }

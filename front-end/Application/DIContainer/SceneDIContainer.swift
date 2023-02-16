@@ -4,14 +4,6 @@ import UIKit
 
 final class SceneDIContainer{
     let configure = ExportConfigure()
-    private func returnImageWidth(scale:CGFloat)->CGFloat{
-        let screenSize: CGRect = UIScreen.main.bounds
-        let screenWidth = screenSize.width
-        return screenWidth/scale
-    }
-    private func returnCellCount()->Int{
-        2
-    }
 }
 
 //MARK: Infrastructure
@@ -70,8 +62,7 @@ extension SceneDIContainer{
     func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase,imageWidth:CGFloat)->Pr_ProductListCollectionViewCellViewModel{
          ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,ImageWidth: imageWidth)
     }
-    func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
-        let imageWidth = returnImageWidth(scale: 2.0)
+    func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface,imageWidth:CGFloat)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
@@ -80,8 +71,8 @@ extension SceneDIContainer{
      func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)
     }
-     func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel)->ProductListCollectionViewLayout{
-        ProductListCollectionViewLayout(viewModel: viewModel,cellCount: returnCellCount())
+    func returnProductListCollectionViewLayout(viewModel:Pr_ProductListCollectionViewLayoutViewModel,cellCount:Double)->ProductListCollectionViewLayout{
+        ProductListCollectionViewLayout(viewModel: viewModel,cellCount: cellCount)
     }
     func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController)->Pr_ProductListViewControllerViewModel{
         ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel,transitioning: transitioning)
@@ -95,12 +86,19 @@ extension SceneDIContainer{
      func returnErrorAlterViewModel()->Pr_ErrorAlterViewModel{
         ErrorAlterViewModel()
     }
-
+    func returnImageWidth(scale:CGFloat)->CGFloat{
+        let screenSize: CGRect = UIScreen.main.bounds
+        let screenWidth = screenSize.width
+        return screenWidth/scale
+    }
+    func returnCellCount()->Double{
+        2
+    }
  
 }
 protocol MainContainerViewSceneDIContainer{
     func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator
-    func returnMainContainerViewController(setBackgroundColor:UIColor,borderWidth:CGFloat,borderColor:UIColor)->MainContainerViewController
+    func returnMainContainerViewController()->MainContainerViewController
 }
 
 //MARK: ProductList Coordinator
@@ -108,17 +106,17 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
     }
-    func returnMainContainerViewController(setBackgroundColor:UIColor,borderWidth:CGFloat,borderColor:UIColor) -> MainContainerViewController {
+    func returnMainContainerViewController() -> MainContainerViewController {
         let navigationCircleViewModel = returnNavigationCircleViewModel()
-        let navigationCircleView = returnNavigationCornerRadiusView(setBackgroundColor: setBackgroundColor, navigationCircleViewModel: navigationCircleViewModel,borderWidth: borderWidth,borderColor: borderColor)
+        let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel)
         let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
         return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
     }
     func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
         MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
     }
-    private func returnNavigationCornerRadiusView(setBackgroundColor:UIColor,navigationCircleViewModel:Pr_NavigationCircleViewModel,borderWidth:CGFloat,borderColor:UIColor)->NavigationCornerRadiusView{
-        NavigationCornerRadiusView(setBackgroundColor: setBackgroundColor, ViewModel: navigationCircleViewModel,borderWidth: borderWidth,borderColor: borderColor)
+    private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
+        NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)
     }
     private func returnNavigationCircleViewModel()->Pr_NavigationCircleViewModel{
         NavigationCircleViewModel()
@@ -132,13 +130,14 @@ protocol ProductListViewSceneDIContainer{
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController {
+        let cellCount = returnCellCount()
         let httpService = returnHTTPServices()
         let imageRepository = returnProductsImageRepository(httpService: httpService)
-        let collectionViewModel = returnProductListCollectionViewModel(httpService: httpService,ImageRepository: imageRepository)
+        let collectionViewModel = returnProductListCollectionViewModel(httpService: httpService,ImageRepository: imageRepository,imageWidth: returnImageWidth(scale: cellCount))
         let errorAlterViewModel = returnErrorAlterViewModel()
         let errorAlterView = returnErrorAlterView(errorAlterViewModel: errorAlterViewModel)
         let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel,transitioning: transitioning)
-        let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel)
+        let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel,cellCount: cellCount)
         let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
         return productListViewController

@@ -57,7 +57,6 @@ extension ProductListViewController{
         containerView.backgroundColor = .white
         containerView.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .white
         containerView.addSubview(errorView)
         errorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

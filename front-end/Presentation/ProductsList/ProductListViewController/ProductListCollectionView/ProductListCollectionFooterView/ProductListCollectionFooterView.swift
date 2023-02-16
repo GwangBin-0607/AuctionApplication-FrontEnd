@@ -18,7 +18,7 @@ class ProductListCollectionFooterView:UICollectionReusableView{
     override init(frame: CGRect) {
         disposeBag = DisposeBag()
         activityView = UIActivityIndicatorView(style: .medium)
-        activityView.color = .systemYellow
+        activityView.color = ManageColor.singleton.getMainColor()
         super.init(frame: frame)
         layoutContent()
     }

@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let sceneDIContainer:MainContainerViewSceneDIContainer = SceneDIContainer()
-        let root = sceneDIContainer.returnMainContainerViewController(setBackgroundColor: .systemYellow,borderWidth: 2.0,borderColor: .yellow)
+        let root = sceneDIContainer.returnMainContainerViewController()
 //        let root = ViewController()
         self.window = window
         self.window?.rootViewController = root

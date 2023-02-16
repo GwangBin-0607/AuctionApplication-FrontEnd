@@ -20,9 +20,9 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
         return CGSize(width: contentWidth, height: contentHeight)
     }
     private let minimunCellHeight:CGFloat = 150
-    init(viewModel:Pr_ProductListCollectionViewLayoutViewModel,cellCount:Int) {
+    init(viewModel:Pr_ProductListCollectionViewLayoutViewModel,cellCount:Double) {
         self.viewModel = viewModel
-        self.cellCount = cellCount
+        self.cellCount = Int(cellCount)
         super.init()
         print("Layout INIT")
     }
@@ -35,7 +35,7 @@ final class ProductListCollectionViewLayout:UICollectionViewLayout{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    var column = 0
+    private var column = 0
     lazy var yOffset: [CGFloat] = .init(repeating: 0, count: cellCount)
     override func prepare() {
         guard

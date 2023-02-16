@@ -125,7 +125,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     private func layoutContentView(){
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
-        self.layer.borderColor = UIColor.systemPink.withAlphaComponent(0.5).cgColor
+        self.layer.borderColor = ManageColor.singleton.getMainColor().withAlphaComponent(0.75).cgColor
         self.productImageView.contentMode = .scaleAspectFill
         checkUpDown.contentMode = .scaleAspectFit
         contentView.addSubview(productImageView)
