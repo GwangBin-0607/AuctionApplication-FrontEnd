@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Pr_HTTPDataTransfer{
+protocol Pr_HTTPDataTransferProductList{
     func requestProductList(requestData:RequestProductListData)throws->Data
     func responseProductList(data:Data) throws -> [Product]
 }

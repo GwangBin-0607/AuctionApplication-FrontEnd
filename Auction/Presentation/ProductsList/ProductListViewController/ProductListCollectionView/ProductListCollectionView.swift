@@ -31,7 +31,10 @@ final class ProductListCollectionView: UICollectionView {
         }).disposed(by: disposeBag)
         self.rx.itemSelected.subscribe(onNext: {
             [weak self] idx in
-            self?.reloadItems(at: [IndexPath(item: 0, section: 0)])
+            guard let cell = self?.cellForItem(at: idx),let v = cell.snapshotView(afterScreenUpdates: true),let returnRect = self?.convert(cell.frame, to: self?.superview) else{
+                return
+            }
+            self?.viewModel.presentDetailProductObserver.onNext(PresentOptions(index: idx.item, presentView: v, presentRect: returnRect))
         }).disposed(by: disposeBag)
         self.rx.willBeginDragging.subscribe(onNext: {
             [weak self] in

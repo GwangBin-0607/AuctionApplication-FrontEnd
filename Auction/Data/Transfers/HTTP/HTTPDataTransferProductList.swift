@@ -9,7 +9,7 @@ import Foundation
 struct RequestProductListData:Encodable{
     let index:Int8
 }
-final class HTTPDataTransfer:Pr_HTTPDataTransfer{
+final class HTTPDataTransferProductList:Pr_HTTPDataTransferProductList{
     func requestProductList(requestData: RequestProductListData) throws -> Data {
         let jsonEncoder = JSONEncoder()
         return try jsonEncoder.encode(requestData)

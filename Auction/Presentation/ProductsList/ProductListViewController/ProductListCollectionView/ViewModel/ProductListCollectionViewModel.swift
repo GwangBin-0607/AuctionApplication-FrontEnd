@@ -7,7 +7,12 @@
 
 import Foundation
 import RxSwift
-
+struct PresentOptions{
+    var index:Int?
+    let presentView:UIView
+    let presentRect:CGRect
+    var productId:Int?
+}
 final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     private let usecase:Pr_ProductListWithImageHeightUsecase
     private let disposeBag:DisposeBag
@@ -17,20 +22,20 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     let socketState: Observable<isConnecting>
     let products = BehaviorSubject<[Product]>(value: [])
     let errorMessage: Observable<HTTPError>
-    let presentDetailProductObserver: AnyObserver<Int>
-    var presentDetailProductObservable: Observable<Int?>!
+    let presentDetailProductObserver: AnyObserver<PresentOptions>
+    var presentDetailProductObservable: Observable<PresentOptions>!
     private let footerViewModel:Pr_ProductListCollectionFooterViewModel
     private let cellViewModel:Pr_ProductListCollectionViewCellViewModel
-    private let imageWidth:CGFloat
+    private let downImageSize:CGFloat
     init
-    (UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel,ImageWidth:CGFloat)
+    (UseCase:Pr_ProductListWithImageHeightUsecase,CellViewModel:Pr_ProductListCollectionViewCellViewModel,FooterViewModel:Pr_ProductListCollectionFooterViewModel,downImageSize:CGFloat)
     {
-        self.imageWidth = ImageWidth
+        self.downImageSize = downImageSize
         self.usecase = UseCase
         self.footerViewModel = FooterViewModel
         self.cellViewModel = CellViewModel
         disposeBag = DisposeBag()
-        let presentDetailProductSubject = PublishSubject<Int>()
+        let presentDetailProductSubject = PublishSubject<PresentOptions>()
         presentDetailProductObserver = presentDetailProductSubject.asObserver()
         let requestSubject = PublishSubject<Void>()
         requestProductsList = requestSubject.asObserver()
@@ -40,13 +45,12 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         productsList = products.asObservable().scan(ProductSection(products: [])) { (prevValue, newValue) in
             return ProductSection(original: prevValue, items: newValue)
         }.map({[$0]})
-
         socketState = usecase.returnObservableStreamState()
         print("\(String(describing: self)) INIT")
         
         presentDetailProductObservable = presentDetailProductSubject.map({
-            [weak self] idx in
-            self?.returnProductId(index: idx)
+            [weak self] presentOptions in
+            return PresentOptions(presentView: presentOptions.presentView, presentRect: presentOptions.presentRect,productId: self?.returnProductId(index: presentOptions.index))
         })
 
         usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {
@@ -73,7 +77,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
             self?.footerViewModel.activityObserver.onNext(true)
         }).withUnretained(self).flatMap({
             owner,_ in
-            return owner.usecase.returnProductList(imageWidth:owner.imageWidth)
+            return owner.usecase.returnProductList(imageWidth:owner.downImageSize)
         }).withUnretained(self).withLatestFrom(products,resultSelector: {
             arg1,before in
             let (owner,after) = arg1
@@ -160,9 +164,12 @@ extension ProductListCollectionViewModel{
             return IndexPath(item: 0, section: 0)
         }
     }
-    private func returnProductId(index:Int)->Int?{
+    private func returnProductId(index:Int?)->Int?{
         do{
             let product = try products.value()
+            guard let index = index else{
+                return nil
+            }
             return product[index].product_id
         }catch{
             return nil

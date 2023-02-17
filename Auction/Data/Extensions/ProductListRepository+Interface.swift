@@ -26,10 +26,10 @@ final class ProductListRepository:ProductListRepositoryInterface{
     private let disposeBag:DisposeBag
     
     private let updateStreamStateObserver:AnyObserver<Void>
-    private let httpTransfer:Pr_HTTPDataTransfer
+    private let httpTransfer:Pr_HTTPDataTransferProductList
     let streamingList:Observable<Result<[StreamPrice],StreamError>>
     init(ApiService:GetProductsList,StreamingService:SocketNetworkInterface,TCPStreamDataTransfer:TCPStreamDataTransferInterface,
-         ProductListState:ProductListStateInterface,HTTPDataTransfer:Pr_HTTPDataTransfer) {
+         ProductListState:ProductListStateInterface,HTTPDataTransfer:Pr_HTTPDataTransferProductList) {
         productListState = ProductListState
         socketDataTransfer = TCPStreamDataTransfer
         disposeBag = DisposeBag()

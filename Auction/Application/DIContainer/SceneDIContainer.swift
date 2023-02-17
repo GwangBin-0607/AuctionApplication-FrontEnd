@@ -8,7 +8,7 @@ final class SceneDIContainer{
 
 //MARK: Infrastructure
 extension SceneDIContainer{
-     func returnHTTPServices()->GetProductsList&GetProductImage{
+     func returnHTTPServices()->GetProductsList&GetProductImage&GetDetailProduct{
          return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL())
     }
      func returnStreamingService()->SocketNetworkInterface{
@@ -42,8 +42,14 @@ extension SceneDIContainer{
      func returnOutputStreamCompletionHandler()->OutputStreamCompletionHandlerInterface{
         OutputStreamCompletionHandler()
     }
-     func returnHTTPDataTransfer()->Pr_HTTPDataTransfer{
-        HTTPDataTransfer()
+     func returnHTTPDataTransfer()->Pr_HTTPDataTransferProductList{
+        HTTPDataTransferProductList()
+    }
+    func returnHTTPDataTransferDetailProduct()->Pr_HTTPDataTransferDetailProduct{
+        HTTPDataTransferDetailProduct()
+    }
+    func returnDetailProductRepository()->Pr_DetailProductRepository{
+        DetailProductRepository(httpService: returnHTTPServices(), httpDetailProductTransfer: returnHTTPDataTransferDetailProduct())
     }
 }
 
@@ -55,18 +61,21 @@ extension SceneDIContainer{
      func returnProductImageLoadUsecaseInterface(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
         ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
     }
+    func returnDetailProductUsecase()->Pr_DetailProductUsecase{
+        DetailProductUsecase(detailProductRepository: returnDetailProductRepository())
+    }
 }
 
 //MARK: ViewModel,View
 extension SceneDIContainer{
     func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase,imageWidth:CGFloat)->Pr_ProductListCollectionViewCellViewModel{
-         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,ImageWidth: imageWidth)
+         ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,downImageSize: imageWidth)
     }
     func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface,imageWidth:CGFloat)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
-        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),ImageWidth: imageWidth)
+        return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),downImageSize: imageWidth)
     }
      func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
         ProductListCollectionView(collectionViewLayout: layout,viewModel: viewModel)
@@ -75,7 +84,7 @@ extension SceneDIContainer{
         ProductListCollectionViewLayout(viewModel: viewModel,cellCount: cellCount)
     }
     func returnProductListViewModelInterface(collectionViewModel:Pr_ProductListCollectionViewModel,errorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController)->Pr_ProductListViewControllerViewModel{
-        ProductListViewControllerViewModel(collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel,transitioning: transitioning)
+        ProductListViewControllerViewModel(detailProductUsecase: returnDetailProductUsecase(),collectionViewModel:collectionViewModel,ErrorAlterViewModel:errorAlterViewModel,transitioning: transitioning)
     }
      func returnProductListCollectionFooterViewModel()->Pr_ProductListCollectionFooterViewModel{
         ProductListCollectionFooterViewModel()

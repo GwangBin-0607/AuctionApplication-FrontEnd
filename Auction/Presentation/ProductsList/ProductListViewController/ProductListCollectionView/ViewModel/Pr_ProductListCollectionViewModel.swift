@@ -17,7 +17,7 @@ protocol Pr_ProductListCollectionViewModel{
     func returnCellViewModel()->Pr_ProductListCollectionViewCellViewModel
     func returnFooterViewModel() -> Pr_ProductListCollectionFooterViewModel
     func controlSocketState(state:isConnecting)
-    var presentDetailProductObservable:Observable<Int?>!{get}
-    var presentDetailProductObserver:AnyObserver<Int>{get}
+    var presentDetailProductObservable:Observable<PresentOptions>!{get}
+    var presentDetailProductObserver:AnyObserver<PresentOptions>{get}
 }
 

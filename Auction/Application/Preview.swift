@@ -19,7 +19,7 @@ extension UIViewController{
 struct VCPreView:PreviewProvider{
     static var previews: some View{
         let vC = TestViewController()
-        return vC.toPreview()
+        return vC.toPreview().ignoresSafeArea()
     }
 }
 class TestViewController:UIViewController{
