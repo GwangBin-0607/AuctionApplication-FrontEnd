@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 struct PresentOptions{
     var index:Int?
-    let presentView:UIView
     let presentRect:CGRect
     var productId:Int?
 }
@@ -50,7 +49,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         
         presentDetailProductObservable = presentDetailProductSubject.map({
             [weak self] presentOptions in
-            return PresentOptions(presentView: presentOptions.presentView, presentRect: presentOptions.presentRect,productId: self?.returnProductId(index: presentOptions.index))
+            return PresentOptions(presentRect: presentOptions.presentRect,productId: self?.returnProductId(index: presentOptions.index))
         })
 
         usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {

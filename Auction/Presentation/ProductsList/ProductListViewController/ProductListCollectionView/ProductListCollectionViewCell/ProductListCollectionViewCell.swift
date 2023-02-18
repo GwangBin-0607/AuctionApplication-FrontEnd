@@ -9,7 +9,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
     private let titleLabel:UILabel
     private let priceLabel:UILabel
-    private let productImageView:UIImageView
+    let productImageView:UIImageView
     private let checkUpDown:UIImageView
     private let disposeBag:DisposeBag
     private let gradationView:GradationView

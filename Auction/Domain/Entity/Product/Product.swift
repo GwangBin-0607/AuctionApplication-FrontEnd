@@ -34,6 +34,9 @@ struct Product:Decodable{
         case product_price = "Product_Price"
     }
 }
+struct Product_Images:Decodable{
+    let url:String
+}
 struct ProductPrice:Decodable{
     var auction_date:String
     var price:Int

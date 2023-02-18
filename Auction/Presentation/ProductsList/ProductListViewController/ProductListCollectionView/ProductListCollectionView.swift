@@ -31,10 +31,10 @@ final class ProductListCollectionView: UICollectionView {
         }).disposed(by: disposeBag)
         self.rx.itemSelected.subscribe(onNext: {
             [weak self] idx in
-            guard let cell = self?.cellForItem(at: idx),let v = cell.snapshotView(afterScreenUpdates: true),let returnRect = self?.convert(cell.frame, to: self?.superview) else{
+            guard let cell = self?.cellForItem(at: idx),let returnRect = self?.convert(cell.frame, to: self?.superview) else{
                 return
             }
-            self?.viewModel.presentDetailProductObserver.onNext(PresentOptions(index: idx.item, presentView: v, presentRect: returnRect))
+            self?.viewModel.presentDetailProductObserver.onNext(PresentOptions(index: idx.item, presentRect: returnRect))
         }).disposed(by: disposeBag)
         self.rx.willBeginDragging.subscribe(onNext: {
             [weak self] in

@@ -18,19 +18,8 @@ extension UIViewController{
 }
 struct VCPreView:PreviewProvider{
     static var previews: some View{
-        let vC = TestViewController()
+        let vC = DetailProductViewController()
         return vC.toPreview().ignoresSafeArea()
-    }
-}
-class TestViewController:UIViewController{
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        self.view.backgroundColor = .red
-    }
-    
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 #endif
