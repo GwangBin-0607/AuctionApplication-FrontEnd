@@ -1,5 +1,0 @@
-#include "../../../Pods/Target Support Files/Pods-Auction/Pods-Auction.cnf_debug(localserver).xcconfig"
-HTTP_LIST_URL = http:/$()/localhost:3100/products/alllist
-HTTP_IMAGE_URL = http:/$()/localhost:3100/products/productimage
-SOCKET_HOST = localhost
-SOCKET_PORT = 3200
