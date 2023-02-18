@@ -156,6 +156,10 @@
 		8832E85D29A0E43400BCFF33 /* Pr_DetailProductCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductCollectionViewModel.swift; sourceTree = "<group>"; };
 		8832E86129A128F400BCFF33 /* Pr_DetailProductCollectionViewImageCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductCollectionViewImageCellViewModel.swift; sourceTree = "<group>"; };
 		8832E86329A1290D00BCFF33 /* DetailProductCollectionViewImageCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewImageCellViewModel.swift; sourceTree = "<group>"; };
+		8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Configuration.xcconfig; sourceTree = "<group>"; };
+		8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Docker_Configuration.xcconfig; sourceTree = "<group>"; };
+		8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
+		8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RELEASE_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
 		88583F29297A7205001AE75C /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		8864183829978C1200C0BD17 /* ExportConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportConfigure.swift; sourceTree = "<group>"; };
 		8870DC9D28E5701E005328C0 /* Auction-DEBUG-LOCALSERVER.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Auction-DEBUG-LOCALSERVER.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,7 +207,6 @@
 		888B4D2D292F44E100784E46 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewCoordinator.swift; sourceTree = "<group>"; };
 		888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewCoordinator.swift; sourceTree = "<group>"; };
-		889532C828E5833F00C3293F /* DEBUG_LocalServer_Docker_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Docker_Configuration.xcconfig; sourceTree = "<group>"; };
 		8897C459292CC09200823980 /* SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketNetworkInterface.swift; sourceTree = "<group>"; };
 		8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		8897C461292CC22100823980 /* StreamPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPrice.swift; sourceTree = "<group>"; };
@@ -219,7 +222,6 @@
 		889FC3F4298257FC009B8A2A /* ErrorAlterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlterViewModel.swift; sourceTree = "<group>"; };
 		889FC3F729825815009B8A2A /* Pr_ErrorAlterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ErrorAlterViewModel.swift; sourceTree = "<group>"; };
 		889FC3F92982D942009B8A2A /* GradationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradationView.swift; sourceTree = "<group>"; };
-		88A34F6D28E6E3FF0067209F /* RELEASE_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RELEASE_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
 		88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNWConnection+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
 		88BF04C029557CDB001F7725 /* Pr_ProductListUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ProductListUsecase.swift; sourceTree = "<group>"; };
@@ -247,8 +249,6 @@
 		88EE6888299EA3EE002A47DB /* PreviewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		88EFB13B299DD619005B6621 /* RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift"; sourceTree = "<group>"; };
 		88EFB13E299E7DF8005B6621 /* ManageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColor.swift; sourceTree = "<group>"; };
-		88EFBDF4299A2DB90068C75A /* DEBUG_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
-		88EFBDF5299A2E1E0068C75A /* DEBUG_LocalServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Configuration.xcconfig; sourceTree = "<group>"; };
 		88F5DD8229969D10007FB204 /* CornerRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusView.swift; sourceTree = "<group>"; };
 		88F5DD8529969D57007FB204 /* NavigationCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCircleView.swift; sourceTree = "<group>"; };
 		88F5DD8829969D6C007FB204 /* NavigationCircleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCircleViewModel.swift; sourceTree = "<group>"; };
@@ -313,11 +313,11 @@
 		8828337D28FDAB64004DD57E /* Configure */ = {
 			isa = PBXGroup;
 			children = (
-				88EFBDF5299A2E1E0068C75A /* DEBUG_LocalServer_Configuration.xcconfig */,
-				889532C828E5833F00C3293F /* DEBUG_LocalServer_Docker_Configuration.xcconfig */,
-				88EFBDF4299A2DB90068C75A /* DEBUG_RemoteServer_Configuration.xcconfig */,
-				88A34F6D28E6E3FF0067209F /* RELEASE_RemoteServer_Configuration.xcconfig */,
 				8864183829978C1200C0BD17 /* ExportConfigure.swift */,
+				8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */,
+				8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */,
+				8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */,
+				8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */,
 			);
 			path = Configure;
 			sourceTree = "<group>";
@@ -1484,7 +1484,7 @@
 		};
 		8870DCC828E57020005328C0 /* cnf_Debug(LocalServer) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88EFBDF5299A2E1E0068C75A /* DEBUG_LocalServer_Configuration.xcconfig */;
+			baseConfigurationReference = 8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1515,7 +1515,7 @@
 		};
 		8870DCC928E57020005328C0 /* cnf_Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88A34F6D28E6E3FF0067209F /* RELEASE_RemoteServer_Configuration.xcconfig */;
+			baseConfigurationReference = 8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1708,7 +1708,7 @@
 		};
 		88EFBDF7299A2E580068C75A /* cnf_Debug(LocalServer_Docker) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 889532C828E5833F00C3293F /* DEBUG_LocalServer_Docker_Configuration.xcconfig */;
+			baseConfigurationReference = 8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1850,7 +1850,7 @@
 		};
 		88EFBDFB299A302B0068C75A /* cnf_Debug(RemoteServer) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88EFBDF4299A2DB90068C75A /* DEBUG_RemoteServer_Configuration.xcconfig */;
+			baseConfigurationReference = 8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
