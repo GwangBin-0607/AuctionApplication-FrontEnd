@@ -26,7 +26,7 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     private func downImageSize(image:UIImage,newWidth:CGFloat) -> UIImage{
         let scale = newWidth / image.size.width
         let newHeight = image.size.height * scale
-
+        
         let size = CGSize(width: newWidth, height: newHeight)
         let render = UIGraphicsImageRenderer(size: size)
         let renderImage = render.image { context in
@@ -120,34 +120,25 @@ extension ProductImageRepository{
     }
     private func returnImageHeight(product:Product,imageWidth:CGFloat)->Observable<Product>{
         var inProduct = product
-        guard let CacheImage = self.returnCacheImage(image_id: inProduct.product_id)
-        else{
-            if let product_image = product.mainImage{
-                return returnImage(product_image: product_image,imageWidth: imageWidth).withUnretained(self).map { owner,result in
-                    switch result{
-                    case .success(let image):
-                        inProduct.imageHeight = owner.returnImageHeight(image: image)
-                    case .failure(_):
-                        inProduct.imageHeight = 150
-                    }
-                    return inProduct
-                }
-            }else{
-                return Observable<Product>.create { observer in
+        if let product_image = product.mainImage{
+            return returnImage(product_image: product_image,imageWidth: imageWidth).withUnretained(self).map { owner,result in
+                switch result{
+                case .success(let image):
+                    inProduct.imageHeight = owner.returnImageHeight(image: image)
+                case .failure(_):
                     inProduct.imageHeight = 150
-                    observer.onNext(inProduct)
-                    observer.onCompleted()
-                    return Disposables.create()
                 }
+                return inProduct
+            }
+        }else{
+            return Observable<Product>.create { observer in
+                inProduct.imageHeight = 150
+                observer.onNext(inProduct)
+                observer.onCompleted()
+                return Disposables.create()
             }
         }
-        return Observable<Product>.create {
-            [weak self] observer in
-            inProduct.imageHeight = self?.returnImageHeight(image: CacheImage)
-            observer.onNext(inProduct)
-            observer.onCompleted()
-            return Disposables.create()
-        }
+        
     }
     
     func returnProductWithImageHeight(product: [Product],imageWidth:CGFloat) -> Observable<[Product]> {
@@ -167,5 +158,5 @@ extension ProductImageRepository{
         }
         return Observable.combineLatest(observables)
     }
-
+    
 }
