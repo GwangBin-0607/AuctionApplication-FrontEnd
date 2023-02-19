@@ -2,17 +2,15 @@ import Foundation
 import RxSwift
 
 protocol GetProductImage{
-    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
+    func returnImage(requestData:Data,onComplete: @escaping (Result<Data, HTTPError>) -> Void)
 }
 extension ProductHTTP:GetProductImage{
-    func returnImage(imageURL:String,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
+    func returnImage(requestData:Data,onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
         var urlRequest = URLRequest(url:productImageURL)
         
         urlRequest.httpMethod = "POST"
-        let json:Dictionary<String,String> = ["imageURL":imageURL]
-        let data = try! JSONSerialization.data(withJSONObject: json, options: [])
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.httpBody = data
+        urlRequest.httpBody = requestData
         URLSession.shared.dataTask(with: urlRequest) {
             data, response, error in
             if error != nil {

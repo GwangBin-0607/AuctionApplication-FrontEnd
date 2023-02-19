@@ -1,7 +1,7 @@
 import UIKit
 import RxSwift
 protocol ProductImageRepositoryInterface{
-    func returnImage(productId:Int,imageURL:String?,imageWidth:CGFloat)->Observable<CellImageTag>
+    func returnCellImageTag(product_image:Product_Images?,imageWidth:CGFloat,tag:Int)->Observable<CellImageTag>
     func returnProductWithImageHeight(product:[Product],imageWidth:CGFloat)->Observable<[Product]>
     
 }

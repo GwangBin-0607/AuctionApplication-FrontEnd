@@ -4,7 +4,9 @@ import RxSwift
 class ProductImageRepository:ProductImageRepositoryInterface{
     private let imageServer:GetProductImage
     private let cacheRepository:ProductImageCacheRepositoryInterface
-    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface) {
+    private let httpTransfer:Pr_HTTPDataTransferProductImage
+    init(ImageServer:GetProductImage,CacheRepository:ProductImageCacheRepositoryInterface,httpTransfer:Pr_HTTPDataTransferProductImage) {
+        self.httpTransfer = httpTransfer
         imageServer = ImageServer
         cacheRepository = CacheRepository
         print("\(String(describing: self)) INIT")
@@ -15,11 +17,11 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     private func returnImageHeight(image:UIImage)->CGFloat{
         image.size.height
     }
-    private func setCacheImage(productId:Int,image:UIImage){
-        cacheRepository.setImage(key: productId, value: image)
+    private func setCacheImage(image_id:Int,image:UIImage){
+        cacheRepository.setImage(key: image_id, value: image)
     }
-    private func returnCacheImage(productId:Int)->UIImage?{
-        return cacheRepository.getImage(key: productId)
+    private func returnCacheImage(image_id:Int)->UIImage?{
+        return cacheRepository.getImage(key: image_id)
     }
     private func downImageSize(image:UIImage,newWidth:CGFloat) -> UIImage{
         let scale = newWidth / image.size.width
@@ -34,53 +36,81 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
 }
 extension ProductImageRepository{
-    func returnImage(productId:Int,imageURL:String?,imageWidth:CGFloat)->Observable<CellImageTag>{
-        guard let cacheImage = returnCacheImage(productId: productId) else{
-            return imageLoadObservable(productId:productId,imageURL: imageURL)
+    func returnCellImageTag(product_image:Product_Images?,imageWidth:CGFloat,tag:Int)->Observable<CellImageTag>{
+        guard let product_image = product_image else{
+            return Observable<CellImageTag>.create { observer in
+                observer.onNext(CellImageTag(result: .failure(HTTPError.RequestError), tag: tag))
+                observer.onCompleted()
+                return Disposables.create()
+            }
+        }
+        guard let cacheImage = returnCacheImage(image_id: product_image.image_id) else{
+            return imageLoadObservable(image_id: product_image.image_id)
                 .withUnretained(self)
                 .map {
-                    owner,cellImageTag in
-                    switch cellImageTag.result {
+                    owner,result in
+                    switch result {
                     case .success(let image):
-                        let downImage = owner.returnDownImage(productId: productId, image: image,imageWidth: imageWidth)
-                        return CellImageTag(result: .success(downImage), tag: productId)
+                        let downImage = owner.returnDownImage(image_id: product_image.image_id, image: image, imageWidth: imageWidth)
+                        return CellImageTag(result: .success(downImage), tag: tag)
                     case .failure(let error):
-                        return CellImageTag(result: .failure(error), tag: productId)
+                        return CellImageTag(result: .failure(error), tag: tag)
                         
                     }
                 }
         }
         return Observable<CellImageTag>.create { observer in
-            observer.onNext(CellImageTag(result: .success(cacheImage), tag: productId))
+            observer.onNext(CellImageTag(result: .success(cacheImage), tag: tag))
             observer.onCompleted()
             return Disposables.create()
         }
     }
-    private func returnDownImage(productId:Int,image:UIImage,imageWidth:CGFloat)->UIImage{
+    private func returnImage(product_image:Product_Images,imageWidth:CGFloat)->Observable<Result<UIImage,HTTPError>>{
+        guard let cacheImage = returnCacheImage(image_id: product_image.image_id) else{
+            return imageLoadObservable(image_id: product_image.image_id)
+                .withUnretained(self)
+                .map {
+                    owner,result in
+                    switch result {
+                    case .success(let image):
+                        let downImage = owner.returnDownImage(image_id: product_image.image_id, image: image,imageWidth: imageWidth)
+                        return .success(downImage)
+                    case .failure(let error):
+                        return .failure(error)
+                        
+                    }
+                }
+        }
+        return Observable<Result<UIImage,HTTPError>>.create { observer in
+            observer.onNext(.success(cacheImage))
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
+    private func returnDownImage(image_id:Int,image:UIImage,imageWidth:CGFloat)->UIImage{
         let downImage = downImageSize(image: image, newWidth: imageWidth)
-        setCacheImage(productId: productId, image: downImage)
+        setCacheImage(image_id:image_id, image: downImage)
         return downImage
     }
-    private func imageLoadObservable(productId:Int,imageURL:String?)->Observable<CellImageTag>{
-        return Observable<CellImageTag>.create {
+    private func imageLoadObservable(image_id:Int)->Observable<Result<UIImage,HTTPError>>{
+        return Observable<Result<UIImage,HTTPError>>.create {
             [weak self] observer in
-            guard let self = self,let imageURL = imageURL else{
-                observer.onNext(CellImageTag(result: .failure(HTTPError.RequestError), tag: productId))
+            guard let self = self,let data = try? self.httpTransfer.requestProductImage(requestData: RequestProductImage(image_id: image_id)) else{
+                observer.onNext(.failure(HTTPError.RequestError))
                 observer.onCompleted()
                 return Disposables.create()
             }
-            self.imageServer.returnImage(imageURL: imageURL, onComplete: {
+            self.imageServer.returnImage(requestData: data, onComplete: {
                 result in
-                switch result{
-                case .success(let imageData):
-                    let image = self.decodeImage(imageData: imageData)
-                    observer.onNext(CellImageTag(result: .success(image), tag: productId))
+                switch result {
+                case .success(let data):
+                    let image = self.decodeImage(imageData: data)
+                    observer.onNext(.success(image))
                     observer.onCompleted()
                 case .failure(let error):
-                    observer.onNext(CellImageTag(result: .failure(error), tag: productId))
+                    observer.onNext(.failure(error))
                     observer.onCompleted()
                 }
-                
             })
             return Disposables.create()
         }
@@ -90,16 +120,25 @@ extension ProductImageRepository{
     }
     private func returnImageHeight(product:Product,imageWidth:CGFloat)->Observable<Product>{
         var inProduct = product
-        guard let CacheImage = self.returnCacheImage(productId: inProduct.product_id)
+        guard let CacheImage = self.returnCacheImage(image_id: inProduct.product_id)
         else{
-            return returnImage(productId: inProduct.product_id, imageURL: inProduct.mainImageURL,imageWidth: imageWidth).withUnretained(self).map { owner,cellImageTag in
-                switch cellImageTag.result{
-                case .success(let image):
-                    inProduct.imageHeight = owner.returnImageHeight(image: image)
-                case .failure(_):
-                    inProduct.imageHeight = 150
+            if let product_image = product.mainImage{
+                return returnImage(product_image: product_image,imageWidth: imageWidth).withUnretained(self).map { owner,result in
+                    switch result{
+                    case .success(let image):
+                        inProduct.imageHeight = owner.returnImageHeight(image: image)
+                    case .failure(_):
+                        inProduct.imageHeight = 150
+                    }
+                    return inProduct
                 }
-                return inProduct
+            }else{
+                return Observable<Product>.create { observer in
+                    inProduct.imageHeight = 150
+                    observer.onNext(inProduct)
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
             }
         }
         return Observable<Product>.create {

@@ -12,7 +12,7 @@ struct DetailProduct:Decodable{
     let productComment:DetailProductComment
     let productGraph:DetailProductGraph
     init() {
-        productImage = DetailProductImages(images: [Product_Images(url: "Hello")])
+        productImage = DetailProductImages(images: [Product_Images(image_id: 1)])
         productUser = DetailProductUser(userName: "Hello")
         productComment = DetailProductComment(comment: "Comment")
         productGraph = DetailProductGraph(data: [GraphData(date: "Today", price: 3000)])

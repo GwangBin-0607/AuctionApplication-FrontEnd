@@ -12,12 +12,12 @@ struct Product:Decodable{
     let product_id:Int
     var original_price:Int
     let imageURL:[Product_Images]
-    var mainImageURL:String?{
+    var mainImage:Product_Images?{
         get{
             if imageURL.isEmpty{
                 return nil
             }else{
-                return imageURL[0].url
+                return imageURL[0]
             }
         }
     }
@@ -35,7 +35,7 @@ struct Product:Decodable{
     }
 }
 struct Product_Images:Decodable{
-    let url:String
+    let image_id:Int
 }
 struct ProductPrice:Decodable{
     var auction_date:String

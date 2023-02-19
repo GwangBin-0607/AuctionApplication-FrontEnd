@@ -61,7 +61,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
                 owner.checkUpDown.image = UIImage(named: "Nothing")
             }
         }.flatMap { owner,item in
-            return owner.viewModel.returnImage(productId: item.product_id, imageURL: item.mainImageURL)
+            return owner.viewModel.returnImage(product_image: item.mainImage, tag: owner.tag)
         }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,cellImageTag in
             if(cellImageTag.tag == owner.tag){

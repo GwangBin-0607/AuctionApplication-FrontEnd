@@ -1,8 +1,8 @@
 import Foundation
 import RxSwift
 class ProductImageLoadUseCase:Pr_ProductImageLoadUsecase{
-    func returnImage(productId: Int, imageURL: String?,imageWidth:CGFloat) -> Observable<CellImageTag> {
-        productsImageRepository.returnImage(productId: productId, imageURL: imageURL,imageWidth: imageWidth)
+    func returnImage(product_image:Product_Images?,imageWidth:CGFloat,tag:Int) -> Observable<CellImageTag> {
+        productsImageRepository.returnCellImageTag(product_image: product_image, imageWidth: imageWidth, tag: tag)
     }
     private let productsImageRepository:ProductImageRepositoryInterface
     init(productsImageRepository:ProductImageRepositoryInterface) {
