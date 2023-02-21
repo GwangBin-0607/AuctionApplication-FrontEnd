@@ -165,6 +165,28 @@ protocol DetailProductViewSceneDIContainer{
 //MARK: DetailViewController
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
     func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil) -> UIViewController {
-        DetailProductViewController(transitioning: transitioning)
+        let productPriceViewModel = returnDetailProductPriceViewModel()
+        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel)
+        let collectionViewModel = returnDetailProductCollectionViewModel()
+        let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
+        let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel)
+        return DetailProductViewController(transitioning: transitioning,productPriceView: productPriceView,detailProductCollectionView: collectionView,viewModel: detailProductViewControllerViewModel)
+    }
+}
+extension SceneDIContainer{
+    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel)->DetailProductPriceView{
+        DetailProductPriceView(viewModel:viewModel )
+    }
+    func returnDetailProductPriceViewModel()->Pr_DetailProductPriceViewModel{
+        DetailProductPriceViewModel()
+    }
+    func returnDetailProductCollectionView(viewModel:Pr_DetailProductCollectionViewModel)->DetailProductCollectionView{
+        DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
+    }
+    func returnDetailProductCollectionViewModel()->Pr_DetailProductCollectionViewModel{
+        DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase() )
+    }
+    func returnDetailViewControllerViewModel(detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel)->Pr_DetailProductViewControllerViewModel{
+        DetailProductViewControllerViewModel(detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel)
     }
 }

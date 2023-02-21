@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 import RxSwift
+import RxCocoa
 final class DetailProductCollectionView:UICollectionView{
     private let viewModel:Pr_DetailProductCollectionViewModel
     private let disposeBag:DisposeBag
-    init(viewModel:Pr_DetailProductCollectionViewModel) {
+    init(viewModel:Pr_DetailProductCollectionViewModel,backgroundColor:UIColor) {
         self.viewModel = viewModel
         disposeBag = DisposeBag()
         super.init(frame: .zero, collectionViewLayout: DetailProductCollectionViewLayout())
@@ -19,15 +20,21 @@ final class DetailProductCollectionView:UICollectionView{
         self.register(DetailProductCollectionViewImageCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewImageCell.identifier)
         self.register(DetailProductCollectionViewCommentCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewCommentCell.identifier)
         self.register(DetailProductCollectionViewGraphCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewGraphCell.identifier)
+        bind()
+        viewModel.requestDetailProductObserver.onNext(1)
+        layout(color: backgroundColor)
+    }
+    private func layout(color:UIColor){
+        self.contentInsetAdjustmentBehavior = .never
+        self.isPrefetchingEnabled = false
+        self.backgroundColor = .systemYellow
     }
     private func bind(){
+        self.dataSource = self
         viewModel.dataUpdate.subscribe(onNext: {
-            [weak self] err in
-            if let _ = err{
-                
-            }else{
-                self?.reloadData()
-            }
+            [weak self] _ in
+            print("reloadData")
+            self?.reloadData()
         }).disposed(by: disposeBag)
     }
     
@@ -39,20 +46,20 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
+            print("\(viewModel.returnDetailProductImagesCount())=========")
             return viewModel.returnDetailProductImagesCount() ?? 1
         default:
             return 1
         }
     }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 3
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewImageCell.identifier, for: indexPath) as! DetailProductCollectionViewImageCell
-            cell.bindingData.onNext(viewModel.returnDetailProductImages())
+            cell.bindingData.onNext(viewModel.returnDetailProductImages(index: indexPath.item))
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewUserCell.identifier, for: indexPath) as! DetailProductCollectionViewUserCell

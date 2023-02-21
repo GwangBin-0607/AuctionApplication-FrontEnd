@@ -43,7 +43,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
                 if value.state{
                     owner.checkUpDown.image = UIImage(named: "upState")
                 }else{
-                    owner.checkUpDown.image = UIImage(named: "Nothing")
+                    owner.checkUpDown.image = UIImage(named: "nothing")
                 }
             }
         }).disposed(by: disposeBag)
@@ -58,7 +58,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             if item.checkUpDown.state{
                 owner.checkUpDown.image = UIImage(named: "upState")
             }else{
-                owner.checkUpDown.image = UIImage(named: "Nothing")
+                owner.checkUpDown.image = UIImage(named: "nothing")
             }
         }.flatMap { owner,item in
             return owner.viewModel.returnImage(product_image: item.mainImage, tag: owner.tag)
@@ -170,7 +170,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             gradationView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             gradationView.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5.0)
         ])
-        priceLabel.setContentCompressionResistancePriority(UILayoutPriority(50), for: .horizontal)
         priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
     }
     override func prepareForReuse() {

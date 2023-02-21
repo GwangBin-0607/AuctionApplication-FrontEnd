@@ -11,12 +11,6 @@ struct DetailProduct:Decodable{
     let productUser:DetailProductUser
     let productComment:DetailProductComment
     let productGraph:DetailProductGraph
-    init() {
-        productImage = DetailProductImages(images: [Product_Images(image_id: 1)])
-        productUser = DetailProductUser(userName: "Hello")
-        productComment = DetailProductComment(comment: "Comment")
-        productGraph = DetailProductGraph(data: [GraphData(date: "Today", price: 3000)])
-    }
     func returnProductImages()->DetailProductImages{
         productImage
     }
@@ -34,6 +28,9 @@ struct DetailProductImages:Decodable{
     let images:[Product_Images]
     func returnImageCount()->Int{
         images.count
+    }
+    func returnProductImage(index:Int)->Product_Images{
+        images[index]
     }
 }
 struct DetailProductUser:Decodable{

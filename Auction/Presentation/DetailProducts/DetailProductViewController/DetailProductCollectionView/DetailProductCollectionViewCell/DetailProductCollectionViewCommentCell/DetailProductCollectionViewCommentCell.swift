@@ -8,25 +8,60 @@
 import UIKit
 import RxSwift
 final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
-    let commentLabel = UILabel()
+    private let productNameLabel:UILabel
+    private let productRegisterTimeLabel:UILabel
+    private let commentLabel:UILabel
     static let identifier = "DetailProductCollectionViewCommentCell"
     let bindingData:AnyObserver<DetailProductComment?>
+    private let minimumLabelHeight:CGFloat = 200
+    private let disposeBag:DisposeBag
     override init(frame: CGRect) {
+        disposeBag = DisposeBag()
         let bindingSubject = PublishSubject<DetailProductComment?>()
         bindingData = bindingSubject.asObserver()
+        commentLabel = UILabel()
+        productNameLabel = UILabel()
+        productRegisterTimeLabel = UILabel()
         super.init(frame: frame)
+        bindingSubject.withUnretained(self).subscribe(onNext: {
+            owner,detailProductComment in
+            if let comment = detailProductComment{
+                owner.commentLabel.text = comment.comment
+                owner.productNameLabel.text = "나이키 신발"
+                owner.productRegisterTimeLabel.text = "3시간 전"
+            }
+        }).disposed(by:disposeBag)
         layout()
     }
     private func layout(){
+        self.contentView.addSubview(productNameLabel)
+        self.contentView.addSubview(productRegisterTimeLabel)
         self.contentView.addSubview(commentLabel)
+        productNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        productRegisterTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         commentLabel.translatesAutoresizingMaskIntoConstraints = false
-        commentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        commentLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
-        commentLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
-        commentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        productNameLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5.0).isActive = true
+        productNameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 5.0).isActive = true
+        productNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor, constant: -5.0).isActive = true
+        productNameLabel.textColor = .darkGray
+        productNameLabel.font = UIFont.systemFont(ofSize: 28, weight: .heavy)
+        productRegisterTimeLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 3.0).isActive = true
+        productRegisterTimeLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor).isActive = true
+        productRegisterTimeLabel.textColor = .gray
+        productRegisterTimeLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        commentLabel.topAnchor.constraint(equalTo: productRegisterTimeLabel.bottomAnchor,constant: 5.0).isActive = true
+        commentLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,constant: 5.0).isActive = true
+        commentLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,constant: -5.0).isActive = true
+        commentLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.contentView.bottomAnchor,constant: -5.0).isActive = true
         commentLabel.numberOfLines = 0
-        
-        self.contentView.backgroundColor = .blue
+        commentLabel.font = UIFont.boldSystemFont(ofSize: 15)
+        commentLabel.textColor = .black
+        commentLabel.backgroundColor  = .red
+        backgroundColor = .white
+    }
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        layoutAttributes.frame.size = CGSize(width: layoutAttributes.frame.width, height: commentLabel.frame.height+minimumLabelHeight)
+        return layoutAttributes
     }
     
     required init?(coder: NSCoder) {

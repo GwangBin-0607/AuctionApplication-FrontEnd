@@ -16,10 +16,11 @@ extension UIViewController{
         Preview(viewController:self)
     }
 }
-struct VCPreView:PreviewProvider{
-    static var previews: some View{
-        let vC = DetailProductViewController()
-        return vC.toPreview().ignoresSafeArea()
-    }
-}
+//struct VCPreView:PreviewProvider{
+//    static var previews: some View{
+//        let sceneDIContaier = SceneDIContainer()
+//        let vC = DetailProductViewController()
+//        return vC.toPreview().ignoresSafeArea()
+//    }
+//}
 #endif

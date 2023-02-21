@@ -8,13 +8,14 @@
 import UIKit
 import RxSwift
 class DetailProductCollectionViewGraphCell: UICollectionViewCell {
-    static let identifier = "DetailProductCollectionViewCommentCell"
+    static let identifier = "DetailProductCollectionViewGraphCell"
     let bindingData:AnyObserver<DetailProductGraph?>
     
     override init(frame: CGRect) {
         let bindingSubject = PublishSubject<DetailProductGraph?>()
         bindingData = bindingSubject.asObserver()
         super.init(frame: frame)
+        self.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
