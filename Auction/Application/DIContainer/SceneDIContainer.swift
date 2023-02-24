@@ -9,7 +9,7 @@ final class SceneDIContainer{
 //MARK: Infrastructure
 extension SceneDIContainer{
      func returnHTTPServices()->GetProductsList&GetProductImage&GetDetailProduct{
-         return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL())
+         return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL(),ProductDetailURL: configure.getProductDetailURL())
     }
      func returnStreamingService()->SocketNetworkInterface{
          SocketNetwork(hostName: configure.getSocketHost(), portNumber: configure.getSocketPort())
@@ -184,7 +184,11 @@ extension SceneDIContainer{
         DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
     }
     func returnDetailProductCollectionViewModel()->Pr_DetailProductCollectionViewModel{
-        DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase() )
+        DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCell: returnDetailProductCollectionViewImageCellViewModel() )
+    }
+    func returnDetailProductCollectionViewImageCellViewModel()->Pr_DetailProductCollectionViewImageCellViewModel{
+        let imageRepo = returnProductsImageRepository(httpService: returnHTTPServices())
+        return DetailProductCollectionViewImageCellViewModel(ImageUsecase: returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepo), downImageSize: returnImageWidth(scale: 1.0))
     }
     func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel)->Pr_DetailProductViewControllerViewModel{
         DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel)

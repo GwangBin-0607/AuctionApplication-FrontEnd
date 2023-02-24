@@ -24,6 +24,7 @@ final class DetailProductCollectionView:UICollectionView{
         layout(color: backgroundColor)
     }
     private func layout(color:UIColor){
+        self.backgroundColor = .systemGroupedBackground
         self.contentInsetAdjustmentBehavior = .never
         self.isPrefetchingEnabled = false
     }
@@ -55,7 +56,8 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewImageCell.identifier, for: indexPath) as! DetailProductCollectionViewImageCell
-            cell.bindingData.onNext(viewModel.returnDetailProductImages(index: indexPath.item))
+            cell.bindingViewModel(cellViewModel: viewModel.returnDetailProductCollectionViewCellViewModel())
+            cell.bindingData.onNext(ProductImagesWithTag(product_image: viewModel.returnDetailProductImages(index: indexPath.item), tag: indexPath.item))
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewUserCell.identifier, for: indexPath) as! DetailProductCollectionViewUserCell

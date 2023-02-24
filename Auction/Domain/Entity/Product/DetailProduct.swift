@@ -7,10 +7,14 @@
 
 import Foundation
 struct DetailProduct:Decodable{
+    let productInfo:DetailProductInfo
     let productImage:DetailProductImages
     let productUser:DetailProductUser
     let productComment:DetailProductComment
     let productGraph:DetailProductGraph
+    func returnProductInfo()->DetailProductInfo{
+        productInfo
+    }
     func returnProductImages()->DetailProductImages{
         productImage
     }
@@ -23,18 +27,48 @@ struct DetailProduct:Decodable{
     func returnProductGraph()->DetailProductGraph{
         productGraph
     }
+    enum CodingKeys: String,CodingKey {
+        case productInfo = "DetailProductInfo"
+        case productImage = "DetailProductImages"
+        case productUser = "DetailProductUser"
+        case productComment = "DetailProductComment"
+        case productGraph = "DetailProductGraph"
+    }
+}
+struct DetailProductInfo:Decodable{
+    let product_id:Int
+    let product_name:String
+    let original_price:Int
+    let registerTime:String
+    var checkUpDown:ProductUpDown
+    
 }
 struct DetailProductImages:Decodable{
-    let images:[Product_Images]
+    let images:[Image]
     func returnImageCount()->Int{
-        images.count
+        if images.isEmpty{
+            return 1
+        }else{
+            return images.count
+        }
     }
-    func returnProductImage(index:Int)->Product_Images{
-        images[index]
+    func returnProductImage(index:Int)->Image?{
+        if index >= images.count{
+            return nil
+        }else{
+            return images[index]
+        }
     }
 }
 struct DetailProductUser:Decodable{
-    let userName:String
+    let user_id:Int
+    let user_name:String
+    let user_image:[Image]
+    enum CodingKeys: String,CodingKey {
+        case user_id
+        case user_name
+        case user_image = "User_Images"
+    }
 }
 struct DetailProductComment:Decodable{
     let comment:String
@@ -43,6 +77,6 @@ struct DetailProductGraph:Decodable{
     let data:[GraphData]
 }
 struct GraphData:Decodable{
-    let date:String
+    let auction_date:String
     let price:Int
 }

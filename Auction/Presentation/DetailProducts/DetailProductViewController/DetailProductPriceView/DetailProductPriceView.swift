@@ -70,7 +70,7 @@ final class DetailProductPriceView:UIView{
         borderline()
     }
     private func borderline(){
-        self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 1.0
+        self.layer.borderColor = UIColor.gray.cgColor
+        self.layer.borderWidth = 0.5
     }
 }

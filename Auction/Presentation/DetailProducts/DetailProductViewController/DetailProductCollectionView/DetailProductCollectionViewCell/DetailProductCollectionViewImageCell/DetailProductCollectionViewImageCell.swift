@@ -9,23 +9,42 @@ import UIKit
 import RxSwift
 final class DetailProductCollectionViewImageCell:UICollectionViewCell{
     let imageView:UIImageView
-    let bindingData:AnyObserver<Product_Images?>
+    let bindingData:AnyObserver<ProductImagesWithTag>
     static let identifier = "DetailProductCollectionViewImageCell"
     private let disposeBag:DisposeBag
+    private var viewModel:Pr_DetailProductCollectionViewImageCellViewModel!
     override init(frame: CGRect) {
         disposeBag = DisposeBag()
         imageView = UIImageView()
-        let bindingSubject = PublishSubject<Product_Images?>()
+        let bindingSubject = PublishSubject<ProductImagesWithTag>()
         bindingData = bindingSubject.asObserver()
         super.init(frame: frame)
-        bindingSubject.withUnretained(self).subscribe(onNext: {
-            owner,image in
-            if let image = image{
-                owner.imageView.image =  UIImage(named:"0"+String(image.image_id) )
-
+        bindingSubject.withUnretained(self).do(onNext: {
+            owner,productImageWithTag in
+            owner.tag = productImageWithTag.tag
+        }).flatMap{
+            owner,productImageWithTag in
+            owner.viewModel.returnImage(productImageWithTag: productImageWithTag)
+        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                switch cellImageTag.result {
+                case .success(let image):
+                    owner.imageView.image = image
+                case .failure(let error):
+                    if error == .NoImageData || error == .RequestError{
+                        owner.imageView.image = UIImage(named: "NoImage")
+                    }
+                }
             }
-        }).disposed(by: disposeBag)
+        })
+        .disposed(by: disposeBag)
         layout()
+    }
+    func bindingViewModel(cellViewModel:Pr_DetailProductCollectionViewImageCellViewModel?){
+        if cellViewModel != nil && self.viewModel == nil{
+            self.viewModel = cellViewModel
+        }
     }
     private func layout(){
         imageView.contentMode = .scaleAspectFit
@@ -35,11 +54,13 @@ final class DetailProductCollectionViewImageCell:UICollectionViewCell{
         imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
         imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
-        imageView.backgroundColor = .systemGray
-        self.contentView.backgroundColor = .blue
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
     }
 }

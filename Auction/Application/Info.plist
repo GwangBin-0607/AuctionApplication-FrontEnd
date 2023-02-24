@@ -6,6 +6,8 @@
 	<string>$(HTTP_IMAGE_URL)</string>
 	<key>HTTP_LIST_URL</key>
 	<string>$(HTTP_LIST_URL)</string>
+	<key>HTTP_DETAIL_URL</key>
+	<string>$(HTTP_DETAIL_URL)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

@@ -21,12 +21,14 @@ final class DetailProductViewController:UIViewController{
     private func bind(){
         backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
     }
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.requestDetailProduct.onNext(9)
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func loadView() {
-        super.loadView()
+    private func layout()->UIView{
         let returnView = UIView()
         returnView.addSubview(detailProductCollectionView)
         detailProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -48,11 +50,12 @@ final class DetailProductViewController:UIViewController{
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.clipsToBounds = true
         backButton.tintColor = .systemYellow
-        backButton.setImage(UIImage(named: "back"), for: .normal)
-        self.view = returnView
+        let buttonImage = UIImage(named: "back")?.withRenderingMode(.alwaysTemplate)
+        backButton.setImage(buttonImage, for: .normal)
+        return returnView
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        viewModel.requestDetailProduct.onNext(1)
+    override func loadView() {
+        super.loadView()
+        self.view = layout()
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 extension ProductHTTP:GetDetailProduct{
     func getDetailProduct(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        var urlRequest = URLRequest(url: productListURL)
+        var urlRequest = URLRequest(url: productDetailURL)
         urlRequest.httpMethod = "POST"
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = requestData
@@ -36,6 +36,7 @@ extension ProductHTTP:GetDetailProduct{
                 onComplete(.failure(HTTPError.DataError))
                 return
             }
+            print(data)
             onComplete(.success(data))
             
             

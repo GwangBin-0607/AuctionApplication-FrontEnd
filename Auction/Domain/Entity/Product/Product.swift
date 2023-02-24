@@ -11,8 +11,8 @@ import RxDataSources
 struct Product:Decodable{
     let product_id:Int
     var original_price:Int
-    let imageURL:[Product_Images]
-    var mainImage:Product_Images?{
+    let imageURL:[Image]
+    var mainImage:Image?{
         get{
             if imageURL.isEmpty{
                 return nil
@@ -34,7 +34,7 @@ struct Product:Decodable{
         case product_price = "Product_Price"
     }
 }
-struct Product_Images:Decodable{
+struct Image:Decodable{
     let image_id:Int
 }
 struct ProductPrice:Decodable{

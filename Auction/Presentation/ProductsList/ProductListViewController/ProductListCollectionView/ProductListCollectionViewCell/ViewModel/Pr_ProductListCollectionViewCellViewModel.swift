@@ -13,5 +13,5 @@ struct CellImageTag {
 }
 
 protocol Pr_ProductListCollectionViewCellViewModel{
-    func returnImage(product_image:Product_Images?,tag:Int)->Observable<CellImageTag>
+    func returnImage(product_image:Image?,tag:Int)->Observable<CellImageTag>
 }

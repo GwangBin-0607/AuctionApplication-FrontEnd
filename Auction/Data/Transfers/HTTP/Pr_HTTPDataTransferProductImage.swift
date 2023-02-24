@@ -11,5 +11,5 @@ struct RequestProductImage:Encodable{
 }
 protocol Pr_HTTPDataTransferProductImage{
     func requestProductImage(requestData:RequestProductImage)throws->Data
-    func responseProductImage(data:Data) throws -> Product_Images
+    func responseProductImage(data:Data) throws -> Image
 }

@@ -19,9 +19,11 @@ enum HTTPError:Error{
 final class ProductHTTP{
     let productListURL:URL
     let productImageURL:URL
-    init(ProductListURL listURL:URL,ProductImageURL imageURL:URL) {
+    let productDetailURL:URL
+    init(ProductListURL listURL:URL,ProductImageURL imageURL:URL,ProductDetailURL detailURL:URL) {
         self.productListURL = listURL
         self.productImageURL = imageURL
+        self.productDetailURL = detailURL
     }
 }
 extension ProductHTTP:GetProductsList{

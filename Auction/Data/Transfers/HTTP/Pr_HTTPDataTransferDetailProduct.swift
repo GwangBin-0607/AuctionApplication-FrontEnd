@@ -7,7 +7,7 @@
 
 import Foundation
 struct RequestDetailProductData:Encodable{
-    let productId:Int8
+    let product_id:Int8
 }
 protocol Pr_HTTPDataTransferDetailProduct{
     func requestDetailProduct(requestData:RequestDetailProductData)throws->Data

@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import RxSwift
+struct ProductImagesWithTag{
+    let product_image:Image?
+    let tag:Int
+}
+protocol Pr_DetailProductCollectionViewImageCellViewModel {
+    func returnImage(productImageWithTag:ProductImagesWithTag) -> Observable<CellImageTag>
+}

@@ -7,9 +7,9 @@
 
 import Foundation
 final class HTTPDataTransferProductImage:Pr_HTTPDataTransferProductImage{
-    func responseProductImage(data: Data) throws -> Product_Images {
+    func responseProductImage(data: Data) throws -> Image{
         let jsonDecoder = JSONDecoder()
-        return try jsonDecoder.decode(Product_Images.self, from: data)
+        return try jsonDecoder.decode(Image.self, from: data)
     }
     init() {
         print("\(String(describing: self)) INIT")

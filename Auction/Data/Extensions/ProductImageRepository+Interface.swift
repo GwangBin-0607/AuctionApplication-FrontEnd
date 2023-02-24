@@ -36,7 +36,7 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
 }
 extension ProductImageRepository{
-    func returnCellImageTag(product_image:Product_Images?,imageWidth:CGFloat,tag:Int)->Observable<CellImageTag>{
+    func returnCellImageTag(product_image:Image?,imageWidth:CGFloat,tag:Int)->Observable<CellImageTag>{
         guard let product_image = product_image else{
             return Observable<CellImageTag>.create { observer in
                 observer.onNext(CellImageTag(result: .failure(HTTPError.RequestError), tag: tag))
@@ -65,7 +65,7 @@ extension ProductImageRepository{
             return Disposables.create()
         }
     }
-    private func returnImage(product_image:Product_Images,imageWidth:CGFloat)->Observable<Result<UIImage,HTTPError>>{
+    private func returnImage(product_image:Image,imageWidth:CGFloat)->Observable<Result<UIImage,HTTPError>>{
         guard let cacheImage = returnCacheImage(image_id: product_image.image_id) else{
             return imageLoadObservable(image_id: product_image.image_id)
                 .withUnretained(self)
