@@ -14,12 +14,14 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,S
     private let disposeBag:DisposeBag
     private let usecase:Pr_DetailProductUsecase
     weak var delegate:TransitionProductListViewController?
+    let requestProductListObserver: AnyObserver<Void>
     init(detailProductUsecase:Pr_DetailProductUsecase,collectionViewModel:Pr_ProductListCollectionViewModel,ErrorAlterViewModel:Pr_ErrorAlterViewModel,transitioning:TransitionProductListViewController) {
         self.usecase = detailProductUsecase
         self.delegate = transitioning
         self.collectionViewModel = collectionViewModel
         self.errorAlterViewModel = ErrorAlterViewModel
         disposeBag = DisposeBag()
+        requestProductListObserver = collectionViewModel.requestProductsList
         self.collectionViewModel.presentDetailProductObservable.subscribe(onNext: {
             [weak self] options in
             print(options)

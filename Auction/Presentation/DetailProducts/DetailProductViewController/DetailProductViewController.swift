@@ -1,17 +1,25 @@
 import Foundation
 import UIKit
+import RxSwift
+import RxCocoa
 
-class DetailProductViewController:UIViewController,SetCoordinatorViewController{
-    weak var delegate:TransitionDetailProductViewController?
+final class DetailProductViewController:UIViewController{
     private let productPriceView:DetailProductPriceView
+    private let backButton:UIButton
     private let detailProductCollectionView:DetailProductCollectionView
     private let viewModel:Pr_DetailProductViewControllerViewModel
-    init(transitioning:TransitionDetailProductViewController?=nil,productPriceView:DetailProductPriceView,detailProductCollectionView:DetailProductCollectionView,viewModel:Pr_DetailProductViewControllerViewModel) {
-        self.delegate = transitioning
+    private let disposeBag:DisposeBag
+    init(productPriceView:DetailProductPriceView,detailProductCollectionView:DetailProductCollectionView,viewModel:Pr_DetailProductViewControllerViewModel) {
+        disposeBag = DisposeBag()
+        backButton = UIButton()
         self.viewModel = viewModel
         self.detailProductCollectionView = detailProductCollectionView
         self.productPriceView = productPriceView
         super.init(nibName: nil, bundle: nil)
+        bind()
+    }
+    private func bind(){
+        backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {
@@ -32,9 +40,19 @@ class DetailProductViewController:UIViewController,SetCoordinatorViewController{
         productPriceView.trailingAnchor.constraint(equalTo: returnView.trailingAnchor).isActive = true
         NSLayoutConstraint(item: productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.1, constant: 0.0).isActive = true
         detailProductCollectionView.bottomAnchor.constraint(equalTo: productPriceView.topAnchor).isActive = true
+        returnView.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.topAnchor.constraint(equalTo: returnView.safeAreaLayoutGuide.topAnchor, constant: 10.0).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: returnView.leadingAnchor, constant: 10.0).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        backButton.clipsToBounds = true
+        backButton.tintColor = .systemYellow
+        backButton.setImage(UIImage(named: "back"), for: .normal)
         self.view = returnView
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.requestDetailProduct.onNext(1)
     }
 }

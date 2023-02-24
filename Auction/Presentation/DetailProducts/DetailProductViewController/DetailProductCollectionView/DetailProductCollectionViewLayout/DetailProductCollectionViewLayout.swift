@@ -7,13 +7,7 @@
 
 import Foundation
 import UIKit
-final class DetailProductCollectionViewLayoutContext:UICollectionViewLayoutInvalidationContext{
-    var section:Bool?
-}
 final class DetailProductCollectionViewLayout:UICollectionViewCompositionalLayout{
-    override class var invalidationContextClass: AnyClass{
-        DetailProductCollectionViewLayoutContext.self
-    }
     let provider:UICollectionViewCompositionalLayoutSectionProvider = {
         section,env in
         switch section{
@@ -65,19 +59,13 @@ final class DetailProductCollectionViewLayout:UICollectionViewCompositionalLayou
     }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        if let c = self.invalidationContext(forBoundsChange: newBounds) as? DetailProductCollectionViewLayoutContext,let check = c.section{
-            print(check)
-            return check
-        }else{
-            return false
-        }
+        true
     }
     private var headerViewHeight:CGFloat?
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         guard let imageSectionWidth = imageSectionWidth else{
             return nil
         }
-        print(self.collectionView?.contentOffset.x)
         let reRect = CGRect(x: rect.minX, y: rect.minY, width: imageSectionWidth, height: rect.height)
         let layoutAttributes = super.layoutAttributesForElements(in: reRect)
         layoutAttributes?.forEach { attribute in
@@ -90,25 +78,12 @@ final class DetailProductCollectionViewLayout:UICollectionViewCompositionalLayou
                 if contentOffsetY <= 0,let height = headerViewHeight {
                     let width = collectionView.frame.width - contentOffsetY
                     let height = height - contentOffsetY
-                    let minx = contentOffsetY/2
+                    let minx = contentOffsetY/2.0
                     let index = CGFloat(attribute.indexPath.item)*collectionView.frame.width
-                    print(attribute.indexPath)
                     attribute.frame = CGRect(x: index+minx, y: contentOffsetY, width: width, height: height)
                 }
             }
         }
         return layoutAttributes
-    }
-    override func invalidateLayout() {
-        super.invalidateLayout()
-        print("INVALIDATE")
-    }
-    override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
-        if let c = super.invalidationContext(forBoundsChange: newBounds) as? DetailProductCollectionViewLayoutContext{
-            c.section = newBounds.contains(CGPoint(x: 0, y: 400)) ? true : false
-            return c
-        }else{
-            return super.invalidationContext(forBoundsChange: newBounds)
-        }
     }
 }

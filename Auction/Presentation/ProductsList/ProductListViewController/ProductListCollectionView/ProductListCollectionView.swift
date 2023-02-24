@@ -23,7 +23,6 @@ final class ProductListCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
-        viewModel.requestProductsList.onNext(())
         viewModel.productsList.bind(to: rx.items(dataSource: returnDataSource())).disposed(by: disposeBag)
         self.rx.willDisplaySupplementaryView.subscribe(onNext: {
             [weak self] _,_,_ in

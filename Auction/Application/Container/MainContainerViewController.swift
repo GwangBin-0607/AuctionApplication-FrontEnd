@@ -5,6 +5,10 @@ final class MainContainerViewController:UIViewController{
     private let containerView:UIView
     private let navigationCircleView:NavigationCornerRadiusView
     private let viewModel:Pr_MainContainerControllerViewModel
+    private let gap:CGFloat = 10
+    private var navigationCircleViewTop:NSLayoutConstraint!
+    private var navigationCircleViewLeading:NSLayoutConstraint!
+    private let disposeBag = DisposeBag()
     init(navigationCircleView:NavigationCornerRadiusView,viewModel:Pr_MainContainerControllerViewModel) {
         self.navigationCircleView = navigationCircleView
         self.viewModel = viewModel
@@ -14,11 +18,11 @@ final class MainContainerViewController:UIViewController{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private var navigationCircleViewTop:NSLayoutConstraint!
-    private var navigationCircleViewLeading:NSLayoutConstraint!
-    let disposeBag = DisposeBag()
     override func loadView() {
         super.loadView()
+        self.view = layout()
+    }
+    private func layout()->UIView{
         let view = UIView()
         view.backgroundColor = .red
         view.addSubview(containerView)
@@ -35,7 +39,7 @@ final class MainContainerViewController:UIViewController{
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        self.view = view
+        return view
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,26 +64,6 @@ final class MainContainerViewController:UIViewController{
         self.navigationCircleView.viewModel.menuClickObservable.subscribe(onNext: {
             print("Present!")
         }).disposed(by: disposeBag)
-    }
-    private let gap:CGFloat = 10
-    private func maxX(leading:CGFloat)->CGFloat{
-        return min(self.view.frame.maxX-gap-self.navigationCircleView.frame.width, max(leading,gap))
-    }
-    private func maxY(top:CGFloat)->CGFloat{
-        let safeAreaTopBottom = self.view.safeAreaInsets.bottom+self.view.safeAreaInsets.top
-        let bottomMaxY = self.view.frame.height-safeAreaTopBottom-self.navigationCircleView.frame.height
-        return min(bottomMaxY, max(top,0.0))
-    }
-    private func animate(point:CGPoint){
-        let center = self.navigationCircleViewLeading.constant+self.navigationCircleView.frame.width/2
-        if center <= self.view.center.x{
-            self.navigationCircleViewLeading.constant = gap
-        }else{
-            self.navigationCircleViewLeading.constant = self.view.frame.maxX - self.navigationCircleView.frame.width-gap
-        }
-        UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75,options: .allowUserInteraction, animations: {
-            self.view.layoutIfNeeded()
-        })
     }
 }
 extension MainContainerViewController:ContainerViewController{
@@ -119,5 +103,26 @@ extension MainContainerViewController:ContainerViewController{
             })
 
         }
+    }
+}
+extension MainContainerViewController{
+    private func maxX(leading:CGFloat)->CGFloat{
+        return min(self.view.frame.maxX-gap-self.navigationCircleView.frame.width, max(leading,gap))
+    }
+    private func maxY(top:CGFloat)->CGFloat{
+        let safeAreaTopBottom = self.view.safeAreaInsets.bottom+self.view.safeAreaInsets.top
+        let bottomMaxY = self.view.frame.height-safeAreaTopBottom-self.navigationCircleView.frame.height
+        return min(bottomMaxY, max(top,0.0))
+    }
+    private func animate(point:CGPoint){
+        let center = self.navigationCircleViewLeading.constant+self.navigationCircleView.frame.width/2
+        if center <= self.view.center.x{
+            self.navigationCircleViewLeading.constant = gap
+        }else{
+            self.navigationCircleViewLeading.constant = self.view.frame.maxX - self.navigationCircleView.frame.width-gap
+        }
+        UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75,options: .allowUserInteraction, animations: {
+            self.view.layoutIfNeeded()
+        })
     }
 }

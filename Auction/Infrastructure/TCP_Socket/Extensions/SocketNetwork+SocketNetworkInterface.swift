@@ -126,7 +126,6 @@ extension SocketNetwork:StreamDelegate{
             isSocketConnected.onNext(.connect)
         case .hasBytesAvailable:
             if aStream == inputStream {
-                print("READ")
                 var dataBuffer = Array<UInt8>(repeating: 0, count: 4096)
                 var len: Int
                 len = (inputStream?.read(&dataBuffer, maxLength: 4096))!

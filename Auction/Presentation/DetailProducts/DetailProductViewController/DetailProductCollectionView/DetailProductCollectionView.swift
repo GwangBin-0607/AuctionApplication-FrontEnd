@@ -21,19 +21,16 @@ final class DetailProductCollectionView:UICollectionView{
         self.register(DetailProductCollectionViewCommentCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewCommentCell.identifier)
         self.register(DetailProductCollectionViewGraphCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewGraphCell.identifier)
         bind()
-        viewModel.requestDetailProductObserver.onNext(1)
         layout(color: backgroundColor)
     }
     private func layout(color:UIColor){
         self.contentInsetAdjustmentBehavior = .never
         self.isPrefetchingEnabled = false
-        self.backgroundColor = .systemYellow
     }
     private func bind(){
         self.dataSource = self
         viewModel.dataUpdate.subscribe(onNext: {
             [weak self] _ in
-            print("reloadData")
             self?.reloadData()
         }).disposed(by: disposeBag)
     }
@@ -46,7 +43,6 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            print("\(viewModel.returnDetailProductImagesCount())=========")
             return viewModel.returnDetailProductImagesCount() ?? 1
         default:
             return 1

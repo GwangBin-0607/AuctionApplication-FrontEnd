@@ -21,6 +21,7 @@ final class ProductListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        viewModel.requestProductListObserver.onNext(())
 //        setCADisplay()
     }
 //        func setCADisplay(){
