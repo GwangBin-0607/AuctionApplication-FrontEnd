@@ -10,9 +10,15 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
     private let detailProductUsecase:Pr_DetailProductUsecase
     private let disposeBag:DisposeBag
     private let imageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel
+    private let userCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel
     let dataUpdate: Observable<Void>
-    init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCell:Pr_DetailProductCollectionViewImageCellViewModel) {
-        imageCellViewModel = detailProductCollectionViewImageCell
+    let detailProductInfo: Observable<DetailProductInfo>
+    init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel,detailProductCollectionViewUserCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel) {
+        let detailProductInfoSubject = PublishSubject<DetailProductInfo>()
+        detailProductInfo = detailProductInfoSubject.asObservable()
+        let detailProductInfoObserver = detailProductInfoSubject.asObserver()
+        userCellViewModel = detailProductCollectionViewUserCellViewModel
+        imageCellViewModel = detailProductCollectionViewImageCellViewModel
         let dataUpdateSubject = PublishSubject<Void>()
         dataUpdate = dataUpdateSubject.asObservable().observe(on: MainScheduler.asyncInstance).take(1)
         let dataUpdateObserver = dataUpdateSubject.asObserver()
@@ -28,6 +34,7 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
                 print(detailProduct)
                 owner.detailProduct = detailProduct
                 dataUpdateObserver.onNext(())
+                detailProductInfoObserver.onNext(detailProduct.returnProductInfo())
             case .failure(let err):
                 print("ERROR")
                 print(err)
@@ -36,6 +43,9 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
     }
     func returnDetailProductCollectionViewCellViewModel() -> Pr_DetailProductCollectionViewImageCellViewModel {
         imageCellViewModel
+    }
+    func returnDetailProductCollectionViewUserCellViewModel() -> Pr_DetailProductCollectionViewUserCellViewModel {
+        userCellViewModel
     }
     func returnDetailProductUser() -> DetailProductUser? {
         detailProduct?.returnProductUser()

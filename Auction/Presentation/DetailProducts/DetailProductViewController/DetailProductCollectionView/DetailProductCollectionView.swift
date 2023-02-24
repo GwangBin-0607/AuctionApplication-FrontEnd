@@ -61,7 +61,8 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewUserCell.identifier, for: indexPath) as! DetailProductCollectionViewUserCell
-            cell.bindingData.onNext(viewModel.returnDetailProductUser())
+            cell.bindingViewModel(cellViewModel: viewModel.returnDetailProductCollectionViewUserCellViewModel())
+            cell.bindingData.onNext(UserWithTag(user: viewModel.returnDetailProductUser(), tag: indexPath.item))
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewCommentCell.identifier, for: indexPath) as! DetailProductCollectionViewCommentCell

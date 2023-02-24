@@ -9,21 +9,27 @@ import Foundation
 import RxSwift
 
 final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
-    let updownObservable: Observable<Bool?>
-    let priceObservable: Observable<Int>
-    let beforePriceObservable: Observable<Int>
-    let updownObserver: AnyObserver<Bool?>
+    let updownObservable: Observable<ProductUpDown>
+    let priceObservable: Observable<String>
+    let beforePriceObservable: Observable<String>
+    let updownObserver: AnyObserver<ProductUpDown>
     let priceObserver: AnyObserver<Int>
     let beforePriceObserver: AnyObserver<Int>
     init() {
-        let updownSubject = PublishSubject<Bool?>()
+        let updownSubject = PublishSubject<ProductUpDown>()
         let priceSubject = PublishSubject<Int>()
         let beforePriceSubject = PublishSubject<Int>()
         updownObservable = updownSubject.asObservable()
         updownObserver = updownSubject.asObserver()
-        beforePriceObservable = beforePriceSubject.asObservable()
+        beforePriceObservable = beforePriceSubject.asObservable().map({
+            price in
+            return "전일대비 : +"+String(price)+"₩"
+        })
         beforePriceObserver = beforePriceSubject.asObserver()
-        priceObservable = priceSubject.asObservable()
+        priceObservable = priceSubject.asObservable().map({
+            price in
+            return "현재가격 : "+String(price)+"₩"
+        })
         priceObserver = priceSubject.asObserver()
     }
 }

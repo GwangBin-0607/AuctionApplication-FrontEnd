@@ -23,6 +23,12 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
         requestDetailProduct = detailProductCollectionViewModel.requestDetailProductObserver
         let buttonSubject = PublishSubject<Void>()
         backAction = buttonSubject.asObserver()
+        detailProductCollectionViewModel.detailProductInfo.withUnretained(self).subscribe(onNext: {
+            owner,info in
+            owner.detailProductPriceViewModel.beforePriceObserver.onNext(info.beforePrice)
+            owner.detailProductPriceViewModel.priceObserver.onNext(info.original_price)
+            owner.detailProductPriceViewModel.updownObserver.onNext(info.checkUpDown)
+        }).disposed(by: disposeBag)
         buttonSubject.subscribe(onNext: {
             [weak self] in
             self?.delegate?.dismissToProductListViewController()

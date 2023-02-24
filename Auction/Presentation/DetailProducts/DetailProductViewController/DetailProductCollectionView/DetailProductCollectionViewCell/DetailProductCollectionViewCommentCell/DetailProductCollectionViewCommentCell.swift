@@ -13,7 +13,7 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
     private let commentLabel:UILabel
     static let identifier = "DetailProductCollectionViewCommentCell"
     let bindingData:AnyObserver<DetailProductComment?>
-    private let minimumLabelHeight:CGFloat = 200
+    private let minimumLabelHeight:CGFloat = 20
     private let disposeBag:DisposeBag
     override init(frame: CGRect) {
         disposeBag = DisposeBag()
@@ -27,8 +27,8 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
             owner,detailProductComment in
             if let comment = detailProductComment{
                 owner.commentLabel.text = comment.comment
-                owner.productNameLabel.text = "나이키 신발"
-                owner.productRegisterTimeLabel.text = "3시간 전"
+                owner.productNameLabel.text = comment.product_name
+                owner.productRegisterTimeLabel.text = comment.registerTime
             }
         }).disposed(by:disposeBag)
         layout()
@@ -52,16 +52,12 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
         commentLabel.topAnchor.constraint(equalTo: productRegisterTimeLabel.bottomAnchor,constant: 5.0).isActive = true
         commentLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,constant: 5.0).isActive = true
         commentLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,constant: -5.0).isActive = true
-        commentLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.contentView.bottomAnchor,constant: -5.0).isActive = true
+        commentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5.0).isActive = true
         commentLabel.numberOfLines = 0
         commentLabel.font = UIFont.boldSystemFont(ofSize: 15)
         commentLabel.textColor = .black
         commentLabel.backgroundColor  = .red
-        backgroundColor = .white
-    }
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        layoutAttributes.frame.size = CGSize(width: layoutAttributes.frame.width, height: commentLabel.frame.height+minimumLabelHeight)
-        return layoutAttributes
+        backgroundColor = .yellow
     }
     
     required init?(coder: NSCoder) {

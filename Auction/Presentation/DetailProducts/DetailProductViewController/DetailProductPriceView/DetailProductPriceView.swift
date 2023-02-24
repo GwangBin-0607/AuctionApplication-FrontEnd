@@ -34,11 +34,9 @@ final class DetailProductPriceView:UIView{
 //        buyProductButton.rx.tap.
         viewModel.priceObservable.map{String($0)}.bind(to: priceLabel.rx.text).disposed(by: disposeBag)
         viewModel.beforePriceObservable.map{String($0)}.bind(to: beforePriceLabel.rx.text).disposed(by: disposeBag)
-        viewModel.updownObservable.withUnretained(self).subscribe(onNext: {
+        viewModel.updownObservable.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,updown in
-            if let updown = updown{
-                owner.upDownImageView.image = updown ? UIImage(named: "upState") : UIImage(named: "nothing")
-            }
+            owner.upDownImageView.image = updown.state ? UIImage(named: "upState") : UIImage(named: "nothing")
         }).disposed(by: disposeBag)
     }
     private func layout(){

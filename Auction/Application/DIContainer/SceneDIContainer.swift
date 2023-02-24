@@ -184,11 +184,15 @@ extension SceneDIContainer{
         DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
     }
     func returnDetailProductCollectionViewModel()->Pr_DetailProductCollectionViewModel{
-        DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCell: returnDetailProductCollectionViewImageCellViewModel() )
-    }
-    func returnDetailProductCollectionViewImageCellViewModel()->Pr_DetailProductCollectionViewImageCellViewModel{
         let imageRepo = returnProductsImageRepository(httpService: returnHTTPServices())
-        return DetailProductCollectionViewImageCellViewModel(ImageUsecase: returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepo), downImageSize: returnImageWidth(scale: 1.0))
+        let imageUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepo)
+        return DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCellViewModel: returnDetailProductCollectionViewImageCellViewModel(usecase: imageUsecase),detailProductCollectionViewUserCellViewModel:returnDetailProductCollectionViewUserCellViewModel(usecase: imageUsecase) )
+    }
+    func returnDetailProductCollectionViewUserCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewUserCellViewModel{
+        DetailProductCollectionViewUserCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 5.0))
+    }
+    func returnDetailProductCollectionViewImageCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewImageCellViewModel{
+        DetailProductCollectionViewImageCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 1.0))
     }
     func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel)->Pr_DetailProductViewControllerViewModel{
         DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel)

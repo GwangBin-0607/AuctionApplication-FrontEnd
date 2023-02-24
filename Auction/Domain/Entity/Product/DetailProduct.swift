@@ -37,11 +37,9 @@ struct DetailProduct:Decodable{
 }
 struct DetailProductInfo:Decodable{
     let product_id:Int
-    let product_name:String
     let original_price:Int
-    let registerTime:String
     var checkUpDown:ProductUpDown
-    
+    let beforePrice:Int
 }
 struct DetailProductImages:Decodable{
     let images:[Image]
@@ -64,6 +62,13 @@ struct DetailProductUser:Decodable{
     let user_id:Int
     let user_name:String
     let user_image:[Image]
+    func returnMainUserImage()->Image?{
+        if user_image.isEmpty{
+            return nil
+        }else{
+            return user_image[0]
+        }
+    }
     enum CodingKeys: String,CodingKey {
         case user_id
         case user_name
@@ -71,6 +76,8 @@ struct DetailProductUser:Decodable{
     }
 }
 struct DetailProductComment:Decodable{
+    let product_name:String
+    let registerTime:String
     let comment:String
 }
 struct DetailProductGraph:Decodable{

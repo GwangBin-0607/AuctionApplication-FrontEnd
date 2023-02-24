@@ -8,10 +8,10 @@
 import Foundation
 import RxSwift
 protocol Pr_DetailProductPriceViewModel{
-    var updownObservable:Observable<Bool?>{get}
-    var updownObserver:AnyObserver<Bool?>{get}
-    var priceObservable:Observable<Int>{get}
+    var updownObservable:Observable<ProductUpDown>{get}
+    var updownObserver:AnyObserver<ProductUpDown>{get}
+    var priceObservable:Observable<String>{get}
     var priceObserver:AnyObserver<Int>{get}
-    var beforePriceObservable:Observable<Int>{get}
+    var beforePriceObservable:Observable<String>{get}
     var beforePriceObserver:AnyObserver<Int>{get}
 }
