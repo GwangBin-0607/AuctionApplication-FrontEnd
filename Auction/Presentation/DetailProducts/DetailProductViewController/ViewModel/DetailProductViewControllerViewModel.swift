@@ -17,17 +17,17 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
     private let disposeBag:DisposeBag
     init(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel: Pr_DetailProductPriceViewModel,detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel) {
         disposeBag = DisposeBag()
+        let requestData = PublishSubject<Int8>()
+        requestDetailProduct = requestData.asObserver()
         self.detailProductPriceViewModel = detailProductPriceViewModel
         self.delegate = transitioning
         self.detailProductCollectionViewModel = detailProductCollectionViewModel
-        requestDetailProduct = detailProductCollectionViewModel.requestDetailProductObserver
         let buttonSubject = PublishSubject<Void>()
         backAction = buttonSubject.asObserver()
-        detailProductCollectionViewModel.detailProductInfo.withUnretained(self).subscribe(onNext: {
-            owner,info in
-            owner.detailProductPriceViewModel.beforePriceObserver.onNext(info.beforePrice)
-            owner.detailProductPriceViewModel.priceObserver.onNext(info.original_price)
-            owner.detailProductPriceViewModel.updownObserver.onNext(info.checkUpDown)
+        requestData.withUnretained(self).subscribe(onNext: {
+            owner,product_id in
+            owner.detailProductCollectionViewModel.requestDetailProductObserver.onNext(product_id)
+            owner.detailProductPriceViewModel.requestDataObserver.onNext(product_id)
         }).disposed(by: disposeBag)
         buttonSubject.subscribe(onNext: {
             [weak self] in

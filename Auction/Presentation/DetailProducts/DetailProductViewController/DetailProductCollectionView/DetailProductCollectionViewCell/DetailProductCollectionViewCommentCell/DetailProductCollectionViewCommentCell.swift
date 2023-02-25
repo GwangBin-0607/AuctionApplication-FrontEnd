@@ -52,7 +52,7 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
         commentLabel.topAnchor.constraint(equalTo: productRegisterTimeLabel.bottomAnchor,constant: 5.0).isActive = true
         commentLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor,constant: 5.0).isActive = true
         commentLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor,constant: -5.0).isActive = true
-        commentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5.0).isActive = true
+        commentLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -3.0).isActive = true
         commentLabel.numberOfLines = 0
         commentLabel.font = UIFont.boldSystemFont(ofSize: 15)
         commentLabel.textColor = .black

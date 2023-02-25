@@ -28,6 +28,12 @@ class ExportConfigure{
         }
         return url
     }
+    func getProductCurrentPriceURL()->URL{
+        guard let infoImageURL = bundle.object(forInfoDictionaryKey: "HTTP_CURRENT_PRICE_URL") as? String,let url = URL(string: infoImageURL)  else{
+            fatalError("No URL Info.plist")
+        }
+        return url
+    }
     func getSocketHost()->String{
         guard let infoSocketHost = bundle.object(forInfoDictionaryKey: "SOCKET_HOST") as? String else{
             fatalError("No Socket Host Info.plist")

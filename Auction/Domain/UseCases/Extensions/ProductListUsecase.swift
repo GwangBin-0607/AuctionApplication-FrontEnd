@@ -41,4 +41,7 @@ extension ProductListWithImageHeightUsecase:Pr_ProductListWithImageHeightUsecase
     func returnStreamProduct() -> Observable<Result<[StreamPrice], StreamError>> {
         listRepo.streamingList
     }
+    func returnSocketNetworkInterface() -> SocketNetworkInterface {
+        listRepo.returnSocketNetwork()
+    }
 }

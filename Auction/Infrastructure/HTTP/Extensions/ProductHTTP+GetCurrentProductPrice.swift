@@ -1,36 +1,14 @@
 //
-//  NetworkService.swift
-//  front-end
+//  ProductHTTP+GetDetailProduct.swift
+//  Auction
 //
-//  Created by 안광빈 on 2022/10/27.
+//  Created by 안광빈 on 2023/02/17.
 //
 
 import Foundation
-import RxSwift
-enum HTTPError:Error{
-    case RequestError
-    case ResponseError
-    case DataError
-    case StatusError
-    case DecodeError
-    case EndProductList
-    case NoImageData
-}
-final class ProductHTTP{
-    let productListURL:URL
-    let productImageURL:URL
-    let productDetailURL:URL
-    let productCurrentPriceURL:URL
-    init(ProductListURL listURL:URL,ProductImageURL imageURL:URL,ProductDetailURL detailURL:URL,ProductCurrentPriceURL currentURL:URL) {
-        self.productListURL = listURL
-        self.productImageURL = imageURL
-        self.productDetailURL = detailURL
-        self.productCurrentPriceURL = currentURL
-    }
-}
-extension ProductHTTP:GetProductsList{
-    func getProductData(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
-        var urlRequest = URLRequest(url: productListURL)
+extension ProductHTTP:GetCurrentProductPrice{
+    func getCurrentProductPrice(requestData: Data, onComplete: @escaping (Result<Data, HTTPError>) -> Void) {
+        var urlRequest = URLRequest(url: productCurrentPriceURL)
         urlRequest.httpMethod = "POST"
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.httpBody = requestData
@@ -58,11 +36,10 @@ extension ProductHTTP:GetProductsList{
                 onComplete(.failure(HTTPError.DataError))
                 return
             }
+            print(data)
             onComplete(.success(data))
             
             
         }.resume()
     }
-    
-    
 }

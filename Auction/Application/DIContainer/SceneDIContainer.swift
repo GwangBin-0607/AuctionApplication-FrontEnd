@@ -8,8 +8,8 @@ final class SceneDIContainer{
 
 //MARK: Infrastructure
 extension SceneDIContainer{
-     func returnHTTPServices()->GetProductsList&GetProductImage&GetDetailProduct{
-         return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL(),ProductDetailURL: configure.getProductDetailURL())
+     func returnHTTPServices()->GetProductsList&GetProductImage&GetDetailProduct&GetCurrentProductPrice{
+         return ProductHTTP(ProductListURL: configure.getProductListURL(), ProductImageURL: configure.getProductImageURL(),ProductDetailURL: configure.getProductDetailURL(),ProductCurrentPriceURL: configure.getProductCurrentPriceURL())
     }
      func returnStreamingService()->SocketNetworkInterface{
          SocketNetwork(hostName: configure.getSocketHost(), portNumber: configure.getSocketPort())
@@ -136,11 +136,12 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
 }
 protocol ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface: SocketNetworkInterface)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
+    
     func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController {
         let cellCount = returnCellCount()
         let httpService = returnHTTPServices()
@@ -154,18 +155,20 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
         return productListViewController
     }
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator)->Coordinator{
-        DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator)
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface)->Coordinator{
+        DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id: product_id,streamNetworkInterface: streamNetworkInterface)
     }
 }
 protocol DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?) -> UIViewController
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,streamNetworkInterface:SocketNetworkInterface,product_id:Int) -> UIViewController
 }
 
 //MARK: DetailViewController
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil) -> UIViewController {
-        let productPriceViewModel = returnDetailProductPriceViewModel()
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,streamNetworkInterface:SocketNetworkInterface,product_id:Int) -> UIViewController {
+        let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetworkInterface, product_id: product_id)
+        let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
+        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase)
         let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel)
         let collectionViewModel = returnDetailProductCollectionViewModel()
         let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
@@ -176,9 +179,6 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
 extension SceneDIContainer{
     func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel)->DetailProductPriceView{
         DetailProductPriceView(viewModel:viewModel )
-    }
-    func returnDetailProductPriceViewModel()->Pr_DetailProductPriceViewModel{
-        DetailProductPriceViewModel()
     }
     func returnDetailProductCollectionView(viewModel:Pr_DetailProductCollectionViewModel)->DetailProductCollectionView{
         DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
@@ -196,5 +196,19 @@ extension SceneDIContainer{
     }
     func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel)->Pr_DetailProductViewControllerViewModel{
         DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel)
+    }
+}
+extension SceneDIContainer{
+    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase)->Pr_DetailProductPriceViewModel{
+        DetailProductPriceViewModel(usecase: usecase)
+    }
+    func returnCurrentProductPriceUsecase(currentProductPriceRepository:Pr_CurrentProductPriceRepository)->Pr_CurrentProductPriceUsecase{
+        CurrentProductPriceUsecase(currentProductPriceRepository: currentProductPriceRepository)
+    }
+    func returnCurrentProductPriceRepository(streamNetworkService:SocketNetworkInterface,product_id:Int)->Pr_CurrentProductPriceRepository{
+        CurrentProductPriceRepository(httpService: returnHTTPServices(), httpCurrentProductPriceTransfer: returnHTTPDataTransferCurrentProductPrice(), streamTransferData: returnTCPStreamDataTransferInterface(), streamService: streamNetworkService, product_id: product_id)
+    }
+    func returnHTTPDataTransferCurrentProductPrice()->Pr_HTTPDataTransferCurrentProductPrice{
+        HTTPDataTransferCurrentProductPrice()
     }
 }

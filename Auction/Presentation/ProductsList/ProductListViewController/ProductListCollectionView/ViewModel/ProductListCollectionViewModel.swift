@@ -11,6 +11,7 @@ struct PresentOptions{
     var index:Int?
     let presentRect:CGRect
     var productId:Int?
+    var streamSocketNetwork:SocketNetworkInterface?
 }
 final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     private let usecase:Pr_ProductListWithImageHeightUsecase
@@ -49,7 +50,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
         
         presentDetailProductObservable = presentDetailProductSubject.map({
             [weak self] presentOptions in
-            return PresentOptions(presentRect: presentOptions.presentRect,productId: self?.returnProductId(index: presentOptions.index))
+            return PresentOptions(presentRect: presentOptions.presentRect,productId: self?.returnProductId(index: presentOptions.index),streamSocketNetwork: self?.usecase.returnSocketNetworkInterface())
         })
 
         usecase.returnStreamProduct().withUnretained(self).withLatestFrom(products,resultSelector: {

@@ -31,7 +31,6 @@ final class DetailProductPriceView:UIView{
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
-//        buyProductButton.rx.tap.
         viewModel.priceObservable.map{String($0)}.bind(to: priceLabel.rx.text).disposed(by: disposeBag)
         viewModel.beforePriceObservable.map{String($0)}.bind(to: beforePriceLabel.rx.text).disposed(by: disposeBag)
         viewModel.updownObservable.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
@@ -51,7 +50,7 @@ final class DetailProductPriceView:UIView{
         priceLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5.0).isActive = true
         priceLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 5.0).isActive = true
-        upDownImageView.topAnchor.constraint(equalTo: priceLabel.topAnchor).isActive = true
+        upDownImageView.centerYAnchor.constraint(equalTo: priceLabel.centerYAnchor).isActive = true
         upDownImageView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3.0).isActive = true
         NSLayoutConstraint(item: upDownImageView, attribute: .height, relatedBy: .equal, toItem: priceLabel, attribute: .height, multiplier: 0.5, constant: 0.0).isActive = true
         NSLayoutConstraint(item: upDownImageView, attribute: .width, relatedBy: .equal, toItem: upDownImageView, attribute: .height, multiplier: 1.0, constant: 0.0).isActive = true

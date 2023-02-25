@@ -8,6 +8,8 @@
 	<string>$(HTTP_LIST_URL)</string>
 	<key>HTTP_DETAIL_URL</key>
 	<string>$(HTTP_DETAIL_URL)</string>
+	<key>HTTP_CURRENT_PRICE_URL</key>
+	<string>$(HTTP_CURRENT_PRICE_URL)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

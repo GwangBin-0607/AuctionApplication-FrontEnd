@@ -37,9 +37,6 @@ struct DetailProduct:Decodable{
 }
 struct DetailProductInfo:Decodable{
     let product_id:Int
-    let original_price:Int
-    var checkUpDown:ProductUpDown
-    let beforePrice:Int
 }
 struct DetailProductImages:Decodable{
     let images:[Image]
@@ -79,6 +76,7 @@ struct DetailProductComment:Decodable{
     let product_name:String
     let registerTime:String
     let comment:String
+    let original_price:Int
 }
 struct DetailProductGraph:Decodable{
     let data:[GraphData]

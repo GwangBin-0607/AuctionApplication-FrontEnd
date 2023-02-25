@@ -5,4 +5,5 @@ protocol Pr_ProductListWithImageHeightUsecase{
     func returnStreamProduct() -> Observable<Result<[StreamPrice],StreamError>>
     func returnObservableStreamState() -> Observable<isConnecting>
     func returnControlStreamState(state: isConnecting)
+    func returnSocketNetworkInterface()->SocketNetworkInterface
 }

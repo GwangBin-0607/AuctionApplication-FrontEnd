@@ -10,6 +10,15 @@
 		311105329922583B55746E92 /* Pods_Auction_AuctionUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 399AD5CB3AE2F0829D582559 /* Pods_Auction_AuctionUITests.framework */; };
 		881AEBFC29519622004A7CDA /* StreamingProductPriceListTestData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */; };
 		881AEC00295200CF004A7CDA /* FetchingProductsListTestDataTwo.json in Resources */ = {isa = PBXBuildFile; fileRef = 881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */; };
+		881D8C5C29A9AB0A00B90125 /* CurrentProductPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C5B29A9AB0A00B90125 /* CurrentProductPrice.swift */; };
+		881D8C5E29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C5D29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift */; };
+		881D8C6029A9B2BB00B90125 /* CurrentProductPriceUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C5F29A9B2BB00B90125 /* CurrentProductPriceUsecase.swift */; };
+		881D8C6229A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6129A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift */; };
+		881D8C6429A9B33000B90125 /* CurrentProductPriceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6329A9B33000B90125 /* CurrentProductPriceRepository.swift */; };
+		881D8C6729A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6629A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift */; };
+		881D8C6929A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6829A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift */; };
+		881D8C6B29A9B99E00B90125 /* GetCurrentProductPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6A29A9B99E00B90125 /* GetCurrentProductPrice.swift */; };
+		881D8C6D29A9B9C700B90125 /* ProductHTTP+GetCurrentProductPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C6C29A9B9C700B90125 /* ProductHTTP+GetCurrentProductPrice.swift */; };
 		881F82F0297FB3CD00B058D7 /* MockInputData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881F82EF297FB3CD00B058D7 /* MockInputData.json */; };
 		882CBE772908285C00550A8E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE762908285C00550A8E /* Product.swift */; };
 		882CBE8029083DC400550A8E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE7F29083DC400550A8E /* ProductListViewController.swift */; };
@@ -158,6 +167,15 @@
 		8655A51D088582A1916BBA5B /* Pods-Auction.cnf_debug(localserver_docker).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Auction.cnf_debug(localserver_docker).xcconfig"; path = "Target Support Files/Pods-Auction/Pods-Auction.cnf_debug(localserver_docker).xcconfig"; sourceTree = "<group>"; };
 		881AEBFB29519622004A7CDA /* StreamingProductPriceListTestData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = StreamingProductPriceListTestData.json; sourceTree = "<group>"; };
 		881AEBFF295200CF004A7CDA /* FetchingProductsListTestDataTwo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FetchingProductsListTestDataTwo.json; sourceTree = "<group>"; };
+		881D8C5B29A9AB0A00B90125 /* CurrentProductPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentProductPrice.swift; sourceTree = "<group>"; };
+		881D8C5D29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CurrentProductPriceUsecase.swift; sourceTree = "<group>"; };
+		881D8C5F29A9B2BB00B90125 /* CurrentProductPriceUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentProductPriceUsecase.swift; sourceTree = "<group>"; };
+		881D8C6129A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CurrentProductPriceRepository.swift; sourceTree = "<group>"; };
+		881D8C6329A9B33000B90125 /* CurrentProductPriceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentProductPriceRepository.swift; sourceTree = "<group>"; };
+		881D8C6629A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_HTTPDataTransferCurrentProductPrice.swift; sourceTree = "<group>"; };
+		881D8C6829A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDataTransferCurrentProductPrice.swift; sourceTree = "<group>"; };
+		881D8C6A29A9B99E00B90125 /* GetCurrentProductPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCurrentProductPrice.swift; sourceTree = "<group>"; };
+		881D8C6C29A9B9C700B90125 /* ProductHTTP+GetCurrentProductPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProductHTTP+GetCurrentProductPrice.swift"; sourceTree = "<group>"; };
 		881F82EF297FB3CD00B058D7 /* MockInputData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockInputData.json; sourceTree = "<group>"; };
 		882CBE762908285C00550A8E /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		882CBE7F29083DC400550A8E /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
@@ -336,6 +354,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		881D8C6529A9B36C00B90125 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */,
+				88752C1A299F4ED6005A4BEF /* Pr_HTTPDataTransferDetailProduct.swift */,
+				88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift */,
+				881D8C6629A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		8828337D28FDAB64004DD57E /* Configure */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +400,7 @@
 				8874F4C92937394D003981C3 /* Pr_ProductImageUsecase.swift */,
 				88BF04C029557CDB001F7725 /* Pr_ProductListUsecase.swift */,
 				88752C22299F5719005A4BEF /* Pr_DetailProductUsecase.swift */,
+				881D8C5D29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -391,6 +421,7 @@
 				88BF04C429557F01001F7725 /* ProductListRepositoryInterface.swift */,
 				88CE01722969840A003169B5 /* ProductImageCacheRepositoryInterface.swift */,
 				88752C1E299F5340005A4BEF /* pr_DetailProductRepository.swift */,
+				881D8C6129A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -402,6 +433,7 @@
 				887D549A295301D200DA2F15 /* ProductListRepository+Interface.swift */,
 				88CE0170296983F0003169B5 /* ProductImageCacheRepository+interface.swift */,
 				88752C20299F53A6005A4BEF /* DetailProductRepository+Interface.swift */,
+				881D8C6329A9B33000B90125 /* CurrentProductPriceRepository.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -581,6 +613,7 @@
 				882CBE762908285C00550A8E /* Product.swift */,
 				8897C461292CC22100823980 /* StreamPrice.swift */,
 				88752C26299F5ACB005A4BEF /* DetailProduct.swift */,
+				881D8C5B29A9AB0A00B90125 /* CurrentProductPrice.swift */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -600,12 +633,11 @@
 		88752C19299F4EB3005A4BEF /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
-				88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift */,
+				881D8C6529A9B36C00B90125 /* Protocols */,
 				88D3AC4C2986C7C60044BDE7 /* HTTPDataTransferProductList.swift */,
-				88752C1A299F4ED6005A4BEF /* Pr_HTTPDataTransferDetailProduct.swift */,
 				88752C1C299F4EE3005A4BEF /* HTTPDataTransferDetailProduct.swift */,
-				88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */,
 				88D9F58029A1E78700939BB7 /* HTTPDataTransferProductImage.swift */,
+				881D8C6829A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift */,
 			);
 			path = HTTP;
 			sourceTree = "<group>";
@@ -840,6 +872,7 @@
 			children = (
 				8897C46C292CC8D300823980 /* GetProductsList.swift */,
 				88752C14299F4CF8005A4BEF /* GetDetailProduct.swift */,
+				881D8C6A29A9B99E00B90125 /* GetCurrentProductPrice.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -850,6 +883,7 @@
 				889EE5DB290A41760041CC88 /* ProductHTTP+GetProductsList.swift */,
 				8878025C29439B66009F4F9A /* ProductHTTP+GetProductImage.swift */,
 				88752C16299F4D0F005A4BEF /* ProductHTTP+GetDetailProduct.swift */,
+				881D8C6C29A9B9C700B90125 /* ProductHTTP+GetCurrentProductPrice.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -916,6 +950,7 @@
 				8874F4CD29373D55003981C3 /* ProductImageUseCase.swift */,
 				887D549C295303DA00DA2F15 /* ProductListUsecase.swift */,
 				88752C24299F5767005A4BEF /* DetailProductUsecase.swift */,
+				881D8C5F29A9B2BB00B90125 /* CurrentProductPriceUsecase.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1323,6 +1358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8887D1582935BF78005DA3C6 /* SetCoordinatorViewController.swift in Sources */,
+				881D8C6D29A9B9C700B90125 /* ProductHTTP+GetCurrentProductPrice.swift in Sources */,
 				8887D1562935A8EA005DA3C6 /* HasParentCoordinator.swift in Sources */,
 				88D2178A296456DC00715D2F /* OutputStreamCompletionHandler.swift in Sources */,
 				8832E9BB29A3D69200904667 /* DetailProductViewControllerViewModel.swift in Sources */,
@@ -1336,6 +1372,7 @@
 				88752C27299F5ACB005A4BEF /* DetailProduct.swift in Sources */,
 				887D549F2953044000DA2F15 /* ProductListCollectionViewModel.swift in Sources */,
 				8897C462292CC22100823980 /* StreamPrice.swift in Sources */,
+				881D8C6B29A9B99E00B90125 /* GetCurrentProductPrice.swift in Sources */,
 				8887D1542935A6E5005DA3C6 /* ContainerViewController.swift in Sources */,
 				8870DCA528E5701E005328C0 /* ViewController.swift in Sources */,
 				8897C46D292CC8D300823980 /* GetProductsList.swift in Sources */,
@@ -1343,6 +1380,7 @@
 				8832E85329A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift in Sources */,
 				88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */,
 				88881532296EDE7E0023CDE3 /* ProductListStateInterface.swift in Sources */,
+				881D8C6929A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift in Sources */,
 				88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */,
 				887D549D295303DA00DA2F15 /* ProductListUsecase.swift in Sources */,
 				88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */,
@@ -1374,6 +1412,7 @@
 				8832E86229A128F400BCFF33 /* Pr_DetailProductCollectionViewImageCellViewModel.swift in Sources */,
 				888B4D28292F435F00784E46 /* DetailProductViewController.swift in Sources */,
 				8874F4CA2937394D003981C3 /* Pr_ProductImageUsecase.swift in Sources */,
+				881D8C6429A9B33000B90125 /* CurrentProductPriceRepository.swift in Sources */,
 				88E5A97629A9019C00A45AA9 /* Pr_DetailProductCollectionViewUserCellViewModel.swift in Sources */,
 				88EE6889299EA3EE002A47DB /* PreviewProvider.swift in Sources */,
 				889FC3EB2982313E009B8A2A /* ProductListCollectionFooterView.swift in Sources */,
@@ -1383,6 +1422,8 @@
 				88CED134297137DB0048367A /* Pr_ProductListViewControllerViewModel.swift in Sources */,
 				8832E9B629A3D29F00904667 /* Pr_DetailProductPriceViewModel.swift in Sources */,
 				8832E85529A0E38800BCFF33 /* DetailProductCollectionViewCommentCell.swift in Sources */,
+				881D8C6729A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift in Sources */,
+				881D8C5E29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift in Sources */,
 				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductHTTP+GetProductsList.swift in Sources */,
 				88F5DD9029969E84007FB204 /* MainContainerControllerViewModel.swift in Sources */,
@@ -1408,11 +1449,14 @@
 				88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */,
 				88F5DD8629969D57007FB204 /* NavigationCircleView.swift in Sources */,
 				88E5A97329A890D200A45AA9 /* Pr_ChildViewController.swift in Sources */,
+				881D8C6029A9B2BB00B90125 /* CurrentProductPriceUsecase.swift in Sources */,
 				8887D15D2936223F005DA3C6 /* TransitionDetailProductViewController.swift in Sources */,
+				881D8C6229A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift in Sources */,
 				889CCD7429139BC3008D1E2F /* MockProductsListAPI.swift in Sources */,
 				88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */,
 				88BF04C129557CDB001F7725 /* Pr_ProductListUsecase.swift in Sources */,
 				88F5DD8329969D10007FB204 /* CornerRadiusView.swift in Sources */,
+				881D8C5C29A9AB0A00B90125 /* CurrentProductPrice.swift in Sources */,
 				8832E85E29A0E43400BCFF33 /* Pr_DetailProductCollectionViewModel.swift in Sources */,
 				888B4D30292F453B00784E46 /* ProductListViewCoordinator.swift in Sources */,
 				88D3AC4B2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift in Sources */,
