@@ -8,5 +8,5 @@
 import Foundation
 import RxSwift
 protocol Pr_DetailProductRepository{
-    func httpDetailProduct(productId:Int8)->Observable<Result<DetailProduct,HTTPError>>
+    func httpDetailProduct(productId:Int)->Observable<Result<DetailProduct,HTTPError>>
 }

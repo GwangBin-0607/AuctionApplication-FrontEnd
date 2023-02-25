@@ -12,13 +12,13 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
     let updownObservable: Observable<ProductUpDown>
     let priceObservable: Observable<String>
     let beforePriceObservable: Observable<String>
-    let requestDataObserver: AnyObserver<Int8>
+    let requestDataObserver: AnyObserver<Int>
     private let usecase:Pr_CurrentProductPriceUsecase
     private let disposeBag:DisposeBag
     init(usecase:Pr_CurrentProductPriceUsecase) {
         disposeBag = DisposeBag()
         self.usecase = usecase
-        let requestData = PublishSubject<Int8>()
+        let requestData = PublishSubject<Int>()
         requestDataObserver = requestData.asObserver()
         let updownSubject = PublishSubject<ProductUpDown>()
         let priceSubject = PublishSubject<Int>()
@@ -48,9 +48,15 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
         }).disposed(by: disposeBag)
         usecase.returnStreamCurrentProductPrice().subscribe(onNext: {
             result in
-            print("====")
-            print(result)
-        })
+            switch result {
+            case .success(let buffer):
+                if let updateData = buffer.last{
+                    print(updateData)
+                }
+            case .failure(let err):
+                print(err)
+            }
+        }).disposed(by: disposeBag)
         
     }
 }

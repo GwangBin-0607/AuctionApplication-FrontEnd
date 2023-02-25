@@ -30,7 +30,7 @@ final class CurrentProductPriceRepository{
     }
 }
 extension CurrentProductPriceRepository:Pr_CurrentProductPriceRepository{
-    func httpDetailProduct(productId: Int8) -> Observable<Result<CurrentProductPrice, HTTPError>> {
+    func httpDetailProduct(productId: Int) -> Observable<Result<CurrentProductPrice, HTTPError>> {
         guard let data = try? httpCurrentProductPriceTransfer.requestDetailProduct(requestData: RequestCurrentProductPriceData(product_id: productId)) else{
             return Observable<Result<CurrentProductPrice,HTTPError>>.create { ob in
                 ob.onNext(.failure(HTTPError.DataError))

@@ -94,13 +94,13 @@ extension MainContainerViewController:ContainerViewController{
             ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
             ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
             ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            ViewController.view.alpha = 0.0
-            UIView.animate(withDuration: 1.0, delay: .zero, options: .curveLinear, animations: {
-                ViewController.view.alpha = 1.0
-            }, completion: {
-                finish in
-                ViewController.endAppearanceTransition()
-            })
+            ViewController.view.alpha = 1.0
+//            UIView.animate(withDuration: 1.0, delay: .zero, options: .curveLinear, animations: {
+//                ViewController.view.alpha = 1.0
+//            }, completion: {
+//                finish in
+//                ViewController.endAppearanceTransition()
+//            })
 
         }
     }

@@ -24,8 +24,8 @@ extension SceneDIContainer{
     func returnProductsImageRepository(httpService:GetProductImage)->ProductImageRepositoryInterface{
         return ProductImageRepository(ImageServer: httpService,CacheRepository: returnProductCacheImageRepository(),httpTransfer: returnHTTPImageDataTransfer())
     }
-    func returnProductListRepositoryInterface(httpService:GetProductsList)->ProductListRepositoryInterface{
-        return ProductListRepository(ApiService: httpService, StreamingService:returnStreamingService(),TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
+    func returnProductListRepositoryInterface(httpService:GetProductsList,socketNetworkInterface:SocketNetworkInterface)->ProductListRepositoryInterface{
+        return ProductListRepository(ApiService: httpService, StreamingService:socketNetworkInterface,TCPStreamDataTransfer: returnTCPStreamDataTransferInterface(),ProductListState: returnProductListState(),HTTPDataTransfer: returnHTTPDataTransfer())
     }
      func returnProductListState()->ProductListStateInterface{
         ProductListState()
@@ -58,8 +58,8 @@ extension SceneDIContainer{
 
 //MARK: Usecase
 extension SceneDIContainer{
-    func returnProductListUsecaseInterface(httpService:GetProductsList,ImageHeightRepository:ProductImageRepositoryInterface)->Pr_ProductListWithImageHeightUsecase{
-        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(httpService: httpService), ImageHeightRepo: ImageHeightRepository)
+    func returnProductListUsecaseInterface(httpService:GetProductsList,ImageHeightRepository:ProductImageRepositoryInterface,socketNetworkInterface:SocketNetworkInterface)->Pr_ProductListWithImageHeightUsecase{
+        ProductListWithImageHeightUsecase(ListRepo: returnProductListRepositoryInterface(httpService: httpService,socketNetworkInterface:socketNetworkInterface), ImageHeightRepo: ImageHeightRepository)
     }
      func returnProductImageLoadUsecaseInterface(ImageLoadRepository:ProductImageRepositoryInterface)->Pr_ProductImageLoadUsecase{
         ProductImageLoadUseCase(productsImageRepository: ImageLoadRepository)
@@ -74,10 +74,7 @@ extension SceneDIContainer{
     func returnProductListCollectionViewCellViewModel(ImageUsecase:Pr_ProductImageLoadUsecase,imageWidth:CGFloat)->Pr_ProductListCollectionViewCellViewModel{
          ProductListCollectionViewCellViewModel(ImageUsecase: ImageUsecase,downImageSize: imageWidth)
     }
-    func returnProductListCollectionViewModel(httpService:GetProductsList,ImageRepository:ProductImageRepositoryInterface,imageWidth:CGFloat)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
-        let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: ImageRepository)
-        let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: ImageRepository)
-        let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
+    func returnProductListCollectionViewModel(listUsecase:Pr_ProductListWithImageHeightUsecase,imageLoadUsecase:Pr_ProductImageLoadUsecase,cellViewModel:Pr_ProductListCollectionViewCellViewModel,imageWidth:CGFloat)->Pr_ProductListCollectionViewModel&Pr_ProductListCollectionViewLayoutViewModel{
         return ProductListCollectionViewModel(UseCase: listUsecase,CellViewModel: cellViewModel,FooterViewModel: returnProductListCollectionFooterViewModel(),downImageSize: imageWidth)
     }
      func returnProductListCollectionView(viewModel:Pr_ProductListCollectionViewModel,layout:ProductListCollectionViewLayout)->ProductListCollectionView{
@@ -135,25 +132,30 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     }
 }
 protocol ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> (UIViewController,SocketNetworkInterface)
     func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface: SocketNetworkInterface)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     
-    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController {
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> (UIViewController,SocketNetworkInterface) {
         let cellCount = returnCellCount()
         let httpService = returnHTTPServices()
         let imageRepository = returnProductsImageRepository(httpService: httpService)
-        let collectionViewModel = returnProductListCollectionViewModel(httpService: httpService,ImageRepository: imageRepository,imageWidth: returnImageWidth(scale: cellCount))
+        let streamNetwork = returnStreamingService()
+        let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: imageRepository,socketNetworkInterface: streamNetwork)
+        let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepository)
+        let imageWidth = returnImageWidth(scale: 2.0)
+        let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
+        let collectionViewModel = returnProductListCollectionViewModel(listUsecase: listUsecase, imageLoadUsecase: imageLoadUsecase, cellViewModel: cellViewModel, imageWidth: imageWidth)
         let errorAlterViewModel = returnErrorAlterViewModel()
         let errorAlterView = returnErrorAlterView(errorAlterViewModel: errorAlterViewModel)
         let viewModel = returnProductListViewModelInterface(collectionViewModel: collectionViewModel,errorAlterViewModel: errorAlterViewModel,transitioning: transitioning)
         let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel,cellCount: cellCount)
         let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
-        return productListViewController
+        return (productListViewController,streamNetwork)
     }
     func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id: product_id,streamNetworkInterface: streamNetworkInterface)

@@ -25,8 +25,8 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,S
         self.collectionViewModel.presentDetailProductObservable.subscribe(onNext: {
             [weak self] options in
             print(options)
-            if let product_id = options.productId,let network = options.streamSocketNetwork{
-                self?.delegate?.presentDetailViewController(product_id: product_id,streamNetworkInterface: network)
+            if let product_id = options.productId{
+                self?.delegate?.presentDetailViewController(product_id: product_id)
             }
         }).disposed(by: disposeBag)
         self.collectionViewModel.errorMessage.subscribe(onNext: {

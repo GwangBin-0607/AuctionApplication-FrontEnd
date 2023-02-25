@@ -12,15 +12,18 @@ final class ProductListViewCoordinator:Coordinator{
     let containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:ProductListViewSceneDIContainer
+    private var streamNetworkInterface:SocketNetworkInterface!
     init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
     }
     func start() {
-        let productListViewController = sceneDIContainer.returnProductsListViewController(transitioning: self)
-        containerViewController.present(ViewController: productListViewController, animate: true)
+        let arg1 = sceneDIContainer.returnProductsListViewController(transitioning: self)
+        let (viewCon,networkInterface) = arg1
+        streamNetworkInterface = networkInterface
+        containerViewController.present(ViewController: viewCon, animate: true)
     }
-    private func detailProductViewController(product_id:Int,streamNetworkInterface:SocketNetworkInterface){
+    private func detailProductViewController(product_id:Int){
         let coor = sceneDIContainer.returnDetailProductViewCoordinator(ContainerViewController: containerViewController, HasChildCoordinator: self,product_id: product_id,streamNetworkInterface: streamNetworkInterface)
         childCoordinator.append(coor)
         coor.start()
@@ -28,8 +31,8 @@ final class ProductListViewCoordinator:Coordinator{
 }
 extension ProductListViewCoordinator:TransitionProductListViewController{
 
-    func presentDetailViewController(product_id:Int,streamNetworkInterface:SocketNetworkInterface) {
-        detailProductViewController(product_id: product_id,streamNetworkInterface:streamNetworkInterface)
+    func presentDetailViewController(product_id:Int) {
+        detailProductViewController(product_id: product_id)
     }
     
 }

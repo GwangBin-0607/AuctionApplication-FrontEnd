@@ -22,7 +22,7 @@ final class DetailProductCollectionViewUserCell:UICollectionViewCell{
             owner, detailProductUser in
             owner.tag = detailProductUser.tag
             if let user = detailProductUser.user{
-                self.userLabel.text = user.user_name
+                owner.userLabel.text = user.user_name
             }
         }).flatMap({
             owner, detailProductUser in

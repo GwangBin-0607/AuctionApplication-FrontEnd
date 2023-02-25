@@ -8,5 +8,5 @@
 import Foundation
 import RxSwift
 protocol Pr_DetailProductUsecase{
-    func returnDetailProduct(productId:Int8) -> Observable<Result<DetailProduct,HTTPError>>
+    func returnDetailProduct(productId:Int) -> Observable<Result<DetailProduct,HTTPError>>
 }

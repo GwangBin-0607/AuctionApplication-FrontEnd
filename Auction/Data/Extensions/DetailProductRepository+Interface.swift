@@ -16,7 +16,7 @@ final class DetailProductRepository{
     }
 }
 extension DetailProductRepository:Pr_DetailProductRepository{
-    func httpDetailProduct(productId: Int8) -> Observable<Result<DetailProduct, HTTPError>> {
+    func httpDetailProduct(productId: Int) -> Observable<Result<DetailProduct, HTTPError>> {
         guard let data = try? httpDetailProductTransfer.requestDetailProduct(requestData: RequestDetailProductData(product_id: productId)) else{
             return Observable<Result<DetailProduct,HTTPError>>.create { ob in
                 ob.onNext(.failure(HTTPError.DataError))

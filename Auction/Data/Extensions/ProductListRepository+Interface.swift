@@ -154,8 +154,3 @@ extension ProductListRepository{
         sendData(output: data,dataType: .StreamProductPriceUpdate)
     }
 }
-extension ProductListRepository{
-    func returnSocketNetwork() -> SocketNetworkInterface {
-        streamingProductPrice
-    }
-}

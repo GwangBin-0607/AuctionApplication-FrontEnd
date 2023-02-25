@@ -5,18 +5,23 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
         detailProduct?.returnProductImages().returnImageCount()
     }
     
-    let requestDetailProductObserver: AnyObserver<Int8>
+    let requestDetailProductObserver: AnyObserver<Int>
     private var detailProduct:DetailProduct?
     private let detailProductUsecase:Pr_DetailProductUsecase
     private let disposeBag:DisposeBag
     private let imageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel
     private let userCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel
     let dataUpdate: Observable<Void>
-    let detailProductInfo: Observable<DetailProductInfo>
+    let completionReloadDataObserver: AnyObserver<CGRect>
+    let completionReloadDataObservable: Observable<CGRect>
     init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel,detailProductCollectionViewUserCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel) {
-        let detailProductInfoSubject = PublishSubject<DetailProductInfo>()
-        detailProductInfo = detailProductInfoSubject.asObservable()
-        let detailProductInfoObserver = detailProductInfoSubject.asObserver()
+        let completionSubject = PublishSubject<CGRect>()
+        completionReloadDataObserver = completionSubject.asObserver()
+        completionReloadDataObservable = completionSubject.asObservable()
+        completionReloadDataObservable.subscribe(onNext: {
+            frame in
+            print(frame)
+        })
         userCellViewModel = detailProductCollectionViewUserCellViewModel
         imageCellViewModel = detailProductCollectionViewImageCellViewModel
         let dataUpdateSubject = PublishSubject<Void>()
@@ -24,17 +29,15 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
         let dataUpdateObserver = dataUpdateSubject.asObserver()
         self.disposeBag = DisposeBag()
         self.detailProductUsecase = detailProductUsecase
-        let requestDetailProduct = PublishSubject<Int8>()
+        let requestDetailProduct = PublishSubject<Int>()
         requestDetailProductObserver = requestDetailProduct.asObserver()
         requestDetailProduct.flatMap(detailProductUsecase.returnDetailProduct(productId:)).withUnretained(self).subscribe(onNext: {
             owner,result in
-            print("========")
             switch result {
             case .success(let detailProduct):
                 print(detailProduct)
                 owner.detailProduct = detailProduct
                 dataUpdateObserver.onNext(())
-                detailProductInfoObserver.onNext(detailProduct.returnProductInfo())
             case .failure(let err):
                 print("ERROR")
                 print(err)

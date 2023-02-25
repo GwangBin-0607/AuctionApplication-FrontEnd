@@ -6,5 +6,4 @@ protocol ProductListRepositoryInterface{
     var streamingList:Observable<Result<[StreamPrice],StreamError>>{get}
     func httpList()->Observable<Result<[Product],HTTPError>>
     func updateStreamProductPrice(output data:UpdateStreamProductPriceData)->Observable<Result<Bool,StreamError>>
-    func returnSocketNetwork()->SocketNetworkInterface
 }

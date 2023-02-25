@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 protocol Pr_CurrentProductPriceRepository{
-    func httpDetailProduct(productId:Int8)->Observable<Result<CurrentProductPrice,HTTPError>>
+    func httpDetailProduct(productId:Int)->Observable<Result<CurrentProductPrice,HTTPError>>
     var streamingCurrentProduct:Observable<Result<[StreamPrice],StreamError>>{get}
 }

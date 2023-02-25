@@ -14,7 +14,7 @@ final class CurrentProductPriceUsecase{
     }
 }
 extension CurrentProductPriceUsecase:Pr_CurrentProductPriceUsecase{
-    func returnCurrentProductPrice(productId: Int8) -> Observable<Result<CurrentProductPrice, HTTPError>> {
+    func returnCurrentProductPrice(productId: Int) -> Observable<Result<CurrentProductPrice, HTTPError>> {
         currentProductPriceRepository.httpDetailProduct(productId: productId)
     }
     func returnStreamCurrentProductPrice() -> Observable<Result<[StreamPrice], StreamError>> {

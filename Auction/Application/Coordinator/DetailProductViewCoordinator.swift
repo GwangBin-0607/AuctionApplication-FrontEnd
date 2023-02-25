@@ -14,20 +14,21 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
     let sceneDIContainer:DetailProductViewSceneDIContainer
     let delegate: HasChildCoordinator
     private let product_id:Int
-    private let streamNetworkInterface:SocketNetworkInterface
-    init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface) {
+    private let streamNetworkInterface:SocketNetworkInterface!
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface!) {
         self.product_id = product_id
         self.streamNetworkInterface = streamNetworkInterface
         self.delegate = DetailProductViewCoordinatorDelegate
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
+        print("\(String(describing: self)) INIT")
+    }
+    deinit {
+        print("\(String(describing: self)) DEINIT")
     }
     func start() {
         let detailProductListViewController = sceneDIContainer.returnDetailViewController(transitioning: self,streamNetworkInterface: streamNetworkInterface, product_id: product_id)
         containerViewController.present(ViewController: detailProductListViewController, animate: true)
-    }
-    deinit {
-            print("DEINIT")
     }
 }
 extension DetailProductViewCoordinator:TransitionDetailProductViewController{

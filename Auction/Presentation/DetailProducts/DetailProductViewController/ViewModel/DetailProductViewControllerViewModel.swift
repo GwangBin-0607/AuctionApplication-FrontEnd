@@ -12,12 +12,12 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
     weak var delegate:TransitionDetailProductViewController?
     private let detailProductPriceViewModel:Pr_DetailProductPriceViewModel
     private let detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
-    let requestDetailProduct: AnyObserver<Int8>
+    let requestDetailProduct: AnyObserver<Int>
     let backAction: AnyObserver<Void>
     private let disposeBag:DisposeBag
     init(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel: Pr_DetailProductPriceViewModel,detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel) {
         disposeBag = DisposeBag()
-        let requestData = PublishSubject<Int8>()
+        let requestData = PublishSubject<Int>()
         requestDetailProduct = requestData.asObserver()
         self.detailProductPriceViewModel = detailProductPriceViewModel
         self.delegate = transitioning

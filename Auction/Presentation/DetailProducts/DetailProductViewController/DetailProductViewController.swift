@@ -21,9 +21,12 @@ final class DetailProductViewController:UIViewController{
     private func bind(){
         backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
     }
+    func requestDetailProduct(product_id:Int){
+        viewModel.requestDetailProduct.onNext(2)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.requestDetailProduct.onNext(2)
+        viewModel.requestDetailProduct.onNext(4)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
