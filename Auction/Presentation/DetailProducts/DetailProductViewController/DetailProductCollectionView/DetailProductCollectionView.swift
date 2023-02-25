@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
-import AVFoundation
 final class DetailProductCollectionView:UICollectionView{
     private let viewModel:Pr_DetailProductCollectionViewModel
     private let disposeBag:DisposeBag
@@ -35,8 +34,8 @@ final class DetailProductCollectionView:UICollectionView{
             [weak self] _ in
             self?.reloadData()
             self?.layoutIfNeeded()
-            if let cell = (self?.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailProductCollectionViewImageCell),let imageSize = cell.imageView.image?.size{
-                let frame = AVMakeRect(aspectRatio: imageSize, insideRect: cell.imageView.frame)
+            if let cell = (self?.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailProductCollectionViewImageCell){
+                let frame = cell.frame
                 self?.viewModel.completionReloadDataObserver.onNext(frame)
             }
         }).disposed(by: disposeBag)

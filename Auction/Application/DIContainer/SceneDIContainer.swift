@@ -1,9 +1,16 @@
 import Foundation
 import UIKit
 
-
 final class SceneDIContainer{
-    let configure = ExportConfigure()
+    private final class SocketNetWorkContainer{
+        weak var streamService:SocketNetworkInterface?
+    }
+    let configure:ExportConfigure
+    private let streamServiceContainer:SocketNetWorkContainer
+    init() {
+        configure = ExportConfigure()
+        streamServiceContainer = SocketNetWorkContainer()
+    }
 }
 
 //MARK: Infrastructure
@@ -132,18 +139,27 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     }
 }
 protocol ProductListViewSceneDIContainer{
-    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> (UIViewController,SocketNetworkInterface)
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface: SocketNetworkInterface)->Coordinator
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
-    
-    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> (UIViewController,SocketNetworkInterface) {
+    func returnSocketNetworkInterfaceInContainer()->SocketNetworkInterface{
+        let streamNetwork:SocketNetworkInterface
+        if let net = streamServiceContainer.streamService{
+            streamNetwork = net
+        }else{
+            streamNetwork = returnStreamingService()
+            streamServiceContainer.streamService = streamNetwork
+        }
+        return streamNetwork
+    }
+    func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController {
         let cellCount = returnCellCount()
         let httpService = returnHTTPServices()
         let imageRepository = returnProductsImageRepository(httpService: httpService)
-        let streamNetwork = returnStreamingService()
+        let streamNetwork = returnSocketNetworkInterfaceInContainer()
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: imageRepository,socketNetworkInterface: streamNetwork)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepository)
         let imageWidth = returnImageWidth(scale: 2.0)
@@ -155,26 +171,27 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let collectionViewLayout = returnProductListCollectionViewLayout(viewModel: collectionViewModel,cellCount: cellCount)
         let collectionView = returnProductListCollectionView(viewModel:collectionViewModel, layout: collectionViewLayout)
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
-        return (productListViewController,streamNetwork)
+        return productListViewController
     }
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface)->Coordinator{
-        DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id: product_id,streamNetworkInterface: streamNetworkInterface)
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator{
+        DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator,presentOptions:presentOptions)
     }
 }
 protocol DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,streamNetworkInterface:SocketNetworkInterface,product_id:Int) -> UIViewController
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,product_id:Int) -> UIViewController
 }
 
 //MARK: DetailViewController
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,streamNetworkInterface:SocketNetworkInterface,product_id:Int) -> UIViewController {
-        let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetworkInterface, product_id: product_id)
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,product_id:Int) -> UIViewController {
+        let streamNetwork = returnSocketNetworkInterfaceInContainer()
+        let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetwork, product_id: product_id)
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
         let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase)
         let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel)
         let collectionViewModel = returnDetailProductCollectionViewModel()
         let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
-        let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(transitioning: transitioning,detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel)
+        let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(transitioning: transitioning,detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel,product_id: product_id)
         return DetailProductViewController(productPriceView: productPriceView,detailProductCollectionView: collectionView,viewModel: detailProductViewControllerViewModel)
     }
 }
@@ -196,8 +213,8 @@ extension SceneDIContainer{
     func returnDetailProductCollectionViewImageCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewImageCellViewModel{
         DetailProductCollectionViewImageCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 1.0))
     }
-    func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel)->Pr_DetailProductViewControllerViewModel{
-        DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel)
+    func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int)->Pr_DetailProductViewControllerViewModel{
+        DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel,product_id: product_id)
     }
 }
 extension SceneDIContainer{

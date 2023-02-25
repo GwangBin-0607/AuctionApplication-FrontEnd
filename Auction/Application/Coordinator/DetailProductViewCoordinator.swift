@@ -13,11 +13,9 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:DetailProductViewSceneDIContainer
     let delegate: HasChildCoordinator
-    private let product_id:Int
-    private let streamNetworkInterface:SocketNetworkInterface!
-    init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator,product_id:Int,streamNetworkInterface:SocketNetworkInterface!) {
-        self.product_id = product_id
-        self.streamNetworkInterface = streamNetworkInterface
+    private let presentOptions:PresentOptions
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator,presentOptions:PresentOptions) {
+        self.presentOptions = presentOptions
         self.delegate = DetailProductViewCoordinatorDelegate
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
@@ -27,14 +25,15 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
         print("\(String(describing: self)) DEINIT")
     }
     func start() {
-        let detailProductListViewController = sceneDIContainer.returnDetailViewController(transitioning: self,streamNetworkInterface: streamNetworkInterface, product_id: product_id)
-        containerViewController.present(ViewController: detailProductListViewController, animate: true)
+        if let product_id = presentOptions.productId{
+            let detailProductListViewController = sceneDIContainer.returnDetailViewController(transitioning: self, product_id: product_id)
+            containerViewController.present(ViewController: detailProductListViewController, animate: true)
+        }
     }
 }
 extension DetailProductViewCoordinator:TransitionDetailProductViewController{
     func dismissToProductListViewController() {
         delegate.removeChildCoordinator(Co: self)
-        print("aaa")
         containerViewController.dismiss(animate: true)
     }
 }

@@ -9,6 +9,6 @@ import Foundation
 import RxSwift
 
 protocol Pr_DetailProductViewControllerViewModel{
-    var requestDetailProduct:AnyObserver<Int>{get}
+    var requestDetailProduct:AnyObserver<Void>{get}
     var backAction:AnyObserver<Void>{get}
 }

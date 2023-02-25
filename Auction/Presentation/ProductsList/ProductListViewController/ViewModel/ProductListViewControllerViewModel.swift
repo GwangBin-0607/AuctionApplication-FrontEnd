@@ -24,10 +24,7 @@ class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,S
         requestProductListObserver = collectionViewModel.requestProductsList
         self.collectionViewModel.presentDetailProductObservable.subscribe(onNext: {
             [weak self] options in
-            print(options)
-            if let product_id = options.productId{
-                self?.delegate?.presentDetailViewController(product_id: product_id)
-            }
+            self?.delegate?.presentDetailViewController(presentOption: options)
         }).disposed(by: disposeBag)
         self.collectionViewModel.errorMessage.subscribe(onNext: {
             [weak self] err in

@@ -18,10 +18,6 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
         let completionSubject = PublishSubject<CGRect>()
         completionReloadDataObserver = completionSubject.asObserver()
         completionReloadDataObservable = completionSubject.asObservable()
-        completionReloadDataObservable.subscribe(onNext: {
-            frame in
-            print(frame)
-        })
         userCellViewModel = detailProductCollectionViewUserCellViewModel
         imageCellViewModel = detailProductCollectionViewImageCellViewModel
         let dataUpdateSubject = PublishSubject<Void>()

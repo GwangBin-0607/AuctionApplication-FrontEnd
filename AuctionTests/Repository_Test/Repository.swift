@@ -6,8 +6,8 @@
 //
 
 import XCTest
-@testable import front_end_DEBUG
-@testable import RxSwift
+@testable import Auction
+import RxSwift
 
 final class Repository: XCTestCase {
     class MockStreamService:SocketNetworkInterface{
