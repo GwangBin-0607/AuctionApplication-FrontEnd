@@ -11,41 +11,38 @@ final class DetailProductCollectionViewUserCell:UICollectionViewCell{
     static let identifier = "DetailProductCollectionViewCell"
     private let disposeBag:DisposeBag
     private var viewModel:Pr_DetailProductCollectionViewUserCellViewModel!
+    private let bindingObservable:Observable<UserWithTag>
     override init(frame: CGRect) {
         userProfile = DetailProductCollectionViewUserCellProfileImageView()
         userLabel = UILabel()
         disposeBag = DisposeBag()
         let bindingSubject = PublishSubject<UserWithTag>()
+        bindingObservable = bindingSubject.asObservable()
         bindingData = bindingSubject.asObserver()
         super.init(frame: frame)
-        bindingSubject.withUnretained(self).do(onNext: {
-            owner, detailProductUser in
-            owner.tag = detailProductUser.tag
-            if let user = detailProductUser.user{
-                owner.userLabel.text = user.user_name
-            }
-        }).flatMap({
-            owner, detailProductUser in
-            owner.viewModel.returnImage(productImageWithTag: ProductImagesWithTag(product_image: detailProductUser.user?.returnMainUserImage(), tag: detailProductUser.tag))
-        }).withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-            owner,cellImageTag in
-            if(cellImageTag.tag == owner.tag){
-                switch cellImageTag.result {
-                case .success(let image):
-                    owner.userProfile.image = image
-                case .failure(let error):
-                    if error == .NoImageData || error == .RequestError{
-                        owner.userProfile.image = UIImage(named: "NoImage")
-                    }
-                }
-            }
-        }).disposed(by: disposeBag)
         layout()
     }
     func bindingViewModel(cellViewModel:Pr_DetailProductCollectionViewUserCellViewModel?){
         if cellViewModel != nil && self.viewModel == nil{
             self.viewModel = cellViewModel
+            bind()
         }
+    }
+    private func bind(){
+        viewModel.userNameObservable.bind(to: userLabel.rx.text).disposed(by: disposeBag)
+        viewModel.userImageObservable.withUnretained(self).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                owner.userProfile.image = cellImageTag.image
+            }
+        }).disposed(by: disposeBag)
+        bindingObservable.withUnretained(self).do(onNext: {
+            owner,userImageTag in
+            owner.tag = userImageTag.tag
+        }).subscribe(onNext: {
+            owner,userImageTag in
+            owner.viewModel.detailUserObserver.onNext(userImageTag)
+        }).disposed(by: disposeBag)
     }
     private func layout(){
         self.contentView.addSubview(userLabel)

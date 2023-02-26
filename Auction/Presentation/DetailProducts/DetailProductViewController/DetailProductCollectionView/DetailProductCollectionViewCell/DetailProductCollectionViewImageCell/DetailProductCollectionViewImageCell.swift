@@ -13,39 +13,36 @@ final class DetailProductCollectionViewImageCell:UICollectionViewCell{
     static let identifier = "DetailProductCollectionViewImageCell"
     private let disposeBag:DisposeBag
     private var viewModel:Pr_DetailProductCollectionViewImageCellViewModel!
+    private let bindingObservable:Observable<ProductImagesWithTag>
     override init(frame: CGRect) {
         disposeBag = DisposeBag()
         imageView = UIImageView()
         let bindingSubject = PublishSubject<ProductImagesWithTag>()
+        bindingObservable = bindingSubject.asObservable()
         bindingData = bindingSubject.asObserver()
         super.init(frame: frame)
-        bindingSubject.withUnretained(self).do(onNext: {
-            owner,productImageWithTag in
-            owner.tag = productImageWithTag.tag
-        }).flatMap{
-            owner,productImageWithTag in
-            print(productImageWithTag)
-           return owner.viewModel.returnImage(productImageWithTag: productImageWithTag)
-        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
-            owner,cellImageTag in
-            if(cellImageTag.tag == owner.tag){
-                switch cellImageTag.result {
-                case .success(let image):
-                    owner.imageView.image = image
-                case .failure(let error):
-                    if error == .NoImageData || error == .RequestError{
-                        owner.imageView.image = UIImage(named: "NoImage")
-                    }
-                }
-            }
-        })
-        .disposed(by: disposeBag)
         layout()
     }
     func bindingViewModel(cellViewModel:Pr_DetailProductCollectionViewImageCellViewModel?){
         if cellViewModel != nil && self.viewModel == nil{
             self.viewModel = cellViewModel
+            bind()
         }
+    }
+    private func bind(){
+        viewModel.cellImageTag.withUnretained(self).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                owner.imageView.image = cellImageTag.image
+            }
+        }).disposed(by: disposeBag)
+        bindingObservable.withUnretained(self).do(onNext: {
+            owner,productImageWithTag in
+            owner.tag = productImageWithTag.tag
+        }).subscribe(onNext: {
+            owner,product in
+            owner.viewModel.observer.onNext(product)
+        }).disposed(by: disposeBag)
     }
     private func layout(){
         imageView.contentMode = .scaleAspectFit

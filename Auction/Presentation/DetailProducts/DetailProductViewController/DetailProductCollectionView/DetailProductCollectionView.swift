@@ -24,7 +24,7 @@ final class DetailProductCollectionView:UICollectionView{
         layout(color: backgroundColor)
     }
     private func layout(color:UIColor){
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .white
         self.contentInsetAdjustmentBehavior = .never
         self.isPrefetchingEnabled = false
     }
@@ -36,6 +36,7 @@ final class DetailProductCollectionView:UICollectionView{
             self?.layoutIfNeeded()
             if let cell = (self?.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailProductCollectionViewImageCell){
                 let frame = cell.frame
+                print(frame)
                 self?.viewModel.completionReloadDataObserver.onNext(frame)
             }
         }).disposed(by: disposeBag)
@@ -71,6 +72,7 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewCommentCell.identifier, for: indexPath) as! DetailProductCollectionViewCommentCell
+            cell.bindingViewModel(cellViewModel: viewModel.returnDetailProductCollectionViewCommentCellViewModel())
             cell.bindingData.onNext(viewModel.returnDetailProductComment())
             return cell
         default:

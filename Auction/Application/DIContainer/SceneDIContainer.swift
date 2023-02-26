@@ -178,12 +178,12 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
     }
 }
 protocol DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,product_id:Int) -> UIViewController
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,product_id:Int) -> Pr_ChildViewController
 }
 
 //MARK: DetailViewController
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,product_id:Int) -> UIViewController {
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,product_id:Int) -> Pr_ChildViewController {
         let streamNetwork = returnSocketNetworkInterfaceInContainer()
         let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetwork, product_id: product_id)
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
@@ -205,7 +205,10 @@ extension SceneDIContainer{
     func returnDetailProductCollectionViewModel()->Pr_DetailProductCollectionViewModel{
         let imageRepo = returnProductsImageRepository(httpService: returnHTTPServices())
         let imageUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepo)
-        return DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCellViewModel: returnDetailProductCollectionViewImageCellViewModel(usecase: imageUsecase),detailProductCollectionViewUserCellViewModel:returnDetailProductCollectionViewUserCellViewModel(usecase: imageUsecase) )
+        return DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCellViewModel: returnDetailProductCollectionViewImageCellViewModel(usecase: imageUsecase),detailProductCollectionViewUserCellViewModel:returnDetailProductCollectionViewUserCellViewModel(usecase: imageUsecase),detailProductCollectionViewCommentCellViewModel: returnDetailProductCollectionViewCommentCellViewModel() )
+    }
+    func returnDetailProductCollectionViewCommentCellViewModel()->Pr_DetailProductCollectionViewCommentCellViewModel{
+        DetailProductCollectionViewCommentCellViewModel()
     }
     func returnDetailProductCollectionViewUserCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewUserCellViewModel{
         DetailProductCollectionViewUserCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 5.0))

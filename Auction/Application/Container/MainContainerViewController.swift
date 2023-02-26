@@ -71,39 +71,40 @@ extension MainContainerViewController:ContainerViewController{
         self.children.last?.view.removeFromSuperview()
         self.children.last?.removeFromParent()
     }
-    func present(ViewController: UIViewController?, animate: Bool) {
-        guard let ViewController = ViewController else{
-            return
-        }
-        let last = children.last
+    func present(ViewController: Pr_ChildViewController, animate: Bool) {
         self.addChild(ViewController)
-        if last == nil{
-            containerView.addSubview(ViewController.view)
-            ViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            ViewController.didMove(toParent: self)
-        }else{
-            ViewController.view.frame = CGRect(x: containerView.frame.maxX, y: containerView.frame.minX, width: containerView.frame.width, height: containerView.frame.height)
-            ViewController.beginAppearanceTransition(true, animated: true)
-            containerView.addSubview(ViewController.view)
-            ViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            ViewController.view.alpha = 1.0
-//            UIView.animate(withDuration: 1.0, delay: .zero, options: .curveLinear, animations: {
-//                ViewController.view.alpha = 1.0
-//            }, completion: {
-//                finish in
-//                ViewController.endAppearanceTransition()
-//            })
-
+        ViewController.view.frame = CGRect(x: self.containerView.frame.maxX, y: self.containerView.frame.minX, width:self.containerView.frame.width, height: self.containerView.frame.height)
+        ViewController.beginAppearanceTransition(true, animated: true)
+        self.containerView.addSubview(ViewController.view)
+        ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        ViewController.view.topAnchor.constraint(equalTo: self.containerView.topAnchor).isActive = true
+        ViewController.view.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor).isActive = true
+        ViewController.view.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor).isActive = true
+        ViewController.view.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
+        ViewController.view.alpha = 0.0
+        ViewController.completion = {
+            [weak ViewController] in
+            UIView.animate(withDuration: 1.0, delay: .zero, options: .curveLinear, animations: {
+                ViewController?.view.alpha = 1.0
+            }, completion: {
+                finish in
+                ViewController?.endAppearanceTransition()
+            })
         }
+}
+func present(ViewController: UIViewController, animate: Bool) {
+    let last = children.last
+    self.addChild(ViewController)
+    if last == nil{
+        containerView.addSubview(ViewController.view)
+        ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        ViewController.didMove(toParent: self)
     }
+}
 }
 extension MainContainerViewController{
     private func maxX(leading:CGFloat)->CGFloat{

@@ -3,12 +3,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class DetailProductViewController:UIViewController{
+final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     private let productPriceView:DetailProductPriceView
     private let backButton:UIButton
     private let detailProductCollectionView:DetailProductCollectionView
     private let viewModel:Pr_DetailProductViewControllerViewModel
     private let disposeBag:DisposeBag
+    var completion: (() -> Void)?
     init(productPriceView:DetailProductPriceView,detailProductCollectionView:DetailProductCollectionView,viewModel:Pr_DetailProductViewControllerViewModel) {
         disposeBag = DisposeBag()
         backButton = UIButton()
@@ -20,6 +21,10 @@ final class DetailProductViewController:UIViewController{
     }
     private func bind(){
         backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
+        viewModel.completionReloadData.subscribe(onNext:{
+            [weak self] rect in
+            self?.completion?()
+        }).disposed(by: disposeBag)
     }
     override func viewDidLoad() {
         super.viewDidLoad()

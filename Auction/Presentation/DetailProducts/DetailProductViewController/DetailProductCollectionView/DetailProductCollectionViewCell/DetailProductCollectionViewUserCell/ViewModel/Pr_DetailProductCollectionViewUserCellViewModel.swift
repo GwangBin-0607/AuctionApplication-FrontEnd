@@ -8,5 +8,8 @@
 import Foundation
 import RxSwift
 protocol Pr_DetailProductCollectionViewUserCellViewModel {
-    func returnImage(productImageWithTag:ProductImagesWithTag) -> Observable<CellImageTag>
+    var userNameObservable:Observable<String?>{get}
+    var userImageObservable:Observable<CellImageTag>{get}
+    var detailUserObserver:AnyObserver<UserWithTag>{get}
+    func returnImage(productImageWithTag:ProductImagesWithTag) -> Observable<ResultCellImageTag>
 }

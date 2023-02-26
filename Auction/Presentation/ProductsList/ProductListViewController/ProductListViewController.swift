@@ -22,23 +22,7 @@ final class ProductListViewController: UIViewController {
         super.viewDidLoad()
         bind()
         viewModel.requestProductListObserver.onNext(())
-//        setCADisplay()
     }
-//        func setCADisplay(){
-//            let display = CADisplayLink(target: self, selector: #selector(displayCheck))
-//            display.add(to: .current, forMode: .tracking)
-//        }
-//        var previoutTime = 0.0
-//        @objc func displayCheck(displaylink:CADisplayLink){
-//            print("========================")
-//            print(previoutTime)
-//            var tum = displaylink.targetTimestamp - previoutTime
-//
-//            previoutTime = displaylink.targetTimestamp
-//            print(displaylink.targetTimestamp)
-//            print(tum)
-//            print("======================")
-//        }
     private func bind(){
         
     }

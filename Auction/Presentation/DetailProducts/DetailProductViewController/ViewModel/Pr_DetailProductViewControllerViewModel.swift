@@ -11,4 +11,5 @@ import RxSwift
 protocol Pr_DetailProductViewControllerViewModel{
     var requestDetailProduct:AnyObserver<Void>{get}
     var backAction:AnyObserver<Void>{get}
+    var completionReloadData:Observable<CGRect>{get}
 }

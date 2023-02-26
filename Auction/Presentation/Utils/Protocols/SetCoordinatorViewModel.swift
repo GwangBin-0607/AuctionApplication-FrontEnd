@@ -1,5 +1,5 @@
 import Foundation
-protocol SetCoordinatorViewController{
+protocol SetCoordinatorViewModel{
     associatedtype TransitionViewProtocol
     var delegate:TransitionViewProtocol{get}
 }

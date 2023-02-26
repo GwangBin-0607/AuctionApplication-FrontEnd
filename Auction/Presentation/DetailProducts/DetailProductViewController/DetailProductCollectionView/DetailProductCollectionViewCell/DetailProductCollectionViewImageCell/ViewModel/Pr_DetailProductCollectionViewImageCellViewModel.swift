@@ -12,5 +12,6 @@ struct ProductImagesWithTag{
     let tag:Int
 }
 protocol Pr_DetailProductCollectionViewImageCellViewModel {
-    func returnImage(productImageWithTag:ProductImagesWithTag) -> Observable<CellImageTag>
+    var observer:AnyObserver<ProductImagesWithTag>{get}
+    var cellImageTag:Observable<CellImageTag>{get}
 }

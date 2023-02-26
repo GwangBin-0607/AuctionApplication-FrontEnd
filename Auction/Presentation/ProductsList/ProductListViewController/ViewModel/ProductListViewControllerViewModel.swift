@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,SetCoordinatorViewController{
+class ProductListViewControllerViewModel:Pr_ProductListViewControllerViewModel,SetCoordinatorViewModel{
     private let collectionViewModel:Pr_ProductListCollectionViewModel
     private let errorAlterViewModel:Pr_ErrorAlterViewModel
     private let disposeBag:DisposeBag
