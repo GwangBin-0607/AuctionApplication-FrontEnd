@@ -22,8 +22,6 @@
 		881D8C7129AA312D00B90125 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C7029AA312D00B90125 /* ContainerViewController.swift */; };
 		881D8C7429AA322100B90125 /* Pr_ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C7329AA322100B90125 /* Pr_ChildViewController.swift */; };
 		881F82F0297FB3CD00B058D7 /* MockInputData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881F82EF297FB3CD00B058D7 /* MockInputData.json */; };
-		8824BB9829AB2064003F378E /* DetailProductCollectionViewCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BB9729AB2064003F378E /* DetailProductCollectionViewCommentCellViewModel.swift */; };
-		8824BB9A29AB20F6003F378E /* Pr_DetailProductCollectionViewCommentCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BB9929AB20F6003F378E /* Pr_DetailProductCollectionViewCommentCellViewModel.swift */; };
 		882CBE772908285C00550A8E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE762908285C00550A8E /* Product.swift */; };
 		882CBE8029083DC400550A8E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE7F29083DC400550A8E /* ProductListViewController.swift */; };
 		8832E85329A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832E85229A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift */; };
@@ -181,8 +179,6 @@
 		881D8C7029AA312D00B90125 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		881D8C7329AA322100B90125 /* Pr_ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ChildViewController.swift; sourceTree = "<group>"; };
 		881F82EF297FB3CD00B058D7 /* MockInputData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockInputData.json; sourceTree = "<group>"; };
-		8824BB9729AB2064003F378E /* DetailProductCollectionViewCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewCommentCellViewModel.swift; sourceTree = "<group>"; };
-		8824BB9929AB20F6003F378E /* Pr_DetailProductCollectionViewCommentCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductCollectionViewCommentCellViewModel.swift; sourceTree = "<group>"; };
 		882CBE762908285C00550A8E /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		882CBE7F29083DC400550A8E /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		8832E85229A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewGraphCell.swift; sourceTree = "<group>"; };
@@ -380,8 +376,6 @@
 		8824BB9629AB2045003F378E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				8824BB9729AB2064003F378E /* DetailProductCollectionViewCommentCellViewModel.swift */,
-				8824BB9929AB20F6003F378E /* Pr_DetailProductCollectionViewCommentCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1382,7 +1376,6 @@
 				8832E85C29A0E42500BCFF33 /* DetailProductCollectionViewModel.swift in Sources */,
 				8832E85929A0E3BB00BCFF33 /* DetailProductCollectionViewUserCell.swift in Sources */,
 				889FC3F5298257FC009B8A2A /* ErrorAlterViewModel.swift in Sources */,
-				8824BB9A29AB20F6003F378E /* Pr_DetailProductCollectionViewCommentCellViewModel.swift in Sources */,
 				88752C15299F4CF9005A4BEF /* GetDetailProduct.swift in Sources */,
 				88752C27299F5ACB005A4BEF /* DetailProduct.swift in Sources */,
 				887D549F2953044000DA2F15 /* ProductListCollectionViewModel.swift in Sources */,
@@ -1412,7 +1405,6 @@
 				8887D1602936227B005DA3C6 /* TransitionProductListViewController.swift in Sources */,
 				88752C2E299F72AD005A4BEF /* DetailProductCollectionViewLayout.swift in Sources */,
 				88F5DD8929969D6C007FB204 /* NavigationCircleViewModel.swift in Sources */,
-				8824BB9829AB2064003F378E /* DetailProductCollectionViewCommentCellViewModel.swift in Sources */,
 				8887D14E2935A621005DA3C6 /* HasChildCoordinator.swift in Sources */,
 				88C89F85296C2D1A0008796A /* TCPStreamDataTransferInterface.swift in Sources */,
 				8874F4CE29373D55003981C3 /* ProductImageUseCase.swift in Sources */,
