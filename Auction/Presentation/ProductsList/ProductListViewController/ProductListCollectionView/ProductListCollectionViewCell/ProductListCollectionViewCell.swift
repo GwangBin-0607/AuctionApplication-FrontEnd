@@ -1,14 +1,9 @@
 import UIKit
 import RxSwift
 struct AnimtionValue{
-    let product_id:Int
     let price:Int
     let state:Bool
     let beforePrice:Int
-}
-struct WithTag<T>{
-    let ge:T
-    let tag:Int
 }
 final class ProductListCollectionViewCell: UICollectionViewCell{
     static let Identifier:String = "ProductListCollectionViewCell"
@@ -20,15 +15,13 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     private let gradationView:GradationView
     private let beforePriceLabel:UILabel
     // MARK: OUTPUT
+    private let data:PublishSubject<Product>
     let bindingData:AnyObserver<Product>
     let animationObserver: AnyObserver<AnimtionValue?>
     private var viewModel:Pr_ProductListCollectionViewCellViewModel!
-    private let bindingObservable:Observable<Product>
-    private let animationObservable:Observable<AnimtionValue?>
     override init(frame: CGRect) {
         gradationView = GradationView()
-        let data = PublishSubject<Product>()
-        bindingObservable = data.asObservable()
+        data = PublishSubject<Product>()
         beforePriceLabel = UILabel()
         titleLabel = UILabel()
         priceLabel = UILabel()
@@ -38,13 +31,58 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         bindingData = data.asObserver()
         let animationSubject = PublishSubject<AnimtionValue?>()
         animationObserver = animationSubject.asObserver()
-        animationObservable = animationSubject.asObservable()
         super.init(frame: frame)
+        animationSubject.asObservable().observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
+            owner,value in
+            if let value = value{
+                owner.animateBorderColor(duration: 0.3)
+                owner.priceLabel.text = String(value.price)+"₩"
+                owner.beforePriceLabel.text = owner.decorationBeforePrice(beforePrice: value.beforePrice)
+                owner.priceLabel.textColor = owner.textColorPriceLabel(state: value.state)
+                owner.beforePriceLabel.textColor = owner.textColorBeforePriceLabel(state: value.state)
+                if value.state{
+                    owner.checkUpDown.image = UIImage(named: "upState")
+                }else{
+                    owner.checkUpDown.image = UIImage(named: "nothing")
+                }
+            }
+        }).disposed(by: disposeBag)
+        
+        data.withUnretained(self).do { owner,item in
+            owner.tag = item.product_id
+            owner.titleLabel.text = item.product_name
+            owner.priceLabel.text = String(item.product_price.price)+"₩"
+            owner.beforePriceLabel.text = owner.decorationBeforePrice(beforePrice: item.product_price.beforePrice)
+            owner.priceLabel.textColor = owner.textColorPriceLabel(state: item.checkUpDown.state)
+            owner.beforePriceLabel.textColor = owner.textColorBeforePriceLabel(state: item.checkUpDown.state)
+            if item.checkUpDown.state{
+                owner.checkUpDown.image = UIImage(named: "upState")
+            }else{
+                owner.checkUpDown.image = UIImage(named: "nothing")
+            }
+        }.flatMap { owner,item in
+            return owner.viewModel.returnImage(product_image: item.mainImage, tag: owner.tag)
+        }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
+            owner,cellImageTag in
+            if(cellImageTag.tag == owner.tag){
+                switch cellImageTag.result {
+                case .success(let image):
+                    owner.productImageView.image = image
+                case .failure(let error):
+                    if error == .NoImageData || error == .RequestError{
+                        owner.productImageView.image = UIImage(named: "NoImage")
+                    }
+                }
+            }
+        }).disposed(by: disposeBag)
         layoutContentView()
         print("\(String(describing: self)) INIT")
     }
     deinit {
         print("\(String(describing: self)) DEINIT")
+    }
+    private func decorationBeforePrice(beforePrice:Int)->String{
+        "전일대비 : +"+String(beforePrice)+"₩"
     }
     private func textColorPriceLabel(state:Bool)->UIColor{
         state ? .systemRed : .white
@@ -55,69 +93,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     func bindingViewModel(cellViewModel:Pr_ProductListCollectionViewCellViewModel?){
         if cellViewModel != nil && self.viewModel == nil{
             self.viewModel = cellViewModel
-            bind()
         }
-    }
-    private func bind(){
-        viewModel.titleObservable.withUnretained(self).subscribe(onNext: {
-            owner,arg1 in
-            let (text,tag) = arg1
-            if (tag == owner.tag){
-                owner.titleLabel.text = text
-            }
-        }).disposed(by: disposeBag)
-        viewModel.checkObservable.withUnretained(self).subscribe(onNext: {
-            owner,arg1 in
-            let (image,tag) = arg1
-            if (tag == owner.tag){
-                owner.checkUpDown.image = image
-            }
-        }).disposed(by: disposeBag)
-        viewModel.beforePrice.withUnretained(self).subscribe(onNext: {
-            owner,arg1 in
-            let (text,tag) = arg1
-            if (tag == owner.tag){
-                owner.beforePriceLabel.text = text
-            }
-        }).disposed(by: disposeBag)
-        viewModel.priceObservable.withUnretained(self).subscribe(onNext: {
-            owner,arg1 in
-            let (text,tag) = arg1
-            if (tag == owner.tag){
-                owner.priceLabel.text = text
-            }
-        }).disposed(by: disposeBag)
-        viewModel.imageObservable.withUnretained(self).subscribe(onNext: {
-            owner,cellImageTag in
-            if(cellImageTag.tag == owner.tag){
-                owner.productImageView.image = cellImageTag.image
-            }
-        }).disposed(by: disposeBag)
-        bindingObservable.withUnretained(self).do(onNext: {
-            owner,product in
-            print(product.product_id)
-            owner.tag = product.product_id
-        }).subscribe(onNext: {
-            owner,product in
-            owner.viewModel.dataObserver.onNext(product)
-        }).disposed(by: disposeBag)
-        animationObservable.withUnretained(self).subscribe(onNext: {
-            owner,animationValue in
-            owner.viewModel.animationObserver.onNext(animationValue)
-        }).disposed(by: disposeBag)
-        viewModel.textColorObservable.withUnretained(self).subscribe(onNext: {
-            owner,state in
-            if state.1 == owner.tag{
-                owner.priceLabel.textColor = owner.textColorPriceLabel(state: state.0)
-                owner.beforePriceLabel.textColor = owner.textColorBeforePriceLabel(state: state.0)
-            }
-        }).disposed(by: disposeBag)
-        viewModel.triggerAnimation.withUnretained(self).subscribe(onNext: {
-            owner,tu in
-            if tu.1 == owner.tag{
-                owner.animateBorderColor(duration: 0.3)
-            }
-        }).disposed(by: disposeBag)
     }
     private func animateBorderColor(duration: Double) {
         CATransaction.begin()
@@ -140,6 +116,9 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         self.layer.add(animation, forKey: "changeBorderWidth")
+//        UIView.animate(withDuration: 2.0, delay: 0.0, animations: {
+//            self.bounds = CGRect(x: self.bounds.minX, y: self.bounds.maxY, width: self.bounds.width, height: self.bounds.height)
+//        })
         CATransaction.commit()
     }
     

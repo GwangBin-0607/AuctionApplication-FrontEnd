@@ -106,7 +106,7 @@ final class ProductListCollectionViewModel:Pr_ProductListCollectionViewModel{
     }
     func returnAnimationValue(index: IndexPath) -> AnimtionValue? {
         if let product = try? products.value(){
-            return AnimtionValue(product_id: product[index.item].product_id,price: product[index.item].product_price.price, state: product[index.item].checkUpDown.state,beforePrice: product[index.item].product_price.beforePrice)
+            return AnimtionValue(price: product[index.item].product_price.price, state: product[index.item].checkUpDown.state,beforePrice: product[index.item].product_price.beforePrice)
         }else{
             return nil
         }
