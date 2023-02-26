@@ -11,6 +11,5 @@ protocol Pr_DetailProductCollectionViewModel {
     func returnDetailProductGraph()->DetailProductGraph?
     func returnDetailProductCollectionViewCellViewModel()->Pr_DetailProductCollectionViewImageCellViewModel
     func returnDetailProductCollectionViewUserCellViewModel()->Pr_DetailProductCollectionViewUserCellViewModel
-    func returnDetailProductCollectionViewCommentCellViewModel()->Pr_DetailProductCollectionViewCommentCellViewModel
     
 }

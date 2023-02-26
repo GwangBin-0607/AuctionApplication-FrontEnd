@@ -36,10 +36,10 @@ class ProductImageRepository:ProductImageRepositoryInterface{
     }
 }
 extension ProductImageRepository{
-    func returnCellImageTag(product_image:Image?,imageWidth:CGFloat,tag:Int)->Observable<ResultCellImageTag>{
+    func returnCellImageTag(product_image:Image?,imageWidth:CGFloat,tag:Int)->Observable<CellImageTag>{
         guard let product_image = product_image else{
-            return Observable<ResultCellImageTag>.create { observer in
-                observer.onNext(ResultCellImageTag(result: .failure(HTTPError.RequestError), tag: tag))
+            return Observable<CellImageTag>.create { observer in
+                observer.onNext(CellImageTag(result: .failure(HTTPError.RequestError), tag: tag))
                 observer.onCompleted()
                 return Disposables.create()
             }
@@ -52,15 +52,15 @@ extension ProductImageRepository{
                     switch result {
                     case .success(let image):
                         let downImage = owner.returnDownImage(image_id: product_image.image_id, image: image, imageWidth: imageWidth)
-                        return ResultCellImageTag(result: .success(downImage), tag: tag)
+                        return CellImageTag(result: .success(downImage), tag: tag)
                     case .failure(let error):
-                        return ResultCellImageTag(result: .failure(error), tag: tag)
+                        return CellImageTag(result: .failure(error), tag: tag)
                         
                     }
                 }
         }
-        return Observable<ResultCellImageTag>.create { observer in
-            observer.onNext(ResultCellImageTag(result: .success(cacheImage), tag: tag))
+        return Observable<CellImageTag>.create { observer in
+            observer.onNext(CellImageTag(result: .success(cacheImage), tag: tag))
             observer.onCompleted()
             return Disposables.create()
         }

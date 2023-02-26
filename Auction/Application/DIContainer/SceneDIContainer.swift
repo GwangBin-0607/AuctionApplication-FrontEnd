@@ -205,10 +205,7 @@ extension SceneDIContainer{
     func returnDetailProductCollectionViewModel()->Pr_DetailProductCollectionViewModel{
         let imageRepo = returnProductsImageRepository(httpService: returnHTTPServices())
         let imageUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepo)
-        return DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCellViewModel: returnDetailProductCollectionViewImageCellViewModel(usecase: imageUsecase),detailProductCollectionViewUserCellViewModel:returnDetailProductCollectionViewUserCellViewModel(usecase: imageUsecase),detailProductCollectionViewCommentCellViewModel: returnDetailProductCollectionViewCommentCellViewModel() )
-    }
-    func returnDetailProductCollectionViewCommentCellViewModel()->Pr_DetailProductCollectionViewCommentCellViewModel{
-        DetailProductCollectionViewCommentCellViewModel()
+        return DetailProductCollectionViewModel(detailProductUsecase:returnDetailProductUsecase(),detailProductCollectionViewImageCellViewModel: returnDetailProductCollectionViewImageCellViewModel(usecase: imageUsecase),detailProductCollectionViewUserCellViewModel:returnDetailProductCollectionViewUserCellViewModel(usecase: imageUsecase) )
     }
     func returnDetailProductCollectionViewUserCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewUserCellViewModel{
         DetailProductCollectionViewUserCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 5.0))

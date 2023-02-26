@@ -11,15 +11,13 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
     private let disposeBag:DisposeBag
     private let imageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel
     private let userCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel
-    private let commentCellViewModel:Pr_DetailProductCollectionViewCommentCellViewModel
     let dataUpdate: Observable<Void>
     let completionReloadDataObserver: AnyObserver<CGRect>
     let completionReloadDataObservable: Observable<CGRect>
-    init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel,detailProductCollectionViewUserCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel,detailProductCollectionViewCommentCellViewModel:Pr_DetailProductCollectionViewCommentCellViewModel) {
+    init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel,detailProductCollectionViewUserCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel) {
         let completionSubject = PublishSubject<CGRect>()
         completionReloadDataObserver = completionSubject.asObserver()
         completionReloadDataObservable = completionSubject.asObservable()
-        commentCellViewModel = detailProductCollectionViewCommentCellViewModel
         userCellViewModel = detailProductCollectionViewUserCellViewModel
         imageCellViewModel = detailProductCollectionViewImageCellViewModel
         let dataUpdateSubject = PublishSubject<Void>()
@@ -47,9 +45,6 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
     }
     func returnDetailProductCollectionViewUserCellViewModel() -> Pr_DetailProductCollectionViewUserCellViewModel {
         userCellViewModel
-    }
-    func returnDetailProductCollectionViewCommentCellViewModel() -> Pr_DetailProductCollectionViewCommentCellViewModel {
-        commentCellViewModel
     }
     func returnDetailProductUser() -> DetailProductUser? {
         detailProduct?.returnProductUser()

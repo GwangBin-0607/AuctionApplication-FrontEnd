@@ -72,7 +72,6 @@ extension DetailProductCollectionView:UICollectionViewDataSource{
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailProductCollectionViewCommentCell.identifier, for: indexPath) as! DetailProductCollectionViewCommentCell
-            cell.bindingViewModel(cellViewModel: viewModel.returnDetailProductCollectionViewCommentCellViewModel())
             cell.bindingData.onNext(viewModel.returnDetailProductComment())
             return cell
         default:

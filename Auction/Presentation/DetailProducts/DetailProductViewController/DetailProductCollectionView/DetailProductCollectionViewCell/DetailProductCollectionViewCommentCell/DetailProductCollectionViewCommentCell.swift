@@ -16,42 +16,32 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
     let bindingData:AnyObserver<DetailProductComment?>
     private let minimumLabelHeight:CGFloat = 20
     private let disposeBag:DisposeBag
-    private var viewModel:Pr_DetailProductCollectionViewCommentCellViewModel!
-    private let bindObservable:Observable<DetailProductComment?>
     override init(frame: CGRect) {
         disposeBag = DisposeBag()
         let bindingSubject = PublishSubject<DetailProductComment?>()
-        bindObservable = bindingSubject.asObservable()
         bindingData = bindingSubject.asObserver()
+        priceLabel = UILabel()
         commentLabel = UILabel()
         productNameLabel = UILabel()
         productRegisterTimeLabel = UILabel()
-        priceLabel = UILabel()
         super.init(frame: frame)
-        layout()
-    }
-    func bindingViewModel(cellViewModel:Pr_DetailProductCollectionViewCommentCellViewModel?){
-        if cellViewModel != nil && self.viewModel == nil{
-            self.viewModel = cellViewModel
-            bind()
-        }
-    }
-    private func bind(){
-        viewModel.originalPriceObservable.bind(to: priceLabel.rx.text).disposed(by: disposeBag)
-        viewModel.commentObservable.bind(to: commentLabel.rx.text).disposed(by: disposeBag)
-        viewModel.registerObservable.bind(to: productRegisterTimeLabel.rx.text).disposed(by: disposeBag)
-        viewModel.priceNameObservable.bind(to: productNameLabel.rx.text).disposed(by: disposeBag)
-        bindObservable.withUnretained(self).subscribe(onNext:{
-            owner,comment in
-            owner.viewModel.detailProductObserver.onNext(comment)
+        bindingSubject.withUnretained(self).subscribe(onNext: {
+            owner,detailProductComment in
+            if let comment = detailProductComment{
+                owner.commentLabel.text = comment.comment
+                owner.productNameLabel.text = comment.product_name
+                owner.productRegisterTimeLabel.text = comment.registerTime
+                owner.priceLabel.text = String(comment.original_price)+"₩"
+            }
         }).disposed(by:disposeBag)
+        layout()
     }
     private func layout(){
         self.contentView.addSubview(productNameLabel)
         self.contentView.addSubview(productRegisterTimeLabel)
         self.contentView.addSubview(commentLabel)
         self.contentView.addSubview(priceLabel)
-        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        priceLabel.translatesAutoresizingMaskIntoConstraints  = false
         productNameLabel.translatesAutoresizingMaskIntoConstraints = false
         productRegisterTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         commentLabel.translatesAutoresizingMaskIntoConstraints = false
