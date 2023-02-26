@@ -17,5 +17,13 @@ struct CellImageTag{
 }
 
 protocol Pr_ProductListCollectionViewCellViewModel{
-    func returnImage(product_image:Image?,tag:Int)->Observable<ResultCellImageTag>
+    var titleObservable:Observable<(String,Int)>{get}
+    var priceObservable:Observable<(String,Int)>{get}
+    var checkObservable:Observable<(UIImage?,Int)>{get}
+    var imageObservable:Observable<CellImageTag>{get}
+    var beforePrice:Observable<(String,Int)>{get}
+    var textColorObservable:Observable<(Bool,Int)>{get}
+    var dataObserver:AnyObserver<Product>{get}
+    var animationObserver:AnyObserver<AnimtionValue?>{get}
+    var triggerAnimation:Observable<(Void,Int)>{get}
 }

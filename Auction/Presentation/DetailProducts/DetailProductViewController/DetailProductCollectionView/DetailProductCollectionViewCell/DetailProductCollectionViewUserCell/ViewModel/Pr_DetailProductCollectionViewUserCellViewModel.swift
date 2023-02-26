@@ -11,5 +11,4 @@ protocol Pr_DetailProductCollectionViewUserCellViewModel {
     var userNameObservable:Observable<String?>{get}
     var userImageObservable:Observable<CellImageTag>{get}
     var detailUserObserver:AnyObserver<UserWithTag>{get}
-    func returnImage(productImageWithTag:ProductImagesWithTag) -> Observable<ResultCellImageTag>
 }
