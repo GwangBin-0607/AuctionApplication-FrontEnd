@@ -6,10 +6,15 @@
 //
 
 import UIKit
+protocol GestureDelegate:AnyObject{
+    func gesture(pangesture:Pangesture)
+    func tapGesture()
+}
 class NavigationCornerRadiusView:CornerRadiusView{
     
-    let viewModel:Pr_NavigationCircleViewModel
+    private let viewModel:Pr_NavigationCircleViewModel
     private var alphaAnimation:UIViewPropertyAnimator!
+    weak var gestureDelegate:GestureDelegate?
     init(ViewModel:Pr_NavigationCircleViewModel) {
         self.viewModel = ViewModel
         super.init(frame: .zero, borderWidth: 2.0, borderColor: ManageColor.singleton.getMainColor())
@@ -29,7 +34,7 @@ class NavigationCornerRadiusView:CornerRadiusView{
         guard let superview = self.superview else { return }
         let translation = sender.translation(in: superview)
         let gesture = Pangesture(point: translation, state: sender.state)
-        viewModel.gestureObserver.onNext(gesture)
+        gestureDelegate?.gesture(pangesture: gesture)
         sender.setTranslation(.zero, in: superview)
         if sender.state == .ended || sender.state == .failed || sender.state == .cancelled{
             animationReverser(animation: alphaAnimation, reverse: true)
@@ -52,7 +57,7 @@ extension NavigationCornerRadiusView{
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("END")
         animationReverser(animation: self.alphaAnimation, reverse: true)
-        viewModel.menuClickObserver.onNext(())
+        gestureDelegate?.tapGesture()
     }
     private func animationReverser(animation:UIViewPropertyAnimator,reverse:Bool){
         animation.isReversed = reverse

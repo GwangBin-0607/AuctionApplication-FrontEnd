@@ -24,7 +24,6 @@ final class DetailProductCollectionViewImageCell:UICollectionViewCell{
             owner.tag = productImageWithTag.tag
         }).flatMap{
             owner,productImageWithTag in
-            print(productImageWithTag)
            return owner.viewModel.returnImage(productImageWithTag: productImageWithTag)
         }.withUnretained(self).observe(on: MainScheduler.asyncInstance).subscribe(onNext: {
             owner,cellImageTag in

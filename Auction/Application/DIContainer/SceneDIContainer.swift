@@ -187,8 +187,9 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
         let streamNetwork = returnSocketNetworkInterfaceInContainer()
         let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetwork, product_id: product_id)
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
-        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase)
-        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel)
+        let priceLabelViewModel = returnPriceLabelViewModel()
+        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase,priceLabelViewModel: priceLabelViewModel)
+        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel,priceViewModel: priceLabelViewModel)
         let collectionViewModel = returnDetailProductCollectionViewModel()
         let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
         let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(transitioning: transitioning,detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel,product_id: product_id)
@@ -196,8 +197,14 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel)->DetailProductPriceView{
-        DetailProductPriceView(viewModel:viewModel )
+    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel,priceViewModel:Pr_DetailPriceLabelViewModel)->DetailProductPriceView{
+        DetailProductPriceView(viewModel:viewModel,priceLabel: returnPriceLabel(viewModel: priceViewModel) )
+    }
+    func returnPriceLabelViewModel()->Pr_DetailPriceLabelViewModel{
+        DetailProductLabelViewModel()
+    }
+    func returnPriceLabel(viewModel:Pr_DetailPriceLabelViewModel)->PriceLabel{
+        PriceLabel(viewModel: viewModel)
     }
     func returnDetailProductCollectionView(viewModel:Pr_DetailProductCollectionViewModel)->DetailProductCollectionView{
         DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
@@ -218,8 +225,8 @@ extension SceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase)->Pr_DetailProductPriceViewModel{
-        DetailProductPriceViewModel(usecase: usecase)
+    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel)->Pr_DetailProductPriceViewModel{
+        return DetailProductPriceViewModel(usecase: usecase,priceLabelViewModel: priceLabelViewModel)
     }
     func returnCurrentProductPriceUsecase(currentProductPriceRepository:Pr_CurrentProductPriceRepository)->Pr_CurrentProductPriceUsecase{
         CurrentProductPriceUsecase(currentProductPriceRepository: currentProductPriceRepository)

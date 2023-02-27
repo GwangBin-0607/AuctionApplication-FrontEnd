@@ -30,11 +30,46 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
             if let comment = detailProductComment{
                 owner.commentLabel.text = comment.comment
                 owner.productNameLabel.text = comment.product_name
-                owner.productRegisterTimeLabel.text = comment.registerTime
+                owner.productRegisterTimeLabel.text = owner.convertTime(timezone: comment.registerTime)
                 owner.priceLabel.text = String(comment.original_price)+"₩"
             }
         }).disposed(by:disposeBag)
         layout()
+    }
+    private func convertTime(timezone:String)->String?{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
+        if let date = dateFormatter.date(from:timezone){
+            let twoFor = DateFormatter()
+            twoFor.locale = Locale(identifier: Locale.current.identifier) // set locale to reliable US_POSIX
+            twoFor.timeZone = TimeZone(abbreviation: TimeZone.current.identifier)
+            twoFor.dateFormat = "yyyy-MM-dd HH:MM"
+            return returnTime(registerTime: twoFor.string(from: date), currentTime: convertCurrentTime())
+        }else{
+            return nil
+        }
+    }
+    private func convertCurrentTime()->String{
+        let date = DateFormatter()
+        date.locale = Locale(identifier: Locale.current.identifier)
+        date.timeZone = TimeZone(identifier: TimeZone.current.identifier)
+        date.dateFormat = "yyyy-MM-dd HH:mm"
+        return date.string(from: Date())
+    }
+    private func returnTime(registerTime:String,currentTime:String)->String?{
+        let registerArr = registerTime.components(separatedBy: ["-"," ",":"]).map{Int($0)!}
+        let currentArr = currentTime.components(separatedBy: ["-"," ",":"]).map{Int($0)!}
+        if registerArr[0] < currentArr[0]{
+            return String(currentArr[0]-registerArr[0])+"년 전"
+        }else if registerArr[1] < currentArr[1]{
+            return String(currentArr[1]-registerArr[1])+"개월 전"
+        }else if registerArr[2] < currentArr[2]{
+            return String(currentArr[2]-registerArr[2])+"일 전"
+        }else if registerArr[3] < currentArr[3]{
+            return String(currentArr[3]-registerArr[3])+"시간 전"
+        }else{
+            return "지금"
+        }
     }
     private func layout(){
         self.contentView.addSubview(productNameLabel)

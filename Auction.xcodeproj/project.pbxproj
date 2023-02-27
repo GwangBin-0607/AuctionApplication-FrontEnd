@@ -22,6 +22,8 @@
 		881D8C7129AA312D00B90125 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C7029AA312D00B90125 /* ContainerViewController.swift */; };
 		881D8C7429AA322100B90125 /* Pr_ChildViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 881D8C7329AA322100B90125 /* Pr_ChildViewController.swift */; };
 		881F82F0297FB3CD00B058D7 /* MockInputData.json in Resources */ = {isa = PBXBuildFile; fileRef = 881F82EF297FB3CD00B058D7 /* MockInputData.json */; };
+		8824BB9D29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BB9C29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift */; };
+		8824BB9F29AB9888003F378E /* DetailPriceLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8824BB9E29AB9888003F378E /* DetailPriceLabelViewModel.swift */; };
 		882CBE772908285C00550A8E /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE762908285C00550A8E /* Product.swift */; };
 		882CBE8029083DC400550A8E /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882CBE7F29083DC400550A8E /* ProductListViewController.swift */; };
 		8832E85329A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832E85229A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift */; };
@@ -82,6 +84,8 @@
 		888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D2D292F44E100784E46 /* Coordinator.swift */; };
 		888B4D30292F453B00784E46 /* ProductListViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */; };
 		888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */; };
+		888BB7DD29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BB7DC29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift */; };
+		888BB7DF29AC6AC500F6FFD2 /* Pr_DetailProductPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BB7DE29AC6AC400F6FFD2 /* Pr_DetailProductPriceView.swift */; };
 		8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C459292CC09200823980 /* SocketNetworkInterface.swift */; };
 		8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */; };
 		8897C462292CC22100823980 /* StreamPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C461292CC22100823980 /* StreamPrice.swift */; };
@@ -179,6 +183,8 @@
 		881D8C7029AA312D00B90125 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		881D8C7329AA322100B90125 /* Pr_ChildViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ChildViewController.swift; sourceTree = "<group>"; };
 		881F82EF297FB3CD00B058D7 /* MockInputData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockInputData.json; sourceTree = "<group>"; };
+		8824BB9C29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailPriceLabelViewModel.swift; sourceTree = "<group>"; };
+		8824BB9E29AB9888003F378E /* DetailPriceLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPriceLabelViewModel.swift; sourceTree = "<group>"; };
 		882CBE762908285C00550A8E /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		882CBE7F29083DC400550A8E /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
 		8832E85229A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewGraphCell.swift; sourceTree = "<group>"; };
@@ -247,6 +253,8 @@
 		888B4D2D292F44E100784E46 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewCoordinator.swift; sourceTree = "<group>"; };
 		888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewCoordinator.swift; sourceTree = "<group>"; };
+		888BB7DC29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailProductViewController+Gesture.swift"; sourceTree = "<group>"; };
+		888BB7DE29AC6AC400F6FFD2 /* Pr_DetailProductPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductPriceView.swift; sourceTree = "<group>"; };
 		8897C459292CC09200823980 /* SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketNetworkInterface.swift; sourceTree = "<group>"; };
 		8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		8897C461292CC22100823980 /* StreamPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPrice.swift; sourceTree = "<group>"; };
@@ -373,9 +381,11 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		8824BB9629AB2045003F378E /* ViewModel */ = {
+		8824BB9B29AB9869003F378E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				8824BB9C29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift */,
+				8824BB9E29AB9888003F378E /* DetailPriceLabelViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -475,7 +485,6 @@
 		8832E85029A0E2EC00BCFF33 /* DetailProductCollectionViewCommentCell */ = {
 			isa = PBXGroup;
 			children = (
-				8824BB9629AB2045003F378E /* ViewModel */,
 				8832E85429A0E38800BCFF33 /* DetailProductCollectionViewCommentCell.swift */,
 			);
 			path = DetailProductCollectionViewCommentCell;
@@ -518,6 +527,7 @@
 		8832E9A929A3B9DD00904667 /* DetailProductPriceView */ = {
 			isa = PBXGroup;
 			children = (
+				888BB7DE29AC6AC400F6FFD2 /* Pr_DetailProductPriceView.swift */,
 				8832E9AA29A3B9EC00904667 /* DetailProductPriceView.swift */,
 				8832E9B229A3CFE300904667 /* ViewModel */,
 				8832E9AF29A3CD2A00904667 /* BuyProductButton */,
@@ -529,6 +539,7 @@
 		8832E9AE29A3C0E800904667 /* PriceLabel */ = {
 			isa = PBXGroup;
 			children = (
+				8824BB9B29AB9869003F378E /* ViewModel */,
 				8832E9AC29A3C04A00904667 /* PriceLabel.swift */,
 			);
 			path = PriceLabel;
@@ -662,6 +673,7 @@
 			isa = PBXGroup;
 			children = (
 				888B4D27292F435F00784E46 /* DetailProductViewController.swift */,
+				888BB7DC29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift */,
 				8832E9B729A3D5BB00904667 /* ViewModel */,
 				8832E9A929A3B9DD00904667 /* DetailProductPriceView */,
 				88752C29299F6561005A4BEF /* DetailProductCollectionView */,
@@ -1441,7 +1453,9 @@
 				8864183929978C1200C0BD17 /* ExportConfigure.swift in Sources */,
 				88881534296EE0170023CDE3 /* ProductListState+Interface.swift in Sources */,
 				8878025929434BF0009F4F9A /* ProductImageRepositoryInterface.swift in Sources */,
+				888BB7DF29AC6AC500F6FFD2 /* Pr_DetailProductPriceView.swift in Sources */,
 				88CED136297137E90048367A /* ProductListViewControllerViewModel.swift in Sources */,
+				888BB7DD29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift in Sources */,
 				88CE016329697057003169B5 /* Pr_ProductListCollectionViewCellViewModel.swift in Sources */,
 				88D3AC4D2986C7C60044BDE7 /* HTTPDataTransferProductList.swift in Sources */,
 				8887D1512935A65C005DA3C6 /* MainContainerViewController.swift in Sources */,
@@ -1449,6 +1463,7 @@
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
 				88E5A97829A901AA00A45AA9 /* DetailProductCollectionViewUserCellViewModel.swift in Sources */,
 				8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */,
+				8824BB9D29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift in Sources */,
 				88EFB13F299E7DF8005B6621 /* ManageColor.swift in Sources */,
 				888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */,
 				88752C17299F4D0F005A4BEF /* ProductHTTP+GetDetailProduct.swift in Sources */,
@@ -1459,6 +1474,7 @@
 				88F5DD8629969D57007FB204 /* NavigationCircleView.swift in Sources */,
 				881D8C6029A9B2BB00B90125 /* CurrentProductPriceUsecase.swift in Sources */,
 				8887D15D2936223F005DA3C6 /* TransitionDetailProductViewController.swift in Sources */,
+				8824BB9F29AB9888003F378E /* DetailPriceLabelViewModel.swift in Sources */,
 				881D8C6229A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift in Sources */,
 				889CCD7429139BC3008D1E2F /* MockProductsListAPI.swift in Sources */,
 				88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */,

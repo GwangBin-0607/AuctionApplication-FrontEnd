@@ -14,6 +14,7 @@ final class MainContainerViewController:UIViewController{
         self.viewModel = viewModel
         containerView = UIView()
         super.init(nibName: nil, bundle: nil)
+        self.navigationCircleView.gestureDelegate = self
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -46,24 +47,25 @@ final class MainContainerViewController:UIViewController{
         bind()
     }
     private func bind(){
-        self.navigationCircleView.viewModel.gestureObservable.withUnretained(self).subscribe(onNext: {
-            tuple in
-            let (owner,po) = tuple
-            switch po.state {
-            case .changed,.began:
-                let top = owner.navigationCircleViewTop.constant + po.point.y
-                let leading = owner.navigationCircleViewLeading.constant + po.point.x
-                owner.navigationCircleViewTop.constant = owner.maxY(top: top)
-                owner.navigationCircleViewLeading.constant = owner.maxX(leading: leading)
-            case .ended:
-                owner.animate(point: po.point)
-            default:
-                break;
-            }
-        }).disposed(by: disposeBag)
-        self.navigationCircleView.viewModel.menuClickObservable.subscribe(onNext: {
-            print("Present!")
-        }).disposed(by: disposeBag)
+        
+    }
+}
+extension MainContainerViewController:GestureDelegate{
+    func gesture(pangesture: Pangesture) {
+        switch pangesture.state {
+        case .changed,.began:
+            let top = navigationCircleViewTop.constant + pangesture.point.y
+            let leading = navigationCircleViewLeading.constant + pangesture.point.x
+            navigationCircleViewTop.constant = maxY(top: top)
+            navigationCircleViewLeading.constant = maxX(leading: leading)
+        case .ended:
+            animate(point: pangesture.point)
+        default:
+            break;
+        }
+    }
+    func tapGesture() {
+        
     }
 }
 extension MainContainerViewController:ContainerViewController{

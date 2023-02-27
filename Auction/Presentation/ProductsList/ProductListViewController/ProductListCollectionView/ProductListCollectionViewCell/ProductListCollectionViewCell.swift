@@ -36,7 +36,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             owner,value in
             if let value = value{
                 owner.animateBorderColor(duration: 0.3)
-                owner.priceLabel.text = String(value.price)+"₩"
+                owner.priceLabel.text = owner.decorationPrice(price: value.price)
                 owner.beforePriceLabel.text = owner.decorationBeforePrice(beforePrice: value.beforePrice)
                 owner.priceLabel.textColor = owner.textColorPriceLabel(state: value.state)
                 owner.beforePriceLabel.textColor = owner.textColorBeforePriceLabel(state: value.state)
@@ -51,7 +51,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         data.withUnretained(self).do { owner,item in
             owner.tag = item.product_id
             owner.titleLabel.text = item.product_name
-            owner.priceLabel.text = String(item.product_price.price)+"₩"
+            owner.priceLabel.text = owner.decorationPrice(price: item.product_price.price)
             owner.beforePriceLabel.text = owner.decorationBeforePrice(beforePrice: item.product_price.beforePrice)
             owner.priceLabel.textColor = owner.textColorPriceLabel(state: item.checkUpDown.state)
             owner.beforePriceLabel.textColor = owner.textColorBeforePriceLabel(state: item.checkUpDown.state)
@@ -80,6 +80,9 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     }
     deinit {
         print("\(String(describing: self)) DEINIT")
+    }
+    private func decorationPrice(price:Int)->String{
+        String(price)+"₩"
     }
     private func decorationBeforePrice(beforePrice:Int)->String{
         "전일대비 : +"+String(beforePrice)+"₩"

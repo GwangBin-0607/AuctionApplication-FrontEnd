@@ -9,19 +9,19 @@ import Foundation
 import RxSwift
 
 final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
-    let updownObservable: Observable<ProductUpDown>
-    let priceObservable: Observable<String>
+    let updownObservable: Observable<UIImage?>
     let beforePriceObservable: Observable<String>
     let requestDataObserver: AnyObserver<Int>
     private let usecase:Pr_CurrentProductPriceUsecase
     private let disposeBag:DisposeBag
-    init(usecase:Pr_CurrentProductPriceUsecase) {
+    private let priceLabelViewModel:Pr_DetailPriceLabelViewModel
+    init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel) {
         disposeBag = DisposeBag()
         self.usecase = usecase
+        self.priceLabelViewModel = priceLabelViewModel
         let requestData = PublishSubject<Int>()
         requestDataObserver = requestData.asObserver()
-        let updownSubject = PublishSubject<ProductUpDown>()
-        let priceSubject = PublishSubject<Int>()
+        let updownSubject = PublishSubject<UIImage?>()
         let beforePriceSubject = PublishSubject<Int>()
         updownObservable = updownSubject.asObservable()
         let updownObserver = updownSubject.asObserver()
@@ -30,16 +30,16 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
             return "전일대비 : +"+String(price)+"₩"
         })
         let beforePriceObserver = beforePriceSubject.asObserver()
-        priceObservable = priceSubject.asObservable().map({
-            price in
-            return "현재가격 : "+String(price)+"₩"
-        })
-        let priceObserver = priceSubject.asObserver()
+        let priceObserver = priceLabelViewModel.priceObserver
         requestData.asObservable().flatMap(usecase.returnCurrentProductPrice(productId:)).subscribe(onNext: {
             result in
             switch result {
             case .success(let current):
-                updownObserver.onNext(current.checkUpDown)
+                if current.checkUpDown.state{
+                    updownObserver.onNext(UIImage(named: "upState"))
+                }else{
+                    updownObserver.onNext(UIImage(named: "nothing"))
+                }
                 beforePriceObserver.onNext(current.before_price)
                 priceObserver.onNext(current.price)
             case .failure(let error):
@@ -51,7 +51,13 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
             switch result {
             case .success(let buffer):
                 if let updateData = buffer.last{
-                    print(updateData)
+                    if updateData.state{
+                        updownObserver.onNext(UIImage(named: "upState"))
+                    }else{
+                        updownObserver.onNext(UIImage(named: "nothing"))
+                    }
+                    beforePriceObserver.onNext(updateData.beforePrice)
+                    priceObserver.onNext(updateData.product_price)
                 }
             case .failure(let err):
                 print(err)
