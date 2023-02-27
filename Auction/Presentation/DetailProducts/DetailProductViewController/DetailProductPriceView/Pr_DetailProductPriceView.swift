@@ -11,4 +11,5 @@ protocol Pr_DetailProductPriceView:UIView{
     func setGestureDelegata(delegate:GestureDelegate)
     func animateSubview()
     func animateBackSubview()
+    var buyProductButton:BuyProductButton{get}
 }

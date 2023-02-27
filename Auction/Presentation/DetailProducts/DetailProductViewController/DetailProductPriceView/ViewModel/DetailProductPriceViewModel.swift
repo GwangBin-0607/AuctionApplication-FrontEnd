@@ -15,8 +15,10 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
     private let usecase:Pr_CurrentProductPriceUsecase
     private let disposeBag:DisposeBag
     private let priceLabelViewModel:Pr_DetailPriceLabelViewModel
-    init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel) {
+    private let enablePriceLabelViewModel:Pr_DetailPriceLabelViewModel
+    init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enableLabelViewModel:Pr_DetailPriceLabelViewModel) {
         disposeBag = DisposeBag()
+        self.enablePriceLabelViewModel = enableLabelViewModel
         self.usecase = usecase
         self.priceLabelViewModel = priceLabelViewModel
         let requestData = PublishSubject<Int>()
@@ -31,6 +33,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
         })
         let beforePriceObserver = beforePriceSubject.asObserver()
         let priceObserver = priceLabelViewModel.priceObserver
+        let enableObserver = enablePriceLabelViewModel.priceObserver
         requestData.asObservable().flatMap(usecase.returnCurrentProductPrice(productId:)).subscribe(onNext: {
             result in
             switch result {
@@ -42,6 +45,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
                 }
                 beforePriceObserver.onNext(current.before_price)
                 priceObserver.onNext(current.price)
+                enableObserver.onNext(current.price)
             case .failure(let error):
                 print(error)
             }
@@ -58,6 +62,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
                     }
                     beforePriceObserver.onNext(updateData.beforePrice)
                     priceObserver.onNext(updateData.product_price)
+                    enableObserver.onNext(updateData.product_price)
                 }
             case .failure(let err):
                 print(err)

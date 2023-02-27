@@ -188,8 +188,9 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
         let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetwork, product_id: product_id)
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
         let priceLabelViewModel = returnPriceLabelViewModel()
-        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase,priceLabelViewModel: priceLabelViewModel)
-        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel,priceViewModel: priceLabelViewModel)
+        let enablePriceLabelViewModel = ruturnEnablePriceLabelViewModel()
+        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase,priceLabelViewModel: priceLabelViewModel,enablePriceLabelViewModel: enablePriceLabelViewModel)
+        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel,priceViewModel: priceLabelViewModel,enablePriceViewModel: enablePriceLabelViewModel)
         let collectionViewModel = returnDetailProductCollectionViewModel()
         let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
         let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(transitioning: transitioning,detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel,product_id: product_id)
@@ -197,14 +198,20 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel,priceViewModel:Pr_DetailPriceLabelViewModel)->DetailProductPriceView{
-        DetailProductPriceView(viewModel:viewModel,priceLabel: returnPriceLabel(viewModel: priceViewModel) )
+    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel,priceViewModel:Pr_DetailPriceLabelViewModel,enablePriceViewModel:Pr_DetailPriceLabelViewModel)->DetailProductPriceView{
+        DetailProductPriceView(viewModel:viewModel,priceLabel: returnPriceLabel(viewModel: priceViewModel),enablePriceLabel: returnEnablePriceLabel(viewModel: enablePriceViewModel))
     }
     func returnPriceLabelViewModel()->Pr_DetailPriceLabelViewModel{
         DetailProductLabelViewModel()
     }
+    func ruturnEnablePriceLabelViewModel()->Pr_DetailPriceLabelViewModel{
+        DetailEnableProductLabelViewModel()
+    }
     func returnPriceLabel(viewModel:Pr_DetailPriceLabelViewModel)->PriceLabel{
         PriceLabel(viewModel: viewModel)
+    }
+    func returnEnablePriceLabel(viewModel:Pr_DetailPriceLabelViewModel)->EnablePriceLabel{
+        EnablePriceLabel(viewModel: viewModel)
     }
     func returnDetailProductCollectionView(viewModel:Pr_DetailProductCollectionViewModel)->DetailProductCollectionView{
         DetailProductCollectionView(viewModel: viewModel, backgroundColor: ManageColor.singleton.getMainColor())
@@ -225,8 +232,8 @@ extension SceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel)->Pr_DetailProductPriceViewModel{
-        return DetailProductPriceViewModel(usecase: usecase,priceLabelViewModel: priceLabelViewModel)
+    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enablePriceLabelViewModel:Pr_DetailPriceLabelViewModel)->Pr_DetailProductPriceViewModel{
+        return DetailProductPriceViewModel(usecase: usecase,priceLabelViewModel: priceLabelViewModel,enableLabelViewModel: enablePriceLabelViewModel)
     }
     func returnCurrentProductPriceUsecase(currentProductPriceRepository:Pr_CurrentProductPriceRepository)->Pr_CurrentProductPriceUsecase{
         CurrentProductPriceUsecase(currentProductPriceRepository: currentProductPriceRepository)

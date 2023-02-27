@@ -19,7 +19,6 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     var animatorState:AnimatorState = .bottom
     var heightConstraint:NSLayoutConstraint!
     var heightEndConstraint:NSLayoutConstraint!
-    var currentFrac:CGFloat!
     init(productPriceView:DetailProductPriceView,detailProductCollectionView:DetailProductCollectionView,viewModel:Pr_DetailProductViewControllerViewModel) {
         disposeBag = DisposeBag()
         backButton = UIButton()
@@ -40,6 +39,15 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
             [weak self] rect in
             self?.completion?()
         }).disposed(by: disposeBag)
+        productPriceView.buyProductButton.rx.tap.subscribe(onNext: {
+            [weak self] _ in
+            if self?.animatorState == .bottom{
+                self?.startAnimation()
+            }else{
+                
+            }
+        }).disposed(by: disposeBag)
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +61,8 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     }
     private func layout()->UIView{
         let returnView = UIView()
-        heightConstraint = NSLayoutConstraint(item: productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.1, constant: 0.0)
-        heightEndConstraint = NSLayoutConstraint(item: self.productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.5, constant: 0.0)
+        heightConstraint = NSLayoutConstraint(item: productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.12, constant: 0.0)
+        heightEndConstraint = NSLayoutConstraint(item: self.productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.35, constant: 0.0)
         returnView.backgroundColor = .white
         returnView.addSubview(detailProductCollectionView)
         returnView.addSubview(backButton)
@@ -65,7 +73,7 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         backgroundView.leadingAnchor.constraint(equalTo: returnView.leadingAnchor).isActive = true
         backgroundView.trailingAnchor.constraint(equalTo: returnView.trailingAnchor).isActive = true
         backgroundView.bottomAnchor.constraint(equalTo: returnView.bottomAnchor).isActive = true
-        backgroundView.backgroundColor = .black
+        backgroundView.backgroundColor = .clear
         backgroundView.alpha = 0.0
         detailProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         detailProductCollectionView.topAnchor.constraint(equalTo: returnView.topAnchor).isActive = true

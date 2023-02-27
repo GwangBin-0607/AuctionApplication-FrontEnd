@@ -14,15 +14,11 @@ extension DetailProductViewController{
     @objc private func gesture(sender:UITapGestureRecognizer){
         if animator?.isRunning == true{
             self.animatorState = self.animatorState == .top ? .bottom : .top
-            animator = returnAnimator()
-            animator?.startAnimation()
-        }else{
-            animator = returnAnimator()
-            animator?.startAnimation()
         }
+        startAnimation()
     }
     private func returnAnimator()->UIViewPropertyAnimator{
-        let returnAnimator = UIViewPropertyAnimator(duration: 3.6, dampingRatio: 0.8)
+        let returnAnimator = UIViewPropertyAnimator(duration: 0.75, dampingRatio: 0.85)
         returnAnimator.addAnimations {
             [weak self] in
             if let self = self{
@@ -30,12 +26,14 @@ extension DetailProductViewController{
                     self.productPriceView.animateBackSubview()
                     self.heightEndConstraint.isActive = false
                     self.heightConstraint.isActive = true
+                    self.backgroundView.backgroundColor = .clear
                     self.backgroundView.alpha = 0.0
                 }else{
                     self.productPriceView.animateSubview()
                     self.heightConstraint.isActive = false
                     self.heightEndConstraint.isActive = true
-                    self.backgroundView.alpha = 0.8
+                    self.backgroundView.alpha = 0.65
+                    self.backgroundView.backgroundColor = .black
                 }
                 self.view.layoutIfNeeded()
             }
@@ -59,20 +57,12 @@ extension DetailProductViewController{
 extension DetailProductViewController:GestureDelegate{
     func gesture(pangesture: Pangesture) {
         if pangesture.state == .began{
-            if animator?.isRunning == true{
-                currentFrac = animator!.fractionComplete
-                print(currentFrac)
-                animator?.pauseAnimation()
-            }else{
-                animator = returnAnimator()
-                animator?.startAnimation()
-                animator?.pauseAnimation()
-            }
+            startAnimation()
+            animator?.pauseAnimation()
         }
         if pangesture.state == .changed{
             let ratio = animatorState == .top ? (pangesture.point.y/(self.view.frame.height*0.5)) : -(pangesture.point.y/(self.view.frame.height*0.5))
-            print("RATIO ===\(ratio)       CURRENT === \(currentFrac)")
-            animator?.fractionComplete = ratio+currentFrac
+            animator?.fractionComplete = ratio
         }
         if pangesture.state == .ended{
             self.animator?.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
@@ -80,14 +70,12 @@ extension DetailProductViewController:GestureDelegate{
     }
     func tapGesture() {
         if animator?.isRunning == true{
-            print("reverse")
             self.animatorState = self.animatorState == .top ? .bottom : .top
-            animator = returnAnimator()
-            animator?.startAnimation()
-        }else{
-            print(animatorState)
-            animator = returnAnimator()
-            animator?.startAnimation()
         }
+        startAnimation()
+    }
+    func startAnimation(){
+        animator = returnAnimator()
+        animator?.startAnimation()
     }
 }

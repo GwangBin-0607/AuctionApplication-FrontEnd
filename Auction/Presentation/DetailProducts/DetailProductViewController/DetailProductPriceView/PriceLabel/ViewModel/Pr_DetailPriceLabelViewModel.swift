@@ -8,6 +8,6 @@
 import Foundation
 import RxSwift
 protocol Pr_DetailPriceLabelViewModel{
-    var priceObservable:Observable<String>{get}
+    var priceObservable:Observable<String>!{get}
     var priceObserver:AnyObserver<Int>{get}
 }

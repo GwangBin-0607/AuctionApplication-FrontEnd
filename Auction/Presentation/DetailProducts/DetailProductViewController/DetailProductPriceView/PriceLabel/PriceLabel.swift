@@ -8,24 +8,19 @@
 import Foundation
 import UIKit
 import RxSwift
-final class PriceLabel:UILabel{
+class PriceLabel:UILabel{
     private let viewModel:Pr_DetailPriceLabelViewModel
     private let disposeBag:DisposeBag
     init(viewModel:Pr_DetailPriceLabelViewModel) {
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         super.init(frame: .zero)
-        self.layer.borderColor = ManageColor.singleton.getMainColor().cgColor
+        self.layer.borderColor = UIColor.systemRed.cgColor
+        self.textColor = .black
         bind()
-        layout()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    private func layout(){
-        self.backgroundColor = .systemBlue
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
     }
     private func bind(){
         viewModel.priceObservable.withUnretained(self).subscribe(onNext: {

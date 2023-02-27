@@ -86,6 +86,7 @@
 		888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */; };
 		888BB7DD29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BB7DC29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift */; };
 		888BB7DF29AC6AC500F6FFD2 /* Pr_DetailProductPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BB7DE29AC6AC400F6FFD2 /* Pr_DetailProductPriceView.swift */; };
+		888BB7E129ACE9B500F6FFD2 /* EnablePriceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BB7E029ACE9B500F6FFD2 /* EnablePriceLabel.swift */; };
 		8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C459292CC09200823980 /* SocketNetworkInterface.swift */; };
 		8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */; };
 		8897C462292CC22100823980 /* StreamPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8897C461292CC22100823980 /* StreamPrice.swift */; };
@@ -255,6 +256,7 @@
 		888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewCoordinator.swift; sourceTree = "<group>"; };
 		888BB7DC29AC5C1000F6FFD2 /* DetailProductViewController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailProductViewController+Gesture.swift"; sourceTree = "<group>"; };
 		888BB7DE29AC6AC400F6FFD2 /* Pr_DetailProductPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductPriceView.swift; sourceTree = "<group>"; };
+		888BB7E029ACE9B500F6FFD2 /* EnablePriceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnablePriceLabel.swift; sourceTree = "<group>"; };
 		8897C459292CC09200823980 /* SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketNetworkInterface.swift; sourceTree = "<group>"; };
 		8897C45D292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNetwork+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		8897C461292CC22100823980 /* StreamPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamPrice.swift; sourceTree = "<group>"; };
@@ -541,6 +543,7 @@
 			children = (
 				8824BB9B29AB9869003F378E /* ViewModel */,
 				8832E9AC29A3C04A00904667 /* PriceLabel.swift */,
+				888BB7E029ACE9B500F6FFD2 /* EnablePriceLabel.swift */,
 			);
 			path = PriceLabel;
 			sourceTree = "<group>";
@@ -1468,6 +1471,7 @@
 				888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */,
 				88752C17299F4D0F005A4BEF /* ProductHTTP+GetDetailProduct.swift in Sources */,
 				8832E9B129A3CD3B00904667 /* BuyProductButton.swift in Sources */,
+				888BB7E129ACE9B500F6FFD2 /* EnablePriceLabel.swift in Sources */,
 				8870DCA128E5701E005328C0 /* AppDelegate.swift in Sources */,
 				88752C2B299F6572005A4BEF /* DetailProductCollectionView.swift in Sources */,
 				88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */,

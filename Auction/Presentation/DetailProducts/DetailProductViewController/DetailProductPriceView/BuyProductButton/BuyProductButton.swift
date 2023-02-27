@@ -1,5 +1,8 @@
 import UIKit
 final class BuyProductButton:UIButton{
+    let startColor:UIColor
+    let endColor:UIColor
+    
     override var intrinsicContentSize: CGSize{
         let original = super.intrinsicContentSize
         if #available(iOS 15.0, *){
@@ -14,10 +17,12 @@ final class BuyProductButton:UIButton{
         }
     }
     init(title:String,horizontalPadding:CGFloat) {
+        startColor = .white
+        endColor = .white
         super.init(frame: .zero)
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
-        self.backgroundColor = .red
+        self.backgroundColor = endColor
         self.setTitle(title, for: .normal)
         self.setTitleColor(.black, for: .normal)
         self.tintColor = .gray
@@ -29,7 +34,6 @@ final class BuyProductButton:UIButton{
             self.contentEdgeInsets = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: 0, right: horizontalPadding)
         }
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
