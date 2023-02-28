@@ -32,6 +32,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         let animationSubject = PublishSubject<AnimtionValue?>()
         animationObserver = animationSubject.asObserver()
         super.init(frame: frame)
+        priceLabel.layer.drawsAsynchronously = true
         animationSubject.asObservable().observe(on: MainScheduler.asyncInstance).withUnretained(self).subscribe(onNext: {
             owner,value in
             if let value = value{
@@ -119,9 +120,6 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         self.layer.add(animation, forKey: "changeBorderWidth")
-//        UIView.animate(withDuration: 2.0, delay: 0.0, animations: {
-//            self.bounds = CGRect(x: self.bounds.minX, y: self.bounds.maxY, width: self.bounds.width, height: self.bounds.height)
-//        })
         CATransaction.commit()
     }
     

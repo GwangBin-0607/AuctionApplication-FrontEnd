@@ -4,10 +4,6 @@ import RxSwift
 import RxCocoa
 
 final class DetailProductViewController:UIViewController,Pr_ChildViewController{
-    enum AnimatorState{
-        case top
-        case bottom
-    }
     let productPriceView:Pr_DetailProductPriceView
     private let backButton:UIButton
     private let detailProductCollectionView:DetailProductCollectionView
@@ -15,22 +11,19 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     private let disposeBag:DisposeBag
     var completion: (() -> Void)?
     var animator:UIViewPropertyAnimator?
-    let backgroundView:UIView
     var animatorState:AnimatorState = .bottom
     var heightConstraint:NSLayoutConstraint!
     var heightEndConstraint:NSLayoutConstraint!
     init(productPriceView:DetailProductPriceView,detailProductCollectionView:DetailProductCollectionView,viewModel:Pr_DetailProductViewControllerViewModel) {
         disposeBag = DisposeBag()
         backButton = UIButton()
-        backgroundView = UIView()
         self.viewModel = viewModel
         self.detailProductCollectionView = detailProductCollectionView
         self.productPriceView = productPriceView
         super.init(nibName: nil, bundle: nil)
         self.productPriceView.setGestureDelegata(delegate: self)
         bind()
-        backgroundView.addGestureRecognizer(makePangesture())
-
+        self.detailProductCollectionView.addGestureRecognizer(makeTapgesture())
         
     }
     private func bind(){
@@ -66,15 +59,7 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         returnView.backgroundColor = .white
         returnView.addSubview(detailProductCollectionView)
         returnView.addSubview(backButton)
-        returnView.addSubview(backgroundView)
         returnView.addSubview(productPriceView)
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: returnView.topAnchor).isActive = true
-        backgroundView.leadingAnchor.constraint(equalTo: returnView.leadingAnchor).isActive = true
-        backgroundView.trailingAnchor.constraint(equalTo: returnView.trailingAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: returnView.bottomAnchor).isActive = true
-        backgroundView.backgroundColor = .clear
-        backgroundView.alpha = 0.0
         detailProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         detailProductCollectionView.topAnchor.constraint(equalTo: returnView.topAnchor).isActive = true
         detailProductCollectionView.leadingAnchor.constraint(equalTo: returnView.leadingAnchor).isActive = true

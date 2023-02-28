@@ -8,7 +8,22 @@
 import Foundation
 import UIKit
 import RxSwift
-final class DetailProductPriceView:UIView{
+class ShadowView:UIView{
+    init() {
+        super.init(frame: .zero)
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 10
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+//        self.layer.shouldRasterize = true
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+final class DetailProductPriceView:ShadowView{
     private let priceLabel:PriceLabel
     private let beforePriceLabel:UILabel
     private let upDownImageView:UIImageView
@@ -25,7 +40,7 @@ final class DetailProductPriceView:UIView{
         self.priceLabel = priceLabel
         upDownImageView = UIImageView()
         buyProductButton = BuyProductButton(title: "구매하기", horizontalPadding: 5)
-        super.init(frame: .zero)
+        super.init()
         self.addGestureRecognizer(makePangesture())
         self.addGestureRecognizer(makeTapGesture())
         layout()
@@ -163,6 +178,7 @@ extension DetailProductPriceView:Pr_DetailProductPriceView{
 extension DetailProductPriceView{
     private func makePangesture()->UIPanGestureRecognizer{
        let pan =  UIPanGestureRecognizer(target: self, action: #selector(gesture(sender:)))
+        pan.delaysTouchesBegan = true
         return pan
     }
     @objc private func gesture(sender:UIPanGestureRecognizer){
@@ -173,6 +189,7 @@ extension DetailProductPriceView{
     }
     private func makeTapGesture()->UITapGestureRecognizer{
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapGesture(sender:)))
+        tap.delaysTouchesBegan = true
         return tap
     }
     @objc private func tapGesture(sender:UITapGestureRecognizer){

@@ -8,17 +8,29 @@
 import Foundation
 import UIKit
 extension DetailProductViewController{
-    func makePangesture()->UITapGestureRecognizer{
-        UITapGestureRecognizer(target: self, action: #selector(gesture(sender:)))
+    enum AnimatorState{
+        case top
+        case bottom
+    }
+    func makeTapgesture()->UITapGestureRecognizer{
+        let tap = UITapGestureRecognizer(target: self, action: #selector(gesture(sender:)))
+        tap.delaysTouchesBegan = true
+        return tap
+    }
+    private var duration:CGFloat{
+        return 0.5
     }
     @objc private func gesture(sender:UITapGestureRecognizer){
+        
         if animator?.isRunning == true{
             self.animatorState = self.animatorState == .top ? .bottom : .top
+            startAnimation()
+        }else if animatorState == .top{
+            startAnimation()
         }
-        startAnimation()
     }
     private func returnAnimator()->UIViewPropertyAnimator{
-        let returnAnimator = UIViewPropertyAnimator(duration: 0.75, dampingRatio: 0.85)
+        let returnAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.85)
         returnAnimator.addAnimations {
             [weak self] in
             if let self = self{
@@ -26,14 +38,10 @@ extension DetailProductViewController{
                     self.productPriceView.animateBackSubview()
                     self.heightEndConstraint.isActive = false
                     self.heightConstraint.isActive = true
-                    self.backgroundView.backgroundColor = .clear
-                    self.backgroundView.alpha = 0.0
                 }else{
                     self.productPriceView.animateSubview()
                     self.heightConstraint.isActive = false
                     self.heightEndConstraint.isActive = true
-                    self.backgroundView.alpha = 0.65
-                    self.backgroundView.backgroundColor = .black
                 }
                 self.view.layoutIfNeeded()
             }

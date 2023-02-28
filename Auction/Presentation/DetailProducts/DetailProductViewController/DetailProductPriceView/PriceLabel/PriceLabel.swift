@@ -17,6 +17,7 @@ class PriceLabel:UILabel{
         super.init(frame: .zero)
         self.layer.borderColor = UIColor.systemRed.cgColor
         self.textColor = .black
+        self.layer.drawsAsynchronously = true
         bind()
     }
     required init?(coder: NSCoder) {
