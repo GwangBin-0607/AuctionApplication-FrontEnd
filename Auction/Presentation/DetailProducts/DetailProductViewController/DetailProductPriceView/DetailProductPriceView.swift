@@ -47,23 +47,8 @@ final class DetailProductPriceView:ShadowView{
         bind()
         self.layer.cornerRadius = 10
     }
-    private var priceLabelStartConstraint:NSLayoutConstraint?
-    private var priceLabelEndConstraint:NSLayoutConstraint?
-    private var updownImageStartLeadingConstraint:NSLayoutConstraint?
-    private var updownImageEndLeadingConstraint:NSLayoutConstraint?
-    private var updownImageStartTrailingContraint:NSLayoutConstraint?
-    private var updownImageStartTopConstraint:NSLayoutConstraint?
-    private var updownImageEndTopConstraint:NSLayoutConstraint?
-    private var buyButtonStartTopConstraint:NSLayoutConstraint?
-    private var buyButtonEndTopConstrain:NSLayoutConstraint?
-    private var buyButtonStartBottomConstraint:NSLayoutConstraint?
-    private var buyButtonEndBottomConstrain:NSLayoutConstraint?
-    private var beforePriceStartTrailingConstraint:NSLayoutConstraint?
-    private var beforePriceEndTrailingConstraint:NSLayoutConstraint?
-    private var beforePriceStartTopConstraint:NSLayoutConstraint?
-    private var beforePriceEndTopConstraint:NSLayoutConstraint?
-    private var enablePriceLabelStartTopConstraint:NSLayoutConstraint?
-    private var enablePriceLabelEndTopConstraint:NSLayoutConstraint?
+    private var endNSConstraint:[NSLayoutConstraint] = []
+    private var startNSConstraint:[NSLayoutConstraint] = []
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -87,40 +72,49 @@ final class DetailProductPriceView:ShadowView{
         enableBuyPriceLabel.font = UIFont.systemFont(ofSize: 25.0, weight: .heavy)
         priceLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5.0).isActive = true
         priceLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -5.0).isActive = true
-        updownImageStartTrailingContraint = upDownImageView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -5.0)
-        updownImageStartTrailingContraint?.isActive = true
-        updownImageStartTopConstraint = upDownImageView.centerYAnchor.constraint(equalTo: priceLabel.centerYAnchor)
-        updownImageStartTopConstraint?.isActive = true
-        updownImageEndTopConstraint = upDownImageView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0)
-        updownImageStartLeadingConstraint = upDownImageView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3.0)
-        updownImageStartLeadingConstraint?.isActive = true
-        updownImageEndLeadingConstraint = upDownImageView.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor)
+        let updownTrailing = upDownImageView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -5.0)
+        startNSConstraint.append(updownTrailing)
+        updownTrailing.isActive = true
+        let updownTop = upDownImageView.centerYAnchor.constraint(equalTo: priceLabel.centerYAnchor)
+        startNSConstraint.append(updownTop)
+        updownTop.isActive = true
+        endNSConstraint.append(upDownImageView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0))
+        let updownLeading = upDownImageView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3.0)
+        startNSConstraint.append(updownLeading)
+        updownLeading.isActive = true
+        endNSConstraint.append(upDownImageView.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor))
         NSLayoutConstraint(item: upDownImageView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.04, constant: 0.0).isActive = true
         NSLayoutConstraint(item: upDownImageView, attribute: .height, relatedBy: .equal, toItem: upDownImageView, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
-        beforePriceStartTrailingConstraint = beforePriceLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor)
-        beforePriceStartTopConstraint = beforePriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0)
-        beforePriceStartTopConstraint?.isActive = true
-        beforePriceEndTopConstraint = beforePriceLabel.centerYAnchor.constraint(equalTo: upDownImageView.centerYAnchor)
-        beforePriceStartTrailingConstraint?.isActive = true
-        beforePriceEndTrailingConstraint = beforePriceLabel.trailingAnchor.constraint(equalTo: upDownImageView.leadingAnchor,constant: -5.0)
-        buyButtonStartTopConstraint = buyProductButton.topAnchor.constraint(equalTo: self.topAnchor)
-        buyButtonStartTopConstraint?.isActive = true
-        buyButtonEndTopConstrain = buyProductButton.topAnchor.constraint(equalTo: upDownImageView.bottomAnchor, constant: 5.0)
-        buyButtonStartBottomConstraint = buyProductButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
-        buyButtonStartBottomConstraint?.isActive = true
-        buyButtonEndBottomConstrain = NSLayoutConstraint(item: buyProductButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0.2, constant: 0.0)
+        let beforeTrailing = beforePriceLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor)
+        startNSConstraint.append(beforeTrailing)
+        beforeTrailing.isActive = true
+        let beforeTop = beforePriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0)
+        startNSConstraint.append(beforeTop)
+        beforeTop.isActive = true
+        endNSConstraint.append(beforePriceLabel.centerYAnchor.constraint(equalTo: upDownImageView.centerYAnchor))
+        endNSConstraint.append(beforePriceLabel.trailingAnchor.constraint(equalTo: upDownImageView.leadingAnchor,constant: -5.0))
+        let buyTop = buyProductButton.topAnchor.constraint(equalTo: self.topAnchor)
+        startNSConstraint.append(buyTop)
+        buyTop.isActive = true
+        endNSConstraint.append(buyProductButton.topAnchor.constraint(equalTo: upDownImageView.bottomAnchor, constant: 5.0))
+        let buyBottom = buyProductButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        startNSConstraint.append(buyBottom)
+        buyBottom.isActive = true
+        endNSConstraint.append(NSLayoutConstraint(item: buyProductButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0.2, constant: 0.0))
         NSLayoutConstraint(item: buyProductButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.25, constant: 0.0).isActive = true
         buyProductButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5.0).isActive = true
         priceLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .heavy)
         beforePriceLabel.font = UIFont.systemFont(ofSize: 8.0, weight: .heavy)
         self.backgroundColor = .systemYellow
         beforePriceLabel.textColor = .black
-        priceLabelStartConstraint = priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0)
-        priceLabelEndConstraint = NSLayoutConstraint(item: priceLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.9, constant: 0.0)
-        priceLabelStartConstraint?.isActive = true
-        enablePriceLabelStartTopConstraint = enableBuyPriceLabel.topAnchor.constraint(equalTo: self.bottomAnchor)
-        enablePriceLabelStartTopConstraint?.isActive = true
-        enablePriceLabelEndTopConstraint = enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 5.0)
+        let priceLeading = priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0)
+        startNSConstraint.append(priceLeading)
+        priceLeading.isActive = true
+        endNSConstraint.append(NSLayoutConstraint(item: priceLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.9, constant: 0.0))
+        let enablePrice = enableBuyPriceLabel.topAnchor.constraint(equalTo: self.bottomAnchor)
+        startNSConstraint.append(enablePrice)
+        enablePrice.isActive = true
+        endNSConstraint.append(enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 5.0))
         enableBuyPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 5.0).isActive = true
         enableBuyPriceLabel.trailingAnchor.constraint(equalTo: buyProductButton.leadingAnchor,constant: -5.0).isActive = true
         borderline()
@@ -133,43 +127,13 @@ final class DetailProductPriceView:ShadowView{
 extension DetailProductPriceView:Pr_DetailProductPriceView{
     func animateSubview(){
         buyProductButton.backgroundColor = buyProductButton.startColor
-        enablePriceLabelStartTopConstraint?.isActive = false
-        beforePriceStartTopConstraint?.isActive = false
-        beforePriceStartTrailingConstraint?.isActive = false
-        updownImageStartTrailingContraint?.isActive = false
-        priceLabelStartConstraint?.isActive = false
-        updownImageStartLeadingConstraint?.isActive = false
-        updownImageStartTopConstraint?.isActive = false
-        buyButtonStartTopConstraint?.isActive = false
-        buyButtonStartBottomConstraint?.isActive = false
-        priceLabelEndConstraint?.isActive = true
-        updownImageEndLeadingConstraint?.isActive = true
-        updownImageEndTopConstraint?.isActive = true
-        buyButtonEndTopConstrain?.isActive = true
-        buyButtonEndBottomConstrain?.isActive = true
-        beforePriceEndTrailingConstraint?.isActive = true
-        beforePriceEndTopConstraint?.isActive = true
-        enablePriceLabelEndTopConstraint?.isActive = true
+        startNSConstraint.forEach{$0.isActive = false}
+        endNSConstraint.forEach{$0.isActive = true}
     }
     func animateBackSubview(){
         buyProductButton.backgroundColor = buyProductButton.endColor
-        enablePriceLabelEndTopConstraint?.isActive = false
-        beforePriceEndTopConstraint?.isActive = false
-        beforePriceEndTrailingConstraint?.isActive = false
-        buyButtonEndTopConstrain?.isActive = false
-        buyButtonEndBottomConstrain?.isActive = false
-        priceLabelEndConstraint?.isActive = false
-        updownImageEndLeadingConstraint?.isActive = false
-        updownImageEndTopConstraint?.isActive = false
-        priceLabelStartConstraint?.isActive = true
-        updownImageStartLeadingConstraint?.isActive = true
-        updownImageStartTopConstraint?.isActive = true
-        updownImageStartTrailingContraint?.isActive = true
-        buyButtonStartTopConstraint?.isActive = true
-        buyButtonStartBottomConstraint?.isActive = true
-        beforePriceStartTrailingConstraint?.isActive = true
-        beforePriceStartTopConstraint?.isActive = true
-        enablePriceLabelStartTopConstraint?.isActive = true
+        endNSConstraint.forEach{$0.isActive = false}
+        startNSConstraint.forEach{$0.isActive = true}
     }
     func setGestureDelegata(delegate:GestureDelegate){
         self.gestureDelegate = delegate

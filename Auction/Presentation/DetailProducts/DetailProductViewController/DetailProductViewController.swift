@@ -54,8 +54,8 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     }
     private func layout()->UIView{
         let returnView = UIView()
-        heightConstraint = NSLayoutConstraint(item: productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.12, constant: 0.0)
-        heightEndConstraint = NSLayoutConstraint(item: self.productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.35, constant: 0.0)
+        heightConstraint = NSLayoutConstraint(item: productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.15, constant: 0.0)
+        heightEndConstraint = NSLayoutConstraint(item: self.productPriceView, attribute: .height, relatedBy: .equal, toItem: returnView, attribute: .height, multiplier: 0.4, constant: 0.0)
         returnView.backgroundColor = .white
         returnView.addSubview(detailProductCollectionView)
         returnView.addSubview(backButton)

@@ -64,16 +64,18 @@ extension DetailProductViewController{
 }
 extension DetailProductViewController:GestureDelegate{
     func gesture(pangesture: Pangesture) {
-        if pangesture.state == .began{
+        switch pangesture.state{
+        case .began:
             startAnimation()
             animator?.pauseAnimation()
-        }
-        if pangesture.state == .changed{
+        case .changed:
             let ratio = animatorState == .top ? (pangesture.point.y/(self.view.frame.height*0.5)) : -(pangesture.point.y/(self.view.frame.height*0.5))
-            animator?.fractionComplete = ratio
-        }
-        if pangesture.state == .ended{
+            animator?.fractionComplete = min(ratio,1.0)
+        case .ended,.cancelled,.failed:
             self.animator?.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
+        default:
+            break;
+
         }
     }
     func tapGesture() {
@@ -83,6 +85,7 @@ extension DetailProductViewController:GestureDelegate{
         startAnimation()
     }
     func startAnimation(){
+        print("START!")
         animator = returnAnimator()
         animator?.startAnimation()
     }

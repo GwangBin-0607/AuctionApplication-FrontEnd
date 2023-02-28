@@ -83,10 +83,10 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         print("\(String(describing: self)) DEINIT")
     }
     private func decorationPrice(price:Int)->String{
-        String(price)+"₩"
+        (price).returnPriceComma()+"₩"
     }
     private func decorationBeforePrice(beforePrice:Int)->String{
-        "전일대비 : +"+String(beforePrice)+"₩"
+        "전일대비 : +"+(beforePrice).returnPriceComma()+"₩"
     }
     private func textColorPriceLabel(state:Bool)->UIColor{
         state ? .systemRed : .white

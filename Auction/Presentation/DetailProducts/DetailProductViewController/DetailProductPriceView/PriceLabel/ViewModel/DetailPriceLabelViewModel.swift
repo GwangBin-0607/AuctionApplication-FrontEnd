@@ -15,7 +15,7 @@ final class DetailProductLabelViewModel:Pr_DetailPriceLabelViewModel{
         let subject = PublishSubject<Int>()
         priceObservable = subject.asObservable().map({
             price in
-            return "현재가격 : "+String(price)+"₩"
+            return "현재가격 : "+(price).returnPriceComma()+"₩"
         }).observe(on: MainScheduler.asyncInstance)
         priceObserver = subject.asObserver()
     }
@@ -29,7 +29,7 @@ final class DetailEnableProductLabelViewModel:Pr_DetailPriceLabelViewModel{
         priceObserver = subject.asObserver()
         priceObservable = subject.asObservable().withUnretained(self).map({
             owner,price in
-            return "구매 가능 가격\n"+String(price+owner.upPrice)+"₩"
+            return "구매 가능 가격\n"+(price+owner.upPrice).returnPriceComma()+"₩"
         }).observe(on: MainScheduler.asyncInstance)
     }
 }
