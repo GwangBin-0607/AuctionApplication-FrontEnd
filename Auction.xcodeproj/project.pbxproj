@@ -43,6 +43,7 @@
 		8832E9B929A3D67300904667 /* Pr_DetailProductViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832E9B829A3D67300904667 /* Pr_DetailProductViewControllerViewModel.swift */; };
 		8832E9BB29A3D69200904667 /* DetailProductViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8832E9BA29A3D69200904667 /* DetailProductViewControllerViewModel.swift */; };
 		8834124129ADD86700E1576E /* Int+PriceComma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8834124029ADD86700E1576E /* Int+PriceComma.swift */; };
+		8834124429ADE59300E1576E /* DEBUG_LocalServer_Configuration.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8834124329ADE59300E1576E /* DEBUG_LocalServer_Configuration.xcconfig */; };
 		88583F2A297A7205001AE75C /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88583F29297A7205001AE75C /* Repository.swift */; };
 		8864183929978C1200C0BD17 /* ExportConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8864183829978C1200C0BD17 /* ExportConfigure.swift */; };
 		8870DCA128E5701E005328C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCA028E5701E005328C0 /* AppDelegate.swift */; };
@@ -197,10 +198,6 @@
 		8832E85D29A0E43400BCFF33 /* Pr_DetailProductCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductCollectionViewModel.swift; sourceTree = "<group>"; };
 		8832E86129A128F400BCFF33 /* Pr_DetailProductCollectionViewImageCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductCollectionViewImageCellViewModel.swift; sourceTree = "<group>"; };
 		8832E86329A1290D00BCFF33 /* DetailProductCollectionViewImageCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewImageCellViewModel.swift; sourceTree = "<group>"; };
-		8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Configuration.xcconfig; sourceTree = "<group>"; };
-		8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Docker_Configuration.xcconfig; sourceTree = "<group>"; };
-		8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
-		8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RELEASE_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
 		8832E9A729A3A28700904667 /* DetailProductCollectionViewUserCellProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductCollectionViewUserCellProfileImageView.swift; sourceTree = "<group>"; };
 		8832E9AA29A3B9EC00904667 /* DetailProductPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductPriceView.swift; sourceTree = "<group>"; };
 		8832E9AC29A3C04A00904667 /* PriceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceLabel.swift; sourceTree = "<group>"; };
@@ -210,6 +207,10 @@
 		8832E9B829A3D67300904667 /* Pr_DetailProductViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_DetailProductViewControllerViewModel.swift; sourceTree = "<group>"; };
 		8832E9BA29A3D69200904667 /* DetailProductViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProductViewControllerViewModel.swift; sourceTree = "<group>"; };
 		8834124029ADD86700E1576E /* Int+PriceComma.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+PriceComma.swift"; sourceTree = "<group>"; };
+		8834124329ADE59300E1576E /* DEBUG_LocalServer_Configuration.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Configuration.xcconfig; sourceTree = "<group>"; };
+		8834124529ADE5BC00E1576E /* DEBUG_LocalServer_Docker_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_LocalServer_Docker_Configuration.xcconfig; sourceTree = "<group>"; };
+		8834124629ADE5CE00E1576E /* DEBUG_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = DEBUG_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
+		8834124729ADE5E500E1576E /* RELEASE_RemoteServer_Configuration.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = RELEASE_RemoteServer_Configuration.xcconfig; sourceTree = "<group>"; };
 		88583F29297A7205001AE75C /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		8864183829978C1200C0BD17 /* ExportConfigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportConfigure.swift; sourceTree = "<group>"; };
 		8870DC9D28E5701E005328C0 /* Auction-DEBUG-LOCALSERVER.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Auction-DEBUG-LOCALSERVER.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -398,10 +399,10 @@
 			isa = PBXGroup;
 			children = (
 				8864183829978C1200C0BD17 /* ExportConfigure.swift */,
-				8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */,
-				8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */,
-				8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */,
-				8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */,
+				8834124329ADE59300E1576E /* DEBUG_LocalServer_Configuration.xcconfig */,
+				8834124529ADE5BC00E1576E /* DEBUG_LocalServer_Docker_Configuration.xcconfig */,
+				8834124629ADE5CE00E1576E /* DEBUG_RemoteServer_Configuration.xcconfig */,
+				8834124729ADE5E500E1576E /* RELEASE_RemoteServer_Configuration.xcconfig */,
 			);
 			path = Configure;
 			sourceTree = "<group>";
@@ -1255,6 +1256,7 @@
 				8870DCAA28E57020005328C0 /* Assets.xcassets in Resources */,
 				881AEBFC29519622004A7CDA /* StreamingProductPriceListTestData.json in Resources */,
 				889CCD7229139B65008D1E2F /* FetchingProductsListTestData.json in Resources */,
+				8834124429ADE59300E1576E /* DEBUG_LocalServer_Configuration.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1660,7 +1662,7 @@
 		};
 		8870DCC828E57020005328C0 /* cnf_Debug(LocalServer) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8832E86529A1443000BCFF33 /* DEBUG_LocalServer_Configuration.xcconfig */;
+			baseConfigurationReference = D5833CD6273B129103B8B144 /* Pods-Auction.cnf_debug(localserver).xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1691,7 +1693,7 @@
 		};
 		8870DCC928E57020005328C0 /* cnf_Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8832E86929A144A100BCFF33 /* RELEASE_RemoteServer_Configuration.xcconfig */;
+			baseConfigurationReference = 0BD1A409BDC4F8902B2B9B5C /* Pods-Auction.cnf_release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1884,7 +1886,7 @@
 		};
 		88EFBDF7299A2E580068C75A /* cnf_Debug(LocalServer_Docker) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8832E86629A1444100BCFF33 /* DEBUG_LocalServer_Docker_Configuration.xcconfig */;
+			baseConfigurationReference = 8655A51D088582A1916BBA5B /* Pods-Auction.cnf_debug(localserver_docker).xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2026,7 +2028,7 @@
 		};
 		88EFBDFB299A302B0068C75A /* cnf_Debug(RemoteServer) */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8832E86729A1445000BCFF33 /* DEBUG_RemoteServer_Configuration.xcconfig */;
+			baseConfigurationReference = F31816160770B6A46A30ADBB /* Pods-Auction.cnf_debug(remoteserver).xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
