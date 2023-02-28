@@ -15,7 +15,7 @@ class ShadowView:UIView{
         self.layer.shadowOpacity = 1
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
-//        self.layer.shouldRasterize = true
+        self.layer.shouldRasterize = true
         
     }
     
@@ -101,7 +101,10 @@ final class DetailProductPriceView:ShadowView{
         startNSConstraint.append(buyBottom)
         buyBottom.isActive = true
         endNSConstraint.append(NSLayoutConstraint(item: buyProductButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0.2, constant: 0.0))
-        NSLayoutConstraint(item: buyProductButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.25, constant: 0.0).isActive = true
+        let buyBottomWidth = NSLayoutConstraint(item: buyProductButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.25, constant: 0.0)
+        startNSConstraint.append(buyBottomWidth)
+        buyBottomWidth.isActive = true
+        endNSConstraint.append(buyProductButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant:5.0))
         buyProductButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5.0).isActive = true
         priceLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .heavy)
         beforePriceLabel.font = UIFont.systemFont(ofSize: 8.0, weight: .heavy)
@@ -116,7 +119,7 @@ final class DetailProductPriceView:ShadowView{
         enablePrice.isActive = true
         endNSConstraint.append(enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 5.0))
         enableBuyPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 5.0).isActive = true
-        enableBuyPriceLabel.trailingAnchor.constraint(equalTo: buyProductButton.leadingAnchor,constant: -5.0).isActive = true
+        enableBuyPriceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -5.0).isActive = true
         borderline()
     }
     private func borderline(){

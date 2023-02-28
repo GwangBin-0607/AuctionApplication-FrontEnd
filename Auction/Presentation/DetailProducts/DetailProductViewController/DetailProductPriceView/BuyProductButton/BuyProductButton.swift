@@ -28,9 +28,15 @@ final class BuyProductButton:UIButton{
         self.tintColor = .gray
         if #available(iOS 15.0, *){
             var config = UIButton.Configuration.plain()
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+               var outgoing = incoming
+               outgoing.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+               return outgoing
+            }
             config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalPadding, bottom: 0, trailing: horizontalPadding)
             self.configuration = config
         }else{
+            self.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
             self.contentEdgeInsets = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: 0, right: horizontalPadding)
         }
     }
