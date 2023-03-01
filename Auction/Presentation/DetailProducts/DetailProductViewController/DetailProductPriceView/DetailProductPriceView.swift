@@ -16,6 +16,7 @@ class ShadowView:UIView{
         self.layer.shadowRadius = 10
         self.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
         self.layer.shouldRasterize = true
+        self.layer.rasterizationScale = UIScreen.main.scale
         
     }
     
@@ -117,9 +118,12 @@ final class DetailProductPriceView:ShadowView{
         let enablePrice = enableBuyPriceLabel.topAnchor.constraint(equalTo: self.bottomAnchor)
         startNSConstraint.append(enablePrice)
         enablePrice.isActive = true
-        endNSConstraint.append(enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 5.0))
-        enableBuyPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 5.0).isActive = true
-        enableBuyPriceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -5.0).isActive = true
+        endNSConstraint.append(enableBuyPriceLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor))
+        endNSConstraint.append(enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 15.0))
+        enableBuyPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 15.0).isActive = true
+        enableBuyPriceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -15.0).isActive = true
+        priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
+        beforePriceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
         borderline()
     }
     private func borderline(){

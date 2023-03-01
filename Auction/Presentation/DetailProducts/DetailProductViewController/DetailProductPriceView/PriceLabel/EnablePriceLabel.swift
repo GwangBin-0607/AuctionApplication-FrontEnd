@@ -11,6 +11,7 @@ final class EnablePriceLabel:PriceLabel{
     override init(viewModel: Pr_DetailPriceLabelViewModel) {
         super.init(viewModel: viewModel)
         numberOfLines = 2
+        self.textAlignment = .center
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
