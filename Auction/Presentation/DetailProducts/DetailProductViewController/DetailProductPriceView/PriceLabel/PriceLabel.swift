@@ -18,6 +18,9 @@ class PriceLabel:UILabel{
         self.layer.borderColor = UIColor.systemRed.cgColor
         self.textColor = .black
         self.layer.drawsAsynchronously = true
+        self.textAlignment = .right
+        self.adjustsFontSizeToFitWidth = true
+        self.minimumScaleFactor = 0.2
         bind()
     }
     required init?(coder: NSCoder) {

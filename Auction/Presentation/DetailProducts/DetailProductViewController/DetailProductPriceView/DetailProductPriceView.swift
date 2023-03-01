@@ -12,11 +12,12 @@ class ShadowView:UIView{
     init() {
         super.init(frame: .zero)
         self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 1
-        self.layer.shadowRadius = 10
-        self.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowRadius = 5
+        self.layer.shadowOffset = CGSize(width: 0.0, height: -5.0)
         self.layer.shouldRasterize = true
         self.layer.rasterizationScale = UIScreen.main.scale
+        self.layer.cornerRadius = 10
         
     }
     
@@ -46,7 +47,9 @@ final class DetailProductPriceView:ShadowView{
         self.addGestureRecognizer(makeTapGesture())
         layout()
         bind()
-        self.layer.cornerRadius = 10
+    }
+    override func layoutSubviews() {
+        print("SUBVIEW!")
     }
     private var endNSConstraint:[NSLayoutConstraint] = []
     private var startNSConstraint:[NSLayoutConstraint] = []
@@ -65,39 +68,32 @@ final class DetailProductPriceView:ShadowView{
         self.addSubview(upDownImageView)
         self.addSubview(beforePriceLabel)
         self.addSubview(enableBuyPriceLabel)
+        beforePriceLabel.textAlignment = .right
         enableBuyPriceLabel.translatesAutoresizingMaskIntoConstraints = false
         buyProductButton.translatesAutoresizingMaskIntoConstraints = false
         beforePriceLabel.translatesAutoresizingMaskIntoConstraints = false
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         upDownImageView.translatesAutoresizingMaskIntoConstraints = false
-        enableBuyPriceLabel.font = UIFont.systemFont(ofSize: 25.0, weight: .heavy)
+        
+        priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
+        priceLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .heavy)
         priceLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5.0).isActive = true
-        priceLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -5.0).isActive = true
-        let updownTrailing = upDownImageView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -5.0)
-        startNSConstraint.append(updownTrailing)
-        updownTrailing.isActive = true
-        let updownTop = upDownImageView.centerYAnchor.constraint(equalTo: priceLabel.centerYAnchor)
-        startNSConstraint.append(updownTop)
-        updownTop.isActive = true
-        endNSConstraint.append(upDownImageView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0))
-        let updownLeading = upDownImageView.leadingAnchor.constraint(equalTo: priceLabel.trailingAnchor, constant: 3.0)
-        startNSConstraint.append(updownLeading)
-        updownLeading.isActive = true
-        endNSConstraint.append(upDownImageView.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor))
+        priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0).isActive = true
+        priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5.0).isActive = true
+        
+        upDownImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5.0).isActive = true
+        upDownImageView.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0).isActive = true
         NSLayoutConstraint(item: upDownImageView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.04, constant: 0.0).isActive = true
         NSLayoutConstraint(item: upDownImageView, attribute: .height, relatedBy: .equal, toItem: upDownImageView, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
-        let beforeTrailing = beforePriceLabel.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor)
-        startNSConstraint.append(beforeTrailing)
-        beforeTrailing.isActive = true
-        let beforeTop = beforePriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor,constant: 5.0)
-        startNSConstraint.append(beforeTop)
-        beforeTop.isActive = true
-        endNSConstraint.append(beforePriceLabel.centerYAnchor.constraint(equalTo: upDownImageView.centerYAnchor))
-        endNSConstraint.append(beforePriceLabel.trailingAnchor.constraint(equalTo: upDownImageView.leadingAnchor,constant: -5.0))
-        let buyTop = buyProductButton.topAnchor.constraint(equalTo: self.topAnchor)
-        startNSConstraint.append(buyTop)
-        buyTop.isActive = true
-        endNSConstraint.append(buyProductButton.topAnchor.constraint(equalTo: upDownImageView.bottomAnchor, constant: 5.0))
+        
+        beforePriceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
+        beforePriceLabel.font = UIFont.systemFont(ofSize: 12.0, weight: .heavy)
+        beforePriceLabel.textColor = .black
+        beforePriceLabel.centerYAnchor.constraint(equalTo: upDownImageView.centerYAnchor).isActive = true
+        beforePriceLabel.trailingAnchor.constraint(equalTo: upDownImageView.leadingAnchor,constant: -5.0).isActive = true
+        beforePriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0).isActive = true
+        
+        buyProductButton.topAnchor.constraint(equalTo: beforePriceLabel.bottomAnchor,constant: 5.0).isActive = true
         let buyBottom = buyProductButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         startNSConstraint.append(buyBottom)
         buyBottom.isActive = true
@@ -105,16 +101,10 @@ final class DetailProductPriceView:ShadowView{
         let buyBottomWidth = NSLayoutConstraint(item: buyProductButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0.25, constant: 0.0)
         startNSConstraint.append(buyBottomWidth)
         buyBottomWidth.isActive = true
-        endNSConstraint.append(buyProductButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant:5.0))
         buyProductButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5.0).isActive = true
-        priceLabel.font = UIFont.systemFont(ofSize: 20.0, weight: .heavy)
-        beforePriceLabel.font = UIFont.systemFont(ofSize: 8.0, weight: .heavy)
-        self.backgroundColor = .systemYellow
-        beforePriceLabel.textColor = .black
-        let priceLeading = priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0)
-        startNSConstraint.append(priceLeading)
-        priceLeading.isActive = true
-        endNSConstraint.append(NSLayoutConstraint(item: priceLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.9, constant: 0.0))
+        endNSConstraint.append(buyProductButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant:5.0))
+        
+        enableBuyPriceLabel.font = UIFont.systemFont(ofSize: 25.0, weight: .heavy)
         let enablePrice = enableBuyPriceLabel.topAnchor.constraint(equalTo: self.bottomAnchor)
         startNSConstraint.append(enablePrice)
         enablePrice.isActive = true
@@ -122,9 +112,9 @@ final class DetailProductPriceView:ShadowView{
         endNSConstraint.append(enableBuyPriceLabel.topAnchor.constraint(equalTo: self.buyProductButton.bottomAnchor,constant: 15.0))
         enableBuyPriceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,constant: 15.0).isActive = true
         enableBuyPriceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -15.0).isActive = true
-        priceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
-        beforePriceLabel.setContentHuggingPriority(UILayoutPriority(1000), for: .vertical)
+        
         borderline()
+        self.backgroundColor = .systemYellow
     }
     private func borderline(){
         self.layer.borderColor = UIColor.gray.cgColor

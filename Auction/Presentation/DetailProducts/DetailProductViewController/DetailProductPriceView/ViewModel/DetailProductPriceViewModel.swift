@@ -25,7 +25,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
         requestDataObserver = requestData.asObserver()
         let updownSubject = PublishSubject<UIImage?>()
         let beforePriceSubject = PublishSubject<Int>()
-        updownObservable = updownSubject.asObservable()
+        updownObservable = updownSubject.asObservable().distinctUntilChanged()
         let updownObserver = updownSubject.asObserver()
         beforePriceObservable = beforePriceSubject.asObservable().map({
             price in

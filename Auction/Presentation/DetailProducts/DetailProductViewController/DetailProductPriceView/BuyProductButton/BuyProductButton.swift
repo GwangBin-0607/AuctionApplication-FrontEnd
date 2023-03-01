@@ -25,6 +25,7 @@ final class BuyProductButton:UIButton{
         self.backgroundColor = endColor
         self.setTitle(title, for: .normal)
         self.setTitleColor(.black, for: .normal)
+        self.contentMode = .scaleAspectFit
         self.tintColor = .gray
         if #available(iOS 15.0, *){
             var config = UIButton.Configuration.plain()
@@ -39,6 +40,9 @@ final class BuyProductButton:UIButton{
             self.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .heavy)
             self.contentEdgeInsets = UIEdgeInsets(top: 0, left: horizontalPadding, bottom: 0, right: horizontalPadding)
         }
+    }
+    func changeTitle(title:String){
+        self.setTitle(title, for: .normal)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -18,75 +18,66 @@ extension DetailProductViewController{
         return tap
     }
     private var duration:CGFloat{
-        return 0.5
+        return 0.65
     }
     @objc private func gesture(sender:UITapGestureRecognizer){
         
-        if animator?.isRunning == true{
-            self.animatorState = self.animatorState == .top ? .bottom : .top
-            startAnimation()
-        }else if animatorState == .top{
-            startAnimation()
-        }
+//        if animator?.isRunning == true{
+//            self.animatorState = self.animatorState == .top ? .bottom : .top
+//            startAnimation()
+//        }else if animatorState == .top{
+//            startAnimation()
+//        }
     }
-    private func returnAnimator()->UIViewPropertyAnimator{
+    func returnAnimator()->UIViewPropertyAnimator{
         let returnAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 0.85)
         returnAnimator.addAnimations {
             [weak self] in
-            if let self = self{
-                if self.animatorState == .top{
-                    self.productPriceView.animateBackSubview()
-                    self.heightEndConstraint.isActive = false
-                    self.heightConstraint.isActive = true
-                }else{
-                    self.productPriceView.animateSubview()
-                    self.heightConstraint.isActive = false
-                    self.heightEndConstraint.isActive = true
-                }
-                self.view.layoutIfNeeded()
+            self?.heightConstraint.isActive = false
+            self?.productPriceView.animateSubview()
+            self?.heightEndConstraint.isActive = true
+                self?.view.layoutIfNeeded()
+        }
+        returnAnimator.pausesOnCompletion = true
+        returnAnimator.addObserver(self, forKeyPath: #keyPath(UIViewPropertyAnimator.isRunning),options: [.new], context: nil)
+        return returnAnimator
+    }
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(UIViewPropertyAnimator.isRunning){
+            if animator.fractionComplete >= 0.9 {
+                animatorState = animator.isReversed ? .bottom : .top
+                animator.isReversed = !animator.isReversed
             }
         }
-        returnAnimator.isUserInteractionEnabled = true
-        returnAnimator.addCompletion({
-            [weak self] state in
-            if self?.animator == returnAnimator{
-                print("Completion")
-                switch state {
-                case .end:
-                    self?.animatorState = self?.animatorState == .top ? .bottom : .top
-                default:
-                    break;
-                }
-            }
-        })
-        return returnAnimator
+
     }
 }
 extension DetailProductViewController:GestureDelegate{
     func gesture(pangesture: Pangesture) {
         switch pangesture.state{
         case .began:
-            animator = returnAnimator()
-            animator?.pauseAnimation()
+            animator.pauseAnimation()
         case .changed:
-            let ratio = animatorState == .top ? (pangesture.point.y/(self.view.frame.height*0.4)) : -(pangesture.point.y/(self.view.frame.height*0.4))
+            let ratio = animatorState == .bottom ? -(pangesture.point.y/(self.view.frame.height*0.4)) : (pangesture.point.y/(self.view.frame.height*0.4))
             let max = max(ratio, 0.0)
-            animator?.fractionComplete = min(max,1.0)
-        case .ended,.cancelled,.failed:
-            self.animator?.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
+            animator.fractionComplete = min(max,1.0)
+        case .ended:
+            self.animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
         default:
             break;
 
         }
     }
     func tapGesture() {
-        if animator?.isRunning == true{
-            self.animatorState = self.animatorState == .top ? .bottom : .top
+        print(animatorState)
+        print(animator.isReversed)
+        if animator.isRunning{
+            print("RUNNING!")
+            animator.isReversed = animatorState == .bottom ? true : false
+            animatorState = animatorState == .top ? .bottom : .top
         }
-        startAnimation()
-    }
-    func startAnimation(){
-        animator = returnAnimator()
-        animator?.startAnimation()
+        if !animator.isRunning{
+            animator.startAnimation()
+        }
     }
 }

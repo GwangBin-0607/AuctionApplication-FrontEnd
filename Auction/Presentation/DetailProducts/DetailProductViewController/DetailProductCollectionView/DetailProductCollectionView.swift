@@ -24,7 +24,7 @@ final class DetailProductCollectionView:UICollectionView{
         layout(color: backgroundColor)
     }
     private func layout(color:UIColor){
-        self.backgroundColor = .systemPurple
+        self.backgroundColor = .white
         self.contentInsetAdjustmentBehavior = .never
         self.isPrefetchingEnabled = false
     }

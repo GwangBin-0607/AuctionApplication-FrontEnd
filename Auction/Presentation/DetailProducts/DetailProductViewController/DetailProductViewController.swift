@@ -10,7 +10,7 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     private let viewModel:Pr_DetailProductViewControllerViewModel
     private let disposeBag:DisposeBag
     var completion: (() -> Void)?
-    var animator:UIViewPropertyAnimator?
+    var animator:UIViewPropertyAnimator!
     var animatorState:AnimatorState = .bottom
     var heightConstraint:NSLayoutConstraint!
     var heightEndConstraint:NSLayoutConstraint!
@@ -24,7 +24,7 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         self.productPriceView.setGestureDelegata(delegate: self)
         bind()
         self.detailProductCollectionView.addGestureRecognizer(makeTapgesture())
-        
+        animator = returnAnimator()
     }
     private func bind(){
         backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
@@ -34,17 +34,21 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         }).disposed(by: disposeBag)
         productPriceView.buyProductButton.rx.tap.subscribe(onNext: {
             [weak self] _ in
-            if self?.animatorState == .bottom{
-                self?.startAnimation()
-            }else{
-                
-            }
+//            if self?.animatorState == .bottom{
+//                self?.startAnimation()
+//            }else{
+//                
+//            }
         }).disposed(by: disposeBag)
         
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         request()
+    }
+    deinit {
+        animator.removeObserver(self, forKeyPath: #keyPath(UIViewPropertyAnimator.isRunning))
+        print("DEINIT!")
     }
     private func request(){
         viewModel.requestDetailProduct.onNext(())

@@ -31,7 +31,7 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
                 owner.commentLabel.text = comment.comment
                 owner.productNameLabel.text = comment.product_name
                 owner.productRegisterTimeLabel.text = owner.convertTime(timezone: comment.registerTime)
-                owner.priceLabel.text = String(comment.original_price)+"₩"
+                owner.priceLabel.text = owner.decorationPrice(price: comment.original_price)
             }
         }).disposed(by:disposeBag)
         layout()
@@ -48,6 +48,9 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
         }else{
             return nil
         }
+    }
+    private func decorationPrice(price:Int)->String{
+        "시작 가격 : \(price.returnPriceComma())₩"
     }
     private func convertCurrentTime()->String{
         let date = DateFormatter()
@@ -87,7 +90,8 @@ final class DetailProductCollectionViewCommentCell:UICollectionViewCell{
         productNameLabel.font = UIFont.systemFont(ofSize: 28, weight: .heavy)
         priceLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5.0).isActive = true
         priceLabel.topAnchor.constraint(equalTo: productRegisterTimeLabel.bottomAnchor).isActive = true
-        priceLabel.font = UIFont.systemFont(ofSize: 15, weight: .heavy)
+        priceLabel.font = UIFont.systemFont(ofSize: 17, weight: .heavy)
+        priceLabel.textColor = .black
         productRegisterTimeLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 3.0).isActive = true
         productRegisterTimeLabel.trailingAnchor.constraint(equalTo: productNameLabel.trailingAnchor).isActive = true
         productRegisterTimeLabel.textColor = .gray
