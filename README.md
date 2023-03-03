@@ -1,7 +1,7 @@
 # Project : Auction Item
 
 - 프로젝트 스크린샷
-- 이미지
+- https://user-images.githubusercontent.com/78067919/222644861-d3df0dc8-2dc9-41a1-8233-be5fe740f2fe.mp4
 - 프로젝트 기간
     - 2022.10 ~
 - 프로젝트 내용
