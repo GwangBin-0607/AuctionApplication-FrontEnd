@@ -2,6 +2,7 @@
 
 - 프로젝트 스크린샷
 - https://user-images.githubusercontent.com/78067919/222644861-d3df0dc8-2dc9-41a1-8233-be5fe740f2fe.mp4
+- https://user-images.githubusercontent.com/78067919/222645158-c8581ed1-c527-4c63-83bc-be8145475d4e.mp4
 - 프로젝트 기간
     - 2022.10 ~
 - 프로젝트 내용
