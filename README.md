@@ -41,7 +41,7 @@
                 - ViewController의 View Flow로의 의존으로 부터 분리하는 객체
     - Dependency Flow
         
-        ![Frame 98.png](Project%20Auction%20Item%203c65fbb3b6e446e89d5069cd51bfeb9e/Frame_98.png)
+        ![Frame 98](https://user-images.githubusercontent.com/78067919/222644174-259f942d-4795-430a-8bb9-92668a804a71.png)
         
 
 - 패턴
