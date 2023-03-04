@@ -55,5 +55,5 @@
         - Controller ViewModel은 Coordinator Delegate를 의존하고 ViewController를 View Flow로 부터 분리시킨다.
     - MVVM-C Diagram
         
-        ![Frame 106](https://user-images.githubusercontent.com/78067919/222644354-91f6e061-329e-4c6d-934c-a36fc7a5b215.png)
+        ![Frame 106 (1)](https://user-images.githubusercontent.com/78067919/222886284-5fccab70-5198-4f51-8b40-d019d63dabbd.png)
 
