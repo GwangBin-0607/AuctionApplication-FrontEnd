@@ -14,7 +14,6 @@ final class MainContainerViewController:UIViewController{
         self.viewModel = viewModel
         containerView = UIView()
         super.init(nibName: nil, bundle: nil)
-        self.navigationCircleView.gestureDelegate = self
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -47,25 +46,20 @@ final class MainContainerViewController:UIViewController{
         bind()
     }
     private func bind(){
-        
-    }
-}
-extension MainContainerViewController:GestureDelegate{
-    func gesture(pangesture: Pangesture) {
-        switch pangesture.state {
-        case .changed,.began:
-            let top = navigationCircleViewTop.constant + pangesture.point.y
-            let leading = navigationCircleViewLeading.constant + pangesture.point.x
-            navigationCircleViewTop.constant = maxY(top: top)
-            navigationCircleViewLeading.constant = maxX(leading: leading)
-        case .ended:
-            animate(point: pangesture.point)
-        default:
-            break;
-        }
-    }
-    func tapGesture() {
-        
+        viewModel.pangestureObservable.withUnretained(self).subscribe(onNext: {
+            owner,pangesture in
+            switch pangesture.state {
+            case .changed,.began:
+                let top = owner.navigationCircleViewTop.constant + pangesture.point.y
+                let leading = owner.navigationCircleViewLeading.constant + pangesture.point.x
+                owner.navigationCircleViewTop.constant = owner.maxY(top: top)
+                owner.navigationCircleViewLeading.constant = owner.maxX(leading: leading)
+            case .ended:
+                owner.animate(point: pangesture.point)
+            default:
+                break;
+            }
+        }).disposed(by: disposeBag)
     }
 }
 extension MainContainerViewController:ContainerViewController{

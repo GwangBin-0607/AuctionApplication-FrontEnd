@@ -4,10 +4,10 @@ import RxSwift
 import RxCocoa
 
 final class DetailProductViewController:UIViewController,Pr_ChildViewController{
-    let productPriceView:Pr_DetailProductPriceView
+    let productPriceView:DetailProductPriceView
     private let backButton:UIButton
     private let detailProductCollectionView:DetailProductCollectionView
-    private let viewModel:Pr_DetailProductViewControllerViewModel
+    let viewModel:Pr_DetailProductViewControllerViewModel
     private let disposeBag:DisposeBag
     var completion: (() -> Void)?
     var animator:UIViewPropertyAnimator!
@@ -21,7 +21,6 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         self.detailProductCollectionView = detailProductCollectionView
         self.productPriceView = productPriceView
         super.init(nibName: nil, bundle: nil)
-        self.productPriceView.setGestureDelegata(delegate: self)
         bind()
         self.detailProductCollectionView.addGestureRecognizer(makeTapgesture())
         animator = returnAnimator()
@@ -32,13 +31,38 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
             [weak self] rect in
             self?.completion?()
         }).disposed(by: disposeBag)
-        productPriceView.buyProductButton.rx.tap.subscribe(onNext: {
-            [weak self] _ in
-//            if self?.animatorState == .bottom{
-//                self?.startAnimation()
-//            }else{
-//                
-//            }
+        viewModel.buyProductBottonTapObservable.withUnretained(self).subscribe(onNext: {
+            owner, _ in
+            if owner.animatorState == .bottom{
+                owner.animator.startAnimation()
+            }
+        }).disposed(by: disposeBag)
+        viewModel.pangesture.withUnretained(self).subscribe(onNext: {
+            owner,pan in
+            switch pan.state{
+            case .began:
+                owner.animator.pauseAnimation()
+            case .changed:
+                let ratio = owner.animatorState == .bottom ? -(pan.point.y/(owner.view.frame.height*0.4)) : (pan.point.y/(owner.view.frame.height*0.4))
+                let max = max(ratio, 0.0)
+                owner.animator.fractionComplete = min(max,1.0)
+            case .ended:
+                owner.animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
+            default:
+                break;
+
+            }
+        }).disposed(by: disposeBag)
+        viewModel.tapGesture.withUnretained(self).subscribe(onNext: {
+            owner,_ in
+            if owner.animator.isRunning{
+                print("RUNNING!")
+                owner.animator.isReversed = owner.animatorState == .bottom ? true : false
+                owner.animatorState = owner.animatorState == .top ? .bottom : .top
+            }
+            if !owner.animator.isRunning{
+                owner.animator.startAnimation()
+            }
         }).disposed(by: disposeBag)
         
     }

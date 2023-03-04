@@ -34,7 +34,7 @@ extension DetailProductViewController{
         returnAnimator.addAnimations {
             [weak self] in
             self?.heightConstraint.isActive = false
-            self?.productPriceView.animateSubview()
+            self?.viewModel.priceViewAnimationSubview.onNext(())
             self?.heightEndConstraint.isActive = true
                 self?.view.layoutIfNeeded()
         }
@@ -50,34 +50,5 @@ extension DetailProductViewController{
             }
         }
 
-    }
-}
-extension DetailProductViewController:GestureDelegate{
-    func gesture(pangesture: Pangesture) {
-        switch pangesture.state{
-        case .began:
-            animator.pauseAnimation()
-        case .changed:
-            let ratio = animatorState == .bottom ? -(pangesture.point.y/(self.view.frame.height*0.4)) : (pangesture.point.y/(self.view.frame.height*0.4))
-            let max = max(ratio, 0.0)
-            animator.fractionComplete = min(max,1.0)
-        case .ended:
-            self.animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
-        default:
-            break;
-
-        }
-    }
-    func tapGesture() {
-        print(animatorState)
-        print(animator.isReversed)
-        if animator.isRunning{
-            print("RUNNING!")
-            animator.isReversed = animatorState == .bottom ? true : false
-            animatorState = animatorState == .top ? .bottom : .top
-        }
-        if !animator.isRunning{
-            animator.startAnimation()
-        }
     }
 }

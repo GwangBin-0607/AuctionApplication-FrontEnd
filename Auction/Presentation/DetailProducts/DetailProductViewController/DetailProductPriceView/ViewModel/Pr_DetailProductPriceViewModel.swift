@@ -11,4 +11,11 @@ protocol Pr_DetailProductPriceViewModel{
     var updownObservable:Observable<UIImage?>{get}
     var beforePriceObservable:Observable<String>{get}
     var requestDataObserver:AnyObserver<Int>{get}
+    var pangestureObserver:AnyObserver<Pangesture>{get}
+    var pangestureObservable:Observable<Pangesture>{get}
+    var animationSubview:Observable<Void>{get}
+    var animationSubviewObserver:AnyObserver<Void>{get}
+    var tapGestureObserver:AnyObserver<Void>{get}
+    var tapGestureObservable:Observable<Void>{get}
+    var productButtonTapObservable:Observable<Void>{get}
 }

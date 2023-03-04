@@ -29,19 +29,18 @@ final class DetailProductPriceView:ShadowView{
     private let priceLabel:PriceLabel
     private let beforePriceLabel:UILabel
     private let upDownImageView:UIImageView
-    let buyProductButton:BuyProductButton
+    private let buyProductButton:BuyProductButton
     private let viewModel:Pr_DetailProductPriceViewModel
     private let disposeBag:DisposeBag
-    private weak var gestureDelegate:GestureDelegate?
     private let enableBuyPriceLabel:PriceLabel
-    init(viewModel:Pr_DetailProductPriceViewModel,priceLabel:PriceLabel,enablePriceLabel:PriceLabel) {
+    init(viewModel:Pr_DetailProductPriceViewModel,priceLabel:PriceLabel,enablePriceLabel:PriceLabel,buyProductBotton:BuyProductButton) {
         enableBuyPriceLabel = enablePriceLabel
         beforePriceLabel = UILabel()
+        buyProductButton = buyProductBotton
         disposeBag = DisposeBag()
         self.viewModel = viewModel
         self.priceLabel = priceLabel
         upDownImageView = UIImageView()
-        buyProductButton = BuyProductButton(title: "구매하기", horizontalPadding: 5)
         super.init()
         self.addGestureRecognizer(makePangesture())
         self.addGestureRecognizer(makeTapGesture())
@@ -58,6 +57,10 @@ final class DetailProductPriceView:ShadowView{
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
+        viewModel.animationSubview.subscribe(onNext: {
+            [weak self] _ in
+            self?.animateSubview()
+        }).disposed(by: disposeBag)
         viewModel.beforePriceObservable.bind(to: beforePriceLabel.rx.text).disposed(by: disposeBag)
         viewModel.updownObservable.observe(on: MainScheduler.asyncInstance).bind(to: upDownImageView.rx.image).disposed(by: disposeBag)
     }
@@ -121,19 +124,10 @@ final class DetailProductPriceView:ShadowView{
         self.layer.borderWidth = 0.5
     }
 }
-extension DetailProductPriceView:Pr_DetailProductPriceView{
-    func animateSubview(){
-        buyProductButton.backgroundColor = buyProductButton.startColor
+extension DetailProductPriceView{
+    private func animateSubview(){
         startNSConstraint.forEach{$0.isActive = false}
         endNSConstraint.forEach{$0.isActive = true}
-    }
-    func animateBackSubview(){
-        buyProductButton.backgroundColor = buyProductButton.endColor
-        endNSConstraint.forEach{$0.isActive = false}
-        startNSConstraint.forEach{$0.isActive = true}
-    }
-    func setGestureDelegata(delegate:GestureDelegate){
-        self.gestureDelegate = delegate
     }
 }
 extension DetailProductPriceView{
@@ -146,7 +140,7 @@ extension DetailProductPriceView{
         guard let superview = self.superview else { return }
         let translation = sender.translation(in: superview)
         let gesture = Pangesture(point: translation, state: sender.state)
-        gestureDelegate?.gesture(pangesture: gesture)
+        viewModel.pangestureObserver.onNext(gesture)
     }
     private func makeTapGesture()->UITapGestureRecognizer{
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapGesture(sender:)))
@@ -154,6 +148,6 @@ extension DetailProductPriceView{
         return tap
     }
     @objc private func tapGesture(sender:UITapGestureRecognizer){
-        gestureDelegate?.tapGesture()
+        viewModel.tapGestureObserver.onNext(())
     }
 }

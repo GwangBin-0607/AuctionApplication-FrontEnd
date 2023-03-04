@@ -189,8 +189,9 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
         let priceLabelViewModel = returnPriceLabelViewModel()
         let enablePriceLabelViewModel = ruturnEnablePriceLabelViewModel()
-        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase,priceLabelViewModel: priceLabelViewModel,enablePriceLabelViewModel: enablePriceLabelViewModel)
-        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel,priceViewModel: priceLabelViewModel,enablePriceViewModel: enablePriceLabelViewModel)
+        let buyProductButtonViewModel = returnBuyProductButtonViewModel()
+        let productPriceViewModel = returnDetailProductPriceViewModel(usecase: productPriceUsecase,priceLabelViewModel: priceLabelViewModel,enablePriceLabelViewModel: enablePriceLabelViewModel,buyProductButtonViewModel: buyProductButtonViewModel)
+        let productPriceView = returnDetailProductPriceView(viewModel: productPriceViewModel,priceViewModel: priceLabelViewModel,enablePriceViewModel: enablePriceLabelViewModel,buyProductButtonViewModel: buyProductButtonViewModel)
         let collectionViewModel = returnDetailProductCollectionViewModel()
         let collectionView = returnDetailProductCollectionView(viewModel: collectionViewModel)
         let detailProductViewControllerViewModel = returnDetailViewControllerViewModel(transitioning: transitioning,detailProductPriceViewModel: productPriceViewModel,detailCollectionViewModel: collectionViewModel,product_id: product_id)
@@ -198,8 +199,14 @@ extension SceneDIContainer:DetailProductViewSceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel,priceViewModel:Pr_DetailPriceLabelViewModel,enablePriceViewModel:Pr_DetailPriceLabelViewModel)->DetailProductPriceView{
-        DetailProductPriceView(viewModel:viewModel,priceLabel: returnPriceLabel(viewModel: priceViewModel),enablePriceLabel: returnEnablePriceLabel(viewModel: enablePriceViewModel))
+    func returnDetailProductPriceView(viewModel:Pr_DetailProductPriceViewModel,priceViewModel:Pr_DetailPriceLabelViewModel,enablePriceViewModel:Pr_DetailPriceLabelViewModel,buyProductButtonViewModel:Pr_BuyProductButtonViewModel)->DetailProductPriceView{
+        DetailProductPriceView(viewModel:viewModel,priceLabel: returnPriceLabel(viewModel: priceViewModel),enablePriceLabel: returnEnablePriceLabel(viewModel: enablePriceViewModel),buyProductBotton: returnBuyProductButton(viewModel: buyProductButtonViewModel))
+    }
+    func returnBuyProductButton(viewModel:Pr_BuyProductButtonViewModel)->BuyProductButton{
+        BuyProductButton(viewModel: viewModel)
+    }
+    func returnBuyProductButtonViewModel()->Pr_BuyProductButtonViewModel{
+        BuyProductButtonViewModel()
     }
     func returnPriceLabelViewModel()->Pr_DetailPriceLabelViewModel{
         DetailProductLabelViewModel()
@@ -232,8 +239,8 @@ extension SceneDIContainer{
     }
 }
 extension SceneDIContainer{
-    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enablePriceLabelViewModel:Pr_DetailPriceLabelViewModel)->Pr_DetailProductPriceViewModel{
-        return DetailProductPriceViewModel(usecase: usecase,priceLabelViewModel: priceLabelViewModel,enableLabelViewModel: enablePriceLabelViewModel)
+    func returnDetailProductPriceViewModel(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enablePriceLabelViewModel:Pr_DetailPriceLabelViewModel,buyProductButtonViewModel:Pr_BuyProductButtonViewModel)->Pr_DetailProductPriceViewModel{
+        return DetailProductPriceViewModel(usecase: usecase,priceLabelViewModel: priceLabelViewModel,enableLabelViewModel: enablePriceLabelViewModel,buyProductButtonViewModel: buyProductButtonViewModel)
     }
     func returnCurrentProductPriceUsecase(currentProductPriceRepository:Pr_CurrentProductPriceRepository)->Pr_CurrentProductPriceUsecase{
         CurrentProductPriceUsecase(currentProductPriceRepository: currentProductPriceRepository)
