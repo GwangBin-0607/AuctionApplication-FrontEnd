@@ -7,6 +7,7 @@
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_55_AdobeExpress](https://user-images.githubusercontent.com/78067919/222946917-f0838df4-b06b-40e5-8ccd-4eebd0f24085.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-05_at_17_58_48_AdobeExpress](https://user-images.githubusercontent.com/78067919/222951385-6183a7c1-829a-45e5-92f7-c7d27cad3db9.gif)
 
+- 기술 스택 : Swift, RxSwift, RxDataSource, UnitTest
 - 프로젝트 기간
     - 2022.10 ~
 - 프로젝트 내용
