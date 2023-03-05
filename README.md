@@ -9,9 +9,6 @@
     <td><img src="[screenshots/Screenshot_1582745139.png](https://user-images.githubusercontent.com/78067919/222645528-87fa84fc-56fb-45d7-aa2e-34a1da9112fd.mp4)" width=270 height=480></td>
   </tr>
  </table>
-![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif
-https://user-images.githubusercontent.com/78067919/222645158-c8581ed1-c527-4c63-83bc-be8145475d4e.mp4
-https://user-images.githubusercontent.com/78067919/222645528-87fa84fc-56fb-45d7-aa2e-34a1da9112fd.mp4
 - 프로젝트 기간
     - 2022.10 ~
 - 프로젝트 내용
