@@ -1,5 +1,5 @@
 # Project : Auction Item
-
+- 서버에 가상의 유저를 둬서 총 2명이상이 접속했을때 랜덤으로 상품의 가격을 경매하는 기능을 구현했습니다
 - 프로젝트 스크린샷
 
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-05_at_18_02_08_AdobeExpress](https://user-images.githubusercontent.com/78067919/222951475-5cae659c-8769-47c6-b075-7c48b03df477.gif)
