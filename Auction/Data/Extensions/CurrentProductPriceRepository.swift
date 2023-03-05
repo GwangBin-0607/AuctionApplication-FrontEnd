@@ -11,8 +11,10 @@ final class CurrentProductPriceRepository{
     private let httpService:GetCurrentProductPrice
     private let httpCurrentProductPriceTransfer:Pr_HTTPDataTransferCurrentProductPrice
     private let streamService:SocketNetworkInterface
+    private let streamTransferData:TCPStreamDataTransferInterface
     let streamingCurrentProduct: Observable<Result<[StreamPrice], StreamError>>
     init(httpService:GetCurrentProductPrice,httpCurrentProductPriceTransfer:Pr_HTTPDataTransferCurrentProductPrice,streamTransferData:TCPStreamDataTransferInterface,streamService:SocketNetworkInterface,product_id:Int) {
+        self.streamTransferData = streamTransferData
         self.httpService = httpService
         self.httpCurrentProductPriceTransfer = httpCurrentProductPriceTransfer
         self.streamService = streamService
@@ -65,5 +67,34 @@ extension CurrentProductPriceRepository:Pr_CurrentProductPriceRepository{
             })
             return Disposables.create()
         }
+    }
+    func sendData(output data:Encodable,dataType:OutputStreamDataType)->Observable<Result<Bool,StreamError>>{
+        return encodeAndSend(data: data,dataType: dataType)
+    }
+    private func encodeAndSend(data:Encodable,dataType:OutputStreamDataType)->Observable<Result<Bool,StreamError>>{
+        return Observable<Result<Bool,StreamError>>.create { [weak self] observer in
+            guard let self = self,
+                  let (completionId,data) = try? self.streamTransferData.encodeOutputStreamState(dataType: dataType, output: data)
+            else{
+                observer.onNext(.failure(StreamError.EncodeError))
+                observer.onCompleted()
+                return Disposables.create()
+            }
+            self.streamTransferData.register(completion:  {
+                result in
+                observer.onNext(result)
+                observer.onCompleted()
+            })
+            self.streamService.sendData(data: data, completion: {
+                error in
+                if let error = error{
+                    self.streamTransferData.executeIfSendError(completionId: completionId, error: error)
+                }
+            })
+            return Disposables.create()
+        }.subscribe(on: SerialDispatchQueueScheduler(internalSerialQueueName: "sendThread"))
+    }
+    func updateProductPrice(user_id: Int, product_id: Int, product_price: Int) -> Observable<Result<Bool, StreamError>> {
+        sendData(output: UpdateStreamProductPriceData(product_id: product_id, product_price: product_price, user_id: user_id),dataType: .StreamProductPriceUpdate)
     }
 }

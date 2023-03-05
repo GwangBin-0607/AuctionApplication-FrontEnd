@@ -35,6 +35,8 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
             owner, _ in
             if owner.animatorState == .bottom{
                 owner.animator.startAnimation()
+            }else{
+                owner.viewModel.buyProduct.onNext(())
             }
         }).disposed(by: disposeBag)
         viewModel.pangesture.withUnretained(self).subscribe(onNext: {

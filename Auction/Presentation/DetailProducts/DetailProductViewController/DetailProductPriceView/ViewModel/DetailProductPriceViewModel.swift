@@ -24,6 +24,9 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
     let tapGestureObserver: AnyObserver<Void>
     let tapGestureObservable: Observable<Void>
     let productButtonTapObservable: Observable<Void>
+    let buyProduct: AnyObserver<Void>
+    let userObserver: AnyObserver<Int>
+    let userObservable: Observable<Int>
     init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enableLabelViewModel:Pr_DetailPriceLabelViewModel,buyProductButtonViewModel:Pr_BuyProductButtonViewModel) {
         disposeBag = DisposeBag()
         productButtonTapObservable = buyProductButtonViewModel.tapObservable
@@ -34,8 +37,21 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
         let animationSubViewSubject = PublishSubject<Void>()
         animationSubview = animationSubViewSubject.asObservable()
         animationSubviewObserver = animationSubViewSubject.asObserver()
+        let userSubject = PublishSubject<Int>()
+        userObserver = userSubject.asObserver()
+        userObservable = userSubject.asObservable()
         let requestData = PublishSubject<Int>()
         requestDataObserver = requestData.asObserver()
+        let priceSubject = PublishSubject<Int>()
+        let buyProductSubject = PublishSubject<Void>()
+        buyProduct = buyProductSubject.asObserver()
+        let combineProductIdPrice = Observable.combineLatest(requestData,priceSubject)
+        buyProductSubject.withLatestFrom(combineProductIdPrice).subscribe(onNext: {
+            arg1 in
+            let (product_id,product_price) = arg1
+            print(product_id)
+            print(product_price)
+        }).disposed(by: disposeBag)
         let updownSubject = PublishSubject<UIImage?>()
         let beforePriceSubject = PublishSubject<Int>()
         updownObservable = updownSubject.asObservable().distinctUntilChanged()
@@ -65,6 +81,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
                 beforePriceObserver.onNext(current.before_price)
                 priceObserver.onNext(current.price)
                 enableObserver.onNext(current.price)
+                priceSubject.asObserver().onNext(current.price+500)
             case .failure(let error):
                 print(error)
             }
@@ -82,6 +99,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
                     beforePriceObserver.onNext(updateData.beforePrice)
                     priceObserver.onNext(updateData.product_price)
                     enableObserver.onNext(updateData.product_price)
+                    priceSubject.asObserver().onNext(updateData.product_price+500)
                 }
             case .failure(let err):
                 print(err)

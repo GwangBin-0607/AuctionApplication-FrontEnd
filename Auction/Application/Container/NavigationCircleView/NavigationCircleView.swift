@@ -10,7 +10,11 @@ class NavigationCornerRadiusView:CornerRadiusView{
     
     private let viewModel:Pr_NavigationCircleViewModel
     private var alphaAnimation:UIViewPropertyAnimator!
+    private let profileImageView:ProfileImageView
+    private let nicknameLabel:UILabel
     init(ViewModel:Pr_NavigationCircleViewModel) {
+        profileImageView = ProfileImageView()
+        nicknameLabel = UILabel()
         self.viewModel = ViewModel
         super.init(frame: .zero, borderWidth: 2.0, borderColor: ManageColor.singleton.getMainColor())
         self.backgroundColor = ManageColor.singleton.getMainColor().withAlphaComponent(0.5)
@@ -21,6 +25,7 @@ class NavigationCornerRadiusView:CornerRadiusView{
             self?.backgroundColor = ManageColor.singleton.getMainColor().withAlphaComponent(1.0)
         })
         alphaAnimation.pausesOnCompletion = true
+        layout()
     }
     private func makePangesture()->UIPanGestureRecognizer{
         UIPanGestureRecognizer(target: self, action: #selector(gesture(sender:)))
@@ -43,14 +48,32 @@ class NavigationCornerRadiusView:CornerRadiusView{
         fatalError("init(coder:) has not been implemented")
         
     }
+    private func layout(){
+        self.addSubview(nicknameLabel)
+        self.addSubview(profileImageView)
+        nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5.0).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0.6, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: profileImageView, attribute: .width, relatedBy: .equal, toItem: profileImageView, attribute: .height, multiplier: 1.0, constant: 0.0).isActive = true
+        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
+        nicknameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 5.0).isActive = true
+        nicknameLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5.0).isActive = true
+        nicknameLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -5.0).isActive = true
+        nicknameLabel.font = UIFont.systemFont(ofSize: 12, weight: .heavy)
+        nicknameLabel.textAlignment = .center
+        
+//        profileImageView.backgroundColor = .blue
+//        nicknameLabel.backgroundColor = .yellow
+//        nicknameLabel.text = "!!!!!"
+    }
 }
 extension NavigationCornerRadiusView{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("TOUCH")
         animationReverser(animation: self.alphaAnimation, reverse: false)
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("END")
         animationReverser(animation: self.alphaAnimation, reverse: true)
         viewModel.tapGestureObserver.onNext(())
     }

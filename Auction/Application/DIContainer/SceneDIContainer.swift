@@ -113,23 +113,24 @@ extension SceneDIContainer{
  
 }
 protocol MainContainerViewSceneDIContainer{
-    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator
-    func returnMainContainerViewController()->MainContainerViewController
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController?)->Coordinator
+    func returnMainContainerViewController(transition:TransitionContainerViewController)->MainContainerViewController
+    func returnUserPageViewCoordinator(ContainerViewController:ContainerViewController?,HasChildCoordinator:HasChildCoordinator)->Coordinator
 }
 
 //MARK: ProductList Coordinator
 extension SceneDIContainer:MainContainerViewSceneDIContainer{
-    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator{
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController?)->Coordinator{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
     }
-    func returnMainContainerViewController() -> MainContainerViewController {
+    func returnMainContainerViewController(transition:TransitionContainerViewController) -> MainContainerViewController {
         let navigationCircleViewModel = returnNavigationCircleViewModel()
         let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel)
-        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel,transition: transition)
         return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
     }
-    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
-        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
+    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel,transition:TransitionContainerViewController)->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel,transition: transition)
     }
     private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
         NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)
@@ -137,10 +138,25 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     private func returnNavigationCircleViewModel()->Pr_NavigationCircleViewModel{
         NavigationCircleViewModel()
     }
+    func returnUserPageViewCoordinator(ContainerViewController: ContainerViewController?,HasChildCoordinator:HasChildCoordinator) -> Coordinator {
+        UserPageViewCoordinator(containerViewController: ContainerViewController, sceneDIContainer: self,userPageViewCoordinatorDelegate: HasChildCoordinator)
+    }
+
+}
+protocol UserPageViewSceneDIContainer{
+    func returnUserPageViewController(transition:TransitionUserPageViewController)->UserPageViewController
+}
+extension SceneDIContainer:UserPageViewSceneDIContainer{
+    func returnUserPageViewController(transition:TransitionUserPageViewController)->UserPageViewController{
+        UserPageViewController(viewModel: returnUserPageViewControllerViewModel(transition: transition))
+    }
+    private func returnUserPageViewControllerViewModel(transition:TransitionUserPageViewController)->Pr_UserPageViewControllerViewModel{
+        UserPageViewControllerViewModel(transition: transition)
+    }
 }
 protocol ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController?,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator
 }
 
 //MARK: ProductListViewController, DetailProductViewCoordinator
@@ -173,17 +189,17 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let productListViewController = ProductListViewController(viewModel: viewModel, CollectionView: collectionView,ErrorAlterView: errorAlterView)
         return productListViewController
     }
-    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator{
+    func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController?,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator{
         DetailProductViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self, DetailProductViewCoordinatorDelegate:HasChildCoordinator,presentOptions:presentOptions)
     }
 }
 protocol DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?,product_id:Int) -> Pr_ChildViewController
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController,product_id:Int) -> Pr_ChildViewController
 }
 
 //MARK: DetailViewController
 extension SceneDIContainer:DetailProductViewSceneDIContainer{
-    func returnDetailViewController(transitioning:TransitionDetailProductViewController?=nil,product_id:Int) -> Pr_ChildViewController {
+    func returnDetailViewController(transitioning:TransitionDetailProductViewController,product_id:Int) -> Pr_ChildViewController {
         let streamNetwork = returnSocketNetworkInterfaceInContainer()
         let productPriceRepository = returnCurrentProductPriceRepository(streamNetworkService: streamNetwork, product_id: product_id)
         let productPriceUsecase = returnCurrentProductPriceUsecase(currentProductPriceRepository: productPriceRepository)
@@ -234,7 +250,7 @@ extension SceneDIContainer{
     func returnDetailProductCollectionViewImageCellViewModel(usecase:Pr_ProductImageLoadUsecase)->Pr_DetailProductCollectionViewImageCellViewModel{
         DetailProductCollectionViewImageCellViewModel(ImageUsecase: usecase, downImageSize: returnImageWidth(scale: 1.0))
     }
-    func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int)->Pr_DetailProductViewControllerViewModel{
+    func returnDetailViewControllerViewModel(transitioning:TransitionDetailProductViewController,detailProductPriceViewModel:Pr_DetailProductPriceViewModel,detailCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int)->Pr_DetailProductViewControllerViewModel{
         DetailProductViewControllerViewModel(transitioning:transitioning,detailProductPriceViewModel: detailProductPriceViewModel,detailProductCollectionViewModel: detailCollectionViewModel,product_id: product_id)
     }
 }

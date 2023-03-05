@@ -60,6 +60,10 @@ final class MainContainerViewController:UIViewController{
                 break;
             }
         }).disposed(by: disposeBag)
+        viewModel.tapgestureObservable.withUnretained(self).subscribe(onNext: {
+            owner,_ in
+            owner.viewModel.presentUserPage.onNext(())
+        }).disposed(by: disposeBag)
     }
 }
 extension MainContainerViewController:ContainerViewController{
@@ -84,6 +88,7 @@ extension MainContainerViewController:ContainerViewController{
                 ViewController?.view.alpha = 1.0
             }, completion: {
                 finish in
+                ViewController?.didMove(toParent: self)
                 ViewController?.endAppearanceTransition()
             })
         }
@@ -93,14 +98,29 @@ func present(ViewController: UIViewController, animate: Bool) {
     self.addChild(ViewController)
     if last == nil{
         containerView.addSubview(ViewController.view)
+        ViewController.beginAppearanceTransition(true, animated: true)
         ViewController.view.translatesAutoresizingMaskIntoConstraints = false
         ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
         ViewController.didMove(toParent: self)
+        ViewController.endAppearanceTransition()
     }
 }
+    func presentUserPage(ViewController: UIViewController) {
+        self.addChild(ViewController)
+        ViewController.beginAppearanceTransition(true, animated: true)
+        self.view.addSubview(ViewController.view)
+        ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        ViewController.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        ViewController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        ViewController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        ViewController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        ViewController.endAppearanceTransition()
+        ViewController.didMove(toParent: self)
+    }
+    
 }
 extension MainContainerViewController{
     private func maxX(leading:CGFloat)->CGFloat{

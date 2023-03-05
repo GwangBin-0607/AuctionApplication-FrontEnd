@@ -20,4 +20,7 @@ extension CurrentProductPriceUsecase:Pr_CurrentProductPriceUsecase{
     func returnStreamCurrentProductPrice() -> Observable<Result<[StreamPrice], StreamError>> {
         currentProductPriceRepository.streamingCurrentProduct
     }
+    func returnUpdateProductPrice(user_id:Int,product_id:Int,product_price:Int) -> Observable<Result<Bool, StreamError>> {
+        currentProductPriceRepository.updateProductPrice(user_id: user_id, product_id: product_id, product_price: product_price)
+    }
 }

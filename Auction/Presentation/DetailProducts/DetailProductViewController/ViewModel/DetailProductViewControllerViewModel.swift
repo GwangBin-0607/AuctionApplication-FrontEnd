@@ -21,12 +21,16 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
     let tapGesture: Observable<Void>
     let priceViewAnimationSubview: AnyObserver<Void>
     let buyProductBottonTapObservable: Observable<Void>
-    init(transitioning:TransitionDetailProductViewController?=nil,detailProductPriceViewModel: Pr_DetailProductPriceViewModel,detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int) {
+    let buyProduct: AnyObserver<Void>
+    let userObserver: AnyObserver<Int>
+    init(transitioning:TransitionDetailProductViewController,detailProductPriceViewModel: Pr_DetailProductPriceViewModel,detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int) {
         buyProductBottonTapObservable = detailProductPriceViewModel.productButtonTapObservable
         disposeBag = DisposeBag()
         pangesture = detailProductPriceViewModel.pangestureObservable
         tapGesture = detailProductPriceViewModel.tapGestureObservable
         priceViewAnimationSubview = detailProductPriceViewModel.animationSubviewObserver
+        buyProduct = detailProductPriceViewModel.buyProduct
+        userObserver = detailProductPriceViewModel.userObserver
         self.product_id = product_id
         let requestData = PublishSubject<Void>()
         requestDetailProduct = requestData.asObserver()

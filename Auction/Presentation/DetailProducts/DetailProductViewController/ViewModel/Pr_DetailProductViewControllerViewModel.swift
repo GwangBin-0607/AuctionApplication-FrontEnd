@@ -16,4 +16,6 @@ protocol Pr_DetailProductViewControllerViewModel{
     var tapGesture:Observable<Void>{get}
     var priceViewAnimationSubview:AnyObserver<Void>{get}
     var buyProductBottonTapObservable:Observable<Void>{get}
+    var buyProduct:AnyObserver<Void>{get}
+    var userObserver:AnyObserver<Int>{get}
 }

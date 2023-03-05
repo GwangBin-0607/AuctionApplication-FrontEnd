@@ -9,12 +9,15 @@ import Foundation
 import UIKit
 
 class AppCoordinator:Coordinator{
-    let containerViewController: ContainerViewController
+    var containerViewController: ContainerViewController?
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:MainContainerViewSceneDIContainer
-    init(ContainerViewController:ContainerViewController,SceneDIContainer:MainContainerViewSceneDIContainer) {
-        self.containerViewController = ContainerViewController
+
+    init(SceneDIContainer:MainContainerViewSceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
+    }
+    func setContainerViewController(container:ContainerViewController?){
+        self.containerViewController = container
     }
     func start() {
         showProductListViewController()
@@ -23,5 +26,17 @@ class AppCoordinator:Coordinator{
         let coordinator = sceneDIContainer.returnProductListViewCoordinator(ContainerViewController: containerViewController)
         coordinator.start()
         childCoordinator.append(coordinator)
+    }
+}
+extension AppCoordinator:TransitionContainerViewController{
+    func presentUserPageViewController() {
+        let coordinator = sceneDIContainer.returnUserPageViewCoordinator(ContainerViewController: containerViewController,HasChildCoordinator: self)
+        coordinator.start()
+        childCoordinator.append(coordinator)
+    }
+}
+extension AppCoordinator:HasChildCoordinator{
+    func removeChildCoordinator(Co: Coordinator) {
+        self.childCoordinator = childCoordinator.filter{$0 !== Co}
     }
 }

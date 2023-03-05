@@ -10,4 +10,5 @@ import RxSwift
 protocol Pr_CurrentProductPriceRepository{
     func httpDetailProduct(productId:Int)->Observable<Result<CurrentProductPrice,HTTPError>>
     var streamingCurrentProduct:Observable<Result<[StreamPrice],StreamError>>{get}
+    func updateProductPrice(user_id:Int,product_id:Int,product_price:Int)->Observable<Result<Bool,StreamError>>
 }

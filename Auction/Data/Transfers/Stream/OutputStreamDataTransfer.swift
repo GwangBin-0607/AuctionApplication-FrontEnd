@@ -38,6 +38,7 @@ struct UpdateStreamStateData:Encodable{
 struct UpdateStreamProductPriceData:Encodable{
     let product_id:Int
     let product_price:Int
+    let user_id:Int
 }
 struct OutputStreamData:Encodable{
     let dataType:OutputStreamDataType

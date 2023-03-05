@@ -10,4 +10,5 @@ import RxSwift
 protocol Pr_CurrentProductPriceUsecase{
     func returnCurrentProductPrice(productId:Int) -> Observable<Result<CurrentProductPrice,HTTPError>>
     func returnStreamCurrentProductPrice() -> Observable<Result<[StreamPrice],StreamError>>
+    func returnUpdateProductPrice(user_id:Int,product_id:Int,product_price:Int)->Observable<Result<Bool,StreamError>>
 }
