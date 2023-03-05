@@ -1,9 +1,15 @@
 # Project : Auction Item
 
 - 프로젝트 스크린샷
-
-https://user-images.githubusercontent.com/78067919/222644861-d3df0dc8-2dc9-41a1-8233-be5fe740f2fe.mp4 |
-https://user-images.githubusercontent.com/78067919/222645158-c8581ed1-c527-4c63-83bc-be8145475d4e.mp4 |
+<table>
+  <tr>
+    <td><img src="[screenshots/Screenshot_1582745092.png](https://user-images.githubusercontent.com/78067919/222644861-d3df0dc8-2dc9-41a1-8233-be5fe740f2fe.mp4)" width=270 height=480></td>
+    <td><img src="[screenshots/Screenshot_1582745125.png](https://user-images.githubusercontent.com/78067919/222645158-c8581ed1-c527-4c63-83bc-be8145475d4e.mp4)" width=270 height=480></td>
+    <td><img src="[screenshots/Screenshot_1582745139.png](https://user-images.githubusercontent.com/78067919/222645528-87fa84fc-56fb-45d7-aa2e-34a1da9112fd.mp4)" width=270 height=480></td>
+  </tr>
+ </table>
+https://user-images.githubusercontent.com/78067919/222644861-d3df0dc8-2dc9-41a1-8233-be5fe740f2fe.mp4
+https://user-images.githubusercontent.com/78067919/222645158-c8581ed1-c527-4c63-83bc-be8145475d4e.mp4
 https://user-images.githubusercontent.com/78067919/222645528-87fa84fc-56fb-45d7-aa2e-34a1da9112fd.mp4
 - 프로젝트 기간
     - 2022.10 ~
