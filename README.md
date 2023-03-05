@@ -1,9 +1,9 @@
 # Project : Auction Item
 
 - 프로젝트 스크린샷  
-![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif){: width="30%" height="30%"} 
-![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_40_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949209-a2312756-32ba-466b-af08-bcddaab110a1.gif){: width="30%" height="30%"} 
-![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif){: width="30%" height="30%"}
+![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif)
+![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_40_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949209-a2312756-32ba-466b-af08-bcddaab110a1.gif)
+![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif)
 - 프로젝트 기간
     - 2022.10 ~
 - 프로젝트 내용
