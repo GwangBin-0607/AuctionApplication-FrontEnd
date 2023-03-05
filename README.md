@@ -52,6 +52,7 @@
             - Coordinator
                 - ViewController의 View Flow로의 의존으로 부터 분리하는 객체
     - Dependency Flow
+    
    ![Frame 98](https://user-images.githubusercontent.com/78067919/222644174-259f942d-4795-430a-8bb9-92668a804a71.png)
 
 - 패턴
@@ -61,5 +62,6 @@
         - 부모의 뷰 모델은 필요하다면 자식의 뷰 모델을 의존하고 데이터 교환을 할 수 있습니다.
         - Controller ViewModel은 Coordinator Delegate를 의존하고 ViewController를 View Flow로 부터 분리합니다.
     - MVVM-C Diagram
+    
     ![Frame 106 (1)](https://user-images.githubusercontent.com/78067919/222886284-5fccab70-5198-4f51-8b40-d019d63dabbd.png)
 
