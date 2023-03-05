@@ -1,6 +1,7 @@
 # Project : Auction Item
 
 - 프로젝트 스크린샷
+- ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif)
 <table>
   <tr>
     <td><img src="![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_11_09_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949221-6ccd96a1-2534-475c-b00f-c6e43734762f.gif)
