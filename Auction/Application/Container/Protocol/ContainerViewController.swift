@@ -3,6 +3,5 @@ import UIKit
 protocol ContainerViewController{
     func present(ViewController:Pr_ChildViewController,animate:Bool)
     func present(ViewController:UIViewController,animate:Bool)
-    func presentUserPage(ViewController:UIViewController)
-    func dismiss(animate:Bool)
+    func dismiss(animate:Bool,viewController:UIViewController?)
 }

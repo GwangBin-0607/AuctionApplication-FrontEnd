@@ -9,16 +9,17 @@ import Foundation
 import UIKit
 
 final class ProductListViewCoordinator:Coordinator{
-    var containerViewController: ContainerViewController?
+    var containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:ProductListViewSceneDIContainer
-    init(ContainerViewController:ContainerViewController?,SceneDIContainer:ProductListViewSceneDIContainer) {
+    var viewController: UIViewController?
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
     }
     func start() {
         let viewCon = sceneDIContainer.returnProductsListViewController(transitioning: self)
-        containerViewController?.present(ViewController: viewCon, animate: true)
+        containerViewController.present(ViewController: viewCon, animate: true)
     }
     private func detailProductViewController(presentOption:PresentOptions){
         let coor = sceneDIContainer.returnDetailProductViewCoordinator(ContainerViewController: containerViewController, HasChildCoordinator: self,presentOptions: presentOption)

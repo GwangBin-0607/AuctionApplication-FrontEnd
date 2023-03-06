@@ -73,6 +73,7 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         request()
     }
     deinit {
+        animator.stopAnimation(true)
         animator.removeObserver(self, forKeyPath: #keyPath(UIViewPropertyAnimator.isRunning))
         print("DEINIT!")
     }

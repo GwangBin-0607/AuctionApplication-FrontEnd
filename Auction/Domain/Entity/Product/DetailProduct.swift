@@ -56,7 +56,7 @@ struct DetailProductImages:Decodable{
     }
 }
 struct DetailProductUser:Decodable{
-    let user_id:Int
+    let user_id:String
     let user_name:String
     let user_image:[Image]
     func returnMainUserImage()->Image?{

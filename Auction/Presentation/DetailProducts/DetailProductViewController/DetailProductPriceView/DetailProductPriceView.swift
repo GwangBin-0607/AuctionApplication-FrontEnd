@@ -29,11 +29,11 @@ final class DetailProductPriceView:ShadowView{
     private let priceLabel:PriceLabel
     private let beforePriceLabel:UILabel
     private let upDownImageView:UIImageView
-    private let buyProductButton:BuyProductButton
+    private let buyProductButton:CustomTextButton
     private let viewModel:Pr_DetailProductPriceViewModel
     private let disposeBag:DisposeBag
     private let enableBuyPriceLabel:PriceLabel
-    init(viewModel:Pr_DetailProductPriceViewModel,priceLabel:PriceLabel,enablePriceLabel:PriceLabel,buyProductBotton:BuyProductButton) {
+    init(viewModel:Pr_DetailProductPriceViewModel,priceLabel:PriceLabel,enablePriceLabel:PriceLabel,buyProductBotton:CustomTextButton) {
         enableBuyPriceLabel = enablePriceLabel
         beforePriceLabel = UILabel()
         buyProductButton = buyProductBotton

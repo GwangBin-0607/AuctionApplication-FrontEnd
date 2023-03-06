@@ -7,7 +7,7 @@
 
 import Foundation
 import RxSwift
-protocol Pr_BuyProductButtonViewModel {
+protocol Pr_CustomTextButtonViewModel {
     var tapObserver:AnyObserver<Void>{get}
     var tapObservable:Observable<Void>{get}
 }

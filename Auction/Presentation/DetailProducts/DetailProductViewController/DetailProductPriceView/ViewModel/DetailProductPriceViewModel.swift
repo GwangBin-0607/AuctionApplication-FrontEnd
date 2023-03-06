@@ -16,7 +16,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
     private let disposeBag:DisposeBag
     private let priceLabelViewModel:Pr_DetailPriceLabelViewModel
     private let enablePriceLabelViewModel:Pr_DetailPriceLabelViewModel
-    private let buyProductButtonViewModel:Pr_BuyProductButtonViewModel
+    private let buyProductButtonViewModel:Pr_CustomTextButtonViewModel
     let pangestureObserver: AnyObserver<Pangesture>
     let pangestureObservable: Observable<Pangesture>
     let animationSubview:Observable<Void>
@@ -27,7 +27,7 @@ final class DetailProductPriceViewModel:Pr_DetailProductPriceViewModel{
     let buyProduct: AnyObserver<Void>
     let userObserver: AnyObserver<Int>
     let userObservable: Observable<Int>
-    init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enableLabelViewModel:Pr_DetailPriceLabelViewModel,buyProductButtonViewModel:Pr_BuyProductButtonViewModel) {
+    init(usecase:Pr_CurrentProductPriceUsecase,priceLabelViewModel:Pr_DetailPriceLabelViewModel,enableLabelViewModel:Pr_DetailPriceLabelViewModel,buyProductButtonViewModel:Pr_CustomTextButtonViewModel) {
         disposeBag = DisposeBag()
         productButtonTapObservable = buyProductButtonViewModel.tapObservable
         self.buyProductButtonViewModel = buyProductButtonViewModel

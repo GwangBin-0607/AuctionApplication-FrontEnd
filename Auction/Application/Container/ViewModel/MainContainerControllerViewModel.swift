@@ -11,21 +11,16 @@ class MainContainerControllerViewModel:Pr_MainContainerControllerViewModel{
     private let navigationCircleViewModel:Pr_NavigationCircleViewModel
     let pangestureObservable: Observable<Pangesture>
     let tapgestureObservable: Observable<Void>
-    let presentUserPage: AnyObserver<Void>
-    weak var transition:TransitionContainerViewController?
+    let backGestureObserver: AnyObserver<Void>
+    let loginObserver: AnyObserver<Void>
     private let disposeBag:DisposeBag
-    init(navigationCircleViewModel:Pr_NavigationCircleViewModel,transition:TransitionContainerViewController) {
+    init(navigationCircleViewModel:Pr_NavigationCircleViewModel) {
         disposeBag = DisposeBag()
-        let presentSubject = PublishSubject<Void>()
-        presentUserPage = presentSubject.asObserver()
-        self.transition = transition
         self.navigationCircleViewModel = navigationCircleViewModel
         pangestureObservable = self.navigationCircleViewModel.pangestureObservable
         tapgestureObservable = self.navigationCircleViewModel.tapGestureObservable
-        presentSubject.withUnretained(self).subscribe(onNext: {
-            owner,_ in
-            owner.transition?.presentUserPageViewController()
-        }).disposed(by: disposeBag)
+        backGestureObserver = self.navigationCircleViewModel.backGestureObserver
+        loginObserver = self.navigationCircleViewModel.loginObserver
         
     }
 }

@@ -6,10 +6,10 @@
 //
 
 import Foundation
-
+import UIKit
 protocol Coordinator:AnyObject{
-    
+    var viewController:UIViewController?{get set}
     var childCoordinator:[Coordinator]{get set}
-    var containerViewController:ContainerViewController?{get set}
+    var containerViewController:ContainerViewController{get}
     func start()->Void
 }

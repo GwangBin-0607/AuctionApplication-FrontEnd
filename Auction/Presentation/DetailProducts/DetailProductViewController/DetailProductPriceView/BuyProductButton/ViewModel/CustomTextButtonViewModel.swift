@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class BuyProductButtonViewModel:Pr_BuyProductButtonViewModel{
+final class CustomTextButtonViewModel:Pr_CustomTextButtonViewModel{
     let tapObserver: AnyObserver<Void>
     let tapObservable: Observable<Void>
     init() {

@@ -16,13 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let sceneDIContainer:MainContainerViewSceneDIContainer = SceneDIContainer()
-        let maincoordinator = AppCoordinator(SceneDIContainer: sceneDIContainer)
-        let root = sceneDIContainer.returnMainContainerViewController(transition: maincoordinator)
-        maincoordinator.setContainerViewController(container: root)
+        let root = sceneDIContainer.returnMainContainerViewController()
 //        let root = ViewController()
         self.window = window
         self.window?.rootViewController = root
-        appCoordinator = maincoordinator
+        appCoordinator = AppCoordinator(SceneDIContainer: sceneDIContainer, containerViewController: root)
         appCoordinator?.start()
         self.window?.makeKeyAndVisible()
         //NavigationController push는 makeKeyAndVisible전에 가능 present는 안됨

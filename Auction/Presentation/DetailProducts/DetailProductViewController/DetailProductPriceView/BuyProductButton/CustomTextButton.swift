@@ -1,9 +1,9 @@
 import UIKit
 import RxSwift
-final class BuyProductButton:UIButton{
+final class CustomTextButton:UIButton{
     private let startColor:UIColor
     private let endColor:UIColor
-    private let viewModel:Pr_BuyProductButtonViewModel
+    private let viewModel:Pr_CustomTextButtonViewModel
     private let disposeBag:DisposeBag
     override var intrinsicContentSize: CGSize{
         let original = super.intrinsicContentSize
@@ -18,7 +18,7 @@ final class BuyProductButton:UIButton{
             return CGSize(width:original.width+contentEdgeInsets.left+contentEdgeInsets.right , height: original.height)
         }
     }
-    init(viewModel:Pr_BuyProductButtonViewModel) {
+    init(viewModel:Pr_CustomTextButtonViewModel) {
         self.viewModel = viewModel
         disposeBag = DisposeBag()
         startColor = .white
