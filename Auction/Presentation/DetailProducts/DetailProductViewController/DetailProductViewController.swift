@@ -2,7 +2,13 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
-
+protocol GestureButtonTap:AnyObject{
+    func buttonTap()
+}
+protocol DetectCollectionViewCompletion:AnyObject{
+    func complete()
+}
+typealias GestureDelegateWithButton = GestureDelegate&GestureButtonTap
 final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     let productPriceView:DetailProductPriceView
     private let backButton:UIButton
@@ -24,49 +30,11 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
         bind()
         self.detailProductCollectionView.addGestureRecognizer(makeTapgesture())
         animator = returnAnimator()
+        productPriceView.setDelegate(delegate: self)
+        detailProductCollectionView.setDelegate(delegate: self)
     }
     private func bind(){
         backButton.rx.tap.bind(to: viewModel.backAction).disposed(by: disposeBag)
-        viewModel.completionReloadData.subscribe(onNext:{
-            [weak self] rect in
-            self?.completion?()
-        }).disposed(by: disposeBag)
-        viewModel.buyProductBottonTapObservable.withUnretained(self).subscribe(onNext: {
-            owner, _ in
-            if owner.animatorState == .bottom{
-                owner.animator.startAnimation()
-            }else{
-                owner.viewModel.buyProduct.onNext(())
-            }
-        }).disposed(by: disposeBag)
-        viewModel.pangesture.withUnretained(self).subscribe(onNext: {
-            owner,pan in
-            switch pan.state{
-            case .began:
-                owner.animator.pauseAnimation()
-            case .changed:
-                let ratio = owner.animatorState == .bottom ? -(pan.point.y/(owner.view.frame.height*0.4)) : (pan.point.y/(owner.view.frame.height*0.4))
-                let max = max(ratio, 0.0)
-                owner.animator.fractionComplete = min(max,1.0)
-            case .ended:
-                owner.animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
-            default:
-                break;
-
-            }
-        }).disposed(by: disposeBag)
-        viewModel.tapGesture.withUnretained(self).subscribe(onNext: {
-            owner,_ in
-            if owner.animator.isRunning{
-                print("RUNNING!")
-                owner.animator.isReversed = owner.animatorState == .bottom ? true : false
-                owner.animatorState = owner.animatorState == .top ? .bottom : .top
-            }
-            if !owner.animator.isRunning{
-                owner.animator.startAnimation()
-            }
-        }).disposed(by: disposeBag)
-        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,5 +83,10 @@ final class DetailProductViewController:UIViewController,Pr_ChildViewController{
     override func loadView() {
         super.loadView()
         self.view = layout()
+    }
+}
+extension DetailProductViewController:DetectCollectionViewCompletion{
+    func complete() {
+        self.completion?()
     }
 }

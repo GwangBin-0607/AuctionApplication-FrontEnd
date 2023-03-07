@@ -12,6 +12,7 @@ import RxCocoa
 final class DetailProductCollectionView:UICollectionView{
     private let viewModel:Pr_DetailProductCollectionViewModel
     private let disposeBag:DisposeBag
+    weak var detectCompletionDelegate:DetectCollectionViewCompletion?
     init(viewModel:Pr_DetailProductCollectionViewModel,backgroundColor:UIColor) {
         self.viewModel = viewModel
         disposeBag = DisposeBag()
@@ -22,6 +23,9 @@ final class DetailProductCollectionView:UICollectionView{
         self.register(DetailProductCollectionViewGraphCell.self, forCellWithReuseIdentifier: DetailProductCollectionViewGraphCell.identifier)
         bind()
         layout(color: backgroundColor)
+    }
+    func setDelegate(delegate:DetectCollectionViewCompletion){
+        self.detectCompletionDelegate = delegate
     }
     private func layout(color:UIColor){
         self.backgroundColor = .white
@@ -37,7 +41,7 @@ final class DetailProductCollectionView:UICollectionView{
             if let cell = (self?.cellForItem(at: IndexPath(item: 0, section: 0)) as? DetailProductCollectionViewImageCell){
                 let frame = cell.frame
                 print(frame)
-                self?.viewModel.completionReloadDataObserver.onNext(frame)
+                self?.detectCompletionDelegate?.complete()
             }
         }).disposed(by: disposeBag)
     }

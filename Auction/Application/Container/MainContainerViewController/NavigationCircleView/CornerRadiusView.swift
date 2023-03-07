@@ -19,6 +19,6 @@ class CornerRadiusView:UIView{
     }
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layer.cornerRadius = self.frame.width/5
+        self.layer.cornerRadius = self.frame.width/2
     }
 }

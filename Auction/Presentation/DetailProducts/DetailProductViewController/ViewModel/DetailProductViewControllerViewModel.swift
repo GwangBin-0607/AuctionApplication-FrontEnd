@@ -16,19 +16,10 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
     let backAction: AnyObserver<Void>
     private let disposeBag:DisposeBag
     private let product_id:Int
-    let completionReloadData: Observable<CGRect>
-    let pangesture: Observable<Pangesture>
-    let tapGesture: Observable<Void>
-    let priceViewAnimationSubview: AnyObserver<Void>
-    let buyProductBottonTapObservable: Observable<Void>
     let buyProduct: AnyObserver<Void>
     let userObserver: AnyObserver<Int>
     init(transitioning:TransitionDetailProductViewController,detailProductPriceViewModel: Pr_DetailProductPriceViewModel,detailProductCollectionViewModel:Pr_DetailProductCollectionViewModel,product_id:Int) {
-        buyProductBottonTapObservable = detailProductPriceViewModel.productButtonTapObservable
         disposeBag = DisposeBag()
-        pangesture = detailProductPriceViewModel.pangestureObservable
-        tapGesture = detailProductPriceViewModel.tapGestureObservable
-        priceViewAnimationSubview = detailProductPriceViewModel.animationSubviewObserver
         buyProduct = detailProductPriceViewModel.buyProduct
         userObserver = detailProductPriceViewModel.userObserver
         self.product_id = product_id
@@ -39,7 +30,6 @@ final class DetailProductViewControllerViewModel:Pr_DetailProductViewControllerV
         self.detailProductCollectionViewModel = detailProductCollectionViewModel
         let buttonSubject = PublishSubject<Void>()
         backAction = buttonSubject.asObserver()
-        completionReloadData = self.detailProductCollectionViewModel.completionReloadDataObservable
         requestData.withUnretained(self).subscribe(onNext: {
             owner,_ in
             owner.detailProductCollectionViewModel.requestDetailProductObserver.onNext(owner.product_id)

@@ -5,6 +5,7 @@ final class CustomTextButton:UIButton{
     private let endColor:UIColor
     private let viewModel:Pr_CustomTextButtonViewModel
     private let disposeBag:DisposeBag
+    weak var gestureDelegate:GestureButtonTap?
     override var intrinsicContentSize: CGSize{
         let original = super.intrinsicContentSize
         if #available(iOS 15.0, *){
@@ -17,6 +18,9 @@ final class CustomTextButton:UIButton{
         }else{
             return CGSize(width:original.width+contentEdgeInsets.left+contentEdgeInsets.right , height: original.height)
         }
+    }
+    func setDelegate(delegate:GestureButtonTap){
+        self.gestureDelegate = delegate
     }
     init(viewModel:Pr_CustomTextButtonViewModel) {
         self.viewModel = viewModel
@@ -48,7 +52,10 @@ final class CustomTextButton:UIButton{
         }
     }
     private func bind(){
-        rx.tap.bind(to: viewModel.tapObserver).disposed(by: disposeBag)
+        rx.tap.subscribe(onNext: {
+            [weak self] in
+            self?.gestureDelegate?.buttonTap()
+        }).disposed(by: disposeBag)
     }
     
     required init?(coder: NSCoder) {

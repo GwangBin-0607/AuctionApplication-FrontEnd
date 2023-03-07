@@ -12,12 +12,7 @@ final class DetailProductCollectionViewModel:Pr_DetailProductCollectionViewModel
     private let imageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel
     private let userCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel
     let dataUpdate: Observable<Void>
-    let completionReloadDataObserver: AnyObserver<CGRect>
-    let completionReloadDataObservable: Observable<CGRect>
     init(detailProductUsecase:Pr_DetailProductUsecase,detailProductCollectionViewImageCellViewModel:Pr_DetailProductCollectionViewImageCellViewModel,detailProductCollectionViewUserCellViewModel:Pr_DetailProductCollectionViewUserCellViewModel) {
-        let completionSubject = PublishSubject<CGRect>()
-        completionReloadDataObserver = completionSubject.asObserver()
-        completionReloadDataObservable = completionSubject.asObservable()
         userCellViewModel = detailProductCollectionViewUserCellViewModel
         imageCellViewModel = detailProductCollectionViewImageCellViewModel
         let dataUpdateSubject = PublishSubject<Void>()

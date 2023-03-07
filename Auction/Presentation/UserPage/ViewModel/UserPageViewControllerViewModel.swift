@@ -10,13 +10,14 @@ import RxSwift
 final class UserPageViewControllerViewModel:Pr_UserPageViewControllerViewModel,SetCoordinatorViewModel{
     let mock: AnyObserver<Void>
     weak var delegate: TransitionUserPageViewController?
+    private let disposeBag:DisposeBag
     init() {
+        disposeBag = DisposeBag()
         let mockSubject = PublishSubject<Void>()
         mock = mockSubject.asObserver()
         mockSubject.asObservable().subscribe(onNext: {
-            print(self.delegate)
             self.delegate?.presentLogin()
-        })
+        }).disposed(by: disposeBag)
     }
     func setTransitioning(delegate: TransitionUserPageViewController) {
         self.delegate = delegate

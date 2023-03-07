@@ -133,6 +133,7 @@
 		88D65E6429B7078A0019DAF9 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */; };
 		88D65E6729B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */; };
 		88D65E6929B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */; };
+		88D65E6D29B7801B0019DAF9 /* AlphaAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */; };
 		88D9F57F29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */; };
 		88D9F58129A1E78700939BB7 /* HTTPDataTransferProductImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9F58029A1E78700939BB7 /* HTTPDataTransferProductImage.swift */; };
 		88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */; };
@@ -316,6 +317,7 @@
 		88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
+		88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaAnimationController.swift; sourceTree = "<group>"; };
 		88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_HTTPDataTransferProductImage.swift; sourceTree = "<group>"; };
 		88D9F58029A1E78700939BB7 /* HTTPDataTransferProductImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDataTransferProductImage.swift; sourceTree = "<group>"; };
 		88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCPStreamDataTransfer+Interface.swift"; sourceTree = "<group>"; };
@@ -1151,8 +1153,9 @@
 		88D65E6229B7072F0019DAF9 /* CustomNavigationViewController */ = {
 			isa = PBXGroup;
 			children = (
-				88D65E6529B707A80019DAF9 /* ViewModel */,
+				88D65E6B29B77FFF0019DAF9 /* Protocol */,
 				88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */,
+				88D65E6529B707A80019DAF9 /* ViewModel */,
 			);
 			path = CustomNavigationViewController;
 			sourceTree = "<group>";
@@ -1164,6 +1167,14 @@
 				88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		88D65E6B29B77FFF0019DAF9 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		88E5A97429A9018100A45AA9 /* ViewModel */ = {
@@ -1186,9 +1197,9 @@
 		88F127D829B67EE600CB0B20 /* UserPage */ = {
 			isa = PBXGroup;
 			children = (
-				8874627B29B6914000C54389 /* Transition */,
-				88F127DB29B67EFC00CB0B20 /* ViewModel */,
 				88F127D929B67EF600CB0B20 /* UserPageViewController.swift */,
+				88F127DB29B67EFC00CB0B20 /* ViewModel */,
+				8874627B29B6914000C54389 /* Transition */,
 			);
 			path = UserPage;
 			sourceTree = "<group>";
@@ -1512,6 +1523,7 @@
 				88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */,
 				88F127DF29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift in Sources */,
 				88881532296EDE7E0023CDE3 /* ProductListStateInterface.swift in Sources */,
+				88D65E6D29B7801B0019DAF9 /* AlphaAnimationController.swift in Sources */,
 				881D8C6929A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift in Sources */,
 				88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */,
 				887D549D295303DA00DA2F15 /* ProductListUsecase.swift in Sources */,

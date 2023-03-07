@@ -5,16 +5,11 @@ final class SceneDIContainer{
     private final class SocketNetWorkContainer{
         weak var streamService:SocketNetworkInterface?
     }
-    private final class NavigationContentViewModelContainer{
-        weak var viewModel:Pr_CustomNavigationViewModel?
-    }
     let configure:ExportConfigure
     private let streamServiceContainer:SocketNetWorkContainer
-    private let naviationContentViewModelContainer:NavigationContentViewModelContainer
     init() {
         configure = ExportConfigure()
         streamServiceContainer = SocketNetWorkContainer()
-        naviationContentViewModelContainer = NavigationContentViewModelContainer()
     }
 }
 
@@ -131,11 +126,11 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
     func returnMainContainerViewController() -> MainContainerViewController {
         let navigationCircleViewModel = returnNavigationCircleViewModel()
         let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel)
-        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel,navigationContentViewModel: returnCustomNavigationViewModelContainer())
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
         return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
     }
-    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel,navigationContentViewModel:Pr_NavigationContentViewModel)->Pr_MainContainerControllerViewModel{
-        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel,navigationContentViewModel: navigationContentViewModel)
+    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
     }
     private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
         NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)
@@ -155,7 +150,7 @@ protocol ProductListViewSceneDIContainer{
 protocol UserPageViewSceneDIContainer{
     func returnUserPageViewController(transitioning:TransitionUserPageViewController)->UserPageViewController
     func returnLoginPageCoordinator(containerViewController:ContainerViewController,delegate:HasChildCoordinator)->LoginPageCoordinator
-    func returnCustomNavigationController(rootViewController:UIViewController)->CustomNavigation
+    func returnCustomNavigationController(rootViewController:UIViewController)->CustomNavigationViewController
 }
 protocol LoginPageViewSceneDIContainer{
     func returnLoginViewController()->UIViewController
@@ -166,8 +161,8 @@ extension SceneDIContainer:LoginPageViewSceneDIContainer{
     }
 }
 extension SceneDIContainer:UserPageViewSceneDIContainer{
-    func returnCustomNavigationController(rootViewController: UIViewController) -> CustomNavigation {
-        CustomNavigation(viewModel: returnCustomNavigationViewModelContainer(), rootViewController: rootViewController)
+    func returnCustomNavigationController(rootViewController: UIViewController) -> CustomNavigationViewController {
+        CustomNavigationViewController(viewModel: returnCustomNavigationViewModel(), rootViewController: rootViewController)
     }
     func returnUserPageViewController(transitioning:TransitionUserPageViewController)->UserPageViewController{
         UserPageViewController(viewModel: returnUserPageViewModel(),transtioning: transitioning)
@@ -178,18 +173,8 @@ extension SceneDIContainer:UserPageViewSceneDIContainer{
     private func returnUserPageViewModel()->Pr_UserPageViewControllerViewModel{
         UserPageViewControllerViewModel()
     }
-    private func returnCustomNavigationViewModel()->Pr_CustomNavigationViewModel{
-        CustomNavigationViewModel()
-    }
-    private func returnCustomNavigationViewModelContainer()->Pr_CustomNavigationViewModel{
-        let customNavigationViewModel:Pr_CustomNavigationViewModel
-        if let viewModel = naviationContentViewModelContainer.viewModel{
-            customNavigationViewModel = viewModel
-        }else{
-            customNavigationViewModel = returnCustomNavigationViewModel()
-            naviationContentViewModelContainer.viewModel = customNavigationViewModel
-        }
-        return customNavigationViewModel
+    private func returnCustomNavigationViewModel()->Pr_CustomNavigationViewControllerViewModel{
+        CustomNavigationViewControllerViewModel()
     }
 }
 //MARK: ProductListViewController, DetailProductViewCoordinator

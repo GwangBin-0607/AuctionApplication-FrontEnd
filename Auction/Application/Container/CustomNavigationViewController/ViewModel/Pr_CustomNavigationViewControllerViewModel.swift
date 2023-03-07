@@ -6,5 +6,7 @@
 //
 
 import Foundation
-protocol Pr_CustomNavigationViewModel:Pr_NavigationContentViewModel{
+import RxSwift
+protocol Pr_CustomNavigationViewControllerViewModel{
+    
 }

@@ -7,17 +7,9 @@
 
 import Foundation
 import RxSwift
-final class CustomNavigationViewModel:Pr_CustomNavigationViewModel{
-    let tapGestureObserver: AnyObserver<Void>
-    let tapGestureObservable: Observable<Void>
-    let backGestureObserver: AnyObserver<Void>
-    let backGestureObservable: Observable<Void>
+final class CustomNavigationViewControllerViewModel:Pr_CustomNavigationViewControllerViewModel{
+
     init() {
-        let backGestureSubject = PublishSubject<Void>()
-        backGestureObservable = backGestureSubject.asObservable()
-        backGestureObserver = backGestureSubject.asObserver()
-        let tapGestureSubject = PublishSubject<Void>()
-        tapGestureObserver = tapGestureSubject.asObserver()
-        tapGestureObservable = tapGestureSubject.asObservable()
+        
     }
 }

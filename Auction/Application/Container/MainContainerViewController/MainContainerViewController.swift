@@ -16,12 +16,14 @@ final class MainContainerViewController:UIViewController{
     private var navigationCircleViewHeightEnd:NSLayoutConstraint!
     private let disposeBag = DisposeBag()
     private let backgroundView:UIView
+    weak var circleNavigationController:AlphaAnimationController?
     init(navigationCircleView:NavigationCornerRadiusView,viewModel:Pr_MainContainerControllerViewModel) {
         backgroundView = UIView()
         self.navigationCircleView = navigationCircleView
         self.viewModel = viewModel
         containerView = UIView()
         super.init(nibName: nil, bundle: nil)
+        self.navigationCircleView.setDelegate(gestureDelegate: self)
         backgroundView.addGestureRecognizer(makeTapgesture())
     }
     required init?(coder: NSCoder) {
@@ -53,9 +55,9 @@ final class MainContainerViewController:UIViewController{
         navigationCircleViewHeightBegin = navigationCircleView.heightAnchor.constraint(equalTo: navigationCircleView.widthAnchor)
         navigationCircleViewHeightBegin.isActive = true
         navigationCircleViewHeightEnd = NSLayoutConstraint(item: navigationCircleView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.8, constant: 0.0)
-        navigationCircleViewWidthBegin = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.25, constant: 0.0)
+        navigationCircleViewWidthBegin = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.2, constant: 0.0)
         navigationCircleViewWidthBegin.isActive = true
-        navigationCircleViewWidthEnd = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.8, constant: 0.0)
+        navigationCircleViewWidthEnd = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.95, constant: 0.0)
         navigationCircleViewTopEnd = navigationCircleView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         navigationCircleViewLeadingEnd = navigationCircleView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         containerView.topAnchor.constraint(equalTo:  view.topAnchor).isActive = true
@@ -69,24 +71,25 @@ final class MainContainerViewController:UIViewController{
         bind()
     }
     private func bind(){
-        viewModel.pangestureObservable.withUnretained(self).subscribe(onNext: {
-            owner,pangesture in
-            switch pangesture.state {
-            case .changed,.began:
-                let top = owner.navigationCircleViewTopBegin.constant + pangesture.point.y
-                let leading = owner.navigationCircleViewLeadingBegin.constant + pangesture.point.x
-                owner.navigationCircleViewTopBegin.constant = owner.maxY(top: top)
-                owner.navigationCircleViewLeadingBegin.constant = owner.maxX(leading: leading)
-            case .ended:
-                owner.animate(point: pangesture.point)
-            default:
-                break;
-            }
-        }).disposed(by: disposeBag)
-        viewModel.tapgestureObservable.withUnretained(self).subscribe(onNext: {
-            owner,_ in
-            owner.AnimationloginView()
-        }).disposed(by: disposeBag)
+
+    }
+}
+extension MainContainerViewController:GestureDelegate{
+    func pangesture(pangesture: Pangesture) {
+        switch pangesture.state {
+        case .changed,.began:
+            let top = navigationCircleViewTopBegin.constant + pangesture.point.y
+            let leading = navigationCircleViewLeadingBegin.constant + pangesture.point.x
+            navigationCircleViewTopBegin.constant = maxY(top: top)
+            navigationCircleViewLeadingBegin.constant = maxX(leading: leading)
+        case .ended:
+            animate(point: pangesture.point)
+        default:
+            break;
+        }
+    }
+    func tapGesture() {
+        AnimationloginView()
     }
 }
 extension MainContainerViewController:ContainerViewController{
@@ -129,7 +132,8 @@ extension MainContainerViewController:ContainerViewController{
         ViewController.didMove(toParent: self)
         ViewController.endAppearanceTransition()
     }
-    func presentNaviationViewController(ViewController: UIViewController) {
+    func presentNaviationViewController(ViewController: AlphaAnimationController) {
+        circleNavigationController = ViewController
         self.addChild(ViewController)
         navigationCircleView.addSubview(ViewController.view)
         ViewController.beginAppearanceTransition(true, animated: true)
@@ -164,9 +168,13 @@ extension MainContainerViewController:ContainerViewController{
     
 }
 extension MainContainerViewController{
+    var animationDuration:CGFloat{
+        return 0.45
+    }
     private func AnimationloginView(){
-        animationBegan()
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75, animations: {
+        circleNavigationController?.tapGesture()
+        self.animationBegan()
+        navigationCircleView.animationWithBasicAnimation(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundView.backgroundColor = .black
             self.backgroundView.alpha = 0.75
             self.view.layoutIfNeeded()
@@ -178,9 +186,9 @@ extension MainContainerViewController{
         return tap
     }
     @objc private func gesture(sender:UITapGestureRecognizer){
-        viewModel.backGestureObserver.onNext(())
-        animationEnd()
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75, animations: {
+        circleNavigationController?.backGesture()
+        self.animationEnd()
+        navigationCircleView.animationReverse(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundView.backgroundColor = .clear
             self.backgroundView.alpha = 0.0
             self.view.layoutIfNeeded()

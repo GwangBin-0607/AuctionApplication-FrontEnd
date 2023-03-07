@@ -20,6 +20,9 @@ final class GradationView:UIView{
         gradationLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradationLayer.endPoint = CGPoint(x: 0.0, y: 1.0)
         gradationLayer.cornerRadius = 10
+        gradationLayer.shouldRasterize = true
+        gradationLayer.rasterizationScale = UIScreen.main.scale
+
         super.init(frame: .zero)
         self.layer.addSublayer(gradationLayer)
     }

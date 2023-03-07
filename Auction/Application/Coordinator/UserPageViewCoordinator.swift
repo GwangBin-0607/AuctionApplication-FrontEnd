@@ -12,7 +12,7 @@ final class UserPageViewCoordinator:Coordinator{
     var childCoordinator: [Coordinator] = []
     weak var viewController: UIViewController?
     let sceneDIContainer:UserPageViewSceneDIContainer
-    weak var navigationController:CustomNavigation?
+    weak var navigationController:CustomNavigationViewController?
     init(containerViewController:ContainerViewController,sceneDIContainer:UserPageViewSceneDIContainer) {
         self.containerViewController = containerViewController
         self.sceneDIContainer = sceneDIContainer

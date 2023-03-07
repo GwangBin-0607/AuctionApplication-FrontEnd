@@ -33,6 +33,7 @@ final class DetailProductPriceView:ShadowView{
     private let viewModel:Pr_DetailProductPriceViewModel
     private let disposeBag:DisposeBag
     private let enableBuyPriceLabel:PriceLabel
+    weak var gestureDelegate:GestureDelegateWithButton?
     init(viewModel:Pr_DetailProductPriceViewModel,priceLabel:PriceLabel,enablePriceLabel:PriceLabel,buyProductBotton:CustomTextButton) {
         enableBuyPriceLabel = enablePriceLabel
         beforePriceLabel = UILabel()
@@ -47,6 +48,10 @@ final class DetailProductPriceView:ShadowView{
         layout()
         bind()
     }
+    func setDelegate(delegate:GestureDelegateWithButton){
+        self.gestureDelegate = delegate
+        self.buyProductButton.setDelegate(delegate: delegate)
+    }
     override func layoutSubviews() {
         print("SUBVIEW!")
     }
@@ -57,10 +62,6 @@ final class DetailProductPriceView:ShadowView{
         fatalError("init(coder:) has not been implemented")
     }
     private func bind(){
-        viewModel.animationSubview.subscribe(onNext: {
-            [weak self] _ in
-            self?.animateSubview()
-        }).disposed(by: disposeBag)
         viewModel.beforePriceObservable.bind(to: beforePriceLabel.rx.text).disposed(by: disposeBag)
         viewModel.updownObservable.observe(on: MainScheduler.asyncInstance).bind(to: upDownImageView.rx.image).disposed(by: disposeBag)
     }
@@ -125,7 +126,7 @@ final class DetailProductPriceView:ShadowView{
     }
 }
 extension DetailProductPriceView{
-    private func animateSubview(){
+    func animateSubview(){
         startNSConstraint.forEach{$0.isActive = false}
         endNSConstraint.forEach{$0.isActive = true}
     }
@@ -140,7 +141,7 @@ extension DetailProductPriceView{
         guard let superview = self.superview else { return }
         let translation = sender.translation(in: superview)
         let gesture = Pangesture(point: translation, state: sender.state)
-        viewModel.pangestureObserver.onNext(gesture)
+        gestureDelegate?.pangesture(pangesture: gesture)
     }
     private func makeTapGesture()->UITapGestureRecognizer{
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapGesture(sender:)))
@@ -148,6 +149,6 @@ extension DetailProductPriceView{
         return tap
     }
     @objc private func tapGesture(sender:UITapGestureRecognizer){
-        viewModel.tapGestureObserver.onNext(())
+        gestureDelegate?.tapGesture()
     }
 }

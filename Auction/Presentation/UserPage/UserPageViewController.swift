@@ -33,7 +33,7 @@ final class UserPageViewController:UIViewController{
         view.addSubview(mockButton)
         mockButton.frame = CGRect(x: 50, y: 50, width:100, height: 100)
         mockButton.backgroundColor = .yellow
-        mockButton.rx.tap.bind(to: viewModel.mock)
+        mockButton.rx.tap.bind(to: viewModel.mock).disposed(by: disposeBag)
         return view
     }
     

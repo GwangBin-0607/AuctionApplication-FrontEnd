@@ -7,11 +7,17 @@
 
 import UIKit
 import RxSwift
+protocol GestureDelegate:AnyObject {
+    func pangesture(pangesture:Pangesture)
+    func tapGesture()
+}
 class NavigationCornerRadiusView:CornerRadiusView{
     private let viewModel:Pr_NavigationCircleViewModel
     private var alphaAnimation:UIViewPropertyAnimator!
     private let disposeBag:DisposeBag
     private var viewUp:Bool
+    private var previousRadius:CGFloat = 0.0
+    weak var gestureDelegate:GestureDelegate?
     init(ViewModel:Pr_NavigationCircleViewModel) {
         viewUp = false
         disposeBag = DisposeBag()
@@ -28,16 +34,11 @@ class NavigationCornerRadiusView:CornerRadiusView{
         layout()
         bind()
     }
+    func setDelegate(gestureDelegate:GestureDelegate){
+        self.gestureDelegate = gestureDelegate
+    }
     private func bind(){
-        viewModel.loginStateObservable.withUnretained(self).subscribe(onNext: {
-            owner,state in
-        }).disposed(by: disposeBag)
         
-        viewModel.backGestureObservable.withUnretained(self).subscribe(onNext: {
-            owner,_ in
-            owner.viewUp = false
-            owner.animationReverser(animation: owner.alphaAnimation, reverse: true)
-        }).disposed(by: disposeBag)
     }
     private func makePangesture()->UIPanGestureRecognizer{
         UIPanGestureRecognizer(target: self, action: #selector(gesture(sender:)))
@@ -46,13 +47,16 @@ class NavigationCornerRadiusView:CornerRadiusView{
         guard let superview = self.superview,!viewUp else { return }
         let translation = sender.translation(in: superview)
         let gesture = Pangesture(point: translation, state: sender.state)
-        viewModel.pangestureObserver.onNext(gesture)
+        gestureDelegate?.pangesture(pangesture: gesture)
         sender.setTranslation(.zero, in: superview)
         if sender.state == .ended || sender.state == .failed || sender.state == .cancelled{
             animationReverser(animation: alphaAnimation, reverse: true)
         }else if sender.state == .began{
             animationReverser(animation: alphaAnimation, reverse: false)
         }
+    }
+    func backGesture(){
+        animationReverser(animation: alphaAnimation, reverse: true)
     }
     deinit {
         alphaAnimation.stopAnimation(true)
@@ -65,14 +69,60 @@ class NavigationCornerRadiusView:CornerRadiusView{
     private func layout(){
         
     }
+    override func layoutSubviews() {
+        if !viewUp{
+            super.layoutSubviews()
+        }
+    }
 }
 extension NavigationCornerRadiusView{
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        viewUp = true
-        viewModel.tapGestureObserver.onNext(())
+        gestureDelegate?.tapGesture()
     }
     private func animationReverser(animation:UIViewPropertyAnimator,reverse:Bool){
         animation.isReversed = reverse
         animation.startAnimation()
+    }
+}
+extension NavigationCornerRadiusView{
+    func animationWithBasicAnimation(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
+        if !viewUp{
+            viewUp = true
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(animationDuration)
+            let cornerAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.cornerRadius))
+            previousRadius = self.layer.cornerRadius
+            cornerAnimation.duration = animationDuration
+            cornerAnimation.fromValue = self.layer.cornerRadius
+            cornerAnimation.toValue = 20
+            self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
+            UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 1.0,initialSpringVelocity: 1.0,animations: {
+                superviewAnimationBlock()
+            })
+            CATransaction.setCompletionBlock({
+                self.layer.cornerRadius = 20
+            })
+            CATransaction.commit()
+        }
+    }
+    func animationReverse(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
+        if viewUp{
+            backGesture()
+            viewUp = false
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(animationDuration)
+            let cornerAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.cornerRadius))
+            cornerAnimation.duration = animationDuration
+            cornerAnimation.fromValue = 20
+            cornerAnimation.toValue = previousRadius
+            self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
+            UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
+                superviewAnimationBlock()
+            })
+            CATransaction.setCompletionBlock({
+                self.layer.cornerRadius = self.previousRadius
+            })
+            CATransaction.commit()
+        }
     }
 }

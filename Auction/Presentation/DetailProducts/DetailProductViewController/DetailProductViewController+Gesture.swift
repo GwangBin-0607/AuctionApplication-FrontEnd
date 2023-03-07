@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 extension DetailProductViewController{
     enum AnimatorState{
         case top
@@ -34,7 +35,7 @@ extension DetailProductViewController{
         returnAnimator.addAnimations {
             [weak self] in
             self?.heightConstraint.isActive = false
-            self?.viewModel.priceViewAnimationSubview.onNext(())
+            self?.productPriceView.animateSubview()
             self?.heightEndConstraint.isActive = true
                 self?.view.layoutIfNeeded()
         }
@@ -50,5 +51,38 @@ extension DetailProductViewController{
             }
         }
 
+    }
+}
+extension DetailProductViewController:GestureDelegateWithButton{
+    func tapGesture() {
+        if animator.isRunning{
+            animator.isReversed = animatorState == .bottom ? true : false
+            animatorState = animatorState == .top ? .bottom : .top
+        }
+        if !animator.isRunning{
+            animator.startAnimation()
+        }
+    }
+    func pangesture(pangesture: Pangesture) {
+        switch pangesture.state{
+        case .began:
+            animator.pauseAnimation()
+        case .changed:
+            let ratio = animatorState == .bottom ? -(pangesture.point.y/(view.frame.height*0.4)) : (pangesture.point.y/(view.frame.height*0.4))
+            let max = max(ratio, 0.0)
+            animator.fractionComplete = min(max,1.0)
+        case .ended:
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
+        default:
+            break;
+
+        }
+    }
+    func buttonTap() {
+        if animatorState == .bottom{
+            animator.startAnimation()
+        }else{
+            viewModel.buyProduct.onNext(())
+        }
     }
 }
