@@ -14,7 +14,6 @@ protocol Pr_NavigationCircleViewModel {
     var tapGestureObserver:AnyObserver<Void>{get}
     var tapGestureObservable:Observable<Void>{get}
     var loginStateObservable:Observable<LoginState>{get}
-    var loginObserver:AnyObserver<Void>{get}
     var backGestureObserver:AnyObserver<Void>{get}
     var backGestureObservable:Observable<Void>{get}
 }

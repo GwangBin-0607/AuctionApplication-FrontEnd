@@ -12,6 +12,8 @@ final class MainContainerViewController:UIViewController{
     private var navigationCircleViewLeadingEnd:NSLayoutConstraint!
     private var navigationCircleViewWidthBegin:NSLayoutConstraint!
     private var navigationCircleViewWidthEnd:NSLayoutConstraint!
+    private var navigationCircleViewHeightBegin:NSLayoutConstraint!
+    private var navigationCircleViewHeightEnd:NSLayoutConstraint!
     private let disposeBag = DisposeBag()
     private let backgroundView:UIView
     init(navigationCircleView:NavigationCornerRadiusView,viewModel:Pr_MainContainerControllerViewModel) {
@@ -38,7 +40,8 @@ final class MainContainerViewController:UIViewController{
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         navigationCircleView.translatesAutoresizingMaskIntoConstraints = false
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.backgroundColor = .black.withAlphaComponent(0.0)
+        backgroundView.backgroundColor = .clear
+        backgroundView.alpha = 0.0
         backgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -47,7 +50,9 @@ final class MainContainerViewController:UIViewController{
         navigationCircleViewTopBegin.isActive = true
         navigationCircleViewLeadingBegin = navigationCircleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: gap)
         navigationCircleViewLeadingBegin.isActive = true
-        navigationCircleView.heightAnchor.constraint(equalTo: navigationCircleView.widthAnchor).isActive = true
+        navigationCircleViewHeightBegin = navigationCircleView.heightAnchor.constraint(equalTo: navigationCircleView.widthAnchor)
+        navigationCircleViewHeightBegin.isActive = true
+        navigationCircleViewHeightEnd = NSLayoutConstraint(item: navigationCircleView, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 0.8, constant: 0.0)
         navigationCircleViewWidthBegin = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.25, constant: 0.0)
         navigationCircleViewWidthBegin.isActive = true
         navigationCircleViewWidthEnd = NSLayoutConstraint(item: navigationCircleView, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 0.8, constant: 0.0)
@@ -62,7 +67,6 @@ final class MainContainerViewController:UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        viewModel.loginObserver.onNext(())
     }
     private func bind(){
         viewModel.pangestureObservable.withUnretained(self).subscribe(onNext: {
@@ -114,43 +118,57 @@ extension MainContainerViewController:ContainerViewController{
         }
     }
     func present(ViewController: UIViewController, animate: Bool) {
-        let last = children.last
         self.addChild(ViewController)
-        if last == nil{
-            containerView.addSubview(ViewController.view)
-            ViewController.beginAppearanceTransition(true, animated: true)
-            ViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            ViewController.didMove(toParent: self)
-            ViewController.endAppearanceTransition()
-        }
+        containerView.addSubview(ViewController.view)
+        ViewController.beginAppearanceTransition(true, animated: true)
+        ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        ViewController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        ViewController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        ViewController.didMove(toParent: self)
+        ViewController.endAppearanceTransition()
+    }
+    func presentNaviationViewController(ViewController: UIViewController) {
+        self.addChild(ViewController)
+        navigationCircleView.addSubview(ViewController.view)
+        ViewController.beginAppearanceTransition(true, animated: true)
+        ViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        ViewController.view.topAnchor.constraint(equalTo: navigationCircleView.topAnchor).isActive = true
+        ViewController.view.leadingAnchor.constraint(equalTo: navigationCircleView.leadingAnchor).isActive = true
+        ViewController.view.trailingAnchor.constraint(equalTo: navigationCircleView.trailingAnchor).isActive = true
+        ViewController.view.bottomAnchor.constraint(equalTo: navigationCircleView.bottomAnchor).isActive = true
+        ViewController.didMove(toParent: self)
+        ViewController.endAppearanceTransition()
     }
     private func animationBegan(){
         navigationCircleViewWidthBegin.isActive = false
         navigationCircleViewTopBegin.isActive = false
         navigationCircleViewLeadingBegin.isActive = false
+        navigationCircleViewHeightBegin.isActive = false
         navigationCircleViewWidthEnd.isActive = true
         navigationCircleViewTopEnd.isActive = true
         navigationCircleViewLeadingEnd.isActive = true
+        navigationCircleViewHeightEnd.isActive = true
     }
     private func animationEnd(){
         navigationCircleViewWidthEnd.isActive = false
         navigationCircleViewTopEnd.isActive = false
         navigationCircleViewLeadingEnd.isActive = false
+        navigationCircleViewHeightEnd.isActive = false
         navigationCircleViewWidthBegin.isActive = true
         navigationCircleViewTopBegin.isActive = true
         navigationCircleViewLeadingBegin.isActive = true
+        navigationCircleViewHeightBegin.isActive = true
     }
     
 }
 extension MainContainerViewController{
     private func AnimationloginView(){
         animationBegan()
-        UIView.animate(withDuration: 2.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, animations: {
-            self.backgroundView.backgroundColor = .black.withAlphaComponent(0.75)
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75, animations: {
+            self.backgroundView.backgroundColor = .black
+            self.backgroundView.alpha = 0.75
             self.view.layoutIfNeeded()
         })
     }
@@ -162,8 +180,9 @@ extension MainContainerViewController{
     @objc private func gesture(sender:UITapGestureRecognizer){
         viewModel.backGestureObserver.onNext(())
         animationEnd()
-        UIView.animate(withDuration: 2.5, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, animations: {
-            self.backgroundView.backgroundColor = .black.withAlphaComponent(0.0)
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.75, animations: {
+            self.backgroundView.backgroundColor = .clear
+            self.backgroundView.alpha = 0.0
             self.view.layoutIfNeeded()
         })
     }

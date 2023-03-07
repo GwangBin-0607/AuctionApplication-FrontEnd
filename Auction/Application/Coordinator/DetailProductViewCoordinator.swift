@@ -13,7 +13,7 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:DetailProductViewSceneDIContainer
     let delegate: HasChildCoordinator
-    var viewController: UIViewController?
+    weak var viewController: UIViewController?
     private let presentOptions:PresentOptions
     init(ContainerViewController:ContainerViewController,SceneDIContainer:DetailProductViewSceneDIContainer,DetailProductViewCoordinatorDelegate:HasChildCoordinator,presentOptions:PresentOptions) {
         self.presentOptions = presentOptions
@@ -28,6 +28,7 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
     func start() {
         if let product_id = presentOptions.productId{
             let detailProductListViewController = sceneDIContainer.returnDetailViewController(transitioning: self, product_id: product_id)
+            viewController = detailProductListViewController
             containerViewController.present(ViewController: detailProductListViewController, animate: true)
             print("PRESENT")
         }

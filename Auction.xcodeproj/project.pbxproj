@@ -52,6 +52,9 @@
 		8870DCAA28E57020005328C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8870DCA928E57020005328C0 /* Assets.xcassets */; };
 		8870DCC228E57020005328C0 /* front_endUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCC128E57020005328C0 /* front_endUITests.swift */; };
 		8870DCC428E57020005328C0 /* front_endUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */; };
+		8874627729B68ECF00C54389 /* LoginPageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874627629B68ECF00C54389 /* LoginPageViewCoordinator.swift */; };
+		8874627A29B6903F00C54389 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874627929B6903F00C54389 /* LoginViewController.swift */; };
+		8874627D29B6915E00C54389 /* TransitionUserPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874627C29B6915E00C54389 /* TransitionUserPageViewController.swift */; };
 		8874F4CA2937394D003981C3 /* Pr_ProductImageUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874F4C92937394D003981C3 /* Pr_ProductImageUsecase.swift */; };
 		8874F4CE29373D55003981C3 /* ProductImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8874F4CD29373D55003981C3 /* ProductImageUseCase.swift */; };
 		88752C15299F4CF9005A4BEF /* GetDetailProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88752C14299F4CF8005A4BEF /* GetDetailProduct.swift */; };
@@ -137,6 +140,10 @@
 		88EE6889299EA3EE002A47DB /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EE6888299EA3EE002A47DB /* PreviewProvider.swift */; };
 		88EFB13C299DD619005B6621 /* RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EFB13B299DD619005B6621 /* RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift */; };
 		88EFB13F299E7DF8005B6621 /* ManageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EFB13E299E7DF8005B6621 /* ManageColor.swift */; };
+		88F127DA29B67EF600CB0B20 /* UserPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F127D929B67EF600CB0B20 /* UserPageViewController.swift */; };
+		88F127DD29B67F0500CB0B20 /* UserPageViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F127DC29B67F0500CB0B20 /* UserPageViewControllerViewModel.swift */; };
+		88F127DF29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F127DE29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift */; };
+		88F127E629B67F6800CB0B20 /* UserPageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F127E529B67F6800CB0B20 /* UserPageViewCoordinator.swift */; };
 		88F5DD8329969D10007FB204 /* CornerRadiusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5DD8229969D10007FB204 /* CornerRadiusView.swift */; };
 		88F5DD8629969D57007FB204 /* NavigationCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5DD8529969D57007FB204 /* NavigationCircleView.swift */; };
 		88F5DD8929969D6C007FB204 /* NavigationCircleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F5DD8829969D6C007FB204 /* NavigationCircleViewModel.swift */; };
@@ -225,6 +232,9 @@
 		8870DCBD28E57020005328C0 /* AuctionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuctionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8870DCC128E57020005328C0 /* front_endUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITests.swift; sourceTree = "<group>"; };
 		8870DCC328E57020005328C0 /* front_endUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = front_endUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		8874627629B68ECF00C54389 /* LoginPageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPageViewCoordinator.swift; sourceTree = "<group>"; };
+		8874627929B6903F00C54389 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		8874627C29B6915E00C54389 /* TransitionUserPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionUserPageViewController.swift; sourceTree = "<group>"; };
 		8874F4C92937394D003981C3 /* Pr_ProductImageUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ProductImageUsecase.swift; sourceTree = "<group>"; };
 		8874F4CD29373D55003981C3 /* ProductImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageUseCase.swift; sourceTree = "<group>"; };
 		88752C14299F4CF8005A4BEF /* GetDetailProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetDetailProduct.swift; sourceTree = "<group>"; };
@@ -310,6 +320,10 @@
 		88EE6888299EA3EE002A47DB /* PreviewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		88EFB13B299DD619005B6621 /* RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift"; sourceTree = "<group>"; };
 		88EFB13E299E7DF8005B6621 /* ManageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColor.swift; sourceTree = "<group>"; };
+		88F127D929B67EF600CB0B20 /* UserPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPageViewController.swift; sourceTree = "<group>"; };
+		88F127DC29B67F0500CB0B20 /* UserPageViewControllerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPageViewControllerViewModel.swift; sourceTree = "<group>"; };
+		88F127DE29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pr_UserPageViewControllerViewModel.swift; sourceTree = "<group>"; };
+		88F127E529B67F6800CB0B20 /* UserPageViewCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPageViewCoordinator.swift; sourceTree = "<group>"; };
 		88F5DD8229969D10007FB204 /* CornerRadiusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerRadiusView.swift; sourceTree = "<group>"; };
 		88F5DD8529969D57007FB204 /* NavigationCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCircleView.swift; sourceTree = "<group>"; };
 		88F5DD8829969D6C007FB204 /* NavigationCircleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCircleViewModel.swift; sourceTree = "<group>"; };
@@ -645,6 +659,22 @@
 			path = AuctionUITests;
 			sourceTree = "<group>";
 		};
+		8874627829B6903500C54389 /* LoginPage */ = {
+			isa = PBXGroup;
+			children = (
+				8874627929B6903F00C54389 /* LoginViewController.swift */,
+			);
+			path = LoginPage;
+			sourceTree = "<group>";
+		};
+		8874627B29B6914000C54389 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				8874627C29B6915E00C54389 /* TransitionUserPageViewController.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
 		8874F4C2293738D9003981C3 /* Product */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +812,8 @@
 				888B4D2C292F43FD00784E46 /* Protocol */,
 				888B4D2A292F43F100784E46 /* AppCoordinator.swift */,
 				888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */,
+				88F127E529B67F6800CB0B20 /* UserPageViewCoordinator.swift */,
+				8874627629B68ECF00C54389 /* LoginPageViewCoordinator.swift */,
 				888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -826,6 +858,8 @@
 		889532C528E57C3000C3293F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				8874627829B6903500C54389 /* LoginPage */,
+				88F127D829B67EE600CB0B20 /* UserPage */,
 				888B4D26292F434600784E46 /* DetailProducts */,
 				8897C468292CC7DA00823980 /* ProductsList */,
 				882CBE8129083DD000550A8E /* Utils */,
@@ -1116,12 +1150,31 @@
 			path = ManageColor;
 			sourceTree = "<group>";
 		};
+		88F127D829B67EE600CB0B20 /* UserPage */ = {
+			isa = PBXGroup;
+			children = (
+				8874627B29B6914000C54389 /* Transition */,
+				88F127DB29B67EFC00CB0B20 /* ViewModel */,
+				88F127D929B67EF600CB0B20 /* UserPageViewController.swift */,
+			);
+			path = UserPage;
+			sourceTree = "<group>";
+		};
+		88F127DB29B67EFC00CB0B20 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				88F127DE29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift */,
+				88F127DC29B67F0500CB0B20 /* UserPageViewControllerViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		88F5DD8429969D2E007FB204 /* NavigationCircleView */ = {
 			isa = PBXGroup;
 			children = (
+				88F5DD8529969D57007FB204 /* NavigationCircleView.swift */,
 				88F5DD8729969D5C007FB204 /* ViewModel */,
 				88F5DD8229969D10007FB204 /* CornerRadiusView.swift */,
-				88F5DD8529969D57007FB204 /* NavigationCircleView.swift */,
 				88D065BD29B45AEA00FE974D /* ProfileImageView.swift */,
 			);
 			path = NavigationCircleView;
@@ -1404,6 +1457,7 @@
 				8887D1562935A8EA005DA3C6 /* HasParentCoordinator.swift in Sources */,
 				88D2178A296456DC00715D2F /* OutputStreamCompletionHandler.swift in Sources */,
 				8832E9BB29A3D69200904667 /* DetailProductViewControllerViewModel.swift in Sources */,
+				8874627A29B6903F00C54389 /* LoginViewController.swift in Sources */,
 				88CE016F29697660003169B5 /* Pr_ProductListCollectionViewLayoutViewModel.swift in Sources */,
 				88F5DD8B29969D7A007FB204 /* Pr_NavigationCircleViewModel.swift in Sources */,
 				88D9F58129A1E78700939BB7 /* HTTPDataTransferProductImage.swift in Sources */,
@@ -1415,6 +1469,7 @@
 				88752C27299F5ACB005A4BEF /* DetailProduct.swift in Sources */,
 				887D549F2953044000DA2F15 /* ProductListCollectionViewModel.swift in Sources */,
 				8897C462292CC22100823980 /* StreamPrice.swift in Sources */,
+				88F127E629B67F6800CB0B20 /* UserPageViewCoordinator.swift in Sources */,
 				881D8C6B29A9B99E00B90125 /* GetCurrentProductPrice.swift in Sources */,
 				8870DCA528E5701E005328C0 /* ViewController.swift in Sources */,
 				881D8C7429AA322100B90125 /* Pr_ChildViewController.swift in Sources */,
@@ -1422,6 +1477,7 @@
 				88752C23299F5719005A4BEF /* Pr_DetailProductUsecase.swift in Sources */,
 				8832E85329A0E35E00BCFF33 /* DetailProductCollectionViewGraphCell.swift in Sources */,
 				88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */,
+				88F127DF29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift in Sources */,
 				88881532296EDE7E0023CDE3 /* ProductListStateInterface.swift in Sources */,
 				881D8C6929A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift in Sources */,
 				88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */,
@@ -1461,13 +1517,16 @@
 				88EE6889299EA3EE002A47DB /* PreviewProvider.swift in Sources */,
 				889FC3EB2982313E009B8A2A /* ProductListCollectionFooterView.swift in Sources */,
 				881D8C7129AA312D00B90125 /* ContainerViewController.swift in Sources */,
+				88F127DD29B67F0500CB0B20 /* UserPageViewControllerViewModel.swift in Sources */,
 				888B4D32292F455A00784E46 /* DetailProductViewCoordinator.swift in Sources */,
 				88CE0171296983F0003169B5 /* ProductImageCacheRepository+interface.swift in Sources */,
 				8832E9B429A3D29100904667 /* DetailProductPriceViewModel.swift in Sources */,
 				88CED134297137DB0048367A /* Pr_ProductListViewControllerViewModel.swift in Sources */,
 				8832E9B629A3D29F00904667 /* Pr_DetailProductPriceViewModel.swift in Sources */,
+				8874627D29B6915E00C54389 /* TransitionUserPageViewController.swift in Sources */,
 				8832E85529A0E38800BCFF33 /* DetailProductCollectionViewCommentCell.swift in Sources */,
 				881D8C6729A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift in Sources */,
+				8874627729B68ECF00C54389 /* LoginPageViewCoordinator.swift in Sources */,
 				881D8C5E29A9B29200B90125 /* Pr_CurrentProductPriceUsecase.swift in Sources */,
 				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				88D065BE29B45AEA00FE974D /* ProfileImageView.swift in Sources */,
@@ -1483,6 +1542,7 @@
 				88CE016329697057003169B5 /* Pr_ProductListCollectionViewCellViewModel.swift in Sources */,
 				88D3AC4D2986C7C60044BDE7 /* HTTPDataTransferProductList.swift in Sources */,
 				8887D1512935A65C005DA3C6 /* MainContainerViewController.swift in Sources */,
+				88F127DA29B67EF600CB0B20 /* UserPageViewController.swift in Sources */,
 				8878025729434399009F4F9A /* ProductImageRepository+Interface.swift in Sources */,
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
 				88E5A97829A901AA00A45AA9 /* DetailProductCollectionViewUserCellViewModel.swift in Sources */,
@@ -1684,6 +1744,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U44Q63XXCC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Auction/Application/Info.plist;
@@ -1908,6 +1969,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U44Q63XXCC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Auction/Application/Info.plist;
@@ -2050,7 +2112,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = U44Q63XXCC;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Auction/Application/Info.plist;

@@ -12,7 +12,7 @@ final class ProductListViewCoordinator:Coordinator{
     var containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:ProductListViewSceneDIContainer
-    var viewController: UIViewController?
+    weak var viewController: UIViewController?
     init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController

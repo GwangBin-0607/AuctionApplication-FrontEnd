@@ -5,11 +5,16 @@ final class SceneDIContainer{
     private final class SocketNetWorkContainer{
         weak var streamService:SocketNetworkInterface?
     }
+    private final class NavigationContentViewModelContainer{
+        weak var viewModel:Pr_CustomNavigationViewModel?
+    }
     let configure:ExportConfigure
     private let streamServiceContainer:SocketNetWorkContainer
+    private let naviationContentViewModelContainer:NavigationContentViewModelContainer
     init() {
         configure = ExportConfigure()
         streamServiceContainer = SocketNetWorkContainer()
+        naviationContentViewModelContainer = NavigationContentViewModelContainer()
     }
 }
 
@@ -115,6 +120,7 @@ extension SceneDIContainer{
 protocol MainContainerViewSceneDIContainer{
     func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator
     func returnMainContainerViewController()->MainContainerViewController
+    func returnUserPageCoordinator(containerView:ContainerViewController)->UserPageViewCoordinator
 }
 
 //MARK: ProductList Coordinator
@@ -123,20 +129,22 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
     }
     func returnMainContainerViewController() -> MainContainerViewController {
-        let customTextButtonViewModel = returnBuyProductButtonViewModel()
-        let navigationCircleViewModel = returnNavigationCircleViewModel(customTextButtonViewModel: customTextButtonViewModel)
-        let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel,customTextButtonViewModel: customTextButtonViewModel)
-        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
+        let navigationCircleViewModel = returnNavigationCircleViewModel()
+        let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel)
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel,navigationContentViewModel: returnCustomNavigationViewModelContainer())
         return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
     }
-    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
-        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
+    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel,navigationContentViewModel:Pr_NavigationContentViewModel)->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel,navigationContentViewModel: navigationContentViewModel)
     }
-    private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel,customTextButtonViewModel:Pr_CustomTextButtonViewModel)->NavigationCornerRadiusView{
-        NavigationCornerRadiusView(ViewModel: navigationCircleViewModel,customTextButton: returnBuyProductButton(viewModel: customTextButtonViewModel))
+    private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
+        NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)
     }
-    private func returnNavigationCircleViewModel(customTextButtonViewModel:Pr_CustomTextButtonViewModel)->Pr_NavigationCircleViewModel{
-        NavigationCircleViewModel(customTextButtonViewModel: customTextButtonViewModel)
+    private func returnNavigationCircleViewModel()->Pr_NavigationCircleViewModel{
+        NavigationCircleViewModel()
+    }
+    func returnUserPageCoordinator(containerView:ContainerViewController)->UserPageViewCoordinator{
+        UserPageViewCoordinator(containerViewController: containerView, sceneDIContainer: self)
     }
 
 }
@@ -144,7 +152,46 @@ protocol ProductListViewSceneDIContainer{
     func returnProductsListViewController(transitioning:TransitionProductListViewController) -> UIViewController
     func returnDetailProductViewCoordinator(ContainerViewController:ContainerViewController,HasChildCoordinator:HasChildCoordinator,presentOptions:PresentOptions)->Coordinator
 }
-
+protocol UserPageViewSceneDIContainer{
+    func returnUserPageViewController(transitioning:TransitionUserPageViewController)->UserPageViewController
+    func returnLoginPageCoordinator(containerViewController:ContainerViewController,delegate:HasChildCoordinator)->LoginPageCoordinator
+    func returnCustomNavigationController(rootViewController:UIViewController)->CustomNavigation
+}
+protocol LoginPageViewSceneDIContainer{
+    func returnLoginViewController()->UIViewController
+}
+extension SceneDIContainer:LoginPageViewSceneDIContainer{
+    func returnLoginViewController() -> UIViewController {
+        LoginViewController()
+    }
+}
+extension SceneDIContainer:UserPageViewSceneDIContainer{
+    func returnCustomNavigationController(rootViewController: UIViewController) -> CustomNavigation {
+        CustomNavigation(viewModel: returnCustomNavigationViewModelContainer(), rootViewController: rootViewController)
+    }
+    func returnUserPageViewController(transitioning:TransitionUserPageViewController)->UserPageViewController{
+        UserPageViewController(viewModel: returnUserPageViewModel(),transtioning: transitioning)
+    }
+    func returnLoginPageCoordinator(containerViewController:ContainerViewController,delegate:HasChildCoordinator) -> LoginPageCoordinator {
+        LoginPageCoordinator(containerViewController: containerViewController, sceneDIContainer: self, delegate: delegate)
+    }
+    private func returnUserPageViewModel()->Pr_UserPageViewControllerViewModel{
+        UserPageViewControllerViewModel()
+    }
+    private func returnCustomNavigationViewModel()->Pr_CustomNavigationViewModel{
+        CustomNavigationViewModel()
+    }
+    private func returnCustomNavigationViewModelContainer()->Pr_CustomNavigationViewModel{
+        let customNavigationViewModel:Pr_CustomNavigationViewModel
+        if let viewModel = naviationContentViewModelContainer.viewModel{
+            customNavigationViewModel = viewModel
+        }else{
+            customNavigationViewModel = returnCustomNavigationViewModel()
+            naviationContentViewModelContainer.viewModel = customNavigationViewModel
+        }
+        return customNavigationViewModel
+    }
+}
 //MARK: ProductListViewController, DetailProductViewCoordinator
 extension SceneDIContainer:ProductListViewSceneDIContainer{
     func returnSocketNetworkInterfaceInContainer()->SocketNetworkInterface{
