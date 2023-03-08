@@ -130,10 +130,26 @@
 		88D3AC492986BE8F0044BDE7 /* StreamTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC482986BE8F0044BDE7 /* StreamTest.swift */; };
 		88D3AC4B2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift */; };
 		88D3AC4D2986C7C60044BDE7 /* HTTPDataTransferProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D3AC4C2986C7C60044BDE7 /* HTTPDataTransferProductList.swift */; };
+		88D50D3B29B8363300FCF5F4 /* SceneDIContainer+Infrastructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D3A29B8363300FCF5F4 /* SceneDIContainer+Infrastructure.swift */; };
+		88D50D3D29B8364200FCF5F4 /* SceneDIContainer+Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D3C29B8364200FCF5F4 /* SceneDIContainer+Repository.swift */; };
+		88D50D3F29B8367E00FCF5F4 /* SceneDIContainer+Usecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D3E29B8367E00FCF5F4 /* SceneDIContainer+Usecase.swift */; };
+		88D50D4129B8369B00FCF5F4 /* SceneDIContainer+ProductListViewSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4029B8369B00FCF5F4 /* SceneDIContainer+ProductListViewSceneDIContainer.swift */; };
+		88D50D4329B837B400FCF5F4 /* SceneDIContainer+DetailProductViewSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4229B837B400FCF5F4 /* SceneDIContainer+DetailProductViewSceneDIContainer.swift */; };
+		88D50D4529B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4429B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift */; };
+		88D50D4729B8389100FCF5F4 /* SceneDIContainer+LoginPageViewSceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4629B8389100FCF5F4 /* SceneDIContainer+LoginPageViewSceneDIContainer.swift */; };
+		88D50D4929B838EF00FCF5F4 /* CustomContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4829B838EF00FCF5F4 /* CustomContainerViewCoordinator.swift */; };
+		88D50D4B29B8395000FCF5F4 /* SceneDIContainer+CustomContainerViewDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4A29B8395000FCF5F4 /* SceneDIContainer+CustomContainerViewDIContainer.swift */; };
+		88D50D4D29B83DCD00FCF5F4 /* UserPageTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D4C29B83DCD00FCF5F4 /* UserPageTableView.swift */; };
+		88D50D5129B845A200FCF5F4 /* Pr_UserPageTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D5029B845A200FCF5F4 /* Pr_UserPageTableViewModel.swift */; };
+		88D50D5329B8464700FCF5F4 /* UserPageTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D5229B8464700FCF5F4 /* UserPageTableViewModel.swift */; };
+		88D50D5529B8482F00FCF5F4 /* UserPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D50D5429B8482F00FCF5F4 /* UserPageTableViewCell.swift */; };
 		88D65E6429B7078A0019DAF9 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */; };
 		88D65E6729B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */; };
 		88D65E6929B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */; };
 		88D65E6D29B7801B0019DAF9 /* AlphaAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */; };
+		88D65E7229B78EEA0019DAF9 /* TransitionLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7129B78EEA0019DAF9 /* TransitionLoginViewController.swift */; };
+		88D65E7529B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7429B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift */; };
+		88D65E7729B78F1A0019DAF9 /* LoginViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7629B78F190019DAF9 /* LoginViewControllerViewModel.swift */; };
 		88D9F57F29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */; };
 		88D9F58129A1E78700939BB7 /* HTTPDataTransferProductImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9F58029A1E78700939BB7 /* HTTPDataTransferProductImage.swift */; };
 		88D9FB8C296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */; };
@@ -314,10 +330,26 @@
 		88D3AC482986BE8F0044BDE7 /* StreamTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamTest.swift; sourceTree = "<group>"; };
 		88D3AC4A2986C76B0044BDE7 /* Pr_HTTPDataTransferProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_HTTPDataTransferProductList.swift; sourceTree = "<group>"; };
 		88D3AC4C2986C7C60044BDE7 /* HTTPDataTransferProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDataTransferProductList.swift; sourceTree = "<group>"; };
+		88D50D3A29B8363300FCF5F4 /* SceneDIContainer+Infrastructure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+Infrastructure.swift"; sourceTree = "<group>"; };
+		88D50D3C29B8364200FCF5F4 /* SceneDIContainer+Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+Repository.swift"; sourceTree = "<group>"; };
+		88D50D3E29B8367E00FCF5F4 /* SceneDIContainer+Usecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+Usecase.swift"; sourceTree = "<group>"; };
+		88D50D4029B8369B00FCF5F4 /* SceneDIContainer+ProductListViewSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+ProductListViewSceneDIContainer.swift"; sourceTree = "<group>"; };
+		88D50D4229B837B400FCF5F4 /* SceneDIContainer+DetailProductViewSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+DetailProductViewSceneDIContainer.swift"; sourceTree = "<group>"; };
+		88D50D4429B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+UserPageViewSceneDIContainer.swift"; sourceTree = "<group>"; };
+		88D50D4629B8389100FCF5F4 /* SceneDIContainer+LoginPageViewSceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+LoginPageViewSceneDIContainer.swift"; sourceTree = "<group>"; };
+		88D50D4829B838EF00FCF5F4 /* CustomContainerViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomContainerViewCoordinator.swift; sourceTree = "<group>"; };
+		88D50D4A29B8395000FCF5F4 /* SceneDIContainer+CustomContainerViewDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SceneDIContainer+CustomContainerViewDIContainer.swift"; sourceTree = "<group>"; };
+		88D50D4C29B83DCD00FCF5F4 /* UserPageTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageTableView.swift; sourceTree = "<group>"; };
+		88D50D5029B845A200FCF5F4 /* Pr_UserPageTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_UserPageTableViewModel.swift; sourceTree = "<group>"; };
+		88D50D5229B8464700FCF5F4 /* UserPageTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageTableViewModel.swift; sourceTree = "<group>"; };
+		88D50D5429B8482F00FCF5F4 /* UserPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPageTableViewCell.swift; sourceTree = "<group>"; };
 		88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaAnimationController.swift; sourceTree = "<group>"; };
+		88D65E7129B78EEA0019DAF9 /* TransitionLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionLoginViewController.swift; sourceTree = "<group>"; };
+		88D65E7429B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_LoginViewControllerViewModel.swift; sourceTree = "<group>"; };
+		88D65E7629B78F190019DAF9 /* LoginViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D9F57E29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_HTTPDataTransferProductImage.swift; sourceTree = "<group>"; };
 		88D9F58029A1E78700939BB7 /* HTTPDataTransferProductImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPDataTransferProductImage.swift; sourceTree = "<group>"; };
 		88D9FB8B296D2AED005D1752 /* TCPStreamDataTransfer+Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TCPStreamDataTransfer+Interface.swift"; sourceTree = "<group>"; };
@@ -670,6 +702,8 @@
 		8874627829B6903500C54389 /* LoginPage */ = {
 			isa = PBXGroup;
 			children = (
+				88D65E7329B78F060019DAF9 /* ViewModel */,
+				88D65E7029B78ECE0019DAF9 /* Transition */,
 				8874627929B6903F00C54389 /* LoginViewController.swift */,
 			);
 			path = LoginPage;
@@ -818,6 +852,7 @@
 				888B4D2C292F43FD00784E46 /* Protocol */,
 				888B4D2A292F43F100784E46 /* AppCoordinator.swift */,
 				888B4D2F292F453B00784E46 /* ProductListViewCoordinator.swift */,
+				88D50D4829B838EF00FCF5F4 /* CustomContainerViewCoordinator.swift */,
 				88F127E529B67F6800CB0B20 /* UserPageViewCoordinator.swift */,
 				8874627629B68ECF00C54389 /* LoginPageViewCoordinator.swift */,
 				888B4D31292F455A00784E46 /* DetailProductViewCoordinator.swift */,
@@ -963,6 +998,14 @@
 			isa = PBXGroup;
 			children = (
 				88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */,
+				88D50D4A29B8395000FCF5F4 /* SceneDIContainer+CustomContainerViewDIContainer.swift */,
+				88D50D4629B8389100FCF5F4 /* SceneDIContainer+LoginPageViewSceneDIContainer.swift */,
+				88D50D4429B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift */,
+				88D50D4229B837B400FCF5F4 /* SceneDIContainer+DetailProductViewSceneDIContainer.swift */,
+				88D50D4029B8369B00FCF5F4 /* SceneDIContainer+ProductListViewSceneDIContainer.swift */,
+				88D50D3A29B8363300FCF5F4 /* SceneDIContainer+Infrastructure.swift */,
+				88D50D3C29B8364200FCF5F4 /* SceneDIContainer+Repository.swift */,
+				88D50D3E29B8367E00FCF5F4 /* SceneDIContainer+Usecase.swift */,
 			);
 			path = DIContainer;
 			sourceTree = "<group>";
@@ -1139,6 +1182,25 @@
 			path = Transfers;
 			sourceTree = "<group>";
 		};
+		88D50D4E29B83DD100FCF5F4 /* UserPageTableView */ = {
+			isa = PBXGroup;
+			children = (
+				88D50D4F29B8459700FCF5F4 /* ViewModel */,
+				88D50D4C29B83DCD00FCF5F4 /* UserPageTableView.swift */,
+				88D50D5429B8482F00FCF5F4 /* UserPageTableViewCell.swift */,
+			);
+			path = UserPageTableView;
+			sourceTree = "<group>";
+		};
+		88D50D4F29B8459700FCF5F4 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				88D50D5029B845A200FCF5F4 /* Pr_UserPageTableViewModel.swift */,
+				88D50D5229B8464700FCF5F4 /* UserPageTableViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		88D65E6129B707220019DAF9 /* MainContainerViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1153,9 +1215,9 @@
 		88D65E6229B7072F0019DAF9 /* CustomNavigationViewController */ = {
 			isa = PBXGroup;
 			children = (
-				88D65E6B29B77FFF0019DAF9 /* Protocol */,
 				88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */,
 				88D65E6529B707A80019DAF9 /* ViewModel */,
+				88D65E6B29B77FFF0019DAF9 /* Protocol */,
 			);
 			path = CustomNavigationViewController;
 			sourceTree = "<group>";
@@ -1175,6 +1237,23 @@
 				88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		88D65E7029B78ECE0019DAF9 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				88D65E7129B78EEA0019DAF9 /* TransitionLoginViewController.swift */,
+			);
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		88D65E7329B78F060019DAF9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				88D65E7429B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift */,
+				88D65E7629B78F190019DAF9 /* LoginViewControllerViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		88E5A97429A9018100A45AA9 /* ViewModel */ = {
@@ -1200,6 +1279,7 @@
 				88F127D929B67EF600CB0B20 /* UserPageViewController.swift */,
 				88F127DB29B67EFC00CB0B20 /* ViewModel */,
 				8874627B29B6914000C54389 /* Transition */,
+				88D50D4E29B83DD100FCF5F4 /* UserPageTableView */,
 			);
 			path = UserPage;
 			sourceTree = "<group>";
@@ -1503,6 +1583,8 @@
 				8832E9BB29A3D69200904667 /* DetailProductViewControllerViewModel.swift in Sources */,
 				8874627A29B6903F00C54389 /* LoginViewController.swift in Sources */,
 				88CE016F29697660003169B5 /* Pr_ProductListCollectionViewLayoutViewModel.swift in Sources */,
+				88D65E7529B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift in Sources */,
+				88D50D4129B8369B00FCF5F4 /* SceneDIContainer+ProductListViewSceneDIContainer.swift in Sources */,
 				88F5DD8B29969D7A007FB204 /* Pr_NavigationCircleViewModel.swift in Sources */,
 				88D9F58129A1E78700939BB7 /* HTTPDataTransferProductImage.swift in Sources */,
 				88BE1F1629B332D9008B73BE /* Pr_CustomTextButtonViewModel.swift in Sources */,
@@ -1515,6 +1597,7 @@
 				8897C462292CC22100823980 /* StreamPrice.swift in Sources */,
 				88F127E629B67F6800CB0B20 /* UserPageViewCoordinator.swift in Sources */,
 				881D8C6B29A9B99E00B90125 /* GetCurrentProductPrice.swift in Sources */,
+				88D50D5529B8482F00FCF5F4 /* UserPageTableViewCell.swift in Sources */,
 				8870DCA528E5701E005328C0 /* ViewController.swift in Sources */,
 				881D8C7429AA322100B90125 /* Pr_ChildViewController.swift in Sources */,
 				8897C46D292CC8D300823980 /* GetProductsList.swift in Sources */,
@@ -1533,6 +1616,7 @@
 				88EFB13C299DD619005B6621 /* RxDataSource+Custom_RxCollectionViewSectionedAnimatedDataSource.swift in Sources */,
 				88E712B22912C28B00E54378 /* ProductListCollectionViewLayout.swift in Sources */,
 				8832E9AB29A3B9EC00904667 /* DetailProductPriceView.swift in Sources */,
+				88D50D3D29B8364200FCF5F4 /* SceneDIContainer+Repository.swift in Sources */,
 				88CE016129697043003169B5 /* ProductListCollectionViewCellViewModel.swift in Sources */,
 				8832E85729A0E3AD00BCFF33 /* DetailProductCollectionViewImageCell.swift in Sources */,
 				8832E9AD29A3C04A00904667 /* PriceLabel.swift in Sources */,
@@ -1546,6 +1630,7 @@
 				88C89F85296C2D1A0008796A /* TCPStreamDataTransferInterface.swift in Sources */,
 				8874F4CE29373D55003981C3 /* ProductImageUseCase.swift in Sources */,
 				88D9F57F29A1E77900939BB7 /* Pr_HTTPDataTransferProductImage.swift in Sources */,
+				88D50D5129B845A200FCF5F4 /* Pr_UserPageTableViewModel.swift in Sources */,
 				889FC3F829825815009B8A2A /* Pr_ErrorAlterViewModel.swift in Sources */,
 				882CBE772908285C00550A8E /* Product.swift in Sources */,
 				889FC3FA2982D942009B8A2A /* GradationView.swift in Sources */,
@@ -1553,6 +1638,7 @@
 				88752C25299F5767005A4BEF /* DetailProductUsecase.swift in Sources */,
 				88C6A0AA2967D2780027BDD3 /* OutputStreamDataTransfer.swift in Sources */,
 				88D65E6429B7078A0019DAF9 /* CustomNavigationViewController.swift in Sources */,
+				88D65E7229B78EEA0019DAF9 /* TransitionLoginViewController.swift in Sources */,
 				88752C1D299F4EE3005A4BEF /* HTTPDataTransferDetailProduct.swift in Sources */,
 				88F5DD8E29969E75007FB204 /* Pr_MainContainerControllerViewModel.swift in Sources */,
 				8832E86229A128F400BCFF33 /* Pr_DetailProductCollectionViewImageCellViewModel.swift in Sources */,
@@ -1578,6 +1664,7 @@
 				887D549B295301D200DA2F15 /* ProductListRepository+Interface.swift in Sources */,
 				88D065BE29B45AEA00FE974D /* ProfileImageView.swift in Sources */,
 				889EE5DC290A41760041CC88 /* ProductHTTP+GetProductsList.swift in Sources */,
+				88D50D4529B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift in Sources */,
 				88F5DD9029969E84007FB204 /* MainContainerControllerViewModel.swift in Sources */,
 				8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */,
 				889FC3F329825732009B8A2A /* ErrorAlterView.swift in Sources */,
@@ -1589,16 +1676,20 @@
 				88CE016329697057003169B5 /* Pr_ProductListCollectionViewCellViewModel.swift in Sources */,
 				88D3AC4D2986C7C60044BDE7 /* HTTPDataTransferProductList.swift in Sources */,
 				8887D1512935A65C005DA3C6 /* MainContainerViewController.swift in Sources */,
+				88D50D4B29B8395000FCF5F4 /* SceneDIContainer+CustomContainerViewDIContainer.swift in Sources */,
 				88F127DA29B67EF600CB0B20 /* UserPageViewController.swift in Sources */,
 				8878025729434399009F4F9A /* ProductImageRepository+Interface.swift in Sources */,
 				889CCD7029139100008D1E2F /* ProductListCollectionViewCell.swift in Sources */,
+				88D50D3B29B8363300FCF5F4 /* SceneDIContainer+Infrastructure.swift in Sources */,
 				88E5A97829A901AA00A45AA9 /* DetailProductCollectionViewUserCellViewModel.swift in Sources */,
 				8897C45E292CC0CB00823980 /* SocketNetwork+SocketNetworkInterface.swift in Sources */,
 				8824BB9D29AB987C003F378E /* Pr_DetailPriceLabelViewModel.swift in Sources */,
 				88EFB13F299E7DF8005B6621 /* ManageColor.swift in Sources */,
+				88D50D4729B8389100FCF5F4 /* SceneDIContainer+LoginPageViewSceneDIContainer.swift in Sources */,
 				888B4D2E292F44E100784E46 /* Coordinator.swift in Sources */,
 				88752C17299F4D0F005A4BEF /* ProductHTTP+GetDetailProduct.swift in Sources */,
 				8832E9B129A3CD3B00904667 /* CustomTextButton.swift in Sources */,
+				88D50D3F29B8367E00FCF5F4 /* SceneDIContainer+Usecase.swift in Sources */,
 				888BB7E129ACE9B500F6FFD2 /* EnablePriceLabel.swift in Sources */,
 				8870DCA128E5701E005328C0 /* AppDelegate.swift in Sources */,
 				88752C2B299F6572005A4BEF /* DetailProductCollectionView.swift in Sources */,
@@ -1607,10 +1698,12 @@
 				881D8C6029A9B2BB00B90125 /* CurrentProductPriceUsecase.swift in Sources */,
 				8887D15D2936223F005DA3C6 /* TransitionDetailProductViewController.swift in Sources */,
 				8824BB9F29AB9888003F378E /* DetailPriceLabelViewModel.swift in Sources */,
+				88D50D4929B838EF00FCF5F4 /* CustomContainerViewCoordinator.swift in Sources */,
 				881D8C6229A9B30C00B90125 /* Pr_CurrentProductPriceRepository.swift in Sources */,
 				889CCD7429139BC3008D1E2F /* MockProductsListAPI.swift in Sources */,
 				88E712AE2912C16000E54378 /* ProductListCollectionView.swift in Sources */,
 				88BF04C129557CDB001F7725 /* Pr_ProductListUsecase.swift in Sources */,
+				88D50D4D29B83DCD00FCF5F4 /* UserPageTableView.swift in Sources */,
 				88F5DD8329969D10007FB204 /* CornerRadiusView.swift in Sources */,
 				881D8C5C29A9AB0A00B90125 /* CurrentProductPrice.swift in Sources */,
 				8832E85E29A0E43400BCFF33 /* Pr_DetailProductCollectionViewModel.swift in Sources */,
@@ -1620,6 +1713,8 @@
 				8832E86429A1290D00BCFF33 /* DetailProductCollectionViewImageCellViewModel.swift in Sources */,
 				8878025D29439B66009F4F9A /* ProductHTTP+GetProductImage.swift in Sources */,
 				88BF04C529557F01001F7725 /* ProductListRepositoryInterface.swift in Sources */,
+				88D65E7729B78F1A0019DAF9 /* LoginViewControllerViewModel.swift in Sources */,
+				88D50D5329B8464700FCF5F4 /* UserPageTableViewModel.swift in Sources */,
 				88CE01732969840A003169B5 /* ProductImageCacheRepositoryInterface.swift in Sources */,
 				8870DCA328E5701E005328C0 /* SceneDelegate.swift in Sources */,
 				88BE1F1829B332E7008B73BE /* CustomTextButtonViewModel.swift in Sources */,
@@ -1628,6 +1723,7 @@
 				889FC3EE2982370A009B8A2A /* Pr_ProductListCollectionFooterViewModel.swift in Sources */,
 				88752C1F299F5340005A4BEF /* pr_DetailProductRepository.swift in Sources */,
 				889FC3F02982373C009B8A2A /* ProductListCollectionFooterViewModel+Interface.swift in Sources */,
+				88D50D4329B837B400FCF5F4 /* SceneDIContainer+DetailProductViewSceneDIContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -96,11 +96,9 @@ extension MainContainerViewController:ContainerViewController{
     func dismiss(animate: Bool,viewController:UIViewController?) {
         viewController?.removeFromParent()
         viewController?.view.removeFromSuperview()
-        print(self.children)
     }
     func present(ViewController: Pr_ChildViewController, animate: Bool) {
         self.addChild(ViewController)
-        ViewController.view.frame = CGRect(x: self.containerView.frame.maxX, y: self.containerView.frame.minX, width:self.containerView.frame.width, height: self.containerView.frame.height)
         ViewController.beginAppearanceTransition(true, animated: true)
         self.containerView.addSubview(ViewController.view)
         ViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -122,8 +120,8 @@ extension MainContainerViewController:ContainerViewController{
     }
     func present(ViewController: UIViewController, animate: Bool) {
         self.addChild(ViewController)
-        containerView.addSubview(ViewController.view)
         ViewController.beginAppearanceTransition(true, animated: true)
+        containerView.addSubview(ViewController.view)
         ViewController.view.translatesAutoresizingMaskIntoConstraints = false
         ViewController.view.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         ViewController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
@@ -135,8 +133,8 @@ extension MainContainerViewController:ContainerViewController{
     func presentNaviationViewController(ViewController: AlphaAnimationController) {
         circleNavigationController = ViewController
         self.addChild(ViewController)
+        ViewController.beginAppearanceTransition(true, animated: false)
         navigationCircleView.addSubview(ViewController.view)
-        ViewController.beginAppearanceTransition(true, animated: true)
         ViewController.view.translatesAutoresizingMaskIntoConstraints = false
         ViewController.view.topAnchor.constraint(equalTo: navigationCircleView.topAnchor).isActive = true
         ViewController.view.leadingAnchor.constraint(equalTo: navigationCircleView.leadingAnchor).isActive = true

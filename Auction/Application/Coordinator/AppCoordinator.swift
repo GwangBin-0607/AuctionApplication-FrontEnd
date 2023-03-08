@@ -27,7 +27,7 @@ class AppCoordinator:Coordinator{
         childCoordinator.append(coordinator)
     }
     private func showUserPageViewController(){
-        let coordinator = sceneDIContainer.returnUserPageCoordinator(containerView: containerViewController)
+        let coordinator = sceneDIContainer.returnCustomContainerCoordinator(containerViewController: containerViewController)
         coordinator.start()
         childCoordinator.append(coordinator)
     }

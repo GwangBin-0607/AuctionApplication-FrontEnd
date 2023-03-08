@@ -11,15 +11,13 @@ final class UserPageViewControllerViewModel:Pr_UserPageViewControllerViewModel,S
     let mock: AnyObserver<Void>
     weak var delegate: TransitionUserPageViewController?
     private let disposeBag:DisposeBag
-    init() {
+    init(delegate:TransitionUserPageViewController?) {
+        self.delegate = delegate
         disposeBag = DisposeBag()
         let mockSubject = PublishSubject<Void>()
         mock = mockSubject.asObserver()
         mockSubject.asObservable().subscribe(onNext: {
             self.delegate?.presentLogin()
         }).disposed(by: disposeBag)
-    }
-    func setTransitioning(delegate: TransitionUserPageViewController) {
-        self.delegate = delegate
     }
 }

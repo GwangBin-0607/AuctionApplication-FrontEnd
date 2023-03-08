@@ -9,5 +9,4 @@ import Foundation
 import RxSwift
 protocol Pr_UserPageViewControllerViewModel{
     var mock:AnyObserver<Void>{get}
-    func setTransitioning(delegate:TransitionUserPageViewController)
 }

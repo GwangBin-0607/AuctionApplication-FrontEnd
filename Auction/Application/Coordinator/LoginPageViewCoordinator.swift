@@ -19,8 +19,15 @@ final class LoginPageCoordinator:Coordinator,HasParentCoordinator{
         self.sceneDIContainer = sceneDIContainer
     }
     func start(){
-        let viewController = sceneDIContainer.returnLoginViewController()
+        let viewController = sceneDIContainer.returnLoginViewController(transitioning: self)
         self.viewController = viewController
         containerViewController.present(ViewController: viewController, animate: true)
+    }
+}
+extension LoginPageCoordinator:TransitionLoginViewController{
+    func dismiss() {
+        print("Dismiss")
+        delegate.removeChildCoordinator(Co: self)
+        containerViewController.dismiss(animate: true,viewController: viewController)
     }
 }

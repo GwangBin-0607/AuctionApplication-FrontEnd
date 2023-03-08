@@ -12,16 +12,13 @@ final class UserPageViewCoordinator:Coordinator{
     var childCoordinator: [Coordinator] = []
     weak var viewController: UIViewController?
     let sceneDIContainer:UserPageViewSceneDIContainer
-    weak var navigationController:CustomNavigationViewController?
     init(containerViewController:ContainerViewController,sceneDIContainer:UserPageViewSceneDIContainer) {
         self.containerViewController = containerViewController
         self.sceneDIContainer = sceneDIContainer
     }
     func start(){
         let viewController = sceneDIContainer.returnUserPageViewController(transitioning: self)
-        let navigationController = sceneDIContainer.returnCustomNavigationController(rootViewController: viewController)
-        self.navigationController = navigationController
-        containerViewController.presentNaviationViewController(ViewController: navigationController)
+        containerViewController.present(ViewController: viewController, animate: true)
     }
     
     
@@ -33,10 +30,7 @@ extension UserPageViewCoordinator:HasChildCoordinator{
 }
 extension UserPageViewCoordinator:TransitionUserPageViewController{
     func presentLogin() {
-        guard let navigationController = self.navigationController else{
-            return
-        }
-        let coordinator = sceneDIContainer.returnLoginPageCoordinator(containerViewController: navigationController, delegate: self)
+        let coordinator = sceneDIContainer.returnLoginPageCoordinator(containerViewController: containerViewController, delegate: self)
         coordinator.start()
         childCoordinator.append(coordinator)
     }

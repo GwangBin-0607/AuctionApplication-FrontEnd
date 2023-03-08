@@ -58,8 +58,8 @@ extension DetailProductViewController:GestureDelegateWithButton{
         if animator.isRunning{
             animator.isReversed = animatorState == .bottom ? true : false
             animatorState = animatorState == .top ? .bottom : .top
-        }
-        if !animator.isRunning{
+        }else{
+            
             animator.startAnimation()
         }
     }
