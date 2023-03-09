@@ -18,7 +18,9 @@ class NavigationCornerRadiusView:CornerRadiusView{
     private var viewUp:Bool
     private var previousRadius:CGFloat = 0.0
     weak var gestureDelegate:GestureDelegate?
+    private let userImageView:UIImageView
     init(ViewModel:Pr_NavigationCircleViewModel) {
+        userImageView = UIImageView()
         viewUp = false
         disposeBag = DisposeBag()
         self.viewModel = ViewModel
@@ -38,7 +40,8 @@ class NavigationCornerRadiusView:CornerRadiusView{
         self.gestureDelegate = gestureDelegate
     }
     private func bind(){
-        
+        let image = UIImage(named: "user")?.withTintColor(.white)
+        self.userImageView.image = image
     }
     private func makePangesture()->UIPanGestureRecognizer{
         UIPanGestureRecognizer(target: self, action: #selector(gesture(sender:)))
@@ -67,7 +70,12 @@ class NavigationCornerRadiusView:CornerRadiusView{
         
     }
     private func layout(){
-        
+        self.addSubview(userImageView)
+        userImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: userImageView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0.0).isActive = true
+        userImageView.heightAnchor.constraint(equalTo: userImageView.widthAnchor).isActive = true
+        userImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        userImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     override func layoutSubviews() {
         if !viewUp{
@@ -97,6 +105,7 @@ extension NavigationCornerRadiusView{
             cornerAnimation.toValue = 20
             self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
             UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 1.0,initialSpringVelocity: 1.0,animations: {
+                self.userImageView.alpha = 0.0
                 superviewAnimationBlock()
             })
             CATransaction.setCompletionBlock({
@@ -117,6 +126,7 @@ extension NavigationCornerRadiusView{
             cornerAnimation.toValue = previousRadius
             self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
             UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
+                self.userImageView.alpha = 1.0
                 superviewAnimationBlock()
             })
             CATransaction.setCompletionBlock({

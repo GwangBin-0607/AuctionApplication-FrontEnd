@@ -47,7 +47,9 @@ extension DetailProductViewController{
         if keyPath == #keyPath(UIViewPropertyAnimator.isRunning){
             if animator.fractionComplete >= 0.9 {
                 animatorState = animator.isReversed ? .bottom : .top
-                animator.isReversed = !animator.isReversed
+                if !animator.isRunning{
+                    animator.isReversed = !animator.isReversed
+                }
             }
         }
 
@@ -79,6 +81,7 @@ extension DetailProductViewController:GestureDelegateWithButton{
         }
     }
     func buttonTap() {
+        print("BUTTON")
         if animatorState == .bottom{
             animator.startAnimation()
         }else{

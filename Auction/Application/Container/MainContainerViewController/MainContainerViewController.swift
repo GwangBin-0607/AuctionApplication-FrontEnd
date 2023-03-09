@@ -167,10 +167,10 @@ extension MainContainerViewController:ContainerViewController{
 }
 extension MainContainerViewController{
     var animationDuration:CGFloat{
-        return 0.45
+        return 0.75
     }
     private func AnimationloginView(){
-        circleNavigationController?.tapGesture()
+        circleNavigationController?.tapGesture(duration: animationDuration)
         self.animationBegan()
         navigationCircleView.animationWithBasicAnimation(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundView.backgroundColor = .black
@@ -184,7 +184,7 @@ extension MainContainerViewController{
         return tap
     }
     @objc private func gesture(sender:UITapGestureRecognizer){
-        circleNavigationController?.backGesture()
+        circleNavigationController?.backGesture(duration: animationDuration)
         self.animationEnd()
         navigationCircleView.animationReverse(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundView.backgroundColor = .clear

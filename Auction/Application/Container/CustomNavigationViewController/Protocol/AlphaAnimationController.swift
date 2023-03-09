@@ -8,6 +8,6 @@
 import Foundation
 import UIKit
 protocol AlphaAnimationController:UIViewController{
-    func tapGesture()
-    func backGesture()
+    func tapGesture(duration:CGFloat)
+    func backGesture(duration:CGFloat)
 }
