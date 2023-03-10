@@ -99,6 +99,9 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
             self.viewModel = cellViewModel
         }
     }
+    func setDelegate(){
+        
+    }
     private func animateBorderColor(duration: Double) {
         CATransaction.begin()
         CATransaction.setCompletionBlock {
@@ -179,13 +182,19 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-extension ProductListCollectionViewCell{
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("BEGAN")
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("END")
-
+    func runAnimator(duration:CGFloat,completion:@escaping ()->Void){
+        UIView.animateKeyframes(withDuration: duration, delay: 0.0, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.35, animations: {
+                self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+            })
+            UIView.addKeyframe(withRelativeStartTime: 0.55, relativeDuration: 0.45, animations: {
+                self.transform = .identity
+            })
+        },completion: {
+            finish in
+            if finish{
+                completion()
+            }
+        })
     }
 }
