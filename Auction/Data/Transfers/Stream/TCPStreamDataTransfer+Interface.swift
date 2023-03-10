@@ -45,7 +45,7 @@ final class TCPStreamDataTransfer:TCPStreamDataTransferInterface{
                     return .success(returnArray)
                 }
             }catch{
-                return .failure(StreamError.InputStreamDataTypeDecodeError)
+                return .failure(StreamError.Unknown)
             }
         case .failure(let error):
             socketCompletionHandler.removeAllWhenEncounter()

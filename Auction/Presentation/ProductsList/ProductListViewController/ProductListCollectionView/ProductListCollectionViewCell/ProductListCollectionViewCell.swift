@@ -180,3 +180,12 @@ final class ProductListCollectionViewCell: UICollectionViewCell{
         fatalError("init(coder:) has not been implemented")
     }
 }
+extension ProductListCollectionViewCell{
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("BEGAN")
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("END")
+
+    }
+}
