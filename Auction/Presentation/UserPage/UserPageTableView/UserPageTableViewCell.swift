@@ -30,6 +30,7 @@ final class UserPageTableViewCell:UITableViewCell{
     }
     private func layout(){
         self.contentView.addSubview(contentLabel)
+        contentLabel.textColor = .black
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: contentLabel, attribute: .leading, relatedBy: .equal, toItem: self.contentView, attribute: .centerX, multiplier: 0.15, constant: 0.0).isActive = true
         contentLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
@@ -44,6 +45,7 @@ final class UserPageTableViewCell:UITableViewCell{
         contentLabel.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -5.0).isActive = true
         arrowImageView.tintColor = .gray
         contentLabel.setContentHuggingPriority(UILayoutPriority(900), for: .vertical)
+        contentLabel.setContentCompressionResistancePriority(UILayoutPriority(900), for: .horizontal)
         let arrowImage = UIImage(named: "right-arrow")?.withRenderingMode(.alwaysTemplate)
         arrowImageView.image = arrowImage
     }

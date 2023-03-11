@@ -108,6 +108,9 @@
 		889FC3FA2982D942009B8A2A /* GradationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889FC3F92982D942009B8A2A /* GradationView.swift */; };
 		88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */; };
 		88AD9E4029289C0500040DC8 /* SceneDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */; };
+		88B6EA9829BB819E00E35802 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B6EA9729BB819E00E35802 /* BackgroundView.swift */; };
+		88B6EA9B29BB81C800E35802 /* Pr_BackgroundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B6EA9A29BB81C800E35802 /* Pr_BackgroundViewModel.swift */; };
+		88B6EA9D29BB81DA00E35802 /* BackgroundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B6EA9C29BB81DA00E35802 /* BackgroundViewModel.swift */; };
 		88BE1F1629B332D9008B73BE /* Pr_CustomTextButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BE1F1529B332D9008B73BE /* Pr_CustomTextButtonViewModel.swift */; };
 		88BE1F1829B332E7008B73BE /* CustomTextButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BE1F1729B332E7008B73BE /* CustomTextButtonViewModel.swift */; };
 		88BF04C129557CDB001F7725 /* Pr_ProductListUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BF04C029557CDB001F7725 /* Pr_ProductListUsecase.swift */; };
@@ -146,7 +149,6 @@
 		88D65E6429B7078A0019DAF9 /* CustomNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */; };
 		88D65E6729B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */; };
 		88D65E6929B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */; };
-		88D65E6D29B7801B0019DAF9 /* AlphaAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */; };
 		88D65E7229B78EEA0019DAF9 /* TransitionLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7129B78EEA0019DAF9 /* TransitionLoginViewController.swift */; };
 		88D65E7529B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7429B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift */; };
 		88D65E7729B78F1A0019DAF9 /* LoginViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D65E7629B78F190019DAF9 /* LoginViewControllerViewModel.swift */; };
@@ -308,6 +310,9 @@
 		889FC3F92982D942009B8A2A /* GradationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradationView.swift; sourceTree = "<group>"; };
 		88A7FF48295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SocketNWConnection+SocketNetworkInterface.swift"; sourceTree = "<group>"; };
 		88AD9E3F29289C0500040DC8 /* SceneDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDIContainer.swift; sourceTree = "<group>"; };
+		88B6EA9729BB819E00E35802 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		88B6EA9A29BB81C800E35802 /* Pr_BackgroundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_BackgroundViewModel.swift; sourceTree = "<group>"; };
+		88B6EA9C29BB81DA00E35802 /* BackgroundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundViewModel.swift; sourceTree = "<group>"; };
 		88BE1F1529B332D9008B73BE /* Pr_CustomTextButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CustomTextButtonViewModel.swift; sourceTree = "<group>"; };
 		88BE1F1729B332E7008B73BE /* CustomTextButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextButtonViewModel.swift; sourceTree = "<group>"; };
 		88BF04C029557CDB001F7725 /* Pr_ProductListUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_ProductListUsecase.swift; sourceTree = "<group>"; };
@@ -346,7 +351,6 @@
 		88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewController.swift; sourceTree = "<group>"; };
 		88D65E6629B707BE0019DAF9 /* Pr_CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationViewControllerViewModel.swift; sourceTree = "<group>"; };
-		88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaAnimationController.swift; sourceTree = "<group>"; };
 		88D65E7129B78EEA0019DAF9 /* TransitionLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionLoginViewController.swift; sourceTree = "<group>"; };
 		88D65E7429B78F110019DAF9 /* Pr_LoginViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pr_LoginViewControllerViewModel.swift; sourceTree = "<group>"; };
 		88D65E7629B78F190019DAF9 /* LoginViewControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerViewModel.swift; sourceTree = "<group>"; };
@@ -1058,6 +1062,25 @@
 			path = MockData;
 			sourceTree = "<group>";
 		};
+		88B6EA9629BB819000E35802 /* BackgroundView */ = {
+			isa = PBXGroup;
+			children = (
+				88B6EA9729BB819E00E35802 /* BackgroundView.swift */,
+				88B6EA9929BB81BE00E35802 /* ViewModel */,
+				88F5DD8429969D2E007FB204 /* NavigationCircleView */,
+			);
+			path = BackgroundView;
+			sourceTree = "<group>";
+		};
+		88B6EA9929BB81BE00E35802 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				88B6EA9A29BB81C800E35802 /* Pr_BackgroundViewModel.swift */,
+				88B6EA9C29BB81DA00E35802 /* BackgroundViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		88BE1F1429B332BC008B73BE /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1207,7 +1230,7 @@
 				8887D1502935A65C005DA3C6 /* MainContainerViewController.swift */,
 				881D8C7229AA313900B90125 /* Protocol */,
 				88F5DD8C29969E2E007FB204 /* ViewModel */,
-				88F5DD8429969D2E007FB204 /* NavigationCircleView */,
+				88B6EA9629BB819000E35802 /* BackgroundView */,
 			);
 			path = MainContainerViewController;
 			sourceTree = "<group>";
@@ -1217,7 +1240,6 @@
 			children = (
 				88D65E6329B707890019DAF9 /* CustomNavigationViewController.swift */,
 				88D65E6529B707A80019DAF9 /* ViewModel */,
-				88D65E6B29B77FFF0019DAF9 /* Protocol */,
 			);
 			path = CustomNavigationViewController;
 			sourceTree = "<group>";
@@ -1229,14 +1251,6 @@
 				88D65E6829B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		88D65E6B29B77FFF0019DAF9 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				88D65E6C29B7801B0019DAF9 /* AlphaAnimationController.swift */,
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 		88D65E7029B78ECE0019DAF9 /* Transition */ = {
@@ -1598,6 +1612,7 @@
 				88F127E629B67F6800CB0B20 /* UserPageViewCoordinator.swift in Sources */,
 				881D8C6B29A9B99E00B90125 /* GetCurrentProductPrice.swift in Sources */,
 				88D50D5529B8482F00FCF5F4 /* UserPageTableViewCell.swift in Sources */,
+				88B6EA9D29BB81DA00E35802 /* BackgroundViewModel.swift in Sources */,
 				8870DCA528E5701E005328C0 /* ViewController.swift in Sources */,
 				881D8C7429AA322100B90125 /* Pr_ChildViewController.swift in Sources */,
 				8897C46D292CC8D300823980 /* GetProductsList.swift in Sources */,
@@ -1606,7 +1621,6 @@
 				88A7FF49295B163200F2E9CD /* SocketNWConnection+SocketNetworkInterface.swift in Sources */,
 				88F127DF29B67F0A00CB0B20 /* Pr_UserPageViewControllerViewModel.swift in Sources */,
 				88881532296EDE7E0023CDE3 /* ProductListStateInterface.swift in Sources */,
-				88D65E6D29B7801B0019DAF9 /* AlphaAnimationController.swift in Sources */,
 				881D8C6929A9B66E00B90125 /* HTTPDataTransferCurrentProductPrice.swift in Sources */,
 				88C6A0A72967D10C0027BDD3 /* InputStreamDataTransfer.swift in Sources */,
 				887D549D295303DA00DA2F15 /* ProductListUsecase.swift in Sources */,
@@ -1657,6 +1671,7 @@
 				8832E9B629A3D29F00904667 /* Pr_DetailProductPriceViewModel.swift in Sources */,
 				8874627D29B6915E00C54389 /* TransitionUserPageViewController.swift in Sources */,
 				8832E85529A0E38800BCFF33 /* DetailProductCollectionViewCommentCell.swift in Sources */,
+				88B6EA9B29BB81C800E35802 /* Pr_BackgroundViewModel.swift in Sources */,
 				881D8C6729A9B38D00B90125 /* Pr_HTTPDataTransferCurrentProductPrice.swift in Sources */,
 				88D65E6929B707C20019DAF9 /* CustomNavigationViewControllerViewModel.swift in Sources */,
 				8874627729B68ECF00C54389 /* LoginPageViewCoordinator.swift in Sources */,
@@ -1667,6 +1682,7 @@
 				88D50D4529B8384F00FCF5F4 /* SceneDIContainer+UserPageViewSceneDIContainer.swift in Sources */,
 				88F5DD9029969E84007FB204 /* MainContainerControllerViewModel.swift in Sources */,
 				8897C45A292CC09300823980 /* SocketNetworkInterface.swift in Sources */,
+				88B6EA9829BB819E00E35802 /* BackgroundView.swift in Sources */,
 				889FC3F329825732009B8A2A /* ErrorAlterView.swift in Sources */,
 				8864183929978C1200C0BD17 /* ExportConfigure.swift in Sources */,
 				88881534296EE0170023CDE3 /* ProductListState+Interface.swift in Sources */,

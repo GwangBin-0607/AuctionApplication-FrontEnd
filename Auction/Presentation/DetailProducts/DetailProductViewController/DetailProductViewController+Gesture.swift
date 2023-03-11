@@ -73,7 +73,7 @@ extension DetailProductViewController:GestureDelegateWithButton{
             let ratio = animatorState == .bottom ? -(pangesture.point.y/(view.frame.height*0.4)) : (pangesture.point.y/(view.frame.height*0.4))
             let max = max(ratio, 0.0)
             animator.fractionComplete = min(max,1.0)
-        case .ended:
+        case .ended,.failed,.cancelled:
             animator.continueAnimation(withTimingParameters: nil, durationFactor: 0.0)
         default:
             break;

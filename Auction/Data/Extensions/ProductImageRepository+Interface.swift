@@ -28,11 +28,10 @@ class ProductImageRepository:ProductImageRepositoryInterface{
         let newHeight = image.size.height * scale
         
         let size = CGSize(width: newWidth, height: newHeight)
-        let render = UIGraphicsImageRenderer(size: size)
-        let renderImage = render.image { context in
-            image.draw(in: CGRect(origin: .zero, size: size))
-        }
-        return renderImage
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        image.draw(in: CGRect(origin: .zero, size: size))
+        defer {UIGraphicsEndImageContext()}
+        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
     }
 }
 extension ProductImageRepository{

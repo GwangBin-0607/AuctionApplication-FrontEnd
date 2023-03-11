@@ -19,6 +19,7 @@ class NavigationCornerRadiusView:CornerRadiusView{
     private var previousRadius:CGFloat = 0.0
     weak var gestureDelegate:GestureDelegate?
     private let userImageView:UIImageView
+    weak var contentView:UIView?
     init(ViewModel:Pr_NavigationCircleViewModel) {
         userImageView = UIImageView()
         viewUp = false
@@ -35,6 +36,16 @@ class NavigationCornerRadiusView:CornerRadiusView{
         alphaAnimation.pausesOnCompletion = true
         layout()
         bind()
+    }
+    func addView(view:UIView){
+        
+        self.contentView = view
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
     func setDelegate(gestureDelegate:GestureDelegate){
         self.gestureDelegate = gestureDelegate
@@ -96,43 +107,26 @@ extension NavigationCornerRadiusView{
     func animationWithBasicAnimation(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
         if !viewUp{
             viewUp = true
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(animationDuration)
-            let cornerAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.cornerRadius))
             previousRadius = self.layer.cornerRadius
-            cornerAnimation.duration = animationDuration
-            cornerAnimation.fromValue = self.layer.cornerRadius
-            cornerAnimation.toValue = 20
-            self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
             UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 1.0,initialSpringVelocity: 1.0,animations: {
                 self.userImageView.alpha = 0.0
+                self.contentView!.alpha = 1.0
+                self.layer.cornerRadius = 20
                 superviewAnimationBlock()
             })
-            CATransaction.setCompletionBlock({
-                self.layer.cornerRadius = 20
-            })
-            CATransaction.commit()
         }
     }
     func animationReverse(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
         if viewUp{
             backGesture()
             viewUp = false
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(animationDuration)
-            let cornerAnimation = CABasicAnimation(keyPath: #keyPath(CALayer.cornerRadius))
-            cornerAnimation.duration = animationDuration
-            cornerAnimation.fromValue = 20
-            cornerAnimation.toValue = previousRadius
-            self.layer.add(cornerAnimation, forKey: #keyPath(CALayer.cornerRadius))
             UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
                 self.userImageView.alpha = 1.0
+                self.contentView!.alpha = 0.0
+                self.layer.cornerRadius = self.previousRadius
                 superviewAnimationBlock()
             })
-            CATransaction.setCompletionBlock({
-                self.layer.cornerRadius = self.previousRadius
-            })
-            CATransaction.commit()
         }
     }
+
 }

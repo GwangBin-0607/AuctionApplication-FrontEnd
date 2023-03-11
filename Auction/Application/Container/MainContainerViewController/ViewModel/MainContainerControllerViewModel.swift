@@ -8,8 +8,8 @@
 import Foundation
 import RxSwift
 class MainContainerControllerViewModel:Pr_MainContainerControllerViewModel{
-    private let navigationCircleViewModel:Pr_NavigationCircleViewModel
-    init(navigationCircleViewModel:Pr_NavigationCircleViewModel) {
-        self.navigationCircleViewModel = navigationCircleViewModel
+    private let backgroundViewModel:Pr_BackgroundViewModel
+    init(backgroundViewModel:Pr_BackgroundViewModel) {
+        self.backgroundViewModel  = backgroundViewModel
     }
 }

@@ -131,15 +131,3 @@ extension CustomNavigationViewController:ContainerViewController{
         })
     }
 }
-extension CustomNavigationViewController:AlphaAnimationController{
-    func tapGesture(duration:CGFloat){
-        UIView.animate(withDuration: duration, delay: 0.0, animations: {
-            self.view.alpha = 1.0
-        })
-    }
-    func backGesture(duration:CGFloat){
-        UIView.animate(withDuration: duration, delay: 0.0, animations: {
-            self.view.alpha = 0.0
-        })
-    }
-}

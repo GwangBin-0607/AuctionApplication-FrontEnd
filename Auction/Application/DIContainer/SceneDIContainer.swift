@@ -39,18 +39,26 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
     }
     func returnMainContainerViewController() -> MainContainerViewController {
-        let navigationCircleViewModel = returnNavigationCircleViewModel()
-        let navigationCircleView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationCircleViewModel)
-        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(navigationCircleViewModel: navigationCircleViewModel)
-        return MainContainerViewController(navigationCircleView: navigationCircleView, viewModel: mainContainerControllerViewModel)
+        let navigationViewModel = returnNavigationCircleViewModel()
+        let navigationView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationViewModel)
+        let backgroundViewModel = returnBackgroundViewModel(navigationViewModel: navigationViewModel)
+        let backgroundView = returnBackgroundView(viewModel: backgroundViewModel,naviationView: navigationView)
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(backgroundViewModel: backgroundViewModel)
+        return MainContainerViewController(viewModel: mainContainerControllerViewModel, backgroundView: backgroundView)
     }
-    func returnMainContainerControllerViewModel(navigationCircleViewModel:Pr_NavigationCircleViewModel)->Pr_MainContainerControllerViewModel{
-        MainContainerControllerViewModel(navigationCircleViewModel:navigationCircleViewModel)
+    func returnMainContainerControllerViewModel(backgroundViewModel:Pr_BackgroundViewModel)->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel(backgroundViewModel: backgroundViewModel)
     }
     private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
         NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)
     }
     private func returnNavigationCircleViewModel()->Pr_NavigationCircleViewModel{
         NavigationCircleViewModel()
+    }
+    private func returnBackgroundView(viewModel:Pr_BackgroundViewModel,naviationView:NavigationCornerRadiusView)->BackgroundView{
+        BackgroundView(navigationView: naviationView, viewModel: viewModel)
+    }
+    private func returnBackgroundViewModel(navigationViewModel:Pr_NavigationCircleViewModel)->Pr_BackgroundViewModel{
+        BackgroundViewModel(navigationViewModel: navigationViewModel)
     }
 }
