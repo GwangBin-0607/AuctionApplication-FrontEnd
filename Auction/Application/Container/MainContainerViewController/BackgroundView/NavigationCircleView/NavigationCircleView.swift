@@ -104,7 +104,7 @@ extension NavigationCornerRadiusView{
     }
 }
 extension NavigationCornerRadiusView{
-    func animationWithBasicAnimation(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
+    func animationWithBasicAnimation(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void,completion:(()->Void)?){
         if !viewUp{
             viewUp = true
             previousRadius = self.layer.cornerRadius
@@ -113,10 +113,15 @@ extension NavigationCornerRadiusView{
                 self.contentView!.alpha = 1.0
                 self.layer.cornerRadius = 20
                 superviewAnimationBlock()
+            },completion: {
+                finish in
+                if finish{
+                    completion?()
+                }
             })
         }
     }
-    func animationReverse(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void){
+    func animationReverse(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void,completion:(()->Void)?){
         if viewUp{
             backGesture()
             viewUp = false
@@ -125,6 +130,11 @@ extension NavigationCornerRadiusView{
                 self.contentView!.alpha = 0.0
                 self.layer.cornerRadius = self.previousRadius
                 superviewAnimationBlock()
+            },completion:  {
+                finish in
+                if finish{
+                    completion?()
+                }
             })
         }
     }

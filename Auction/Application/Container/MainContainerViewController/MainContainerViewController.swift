@@ -6,12 +6,28 @@ final class MainContainerViewController:UIViewController{
     private let viewModel:Pr_MainContainerControllerViewModel
     private let disposeBag = DisposeBag()
     private let backgroundView:BackgroundView
+    private var customNavigationController:UIViewController?
     init(viewModel:Pr_MainContainerControllerViewModel,backgroundView:BackgroundView) {
         self.backgroundView = backgroundView
         self.viewModel = viewModel
         containerView = UIView()
         super.init(nibName: nil, bundle: nil)
-        createDisplayLink()
+        backgroundView.setAnimationCompletion(appear: {
+            [weak self] in
+            let children = self?.children.filter({$0 != self?.customNavigationController}).last
+            children?.beginAppearanceTransition(false, animated: true)
+            self?.customNavigationController?.beginAppearanceTransition(true, animated: true)
+        }, disappear: {
+            [weak self] in
+            let children = self?.children.filter({$0 != self?.customNavigationController}).last
+            children?.beginAppearanceTransition(true, animated: true)
+            self?.customNavigationController?.beginAppearanceTransition(false, animated: true)
+        },end: {
+            [weak self] in
+            let children = self?.children.filter({$0 != self?.customNavigationController}).last
+            children?.endAppearanceTransition()
+            self?.customNavigationController?.endAppearanceTransition()
+        })
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,7 +60,6 @@ final class MainContainerViewController:UIViewController{
     private func bind(){
 
     }
-    var preTime:TimeInterval?
 }
 extension MainContainerViewController:ContainerViewController{
     func dismiss(animate: Bool,viewController:UIViewController?) {
@@ -85,28 +100,21 @@ extension MainContainerViewController:ContainerViewController{
         ViewController.endAppearanceTransition()
     }
     func presentNaviationViewController(ViewController: UIViewController) {
+        customNavigationController = ViewController
         self.addChild(ViewController)
-        ViewController.beginAppearanceTransition(true, animated: false)
         backgroundView.addView(view: ViewController.view)
         ViewController.didMove(toParent: self)
-        ViewController.endAppearanceTransition()
+    }
+    func backgroundViewAnimationCompletion(){
+        self.children.forEach({
+            con in
+            if con == customNavigationController{
+                con.beginAppearanceTransition(true, animated: true)
+                
+            }else{
+                print(con)
+            }
+        })
     }
     
-}
-extension MainContainerViewController{
-    func createDisplayLink() {
-        let displaylink = CADisplayLink(target: self,
-                                        selector: #selector(step))
-        
-        displaylink.add(to: .current,
-                        forMode: .default)
-    }
-    @objc func step(displaylink: CADisplayLink) {
-        if let preTime = preTime{
-            if (displaylink.timestamp - preTime) >= 0.017{
-                print(displaylink.timestamp - preTime)
-            }
-        }
-        self.preTime = displaylink.timestamp
-    }
 }

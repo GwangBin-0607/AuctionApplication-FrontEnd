@@ -15,6 +15,9 @@ final class ProductListCollectionView: UICollectionView {
         print("\(String(describing: self)) INIT")
         setLayout()
     }
+    func stopScroll(){
+        self.setContentOffset(contentOffset, animated: false)
+    }
     private func setLayout(){
         self.backgroundColor = .black.withAlphaComponent(0.9)
     }

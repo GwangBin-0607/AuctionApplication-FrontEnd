@@ -19,6 +19,9 @@ class BackgroundView:UIView{
     private var navigationCircleViewHeightEnd:NSLayoutConstraint!
     private let gap:CGFloat = 10
     private let viewModel:Pr_BackgroundViewModel
+    private var appearCompletion:(()->Void)?
+    private var disappearCompletion:(()->Void)?
+    private var endCompletion:(()->Void)?
     init(navigationView:NavigationCornerRadiusView,viewModel:Pr_BackgroundViewModel) {
         isUp = false
         self.navigationView = navigationView
@@ -33,6 +36,11 @@ class BackgroundView:UIView{
     func addView(view:UIView){
         
         navigationView.addView(view: view)
+    }
+    func setAnimationCompletion(appear:@escaping()->Void,disappear:@escaping()->Void,end:@escaping()->Void){
+        self.appearCompletion = appear
+        self.disappearCompletion = disappear
+        self.endCompletion = end
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -114,10 +122,11 @@ extension BackgroundView{
     }
     private func AnimationloginView(){
         self.animationBegan()
+        appearCompletion?()
         navigationView.animationWithBasicAnimation(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundColor = .black.withAlphaComponent(0.75)
             self.layoutIfNeeded()
-        })
+        },completion: self.endCompletion)
     }
     func makeTapgesture()->UITapGestureRecognizer{
         let tap = UITapGestureRecognizer(target: self, action: #selector(gesture(sender:)))
@@ -127,12 +136,13 @@ extension BackgroundView{
     }
     @objc private func gesture(sender:UITapGestureRecognizer){
         self.animationEnd()
+        disappearCompletion?()
         isUp = false
         navigationView.animationReverse(animationDuration: animationDuration, superviewAnimationBlock: {
             self.backgroundColor = .clear
             self.alpha = 1.0
             self.layoutIfNeeded()
-        })
+        },completion: self.endCompletion)
     }
 
 }
