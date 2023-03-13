@@ -8,7 +8,7 @@
 import Foundation
 protocol CustomContainerViewDIContainer {
     func returnCustomContainerViewController()->CustomNavigationViewController
-    func returnUserPageCoordinator(containerView:ContainerViewController)->Coordinator
+    func returnUserPageCoordinator(containerView:ContainerViewController,delegate:HasChildCoordinator)->Coordinator
 }
 extension SceneDIContainer:CustomContainerViewDIContainer{
     func returnCustomContainerViewController()->CustomNavigationViewController{
@@ -17,7 +17,7 @@ extension SceneDIContainer:CustomContainerViewDIContainer{
     func returnCustomContainerViewModel()->Pr_CustomNavigationViewControllerViewModel{
         CustomNavigationViewControllerViewModel()
     }
-    func returnUserPageCoordinator(containerView:ContainerViewController) -> Coordinator {
-        UserPageViewCoordinator(containerViewController: containerView, sceneDIContainer: self)
+    func returnUserPageCoordinator(containerView:ContainerViewController,delegate:HasChildCoordinator) -> Coordinator {
+        UserPageViewCoordinator(containerViewController: containerView, sceneDIContainer: self,delegate: delegate)
     }
 }

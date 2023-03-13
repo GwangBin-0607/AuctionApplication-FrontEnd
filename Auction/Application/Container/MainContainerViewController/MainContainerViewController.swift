@@ -99,22 +99,11 @@ extension MainContainerViewController:ContainerViewController{
         ViewController.didMove(toParent: self)
         ViewController.endAppearanceTransition()
     }
-    func presentNaviationViewController(ViewController: UIViewController) {
+    func presentNaviationViewController(ViewController: ContainerViewController) {
         customNavigationController = ViewController
         self.addChild(ViewController)
         backgroundView.addView(view: ViewController.view)
         ViewController.didMove(toParent: self)
-    }
-    func backgroundViewAnimationCompletion(){
-        self.children.forEach({
-            con in
-            if con == customNavigationController{
-                con.beginAppearanceTransition(true, animated: true)
-                
-            }else{
-                print(con)
-            }
-        })
     }
     
 }

@@ -8,12 +8,14 @@
 import Foundation
 import UIKit
 
-final class ProductListViewCoordinator:Coordinator{
+final class ProductListViewCoordinator:Coordinator,HasParentCoordinator{
+    let delegate: HasChildCoordinator
     var containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     let sceneDIContainer:ProductListViewSceneDIContainer
     weak var viewController: UIViewController?
-    init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer) {
+    init(ContainerViewController:ContainerViewController,SceneDIContainer:ProductListViewSceneDIContainer,delegate:HasChildCoordinator) {
+        self.delegate = delegate
         self.sceneDIContainer = SceneDIContainer
         self.containerViewController = ContainerViewController
     }
@@ -37,5 +39,8 @@ extension ProductListViewCoordinator:TransitionProductListViewController{
 extension ProductListViewCoordinator:HasChildCoordinator{
     func removeChildCoordinator(Co: Coordinator) {
         self.childCoordinator = childCoordinator.filter{$0 !== Co}
+    }
+    func toLogin() {
+        
     }
 }

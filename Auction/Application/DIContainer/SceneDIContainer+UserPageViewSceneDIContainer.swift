@@ -14,10 +14,12 @@ protocol UserPageViewSceneDIContainer{
 
 extension SceneDIContainer:UserPageViewSceneDIContainer{
     func returnUserPageViewController(transitioning:TransitionUserPageViewController)->UserPageViewController{
-        UserPageViewController(viewModel: returnUserPageViewModel(transition: transitioning),settingTableView: returnUserPageTableView())
+        let tableViewModel = returnUserPageTableViewModel()
+        let tableview = returnUserPageTableView(viewModel: tableViewModel)
+        return UserPageViewController(viewModel: returnUserPageViewModel(transition: transitioning,tableviewModel: tableViewModel),settingTableView: tableview)
     }
-    func returnUserPageTableView()->UserPageTableView{
-        UserPageTableView(viewModel: returnUserPageTableViewModel())
+    func returnUserPageTableView(viewModel:Pr_UserPageTableViewModel)->UserPageTableView{
+        UserPageTableView(viewModel: viewModel)
     }
     func returnUserPageTableViewModel()->Pr_UserPageTableViewModel{
         UserPageTableViewModel()
@@ -25,8 +27,8 @@ extension SceneDIContainer:UserPageViewSceneDIContainer{
     func returnLoginPageCoordinator(containerViewController:ContainerViewController,delegate:HasChildCoordinator) -> LoginPageCoordinator {
         LoginPageCoordinator(containerViewController: containerViewController, sceneDIContainer: self, delegate: delegate)
     }
-    private func returnUserPageViewModel(transition:TransitionUserPageViewController)->Pr_UserPageViewControllerViewModel{
-        UserPageViewControllerViewModel(delegate: transition)
+    private func returnUserPageViewModel(transition:TransitionUserPageViewController,tableviewModel:Pr_UserPageTableViewModel)->Pr_UserPageViewControllerViewModel{
+        UserPageViewControllerViewModel(delegate: transition,tableViewModel: tableviewModel)
     }
     private func returnCustomNavigationViewModel()->Pr_CustomNavigationViewControllerViewModel{
         CustomNavigationViewControllerViewModel()

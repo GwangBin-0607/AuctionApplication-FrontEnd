@@ -30,10 +30,10 @@ final class ProductListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        collectionView.stopScroll()
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        collectionView.stopScroll()
+//    }
     
 }
 extension ProductListViewController{

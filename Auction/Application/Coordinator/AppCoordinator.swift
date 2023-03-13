@@ -22,13 +22,21 @@ class AppCoordinator:Coordinator{
         showUserPageViewController()
     }
     private func showProductListViewController(){
-        let coordinator = sceneDIContainer.returnProductListViewCoordinator(ContainerViewController: containerViewController)
+        let coordinator = sceneDIContainer.returnProductListViewCoordinator(ContainerViewController: containerViewController,delegate: self)
         coordinator.start()
         childCoordinator.append(coordinator)
     }
     private func showUserPageViewController(){
-        let coordinator = sceneDIContainer.returnCustomContainerCoordinator(containerViewController: containerViewController)
+        let coordinator = sceneDIContainer.returnCustomContainerCoordinator(containerViewController: containerViewController,delegate: self)
         coordinator.start()
         childCoordinator.append(coordinator)
+    }
+}
+extension AppCoordinator:HasChildCoordinator{
+    func removeChildCoordinator(Co: Coordinator) {
+        
+    }
+    func toLogin() {
+        
     }
 }

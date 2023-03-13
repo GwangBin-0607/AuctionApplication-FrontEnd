@@ -9,4 +9,10 @@ import Foundation
 
 protocol HasChildCoordinator:AnyObject{
     func removeChildCoordinator(Co:Coordinator)
+    func toLogin()
+}
+extension HasChildCoordinator{
+    func toLogin(){
+        
+    }
 }

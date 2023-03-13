@@ -9,16 +9,16 @@ import Foundation
 import UIKit
 import RxSwift
 class ShadowView:UIView{
+    override func draw(_ rect: CGRect) {
+        self.layer.shadowPath = UIBezierPath(rect: rect).cgPath
+    }
     init() {
         super.init(frame: .zero)
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 5
         self.layer.shadowOffset = CGSize(width: 0.0, height: -5.0)
-        self.layer.shouldRasterize = true
-        self.layer.rasterizationScale = UIScreen.main.scale
         self.layer.cornerRadius = 10
-        
     }
     
     required init?(coder: NSCoder) {

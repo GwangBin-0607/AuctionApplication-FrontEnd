@@ -38,15 +38,6 @@ final class CustomNavigationViewController:UIViewController{
         return view
         
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        print("Naviation View Will Appear")
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("Naviation View Will Appear")
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -56,10 +47,13 @@ extension CustomNavigationViewController{
     @discardableResult
     private func constraintsBeforeViewControllerView(present:Bool)->UIView?{
         if let preView = children[children.count-2].view{
-            containView.constraints.filter({$0.firstItem as? UIView == preView}).filter({$0.firstAttribute == .leading}).forEach({$0.isActive = false})
+            print("!!!")
+            containView.constraints.filter({$0.firstItem as? UIView == preView}).filter({$0.firstAttribute == .leading || $0.firstAttribute == .trailing}).forEach({$0.isActive = false})
             if present{
+                preView.trailingAnchor.constraint(equalTo: containView.trailingAnchor).isActive = true
                 preView.leadingAnchor.constraint(equalTo: containView.leadingAnchor).isActive = true
             }else{
+                preView.trailingAnchor.constraint(equalTo: containView.trailingAnchor, constant: animationLeading * -1 ).isActive = true
                 preView.leadingAnchor.constraint(equalTo: containView.leadingAnchor, constant: animationLeading * -1).isActive = true
             }
             return preView
@@ -69,6 +63,7 @@ extension CustomNavigationViewController{
     }
     private func constraintsCurrentViewControllerView(present:Bool){
         if let preView = children[children.count-1].view{
+            print("@@@@")
             containView.constraints.filter({$0.firstItem as? UIView == preView}).filter({$0.firstAttribute == .leading}).forEach({$0.isActive = false})
             if present{
                 preView.leadingAnchor.constraint(equalTo: containView.leadingAnchor).isActive = true

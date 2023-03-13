@@ -24,13 +24,16 @@ final class UserPageTableView:UITableView{
     private func bind(){
         viewModel.tableViewContent.bind(to: rx.items){
             tbl,index,elements in
+            print("CELL")
             let cell = tbl.dequeueReusableCell(withIdentifier: UserPageTableViewCell.IDENTIFIER) as? UserPageTableViewCell
             cell?.binding.onNext(elements)
             return cell ?? UITableViewCell()
         }.disposed(by: disposeBag)
-        rx.itemSelected.subscribe(onNext: {
-            idx in
-            print(idx)
+        rx.itemSelected.withUnretained(self).subscribe(onNext: {
+            owner,idx in
+            if idx.item == 0{
+                owner.viewModel.loginPresentObserver.onNext(())
+            }
         }).disposed(by: disposeBag)
         
     }

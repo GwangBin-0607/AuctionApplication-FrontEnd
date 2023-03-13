@@ -7,12 +7,14 @@
 
 import Foundation
 import UIKit
-final class UserPageViewCoordinator:Coordinator{
+final class UserPageViewCoordinator:Coordinator,HasParentCoordinator{
+    let delegate: HasChildCoordinator
     var containerViewController: ContainerViewController
     var childCoordinator: [Coordinator] = []
     weak var viewController: UIViewController?
     let sceneDIContainer:UserPageViewSceneDIContainer
-    init(containerViewController:ContainerViewController,sceneDIContainer:UserPageViewSceneDIContainer) {
+    init(containerViewController:ContainerViewController,sceneDIContainer:UserPageViewSceneDIContainer,delegate:HasChildCoordinator) {
+        self.delegate = delegate
         self.containerViewController = containerViewController
         self.sceneDIContainer = sceneDIContainer
     }

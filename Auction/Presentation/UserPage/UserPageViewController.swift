@@ -12,12 +12,7 @@ final class UserPageViewController:UIViewController{
     
     private let viewModel:Pr_UserPageViewControllerViewModel
     private let disposeBag:DisposeBag
-    private let profileImageView:UIImageView = {
-       let r = UIImageView()
-        r.layer.cornerRadius = 10
-        r.clipsToBounds = true
-        return r
-    }()
+    private let profileImageView:DetailProductCollectionViewUserCellProfileImageView
     private let usernameLabel:UILabel
     private let settingTableView:UserPageTableView
     init(viewModel:Pr_UserPageViewControllerViewModel,settingTableView:UserPageTableView) {
@@ -25,6 +20,7 @@ final class UserPageViewController:UIViewController{
         usernameLabel = UILabel()
         disposeBag = DisposeBag()
         self.viewModel = viewModel
+        profileImageView = DetailProductCollectionViewUserCellProfileImageView()
         super.init(nibName: nil, bundle: nil)
         bind()
     }
@@ -49,8 +45,7 @@ final class UserPageViewController:UIViewController{
         usernameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5.0).isActive = true
         usernameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10.0).isActive = true
         usernameLabel.font = UIFont.systemFont(ofSize: 40.0, weight: .heavy)
-        profileImageView.backgroundColor = .green
-        usernameLabel.backgroundColor = .yellow
+        profileImageView.backgroundColor = .lightGray
         usernameLabel.text = "Nickname"
         usernameLabel.adjustsFontSizeToFitWidth = true
         usernameLabel.minimumScaleFactor = 0.1
@@ -60,7 +55,6 @@ final class UserPageViewController:UIViewController{
         settingTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         settingTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         settingTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        settingTableView.backgroundColor = .blue
         return view
     }
     

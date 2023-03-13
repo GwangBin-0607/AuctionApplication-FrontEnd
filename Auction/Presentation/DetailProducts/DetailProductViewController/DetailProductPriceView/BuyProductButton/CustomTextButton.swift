@@ -3,7 +3,7 @@ import RxSwift
 final class CustomTextButton:UIButton{
     private let startColor:UIColor
     private let endColor:UIColor
-    private let viewModel:Pr_CustomTextButtonViewModel
+    private let viewModel:Pr_CustomTextButtonViewModel?
     private let disposeBag:DisposeBag
     weak var gestureDelegate:GestureButtonTap?
     override var intrinsicContentSize: CGSize{
@@ -22,6 +22,15 @@ final class CustomTextButton:UIButton{
     func setDelegate(delegate:GestureButtonTap){
         self.gestureDelegate = delegate
     }
+    init(){
+        viewModel = nil
+        disposeBag = DisposeBag()
+        startColor = .white
+        endColor = .white
+        super.init(frame: .zero)
+        setCornerRadius()
+        decorationTitleLabelFont()
+    }
     init(viewModel:Pr_CustomTextButtonViewModel) {
         self.viewModel = viewModel
         disposeBag = DisposeBag()
@@ -29,13 +38,19 @@ final class CustomTextButton:UIButton{
         endColor = .white
         super.init(frame: .zero)
         bind()
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
+        setCornerRadius()
         self.backgroundColor = endColor
         self.setTitle("구매하기", for: .normal)
         self.setTitleColor(.black, for: .normal)
         self.contentMode = .scaleAspectFit
         self.tintColor = .gray
+        decorationTitleLabelFont()
+    }
+    func setCornerRadius(){
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
+    }
+    func decorationTitleLabelFont(){
         let horizontalPadding:CGFloat = 5
         if #available(iOS 15.0, *){
             var config = UIButton.Configuration.plain()

@@ -10,6 +10,8 @@ import RxSwift
 final class UserPageTableViewModel:Pr_UserPageTableViewModel{
     let tableViewContent: Observable<[String]>
     let reloadTableView: AnyObserver<Void>
+    let loginPresentObserver: AnyObserver<Void>
+    let loginPresentObservable: Observable<Void>
     private let disposeBag:DisposeBag
     init() {
         disposeBag = DisposeBag()
@@ -21,5 +23,8 @@ final class UserPageTableViewModel:Pr_UserPageTableViewModel{
         reloadSubject.asObservable().subscribe(onNext: {
             tableViewContentObserver.onNext(["로그인","설정","기타"])
         }).disposed(by: disposeBag)
+        let loginSubject = PublishSubject<Void>()
+        loginPresentObserver = loginSubject.asObserver()
+        loginPresentObservable = loginSubject.asObservable()
     }
 }

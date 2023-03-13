@@ -25,18 +25,18 @@ extension SceneDIContainer {
     }
 }
 protocol MainContainerViewSceneDIContainer{
-    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController,delegate:HasChildCoordinator)->Coordinator
     func returnMainContainerViewController()->MainContainerViewController
-    func returnCustomContainerCoordinator(containerViewController: ContainerViewController)->Coordinator
+    func returnCustomContainerCoordinator(containerViewController: ContainerViewController,delegate:HasChildCoordinator)->Coordinator
 }
 
 //MARK: ProductList Coordinator
 extension SceneDIContainer:MainContainerViewSceneDIContainer{
-    func returnCustomContainerCoordinator(containerViewController: ContainerViewController) -> Coordinator {
-        CustomContainerViewCoordinator(SceneDIContainer: self, containerViewController: containerViewController)
+    func returnCustomContainerCoordinator(containerViewController: ContainerViewController,delegate:HasChildCoordinator) -> Coordinator {
+        CustomContainerViewCoordinator(SceneDIContainer: self, containerViewController: containerViewController,delegate: delegate)
     }
-    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController)->Coordinator{
-        ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self)
+    func returnProductListViewCoordinator(ContainerViewController:ContainerViewController,delegate:HasChildCoordinator)->Coordinator{
+        ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self,delegate: delegate)
     }
     func returnMainContainerViewController() -> MainContainerViewController {
         let navigationViewModel = returnNavigationCircleViewModel()

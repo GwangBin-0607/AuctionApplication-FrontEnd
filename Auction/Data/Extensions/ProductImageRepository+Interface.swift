@@ -28,7 +28,7 @@ class ProductImageRepository:ProductImageRepositoryInterface{
         let newHeight = image.size.height * scale
         
         let size = CGSize(width: newWidth, height: newHeight)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
         image.draw(in: CGRect(origin: .zero, size: size))
         defer {UIGraphicsEndImageContext()}
         return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()

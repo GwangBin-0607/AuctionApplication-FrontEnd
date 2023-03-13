@@ -57,7 +57,7 @@ extension SceneDIContainer:ProductListViewSceneDIContainer{
         let streamNetwork = returnSocketNetworkInterfaceInContainer()
         let listUsecase = returnProductListUsecaseInterface(httpService: httpService,ImageHeightRepository: imageRepository,socketNetworkInterface: streamNetwork)
         let imageLoadUsecase = returnProductImageLoadUsecaseInterface(ImageLoadRepository: imageRepository)
-        let imageWidth = returnImageWidth(scale: 2.0)
+        let imageWidth = returnImageWidth(scale: cellCount)
         let cellViewModel = returnProductListCollectionViewCellViewModel(ImageUsecase: imageLoadUsecase,imageWidth: imageWidth)
         let collectionViewModel = returnProductListCollectionViewModel(listUsecase: listUsecase, imageLoadUsecase: imageLoadUsecase, cellViewModel: cellViewModel, imageWidth: imageWidth)
         let errorAlterViewModel = returnErrorAlterViewModel()

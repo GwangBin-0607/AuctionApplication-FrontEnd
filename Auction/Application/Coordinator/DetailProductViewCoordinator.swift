@@ -39,4 +39,7 @@ extension DetailProductViewCoordinator:TransitionDetailProductViewController{
         delegate.removeChildCoordinator(Co: self)
         containerViewController.dismiss(animate: true,viewController: viewController)
     }
+    func toLoginView(){
+        delegate.toLogin()
+    }
 }

@@ -40,7 +40,7 @@ final class UserPageTableViewCell:UITableViewCell{
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         arrowImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor).isActive = true
         NSLayoutConstraint(item: arrowImageView, attribute: .trailing, relatedBy: .equal, toItem: contentView, attribute: .centerX, multiplier: 1.9, constant: 0.0).isActive = true
-        NSLayoutConstraint(item: arrowImageView, attribute: .height, relatedBy: .equal, toItem: contentLabel, attribute: .height, multiplier: 0.5, constant: 0.0).isActive = true
+        NSLayoutConstraint(item: arrowImageView, attribute: .height, relatedBy: .equal, toItem: contentLabel, attribute: .height, multiplier: 0.25, constant: 0.0).isActive = true
         arrowImageView.widthAnchor.constraint(equalTo: arrowImageView.heightAnchor).isActive = true
         contentLabel.trailingAnchor.constraint(equalTo: arrowImageView.leadingAnchor, constant: -5.0).isActive = true
         arrowImageView.tintColor = .gray

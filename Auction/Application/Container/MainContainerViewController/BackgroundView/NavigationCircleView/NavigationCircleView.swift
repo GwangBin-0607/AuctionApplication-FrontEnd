@@ -40,12 +40,20 @@ class NavigationCornerRadiusView:CornerRadiusView{
     func addView(view:UIView){
         
         self.contentView = view
-        self.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+    private func animateContentView(){
+        if let view = self.contentView{
+            self.addSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+            view.alpha = 0.0
+        }
+    }
+    private func removeContentView(){
+        self.contentView?.removeFromSuperview()
     }
     func setDelegate(gestureDelegate:GestureDelegate){
         self.gestureDelegate = gestureDelegate
@@ -69,7 +77,7 @@ class NavigationCornerRadiusView:CornerRadiusView{
             animationReverser(animation: alphaAnimation, reverse: false)
         }
     }
-    func backGesture(){
+    private func backGesture(){
         animationReverser(animation: alphaAnimation, reverse: true)
     }
     deinit {
@@ -104,36 +112,58 @@ extension NavigationCornerRadiusView{
     }
 }
 extension NavigationCornerRadiusView{
+    private var contentAlphaDuration:CGFloat{
+        return 0.3
+    }
     func animationWithBasicAnimation(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void,completion:(()->Void)?){
         if !viewUp{
             viewUp = true
             previousRadius = self.layer.cornerRadius
-            UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 1.0,initialSpringVelocity: 1.0,animations: {
+            UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
                 self.userImageView.alpha = 0.0
                 self.contentView!.alpha = 1.0
                 self.layer.cornerRadius = 20
+                self.backgroundColor = .darkGray.withAlphaComponent(0.5)
+                self.layer.borderColor = UIColor.darkGray.cgColor
                 superviewAnimationBlock()
             },completion: {
                 finish in
                 if finish{
-                    completion?()
+                    self.animateContentView()
+                    UIView.animate(withDuration: self.contentAlphaDuration, delay: 0.0, animations: {
+                        self.contentView?.alpha = 1.0
+                    },completion: {
+                        secondFinish in
+                        if secondFinish{
+                            completion?()
+                        }
+                    })
                 }
             })
         }
     }
     func animationReverse(animationDuration:CGFloat,superviewAnimationBlock:@escaping()->Void,completion:(()->Void)?){
         if viewUp{
-            backGesture()
             viewUp = false
-            UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
-                self.userImageView.alpha = 1.0
-                self.contentView!.alpha = 0.0
-                self.layer.cornerRadius = self.previousRadius
-                superviewAnimationBlock()
-            },completion:  {
+            UIView.animate(withDuration: self.contentAlphaDuration, delay: 0.0, animations: {
+                self.contentView?.alpha = 0.0
+            },completion: {
                 finish in
                 if finish{
-                    completion?()
+                    self.removeContentView()
+                    UIView.animate(withDuration: animationDuration,delay: 0.0,usingSpringWithDamping: 0.9,initialSpringVelocity: 0.9,animations: {
+                        self.userImageView.alpha = 1.0
+                        self.contentView!.alpha = 0.0
+                        self.layer.cornerRadius = self.previousRadius
+                        self.backgroundColor = ManageColor.singleton.getMainColor().withAlphaComponent(0.5)
+                        self.layer.borderColor = ManageColor.singleton.getMainColor().cgColor
+                        superviewAnimationBlock()
+                    },completion:  {
+                        secondfinish in
+                        if secondfinish{
+                            completion?()
+                        }
+                    })
                 }
             })
         }

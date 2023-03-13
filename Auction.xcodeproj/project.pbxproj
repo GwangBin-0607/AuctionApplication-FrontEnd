@@ -1208,8 +1208,8 @@
 		88D50D4E29B83DD100FCF5F4 /* UserPageTableView */ = {
 			isa = PBXGroup;
 			children = (
-				88D50D4F29B8459700FCF5F4 /* ViewModel */,
 				88D50D4C29B83DCD00FCF5F4 /* UserPageTableView.swift */,
+				88D50D4F29B8459700FCF5F4 /* ViewModel */,
 				88D50D5429B8482F00FCF5F4 /* UserPageTableViewCell.swift */,
 			);
 			path = UserPageTableView;
