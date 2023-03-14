@@ -50,14 +50,8 @@ extension CurrentProductPriceRepository:Pr_CurrentProductPriceRepository{
                         let product = try self!.httpCurrentProductPriceTransfer.responseDetailProduct(data: data)
                         ob.onNext(.success(product))
                     }catch{
-                        print(error)
                         ob.onNext(.failure(.DecodeError))
                     }
-//                    if let product = try? self?.httpCurrentProductPriceTransfer.responseDetailProduct(data: data){
-//                        ob.onNext(.success(product))
-//                    }else{
-//                        ob.onNext(.failure(.DecodeError))
-//                    }
                     ob.onCompleted()
                 case .failure(let error):
                     ob.onNext(.failure(error))

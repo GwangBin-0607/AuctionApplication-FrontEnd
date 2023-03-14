@@ -30,7 +30,6 @@ class DetailProductViewCoordinator:Coordinator,HasParentCoordinator{
             let detailProductListViewController = sceneDIContainer.returnDetailViewController(transitioning: self, product_id: product_id)
             viewController = detailProductListViewController
             containerViewController.present(ViewController: detailProductListViewController, animate: true)
-            print("PRESENT")
         }
     }
 }

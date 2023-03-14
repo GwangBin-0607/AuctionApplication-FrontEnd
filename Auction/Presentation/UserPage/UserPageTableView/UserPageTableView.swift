@@ -24,7 +24,6 @@ final class UserPageTableView:UITableView{
     private func bind(){
         viewModel.tableViewContent.bind(to: rx.items){
             tbl,index,elements in
-            print("CELL")
             let cell = tbl.dequeueReusableCell(withIdentifier: UserPageTableViewCell.IDENTIFIER) as? UserPageTableViewCell
             cell?.binding.onNext(elements)
             return cell ?? UITableViewCell()

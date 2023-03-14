@@ -26,7 +26,6 @@ final class LoginPageCoordinator:Coordinator,HasParentCoordinator{
 }
 extension LoginPageCoordinator:TransitionLoginViewController{
     func dismiss() {
-        print("Dismiss")
         delegate.removeChildCoordinator(Co: self)
         containerViewController.dismiss(animate: true,viewController: viewController)
     }

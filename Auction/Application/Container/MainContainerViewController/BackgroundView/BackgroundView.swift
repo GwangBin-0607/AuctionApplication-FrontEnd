@@ -67,7 +67,6 @@ class BackgroundView:UIView{
     private func bind(){
         closeButton.rx.tap.withUnretained(self).subscribe(onNext: {
             owner,_ in
-            print("tap")
             owner.dismissAnimation()
         }).disposed(by: disposeBag)
     }
@@ -111,7 +110,6 @@ extension BackgroundView:GestureDelegate{
         }
     }
     func tapGesture() {
-        print("Tap")
         self.isUp = true
         AnimationloginView()
     }

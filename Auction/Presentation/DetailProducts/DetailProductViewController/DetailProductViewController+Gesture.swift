@@ -81,7 +81,6 @@ extension DetailProductViewController:GestureDelegateWithButton{
         }
     }
     func buttonTap() {
-        print("BUTTON")
         if animatorState == .bottom{
             animator.startAnimation()
         }else{

@@ -53,7 +53,6 @@ extension OutputStreamCompletionHandler{
             timeOut.setEventHandler(handler: {
                 [weak self] in
                 if let completionId = self?.completionId{
-                    print("completionId \(completionId)")
                     self?.delegate?.executeCompletionExtension(completionId: completionId,error: StreamError.ResponseTimeOut)
                 }
             })

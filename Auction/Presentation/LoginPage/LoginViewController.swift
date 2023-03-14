@@ -69,6 +69,5 @@ final class LoginViewController:UIViewController{
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print("DISAPPEAR")
     }
 }

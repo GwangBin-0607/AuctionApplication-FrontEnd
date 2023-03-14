@@ -47,7 +47,6 @@ extension CustomNavigationViewController{
     @discardableResult
     private func constraintsBeforeViewControllerView(present:Bool)->UIView?{
         if let preView = children[children.count-2].view{
-            print("!!!")
             containView.constraints.filter({$0.firstItem as? UIView == preView}).filter({$0.firstAttribute == .leading || $0.firstAttribute == .trailing}).forEach({$0.isActive = false})
             if present{
                 preView.trailingAnchor.constraint(equalTo: containView.trailingAnchor).isActive = true
@@ -63,7 +62,6 @@ extension CustomNavigationViewController{
     }
     private func constraintsCurrentViewControllerView(present:Bool){
         if let preView = children[children.count-1].view{
-            print("@@@@")
             containView.constraints.filter({$0.firstItem as? UIView == preView}).filter({$0.firstAttribute == .leading}).forEach({$0.isActive = false})
             if present{
                 preView.leadingAnchor.constraint(equalTo: containView.leadingAnchor).isActive = true

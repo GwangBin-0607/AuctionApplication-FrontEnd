@@ -52,9 +52,6 @@ final class DetailProductPriceView:ShadowView{
         self.gestureDelegate = delegate
         self.buyProductButton.setDelegate(delegate: delegate)
     }
-    override func layoutSubviews() {
-        print("SUBVIEW!")
-    }
     private var endNSConstraint:[NSLayoutConstraint] = []
     private var startNSConstraint:[NSLayoutConstraint] = []
     

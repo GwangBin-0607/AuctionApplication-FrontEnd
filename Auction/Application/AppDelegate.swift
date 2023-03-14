@@ -14,15 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-#if DEBUG_LOCALSERVER
-        print("DEBUG_LOCALSERVER")
-#elseif DEBUG_LOCALSERVER_DOCKER
-        print("DEBUG_LOCALSERVER_DOCKER")
-#elseif DEBUG_REMOTESERVER
-        print("DEBUG_REMOTESERVER")
-#elseif RELEASE
-        print("RELEASE")
-#endif
         return true
     }
     

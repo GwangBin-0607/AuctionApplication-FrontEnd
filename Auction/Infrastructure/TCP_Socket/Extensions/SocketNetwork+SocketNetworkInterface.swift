@@ -105,7 +105,6 @@ final class SocketNetwork: NSObject,SocketNetworkInterface  {
         outputStream = nil
     }
     func sendData(data:Data,completion:@escaping(StreamError?)->Void){
-        print("Send")
         data.withUnsafeBytes { pointer in
             let buffer = pointer.baseAddress!.assumingMemoryBound(to: UInt8.self)
             let result = outputStream?.write(buffer, maxLength: data.count)
@@ -122,7 +121,6 @@ extension SocketNetwork:StreamDelegate{
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
         case .openCompleted:
-            print("connect")
             isSocketConnected.onNext(.connect)
         case .hasBytesAvailable:
             if aStream == inputStream {
@@ -145,7 +143,7 @@ extension SocketNetwork:StreamDelegate{
             disconnect()
             connect()
         default:
-            print("Unknown event")
+            break;
         }
     }
 }

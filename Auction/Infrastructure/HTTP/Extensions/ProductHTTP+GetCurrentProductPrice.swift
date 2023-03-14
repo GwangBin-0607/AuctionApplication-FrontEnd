@@ -36,7 +36,6 @@ extension ProductHTTP:GetCurrentProductPrice{
                 onComplete(.failure(HTTPError.DataError))
                 return
             }
-            print(data)
             onComplete(.success(data))
             
             
