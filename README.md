@@ -49,7 +49,8 @@
         - 서버와 데이터를 송,수신 하는 객체
 - **`MVVM-C`**
     
-    ![Frame 106 (2).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/666895e0-6197-44a2-b8a3-cd1badea85de/Frame_106_(2).png)
+    ![Frame 106 (2)](https://user-images.githubusercontent.com/78067919/224891211-d278c263-88a0-45c5-9835-8bffe47f102f.png)
+
     
     - View
         - View 또는 ViewController가 될 수있다.
