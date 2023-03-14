@@ -1,15 +1,10 @@
 # Project : Auction Item
-- 서버에 가상의 유저를 둬서 총 2명이상이 접속했을때 랜덤으로 상품의 가격을 경매하는 기능을 구현했습니다
-- 프로젝트 스크린샷
 
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-05_at_18_02_08_AdobeExpress](https://user-images.githubusercontent.com/78067919/222951475-5cae659c-8769-47c6-b075-7c48b03df477.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_40_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949209-a2312756-32ba-466b-af08-bcddaab110a1.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_55_AdobeExpress](https://user-images.githubusercontent.com/78067919/222946917-f0838df4-b06b-40e5-8ccd-4eebd0f24085.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-05_at_17_58_48_AdobeExpress](https://user-images.githubusercontent.com/78067919/222951385-6183a7c1-829a-45e5-92f7-c7d27cad3db9.gif)
 
-- 기술 스택 : Swift, RxSwift, RxDataSource, UnitTest
-- 프로젝트 기간
-    - 2022.10 ~
 ### 🔒 요구사항
 
 > 물건을 단순히 가격을 올리고 그 가격에 맞게 파는 것이 아닌, 물건을 파는 사용자가 시작가격을 측정하고 사는 사용자들이 물건을 실시간으로 경매 함으로써 서로가 만족한 거래를 주선하는 플랫폼 개발
