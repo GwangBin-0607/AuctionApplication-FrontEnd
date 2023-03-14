@@ -1,5 +1,7 @@
 # Project : Auction Item
 
+![Frame 119](https://user-images.githubusercontent.com/78067919/224890977-638c0185-7236-4de8-8b2d-61e306a403df.png)
+
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-05_at_18_02_08_AdobeExpress](https://user-images.githubusercontent.com/78067919/222951475-5cae659c-8769-47c6-b075-7c48b03df477.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_40_AdobeExpress](https://user-images.githubusercontent.com/78067919/222949209-a2312756-32ba-466b-af08-bcddaab110a1.gif)
 ![Simulator_Screen_Recording_-_iPhone_14_Pro_-_2023-03-03_at_15_12_55_AdobeExpress](https://user-images.githubusercontent.com/78067919/222946917-f0838df4-b06b-40e5-8ccd-4eebd0f24085.gif)
