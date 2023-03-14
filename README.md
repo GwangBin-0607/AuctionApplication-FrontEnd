@@ -23,7 +23,7 @@
 
 - **`Clea Architecture`**
     
-    ![Frame 109 (3).png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8f288d99-958d-40c4-9444-96b0477b4190/Frame_109_(3).png)
+    ![Frame 109 (3)](https://user-images.githubusercontent.com/78067919/224891101-a68c0874-435c-4560-a5eb-7cc36c506fac.png)
     
     - Application Layer
         - SceneDIContainer
