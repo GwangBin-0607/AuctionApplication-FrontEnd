@@ -8,8 +8,7 @@
 import Foundation
 import RxSwift
 class MainContainerControllerViewModel:Pr_MainContainerControllerViewModel{
-    private let backgroundViewModel:Pr_BackgroundViewModel
-    init(backgroundViewModel:Pr_BackgroundViewModel) {
-        self.backgroundViewModel  = backgroundViewModel
+    init() {
+        
     }
 }

@@ -39,15 +39,11 @@ extension SceneDIContainer:MainContainerViewSceneDIContainer{
         ProductListViewCoordinator(ContainerViewController: ContainerViewController, SceneDIContainer: self,delegate: delegate)
     }
     func returnMainContainerViewController() -> MainContainerViewController {
-        let navigationViewModel = returnNavigationCircleViewModel()
-        let navigationView = returnNavigationCornerRadiusView(navigationCircleViewModel: navigationViewModel)
-        let backgroundViewModel = returnBackgroundViewModel(navigationViewModel: navigationViewModel)
-        let backgroundView = returnBackgroundView(viewModel: backgroundViewModel,naviationView: navigationView)
-        let mainContainerControllerViewModel = returnMainContainerControllerViewModel(backgroundViewModel: backgroundViewModel)
-        return MainContainerViewController(viewModel: mainContainerControllerViewModel, backgroundView: backgroundView)
+        let mainContainerControllerViewModel = returnMainContainerControllerViewModel()
+        return MainContainerViewController(viewModel: mainContainerControllerViewModel)
     }
-    func returnMainContainerControllerViewModel(backgroundViewModel:Pr_BackgroundViewModel)->Pr_MainContainerControllerViewModel{
-        MainContainerControllerViewModel(backgroundViewModel: backgroundViewModel)
+    func returnMainContainerControllerViewModel()->Pr_MainContainerControllerViewModel{
+        MainContainerControllerViewModel()
     }
     private func returnNavigationCornerRadiusView(navigationCircleViewModel:Pr_NavigationCircleViewModel)->NavigationCornerRadiusView{
         NavigationCornerRadiusView(ViewModel: navigationCircleViewModel)

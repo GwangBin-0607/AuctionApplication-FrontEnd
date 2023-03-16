@@ -2,32 +2,18 @@ import Foundation
 import UIKit
 import RxSwift
 final class MainContainerViewController:UIViewController{
-    private let containerView:UIView
+    private let containerView:ContainerView
     private let viewModel:Pr_MainContainerControllerViewModel
     private let disposeBag = DisposeBag()
-    private let backgroundView:BackgroundView
-    private var customNavigationController:UIViewController?
-    init(viewModel:Pr_MainContainerControllerViewModel,backgroundView:BackgroundView) {
-        self.backgroundView = backgroundView
+    private var animator:UIViewPropertyAnimator?
+    private let button:UIButton
+    init(viewModel:Pr_MainContainerControllerViewModel) {
         self.viewModel = viewModel
-        containerView = UIView()
+        button = UIButton()
+        containerView = ContainerView()
         super.init(nibName: nil, bundle: nil)
-        backgroundView.setAnimationCompletion(appear: {
-            [weak self] in
-            let children = self?.children.filter({$0 != self?.customNavigationController}).last
-            children?.beginAppearanceTransition(false, animated: true)
-            self?.customNavigationController?.beginAppearanceTransition(true, animated: true)
-        }, disappear: {
-            [weak self] in
-            let children = self?.children.filter({$0 != self?.customNavigationController}).last
-            children?.beginAppearanceTransition(true, animated: true)
-            self?.customNavigationController?.beginAppearanceTransition(false, animated: true)
-        },end: {
-            [weak self] in
-            let children = self?.children.filter({$0 != self?.customNavigationController}).last
-            children?.endAppearanceTransition()
-            self?.customNavigationController?.endAppearanceTransition()
-        })
+        containerView.setDelegate(gesture: self)
+        animator = animator(duration: 1.0)
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -36,21 +22,30 @@ final class MainContainerViewController:UIViewController{
         super.loadView()
         self.view = layout()
     }
+    private var leading:NSLayoutConstraint?
+    private var trailing:NSLayoutConstraint?
+    private var top:NSLayoutConstraint?
+    private var bottom:NSLayoutConstraint?
     private func layout()->UIView{
         let view = UIView()
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         view.addSubview(containerView)
-        view.addSubview(backgroundView)
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20.0).isActive = true
+        button.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20.0).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        button.backgroundColor = .systemYellow
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        containerView.topAnchor.constraint(equalTo:  view.topAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        top = containerView.topAnchor.constraint(equalTo: button.bottomAnchor)
+        top?.isActive = true
+        leading = containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        leading?.isActive = true
+        trailing = containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        trailing?.isActive = true
+        bottom = containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottom?.isActive = true
         return view
     }
     override func viewDidLoad() {
@@ -59,6 +54,30 @@ final class MainContainerViewController:UIViewController{
     }
     private func bind(){
 
+    }
+}
+extension MainContainerViewController:GestureDelegate{
+    func pangesture(pangesture: Pangesture) {
+        animator?.pauseAnimation()
+        animator?.fractionComplete += pangesture.point.x/200
+    }
+    func tapGesture() {
+        print("Tap")
+    }
+}
+extension MainContainerViewController{
+    private func animator(duration:CGFloat)->UIViewPropertyAnimator{
+        let animator = UIViewPropertyAnimator(duration: duration,curve: .easeInOut)
+        animator.pausesOnCompletion = true
+        animator.addAnimations {
+            self.bottom?.constant = 100
+            self.trailing?.constant = 200
+            self.top?.constant = 100
+            self.leading?.constant = 200
+            self.view.layoutIfNeeded()
+        }
+        
+        return animator
     }
 }
 extension MainContainerViewController:ContainerViewController{
@@ -99,11 +118,51 @@ extension MainContainerViewController:ContainerViewController{
         ViewController.didMove(toParent: self)
         ViewController.endAppearanceTransition()
     }
-    func presentNaviationViewController(ViewController: ContainerViewController) {
-        customNavigationController = ViewController
-        self.addChild(ViewController)
-        backgroundView.addView(view: ViewController.view)
-        ViewController.didMove(toParent: self)
+    
+}
+final class ContainerView:UIView{
+    weak var delegate:GestureDelegate?
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        self.addGestureRecognizer(makePangesture())
+        setShadow()
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.shadowPath = UIBezierPath(rect: CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: self.frame.height))).cgPath
+
+    }
+    private func setShadow() {
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 1.0
+        self.layer.shadowRadius = 10
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func setDelegate(gesture:GestureDelegate){
+        self.delegate = gesture
+    }
+    private func makePangesture()->UIPanGestureRecognizer{
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(gesture(sender:)))
+        pan.delegate = self
+        return pan
+    }
+    @objc private func gesture(sender:UIPanGestureRecognizer){
+        let translation = sender.translation(in: self)
+        let gesture = Pangesture(point: translation, state: sender.state)
+        delegate?.pangesture(pangesture: gesture)
+        sender.setTranslation(.zero, in: self)
+
+    }
+    
+}
+extension ContainerView:UIGestureRecognizerDelegate{
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        print(self.frame)
+        print(gestureRecognizer.location(in: self))
+        return true
+    }
 }

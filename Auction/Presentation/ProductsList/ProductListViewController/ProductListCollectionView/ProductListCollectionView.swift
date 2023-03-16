@@ -11,6 +11,7 @@ final class ProductListCollectionView: UICollectionView {
         super.init(frame: .zero, collectionViewLayout: layout)
         self.register(ProductListCollectionViewCell.self, forCellWithReuseIdentifier: ProductListCollectionViewCell.Identifier)
         self.register(ProductListCollectionFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: ProductListCollectionFooterView.Identifier)
+        self.contentInsetAdjustmentBehavior = .always
         bind()
         print("\(String(describing: self)) INIT")
         setLayout()
