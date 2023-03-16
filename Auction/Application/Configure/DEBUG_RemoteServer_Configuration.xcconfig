@@ -1,0 +1,7 @@
+#include "../../../Pods/Target Support Files/Pods-Auction/Pods-Auction.cnf_debug(remoteserver).xcconfig"
+HTTP_LIST_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/alllist
+HTTP_IMAGE_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/productimage
+HTTP_DETAIL_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/detailproduct
+HTTP_CURRENT_PRICE_URL = http:/$()/ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com:8099/products/currentproductprice
+SOCKET_HOST = ec2-13-125-247-240.ap-northeast-2.compute.amazonaws.com
+SOCKET_PORT = 8100
